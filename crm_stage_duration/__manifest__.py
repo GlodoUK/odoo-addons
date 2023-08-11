@@ -2,7 +2,7 @@
     "name": "CRM Stage Duration",
     "summary": """
         Monitors and adds stage duration on kanban and tree views, and also the chatter""",
-    "author": "Odoo Community Association (OCA)",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/crm",
     "category": "Uncategorized",
     "version": "16.0.0.0.0",
@@ -12,6 +12,6 @@
         "views/crm_lead.xml",
     ],
     "external_dependencies": {"python": ["human_readable"]},
-    "license": "Other proprietary",
+    "license": "AGPL-3",
     "demo": [],
 }
