@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_crm_lead_stage_change_tracker,crm_lead_stage_change_tracker,model_crm_lead_stage_change_tracker,crm.group_use_lead,1,1,1,1
+access_crm_lead_stage_change_tracker,crm_lead_stage_change_tracker,model_crm_lead_stage_change_tracker,base.group_user,1,1,1,1
