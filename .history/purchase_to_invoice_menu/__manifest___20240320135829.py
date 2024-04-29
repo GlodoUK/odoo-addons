@@ -4,7 +4,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/purchase",
     "category": "Uncategorized",
-    "version": "17.0.0.0.0",
+    "version": "15.0.1.1.0",
     "depends": ["purchase"],
     "data": [
         "views/menu.xml",
