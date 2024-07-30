@@ -10,6 +10,7 @@
                     name="apply_on_ptav_ids"
                     widget="many2many_tags"
                     invisible="product_id != False"
+                    groups=" product.group_product_variant"
                 />
             </xpath>
         </field>
