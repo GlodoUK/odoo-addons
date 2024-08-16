@@ -315,26 +315,20 @@ class ChecklistBase(models.AbstractModel):
 
                 notebook = arch.find(".//notebook")
                 if notebook is not None:
-                    page = """
-                        <page string="%s" name="glo_checklist"
-                            attrs="{'invisible': [('checklist_item_ids', '=', [])]}">
-                            %s
-                        </page>""" % (
-                        checklist.name,
-                        self._get_injected_view_contents(),
-                    )
+                    page = f"""
+                        <page string="{checklist.name}" name="glo_checklist"
+                            attrs="{{'invisible': [('checklist_item_ids', '=', [])]}}">
+                            {self._get_injected_view_contents()}
+                        </page>"""
                     notebook.append(etree.fromstring(page))
                 else:
                     sheet = arch.find(".//sheet")
                     if sheet is not None:
-                        page = """
-                            <group string="%s" name="glo_checklist"
-                            attrs="{'invisible': [('checklist_item_ids', '=', [])]}">
-                            %s
-                            </group>""" % (
-                            checklist.name,
-                            self._get_injected_view_contents(),
-                        )
+                        page = f"""
+                            <group string="{checklist.name}" name="glo_checklist"
+                            attrs="{{'invisible': [('checklist_item_ids', '=', [])]}}">
+                            {self._get_injected_view_contents()}
+                            </group>"""
                         sheet.append(etree.fromstring(page))
 
         return arch, view

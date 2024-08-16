@@ -3,7 +3,7 @@
     "summary": """
         Add checklists to any model via a template.""",
     "author": "Glo Networks",
-    "website": "https://glo.systems",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Technical",
     "version": "17.0.1.0.0",
     "depends": ["base", "mail"],

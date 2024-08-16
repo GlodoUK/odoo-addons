@@ -1,21 +1,39 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@id='contacts_settings']" position="after">
                 <div id="checklist_settings">
                     <h2>Checklists</h2>
-                    <div class="row mt16 o_settings_container" name="checklists_setting_container">
-                        <div class="col-xs-12 col-md-6 o_setting_box" id="checklists_setting">
+                    <div
+                        class="row mt16 o_settings_container"
+                        name="checklists_setting_container"
+                    >
+                        <div
+                            class="col-xs-12 col-md-6 o_setting_box"
+                            id="checklists_setting"
+                        >
                             <div class="o_setting_right_pane">
                                 <div class="mt8">
-                                    <button name="%(glo_checklists.action_checklist_template)d" icon="fa-arrow-right" type="action" string="Checklist Templates" class="btn-link"/>
+                                    <button
+                                        name="%(glo_checklists.action_checklist_template)d"
+                                        icon="fa-arrow-right"
+                                        type="action"
+                                        string="Checklist Templates"
+                                        class="btn-link"
+                                    />
                                 </div>
                                 <div class="mt8">
-                                    <button name="%(glo_checklists.action_checklist_item)d" icon="fa-arrow-right" type="action" string="Checklist Items" class="btn-link"/>
+                                    <button
+                                        name="%(glo_checklists.action_checklist_item)d"
+                                        icon="fa-arrow-right"
+                                        type="action"
+                                        string="Checklist Items"
+                                        class="btn-link"
+                                    />
                                 </div>
                             </div>
                         </div>
