@@ -18,4 +18,5 @@
     "license": "LGPL-3",
     "price": 49,
     "currency": "GBP",
+    "application": True,
 }

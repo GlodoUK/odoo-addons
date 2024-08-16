@@ -6,8 +6,21 @@ from lxml import etree
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+DANGEROUS_MODELS = [
+    "res.bank",
+    "res.company",
+    "res.currency",
+    "res.lang",
+    "report.layout",
+    "report.paperformat",
+    "res.config.settings",
+    "glo_checklist.template",
+    "glo_checklist.template.line",
+    "glo_checklist.item",
+]
 
-class Checklist(models.Model):
+
+class ChecklistTemplate(models.Model):
     _name = "glo_checklist.template"
     _description = "Checklist Template"
     _order = "sequence, name"
@@ -19,6 +32,13 @@ class Checklist(models.Model):
         help="Which model should this checklist be applied to?",
         required=True,
         ondelete="cascade",
+        domain=lambda r: [
+            ("model", "not in", DANGEROUS_MODELS),
+            "!",
+            ("model", "=ilike", "ir.%"),
+            "!",
+            ("model", "=ilike", "base%"),
+        ],
     )
     res_model = fields.Char(
         related="res_model_id.model", store=True, index=True, readonly=True
@@ -115,6 +135,7 @@ class CheckListItem(models.Model):
     checklist_template_id = fields.Many2one(
         "glo_checklist.template",
         related="checklist_line_id.checklist_template_id",
+        ondelete="cascade",
     )
     name = fields.Html(related="checklist_line_id.name")
     description = fields.Text(related="checklist_line_id.description")
@@ -154,6 +175,16 @@ class CheckListItem(models.Model):
             "context": {"default_description": self.description},
             "target": "new",
         }
+
+    def action_complete(self):
+        self.write({"completed": True})
+
+    def action_uncomplete(self):
+        if self.prevent_uncomplete and not self.env.user.has_group(
+            "glo_checklists.group_checklist_manager"
+        ):
+            raise ValidationError(_("This task cannot be uncompleted!"))
+        self.write({"completed": False})
 
 
 class ChecklistBase(models.AbstractModel):
@@ -232,10 +263,16 @@ class ChecklistBase(models.AbstractModel):
     @api.model_create_multi
     def create(self, vals):
         res = super().create(vals)
-        res = res.with_context(prevent_checklist_loop=True).update_checklist_items()
+        if not self._name.startswith("ir.") or self._name not in DANGEROUS_MODELS:
+            # Safety catch to prevent modifying dangerous models
+            res = res.with_context(prevent_checklist_loop=True).update_checklist_items()
         return res
 
     def write(self, vals):
+        if self._name.startswith("ir.") or self._name in DANGEROUS_MODELS:
+            # Safety catch to prevent modifying dangerous models
+            return super().write(vals)
+
         checklist = self.get_checklist_template()
         if not checklist:
             return super().write(vals)
@@ -275,9 +312,12 @@ class ChecklistBase(models.AbstractModel):
 
     def _get_injected_view_contents(self):
         return """<field name="checklist_item_ids">
-                <tree create="False" delete="False" editable="bottom">
-                    <field name="sequence" invisible="1"/>
-                    <field name="description" invisible="1"/>
+                <tree create="False" delete="False" editable="bottom"
+                    decoration-warning="required and not completed"
+                    decoration-muted="not required or completed">
+                    <field name="sequence" column_invisible="True"/>
+                    <field name="description" column_invisible="True"/>
+                    <field name="completed" widget="boolean_toggle" readonly="True"/>
                     <field name="name"/>
                     <button name="action_checklist_help" type="object"
                         title="Help" icon="fa-question"
@@ -286,13 +326,20 @@ class ChecklistBase(models.AbstractModel):
                     <field name="required"/>
                     <field name="prevent_uncomplete"
                         column_invisible="True"/>
-                    <field name="completed" widget="boolean_toggle"
-                        readonly="prevent_uncomplete and completed"/>
                     <field name="completion_note"/>
                     <field name="completed_date"/>
                     <field name="completed_by"/>
                     <button icon="fa-external-link" name="action_details" type="object"
                         title="Details/History"/>
+                    <button name="action_complete" type="object" title="Complete"
+                        icon="fa-check" invisible="completed" string="Complete"/>
+                    <button name="action_uncomplete" type="object" title="Uncomplete"
+                        icon="fa-undo" invisible="not completed or prevent_uncomplete"
+                        string="Uncomplete"/>
+                    <button name="action_uncomplete" type="object"
+                        groups="glo_checklists.group_checklist_manager"
+                        title="Uncomplete" icon="fa-undo" string="Admin Uncomplete"
+                        invisible="not completed or prevent_uncomplete == False"/>
                 </tree>
             </field>"""
 
