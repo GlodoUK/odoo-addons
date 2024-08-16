@@ -281,15 +281,13 @@ class ChecklistBase(models.AbstractModel):
                     <field name="name"/>
                     <button name="action_checklist_help" type="object"
                         title="Help" icon="fa-question"
-                        attrs="{'invisible': [('description', '=', '')]}"
+                        invisible="not description"
                     />
                     <field name="required"/>
                     <field name="prevent_uncomplete"
-                        attrs="{'column_invisible': True}"/>
+                        column_invisible="True"/>
                     <field name="completed" widget="boolean_toggle"
-                        attrs="{'readonly': [
-                            ('prevent_uncomplete', '=', True),('completed', '=', True)
-                        ]}"/>
+                        readonly="prevent_uncomplete and completed"/>
                     <field name="completion_note"/>
                     <field name="completed_date"/>
                     <field name="completed_by"/>
@@ -317,7 +315,7 @@ class ChecklistBase(models.AbstractModel):
                 if notebook is not None:
                     page = f"""
                         <page string="{checklist.name}" name="glo_checklist"
-                            attrs="{{'invisible': [('checklist_item_ids', '=', [])]}}">
+                            invisible="not checklist_item_ids">
                             {self._get_injected_view_contents()}
                         </page>"""
                     notebook.append(etree.fromstring(page))
@@ -326,7 +324,7 @@ class ChecklistBase(models.AbstractModel):
                     if sheet is not None:
                         page = f"""
                             <group string="{checklist.name}" name="glo_checklist"
-                            attrs="{{'invisible': [('checklist_item_ids', '=', [])]}}">
+                                invisible="not checklist_item_ids">
                             {self._get_injected_view_contents()}
                             </group>"""
                         sheet.append(etree.fromstring(page))
