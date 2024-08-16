@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
         rel="stylesheet">
+    <!-- bootstrap lightbox -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js">
     <style type="text/css">
         * {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -25,6 +28,12 @@
 
         .btn-primary {
             background-color: #e51a90;
+            border-color: #46327a;
+        }
+
+        .btn-primary:hover {
+            background-color: #46327a;
+            border-color: #e51a90;
         }
     </style>
 </head>
@@ -56,9 +65,17 @@
                 <i class="fa fa-check-circle" style="color: #00d37f; line-height: 2.2rem;"> </i>
                 Add Checklists to Custom Models<br /><br />
                 <i class="fa fa-check-circle" style="color: #00d37f; line-height: 2.2rem;"> </i>
-                Add Checklists to <span style="color: #e51a90; font-weight: 700;">ANY MODEL</span>
+                Add Checklists to <span style="color: #e51a90; font-weight: 700;">ANY MODEL</span><a
+                    href="#disclaimer">*</a>
             </div>
-            <img src="assets/screenshot1.png" alt="Checklist Anything on a Sales Order" class="img-fluid mt-5" />
+            <div class="row">
+                <a href="https://raw.githubusercontent.com/GlodoUK/odoo-addons/17.0/glo_checklists/static/description/assets/screenshot1.png"
+                    target="_blank">
+                    <img src="assets/screenshot1.png" alt="Checklist Anything on a Sales Order"
+                        class="shadow img-fluid mt-5" />
+                </a><br />
+                <small class="text-center text-muted">Screenshot: A custom checklist added to a sales order</small>
+            </div>
             <div class="mt-5">
                 <h2 class="text-center mb-3">What is <span style="color: #46327A; font-weight: 700;">Checklist
                         Anything</span>?</h2>
@@ -95,7 +112,25 @@
                     Each checklist template can be associated with a model and any number of
                     form views, or all forms for that model, or none and you modify the views
                     yourself in Odoo Studio!</p>
-                <img src="assets/screenshot2.png" alt="Checklist Template" class="img-fluid mt-3" />
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <a href="https://raw.githubusercontent.com/GlodoUK/odoo-addons/17.0/glo_checklists/static/description/assets/screenshot2.png"
+                        target="_blank">
+                        <img src="assets/screenshot2.png" alt="Checklist Template Configuration"
+                            class="shadow img-fluid mt-3" />
+                    </a><br />
+                    <small class="text-muted">Screenshot: Configuring a Checklist Template</small>
+                </div>
+                <div class="col text-center">
+                    <a href="https://raw.githubusercontent.com/GlodoUK/odoo-addons/17.0/glo_checklists/static/description/assets/screenshot3.png"
+                        target="_blank">
+                        <img src="assets/screenshot3.png" alt="Checklist Template Blocking"
+                            class="shadow img-fluid mt-3" />
+                    </a><br />
+                    <small class="text-muted">Screenshot: Adding a confirmation block on Sales
+                        Orders</small>
+                </div>
             </div>
             <div class="my-5">
                 <h2 class="text-center mb-3">Any Questions?</h2>
@@ -104,6 +139,17 @@
                 <div class="text-center">
                     <a href="https://glo.systems/contactus" class="btn btn-primary mt-3">Contact Us</a>
                 </div>
+            </div>
+            <div class="mt-5">
+                <h2 class="text-center mb-3">A small word of caution...</h2>
+                <p>
+                    <a id="disclaimer">*</a> Checklist Anything is a powerful tool that can be used to force the
+                    modification of
+                    models and views within the core Odoo system. Whilst we have made efforts to prevent
+                    the creation of any checklists on models that could cause serious issues, we advise
+                    caution when choosing which models to add your checklists to. We recommend testing
+                    in a development environment before deploying to a live system.
+                </p>
             </div>
     </section>
 </body>
