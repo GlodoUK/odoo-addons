@@ -332,14 +332,16 @@ class ChecklistBase(models.AbstractModel):
                     <button icon="fa-external-link" name="action_details" type="object"
                         title="Details/History"/>
                     <button name="action_complete" type="object" title="Complete"
-                        icon="fa-check" invisible="completed" string="Complete"/>
+                        icon="fa-check" invisible="completed" string="Complete"
+                        class="btn btn-primary"/>
                     <button name="action_uncomplete" type="object" title="Uncomplete"
                         icon="fa-undo" invisible="not completed or prevent_uncomplete"
-                        string="Uncomplete"/>
+                        string="Uncomplete" class="btn btn-secondary"/>
                     <button name="action_uncomplete" type="object"
                         groups="glo_checklists.group_checklist_manager"
                         title="Uncomplete" icon="fa-undo" string="Admin Uncomplete"
-                        invisible="not completed or prevent_uncomplete == False"/>
+                        invisible="not completed or prevent_uncomplete == False"
+                        class="btn btn-secondary"/>
                 </tree>
             </field>"""
 
