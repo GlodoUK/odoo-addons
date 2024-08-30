@@ -116,13 +116,20 @@ class ChecklistTemplate(models.Model):
         return res
 
     def write(self, vals):
-        before_matching_records = self.env[self.res_model].search(
-            ast.literal_eval(vals.get("domain", "[]"))
-        )
+        before_res_model = self.res_model
+        before_matching_records = self.env[self.res_model]
+        for record in self:
+            before_matching_records |= self.env[self.res_model].search(
+                ast.literal_eval(record.domain)
+            )
         res = super().write(vals)
         new_res_model = vals.get("res_model", self.res_model)
-        matching_records = self.env[new_res_model].search(ast.literal_eval(res.domain))
-        if new_res_model != self.res_model:
+        matching_records = self.env[new_res_model]
+        for record in self:
+            matching_records |= self.env[new_res_model].search(
+                ast.literal_eval(record.domain)
+            )
+        if new_res_model != before_res_model:
             no_longer_matching_records = before_matching_records
         else:
             no_longer_matching_records = before_matching_records - matching_records
