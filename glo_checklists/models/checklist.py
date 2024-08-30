@@ -106,7 +106,8 @@ class ChecklistTemplate(models.Model):
 
     def create(self, vals):
         res = super().create(vals)
-        matching_records = self.env[res.res_model].search(ast.literal_eval(res.domain))
+        res_model = vals.get("res_model")
+        matching_records = self.env[res_model].search(ast.literal_eval(res.domain))
         for record in matching_records:
             record.update_checklist_items()
         return res
@@ -116,8 +117,12 @@ class ChecklistTemplate(models.Model):
             ast.literal_eval(vals.get("domain", "[]"))
         )
         res = super().write(vals)
-        matching_records = self.env[res.res_model].search(ast.literal_eval(res.domain))
-        no_longer_matching_records = before_matching_records - matching_records
+        new_res_model = vals.get("res_model", self.res_model)
+        matching_records = self.env[new_res_model].search(ast.literal_eval(res.domain))
+        if new_res_model != self.res_model:
+            no_longer_matching_records = before_matching_records
+        else:
+            no_longer_matching_records = before_matching_records - matching_records
         no_longer_matching_records.with_context(
             skip_checklist_block=True
         ).checklist_item_ids.unlink()
