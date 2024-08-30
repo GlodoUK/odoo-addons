@@ -321,6 +321,8 @@ class ChecklistBase(models.AbstractModel):
         if not self.env.context.get("prevent_checklist_loop", False):
             self.with_context(prevent_checklist_loop=True).update_checklist_items()
 
+        portal_block = checklist.block_portal and self.env.user.share
+
         # Check if the block domain has been met
         if (
             checklist
@@ -328,6 +330,7 @@ class ChecklistBase(models.AbstractModel):
             and block_domain_check
             and not self.env.context.get("skip_checklist_block", False)
             and checklist.block_type != "none"
+            and not portal_block
         ):
             block_domain_confirm = block_domain_check.filtered_domain(
                 ast.literal_eval(checklist.block_domain)
@@ -388,6 +391,10 @@ class ChecklistBase(models.AbstractModel):
                     checklist.auto_add_view == "selected"
                     and view.id not in checklist.view_ids.ids
                 ):
+                    return arch, view
+
+                # Check if this is a portal user
+                if not checklist.show_checklist_on_portal and self.env.user.share:
                     return arch, view
 
                 notebook = arch.find(".//notebook")
