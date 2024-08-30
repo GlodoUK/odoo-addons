@@ -83,6 +83,15 @@ class ChecklistTemplate(models.Model):
         required=True,
         string="Block Update If...",
     )
+    block_portal = fields.Boolean(
+        string="Block Portal Users",
+        help="Block portal users from updating records until the checklist is complete",
+        default=False,
+    )
+    show_checklist_on_portal = fields.Boolean(
+        help="Show the checklist on the portal view of the record",
+        default=False,
+    )
     sequence = fields.Integer(default=10)
 
     def action_open_checklist_items(self):
@@ -103,8 +112,16 @@ class ChecklistTemplate(models.Model):
         return res
 
     def write(self, vals):
+        before_matching_records = self.env[self.res_model].search(
+            ast.literal_eval(vals.get("domain", "[]"))
+        )
         res = super().write(vals)
-        for record in self.env[self.res_model].search(ast.literal_eval(self.domain)):
+        matching_records = self.env[res.res_model].search(ast.literal_eval(res.domain))
+        no_longer_matching_records = before_matching_records - matching_records
+        no_longer_matching_records.with_context(
+            skip_checklist_block=True
+        ).checklist_item_ids.unlink()
+        for record in matching_records:
             record.update_checklist_items()
         return res
 
