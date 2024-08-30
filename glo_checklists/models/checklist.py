@@ -95,6 +95,19 @@ class ChecklistTemplate(models.Model):
             "domain": [("checklist_template_id", "=", self.id)],
         }
 
+    def create(self, vals):
+        res = super().create(vals)
+        matching_records = self.env[res.res_model].search(ast.literal_eval(res.domain))
+        for record in matching_records:
+            record.update_checklist_items()
+        return res
+
+    def write(self, vals):
+        res = super().write(vals)
+        for record in self.env[self.res_model].search(ast.literal_eval(self.domain)):
+            record.update_checklist_items()
+        return res
+
 
 class ChecklistTemplateLine(models.Model):
     _name = "glo_checklist.template.line"
