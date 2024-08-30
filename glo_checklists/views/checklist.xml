@@ -101,7 +101,9 @@
                                     /> All Forms: Add the checklist to all form views of the model<br
                                     /> Specific Forms: Add the checklist to the specified form views of the model only</div>
                             </p>
-                            <field name="show_checklist_on_portal" />
+                            <group>
+                                <field name="show_checklist_on_portal" />
+                            </group>
                             <field
                                 name="view_ids"
                                 domain="[('type', '=', 'form'),('model', '=', res_model)]"
@@ -120,12 +122,11 @@
                                         /> Any Task Incomplete: Block the update if any tasks are incomplete. </div>
                                 </p>
                             </group>
-                            <group>
+                            <group invisible="block_type == 'none'">
                                 <field
                                     name="block_domain"
                                     widget="domain"
                                     options="{'model': 'res_model'}"
-                                    invisible="block_type == 'none'"
                                 />
                                 <p class="text-muted" colspan="2">
                                     <i
@@ -134,7 +135,7 @@
                                     /> If a record with a checklist is updated, and the update would mean it matches this domain filter, the update will be blocked if the checklist is not "complete".<br
                                     /> e.g. If the domain filter is [('state', '=', 'done')], and a record is updated to have state='done', but the checklist is not complete, the update will be blocked. </p>
                             </group>
-                            <group>
+                            <group invisible="block_type == 'none'">
                                 <field name="block_portal" />
                             </group>
                         </page>
