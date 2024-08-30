@@ -83,6 +83,15 @@ class ChecklistTemplate(models.Model):
         required=True,
         string="Block Update If...",
     )
+    block_portal = fields.Boolean(
+        string="Block Portal Users",
+        help="Block portal users from updating records until the checklist is complete",
+        default=False,
+    )
+    show_checklist_on_portal = fields.Boolean(
+        help="Show the checklist on the portal view of the record",
+        default=False,
+    )
     sequence = fields.Integer(default=10)
 
     def action_open_checklist_items(self):
@@ -94,6 +103,42 @@ class ChecklistTemplate(models.Model):
             "view_mode": "tree,form",
             "domain": [("checklist_template_id", "=", self.id)],
         }
+
+    @api.model_create_multi
+    def create(self, vals):
+        res = super().create(vals)
+        for record in res:
+            matching_records = self.env[record.res_model].search(
+                ast.literal_eval(res.domain)
+            )
+            for checklisted in matching_records:
+                checklisted.update_checklist_items()
+        return res
+
+    def write(self, vals):
+        before_res_model = self.res_model
+        before_matching_records = self.env[self.res_model]
+        for record in self:
+            before_matching_records |= self.env[self.res_model].search(
+                ast.literal_eval(record.domain)
+            )
+        res = super().write(vals)
+        new_res_model = vals.get("res_model", self.res_model)
+        matching_records = self.env[new_res_model]
+        for record in self:
+            matching_records |= self.env[new_res_model].search(
+                ast.literal_eval(record.domain)
+            )
+        if new_res_model != before_res_model:
+            no_longer_matching_records = before_matching_records
+        else:
+            no_longer_matching_records = before_matching_records - matching_records
+        no_longer_matching_records.with_context(
+            skip_checklist_block=True
+        ).checklist_item_ids.unlink()
+        for record in matching_records:
+            record.update_checklist_items()
+        return res
 
 
 class ChecklistTemplateLine(models.Model):
@@ -291,6 +336,8 @@ class ChecklistBase(models.AbstractModel):
         if not self.env.context.get("prevent_checklist_loop", False):
             self.with_context(prevent_checklist_loop=True).update_checklist_items()
 
+        portal_block = checklist.block_portal and self.env.user.share
+
         # Check if the block domain has been met
         if (
             checklist
@@ -298,6 +345,7 @@ class ChecklistBase(models.AbstractModel):
             and block_domain_check
             and not self.env.context.get("skip_checklist_block", False)
             and checklist.block_type != "none"
+            and not portal_block
         ):
             block_domain_confirm = block_domain_check.filtered_domain(
                 ast.literal_eval(checklist.block_domain)
@@ -358,6 +406,10 @@ class ChecklistBase(models.AbstractModel):
                     checklist.auto_add_view == "selected"
                     and view.id not in checklist.view_ids.ids
                 ):
+                    return arch, view
+
+                # Check if this is a portal user
+                if not checklist.show_checklist_on_portal and self.env.user.share:
                     return arch, view
 
                 notebook = arch.find(".//notebook")
