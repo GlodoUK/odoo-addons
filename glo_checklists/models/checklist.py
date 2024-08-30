@@ -104,12 +104,15 @@ class ChecklistTemplate(models.Model):
             "domain": [("checklist_template_id", "=", self.id)],
         }
 
+    @api.model_create_multi
     def create(self, vals):
         res = super().create(vals)
-        res_model = vals.get("res_model")
-        matching_records = self.env[res_model].search(ast.literal_eval(res.domain))
-        for record in matching_records:
-            record.update_checklist_items()
+        for record in res:
+            matching_records = self.env[record.res_model].search(
+                ast.literal_eval(res.domain)
+            )
+            for checklisted in matching_records:
+                checklisted.update_checklist_items()
         return res
 
     def write(self, vals):
