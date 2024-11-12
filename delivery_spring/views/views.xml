@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="spring_shipping_delivery_carrier_form" model="ir.ui.view">
+        <field name="name">spring_shipping_delivery_carrier_form</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="model">delivery.carrier</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Spring Credentials"
+                    attrs="{'invisible': [('delivery_type', '!=', 'spring')]}"
+                >
+                    <group>
+                        <group>
+                            <field
+                                name="spring_api_key"
+                                attrs="{'required': [('delivery_type', '=', 'spring')]}"
+                            />
+                            <field name="spring_url" />
+                            <field name="spring_service" />
+                            <button
+                                name="action_spring_get_services"
+                                type="object"
+                                string="Update Available Services"
+                            />
+                            <field name="spring_label_format" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
