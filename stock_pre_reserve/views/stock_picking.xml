@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">view_picking_form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="show_action_link_move_orig_ids" column_invisible="True" />
+                <field
+                    name="show_action_unlink_move_orig_ids"
+                    column_invisible="True"
+                />
+
+            </xpath>
+            <xpath expr="//tree//field[@name='product_uom']" position="after">
+                <button
+                    name="%(action_reserve_future_stock)d"
+                    type="action"
+                    icon="fa-link"
+                    context="{'default_move_id': id}"
+                    invisible="show_action_link_move_orig_ids == False"
+                    width="0.1"
+                />
+                <button
+                    name="action_unlink_move_orig_ids"
+                    type="object"
+                    icon="fa-unlink"
+                    column_invisible="show_action_unlink_move_orig_ids== False"
+                    confirm="This will break all the linked origin move links. Are you sure you wish to continue?"
+                    width="0.1"
+                />
+            </xpath>
+            <xpath expr="//form" position="inside">
+                <field name="move_ids_with_orig_count" invisible="True" />
+                <field name="move_ids_with_dest_count" invisible="True" />
+            </xpath>
+            <xpath expr="//notebook/page[@name='extra']" position="before">
+                <page
+                    string="Pre-Reserved"
+                    name="supplying_operations"
+                    invisible="move_ids_with_orig_count &lt;= 0 and  move_ids_with_dest_count &lt;= 0"
+                >
+                <group
+                        string="Reserved quantities from other moves"
+                        invisible="move_ids_with_orig_count &lt;= 0"
+                    >
+                <field name="move_ids_with_orig" nolabel="1">
+                    <tree
+                                decoration-muted="orig_state == 'done'"
+                                decoration-danger="orig_state == 'cancel'"
+                            >
+                    <field
+                                    name="orig_picking_id"
+                                    string="Origin Picking"
+                                    widget="many2one"
+                                />
+                    <field name="move_orig_id" string="Origin Move" />
+
+                    <field name="orig_product_uom_qty" string="Origin Qty" />
+                    <field name="orig_product_uom" string="Origin UoM" />
+
+                    <field name="orig_state" string="Origin Status" invisible="True" />
+
+                    <field name="move_dest_id" string="Move" />
+                    <field name="product_uom_qty_reserved" />
+                </tree>
+            </field>
+        </group>
+        <group
+                        invisible="move_ids_with_dest_count &lt;= 0"
+                        string="Reserved quantities for other moves"
+                    >
+            <field name="move_ids_with_dest" nolabel="1">
+                <tree
+                                decoration-muted="orig_state == 'done' or dest_state == 'done'"
+                                decoration-danger="orig_state == 'cancel' or dest_state == 'cancel'"
+                            >
+                    <field name="move_orig_id" string="Move" />
+                    <field name="orig_state" string="Origin Status" invisible="True" />
+                    <field
+                                    name="dest_picking_id"
+                                    string="Destination Picking"
+                                    widget="many2one"
+                                />
+                    <field name="move_dest_id" string="Destination Move" />
+                    <field name="dest_product_uom_qty" string="Destination Qty" />
+                    <field name="dest_product_uom" string="Destination UoM" />
+                    <field
+                                    name="dest_state"
+                                    string="Destination Status"
+                                    invisible="True"
+                                />
+                    <field name="product_uom_qty_reserved" />
+                </tree>
+            </field>
+        </group>
+    </page>
+</xpath>
+</field>
+    </record>
+</odoo>
