@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record model="ir.ui.view" id="view_res_partner_warehouse_quant_tree">
+        <field name="name">view_res_partner_warehouse_quant_tree</field>
+        <field name="model">res.partner.warehouse.quant</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="partner_id" />
+                <field name="warehouse_id" />
+                <field name="product_id" />
+                <field
+                    name="uom_id"
+                    groups="uom.group_uom"
+                    options="{'no_create': True}"
+                />
+                <field name="quantity" />
+                <field name="quantity_date" />
+                <field name="forecast_quantity" />
+                <field name="forecast_date" />
+            </tree>
+        </field>
+    </record>
+
+    <record
+        model="ir.actions.act_window"
+        id="actions_res_partner_warehouse_quant_act_window"
+    >
+        <field name="name">Partner Warehouse Products</field>
+        <field name="res_model">res.partner.warehouse.quant</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

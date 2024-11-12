@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_product_commingled_tree" model="ir.ui.view">
+        <field name="name">view_product_commingled_tree</field>
+        <field name="model">product.commingled</field>
+        <field name="inherit_id" ref="product_commingle.view_product_commingled_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="free_qty" />
+                <field name="virtual_available" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

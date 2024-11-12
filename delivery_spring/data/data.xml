@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="spring_product" model="product.product">
+        <field name="name">Spring Shipping</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries" />
+    </record>
+    <record id="spring_carrier" model="delivery.carrier">
+        <field name="name">Spring</field>
+        <field name="delivery_type">spring</field>
+        <field name="product_id" ref="spring_product" />
+    </record>
+</odoo>
