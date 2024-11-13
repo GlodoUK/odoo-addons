@@ -144,10 +144,10 @@ class StockMove(models.Model):
         self.env["stock.move.prereserved"]._unlink_orig_moves(self)
         self.env["stock.move.prereserved"]._unlink_dest_moves(self)
 
-        return super(StockMove, self)._action_cancel()
+        return super()._action_cancel()
 
     def write(self, vals):
-        res = super(StockMove, self).write(vals)
+        res = super().write(vals)
         if "product_uom_qty" in vals:
             self.env["stock.move.prereserved"].sudo()._recalculate_dest_reserved_qty(
                 self

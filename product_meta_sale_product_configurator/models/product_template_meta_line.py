@@ -76,6 +76,7 @@ class ProductTemplateMetaLine(models.Model):
         if broken:
             raise ValidationError(
                 _(
-                    "Meta product must have some valid attributes set when mode is configurator"
+                    "Meta product must have some valid attributes "
+                    "set when mode is configurator"
                 )
             )

@@ -34,7 +34,7 @@ class TestStockMove(TestMetaCommon):
         self.assertTrue(sale_id.picking_ids.has_meta_lines)
 
         for sale_line_id in sale_id.order_line.filtered(
-            lambda l: l.meta_parent_line_id
+            lambda line: line.meta_parent_line_id
         ):
             self.assertTrue(
                 sale_line_id.meta_tmpl_line_id.parent_id,

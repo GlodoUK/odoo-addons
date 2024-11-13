@@ -67,7 +67,7 @@ class SaleOrderLine(models.Model):
         for val in todo:
             existing = fields.first(
                 self.meta_child_line_ids.filtered(
-                    lambda line: line.meta_tmpl_line_id.id
+                    lambda line, val=val: line.meta_tmpl_line_id.id
                     == val.get("meta_tmpl_line_id")
                 )
             )
@@ -85,8 +85,8 @@ class SaleOrderLine(models.Model):
         name = self.get_sale_order_line_multiline_description_sale(self.product_id)
         children = "\n".join(
             seen.mapped(
-                lambda l: self.get_sale_order_line_multiline_description_sale(
-                    l.product_id
+                lambda line: self.get_sale_order_line_multiline_description_sale(
+                    line.product_id
                 )
             )
         )
@@ -135,14 +135,16 @@ class SaleOrderLine(models.Model):
     @api.depends("product_id.type")
     def _compute_qty_delivered_method(self):
         res = super()._compute_qty_delivered_method()
-        for line in self.filtered(lambda l: l.product_id.type == "meta"):
+        for line in self.filtered(
+            lambda order_line: order_line.product_id.type == "meta"
+        ):
             line.qty_delivered_method = "meta"
         return res
 
     @api.depends("meta_child_line_ids.qty_delivered")
     def _compute_qty_delivered(self):
         res = super()._compute_qty_delivered()
-        for record in self.filtered(lambda l: l.qty_delivered_method == "meta"):
+        for record in self.filtered(lambda line: line.qty_delivered_method == "meta"):
             if all(
                 c.qty_delivered >= record.product_uom_qty
                 for c in record.meta_child_line_ids
@@ -157,13 +159,13 @@ class SaleOrderLine(models.Model):
     )
     def _compute_invoice_status(self):
         res = super()._compute_invoice_status()
-        for record in self.filtered(lambda l: not l.meta_visible_to_customer):
+        for record in self.filtered(lambda line: not line.meta_visible_to_customer):
             record.invoice_status = "no"
         return res
 
     @api.depends("qty_invoiced", "qty_delivered", "product_uom_qty", "order_id.state")
     def _get_to_invoice_qty(self):
         res = super()._get_to_invoice_qty()
-        for record in self.filtered(lambda l: not l.meta_visible_to_customer):
+        for record in self.filtered(lambda line: not line.meta_visible_to_customer):
             record.qty_to_invoice = 0.0
         return res

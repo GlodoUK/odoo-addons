@@ -22,7 +22,8 @@ def migrate(env, version):
                 product_product
             SET
                 commingled_policy = product_template.commingled_policy,
-                commingled_prefer_homogenous = product_template.commingled_prefer_homogenous
+                commingled_prefer_homogenous =
+                    product_template.commingled_prefer_homogenous
             FROM product_template
             WHERE
                 product_template.id = product_product.product_tmpl_id

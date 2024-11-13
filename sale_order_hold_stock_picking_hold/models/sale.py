@@ -17,7 +17,7 @@ class SaleOrder(models.Model):
         return res
 
     def action_unhold(self, msg=None):
-        res = super(SaleOrder, self).action_unhold(msg)
+        res = super().action_unhold(msg)
 
         picking_ids = (
             self.sudo()

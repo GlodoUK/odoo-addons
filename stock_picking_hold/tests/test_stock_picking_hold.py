@@ -10,7 +10,7 @@ from odoo.tests.common import TransactionCase
 @tagged("post_install", "-at_install")
 class TestStockPickingHold(TransactionCase):
     def setUp(self):
-        super(TestStockPickingHold, self).setUp()
+        super().setUp()
 
         self.partner_id = self.env["res.partner"].create(
             {"name": "Test Customer", "customer_rank": 1}

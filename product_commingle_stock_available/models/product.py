@@ -52,7 +52,8 @@ class ProductProduct(models.Model):
                 else:
                     raise NotImplementedError(
                         _(
-                            "Field %s is not supported to calculate commingled quantities"
+                            "Field %s is not supported to "
+                            "calculate commingled quantities"
                         )
                         % (based_on)
                     )

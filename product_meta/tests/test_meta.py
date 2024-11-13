@@ -32,7 +32,9 @@ class TestMeta(TestMetaCommon):
                             0,
                             {
                                 "child_tmpl_id": self.product_meta_2.id,
-                                "child_variant_id": self.product_meta_2.product_variant_ids.id,
+                                "child_variant_id": (
+                                    self.product_meta_2.product_variant_ids.id
+                                ),
                                 "quantity": 1.0,
                             },
                         )

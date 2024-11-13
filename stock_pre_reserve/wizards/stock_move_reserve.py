@@ -44,7 +44,7 @@ class StockMoveFuture(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(StockMoveFuture, self).default_get(fields)
+        res = super().default_get(fields)
         move_id = self.env.context.get("default_move_id", [])
 
         move_id = self.env["stock.move"].browse(move_id)

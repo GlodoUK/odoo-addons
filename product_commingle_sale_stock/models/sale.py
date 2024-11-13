@@ -5,10 +5,10 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     def _compute_qty_delivered(self):
-        res = super(SaleOrderLine, self)._compute_qty_delivered()
+        res = super()._compute_qty_delivered()
         for line in self.filtered(
-            lambda l: l.product_id.commingled_ok
-            and l.qty_delivered_method == "stock_move"
+            lambda order_line: order_line.product_id.commingled_ok
+            and order_line.qty_delivered_method == "stock_move"
         ):
             moves = line.move_ids.filtered(
                 lambda m: m.picking_id
@@ -25,7 +25,7 @@ class SaleOrderLine(models.Model):
             returned = all(
                 [
                     moves.filtered(
-                        lambda m: m.location_dest_id.usage != "customer"
+                        lambda m, move=move: m.location_dest_id.usage != "customer"
                         and m.to_refund
                         and m.origin_returned_move_id.id == move.id
                     )

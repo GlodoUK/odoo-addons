@@ -15,7 +15,7 @@ class StockPicking(models.Model):
 
     def action_cancel(self):
         self.action_unhold()
-        return super(StockPicking, self).action_cancel()
+        return super().action_cancel()
 
     def action_hold(self, **kwargs):
         todo = self.filtered(lambda p: not p.hold and p.state not in ("done", "cancel"))
@@ -45,7 +45,7 @@ class StockPicking(models.Model):
         for picking in self:
             if picking.hold:
                 raise UserError(_("Cannot validate. Picking on hold!"))
-        return super(StockPicking, self).button_validate()
+        return super().button_validate()
 
     @api.depends("immediate_transfer", "state", "hold")
     def _compute_show_check_availability(self):
@@ -69,4 +69,4 @@ class StockPicking(models.Model):
 
     def _action_done(self):
         self.action_unhold()
-        return super(StockPicking, self)._action_done()
+        return super()._action_done()

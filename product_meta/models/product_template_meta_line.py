@@ -73,6 +73,6 @@ class ProductTemplateMetaLine(models.Model):
 
     @api.constrains("child_tmpl_id", "child_variant_id", "mode")
     def _ensure_related_variant(self):
-        for record in self.filtered(lambda l: l.mode == "specific"):
+        for record in self.filtered(lambda line: line.mode == "specific"):
             if record.child_tmpl_id != record.child_variant_id.product_tmpl_id:
                 raise ValidationError(_("You cannot have unrelated variant"))
