@@ -98,7 +98,9 @@ class DeliveryCarrier(models.Model):
                 existing_service.active = False
 
         for service in allowed_services:
-            existing = existing_services.filtered(lambda s: s.ref == service)
+            existing = existing_services.filtered(
+                lambda s, service=service: s.ref == service
+            )
             if existing:
                 existing.active = True
                 continue
@@ -213,10 +215,9 @@ class DeliveryCarrier(models.Model):
             if shipment.get("LabelImage"):
                 attachments_list = [
                     (
-                        "Spring_%s.%s"
-                        % (
-                            str(tracking),
-                            self.spring_label_format.replace("2", ""),
+                        "Spring_{tracking}.{label_fmt}".format(
+                            tracking=str(tracking),
+                            label_fmt=self.spring_label_format.replace("2", ""),
                         ),
                         binascii.a2b_base64(str(shipment.get("LabelImage"))),
                     )
@@ -333,12 +334,13 @@ class DeliveryCarrier(models.Model):
                         {
                             "picking_id": picking.id,
                             "date_event": event.get("DateTime"),
-                            "description": "%s: %s (%s, %s)"
-                            % (
-                                event.get("Code"),
-                                event.get("Description"),
-                                event.get("CarrierCode"),
-                                event.get("CarrierDescription"),
+                            "description": (
+                                "{code}: {desc} ({carrier_code}, {carrier_desc})"
+                            ).format(
+                                code=event.get("Code"),
+                                desc=event.get("Description"),
+                                carrier_code=event.get("CarrierCode"),
+                                carrier_desc=event.get("CarrierDescription"),
                             ),
                         }
                     )
@@ -348,11 +350,13 @@ class DeliveryCarrier(models.Model):
                 picking.delivery_state = "unknown"
             else:
                 picking.delivery_state = current_state
-                picking.tracking_state = "%s: %s (%s, %s)" % (
-                    latest_event.get("Code"),
-                    latest_event.get("Description"),
-                    latest_event.get("CarrierCode"),
-                    latest_event.get("CarrierDescription"),
+                picking.tracking_state = (
+                    "{code}: {desc} ({carrier_code}, {carrier_desc})"
+                ).format(
+                    code=latest_event.get("Code"),
+                    desc=latest_event.get("Description"),
+                    carrier_code=latest_event.get("CarrierCode"),
+                    carrier_desc=latest_event.get("CarrierDescription"),
                 )
             if current_state in ["customer_delivered", "warehouse_delivered"]:
                 picking.date_delivered = latest_event.get("DateTime")
