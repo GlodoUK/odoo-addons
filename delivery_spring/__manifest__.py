@@ -2,7 +2,7 @@
     "name": "delivery_spring",
     "summary": """Connector to integrate with Spring courier""",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
     "version": "15.0.2.1.0",
     "depends": [
