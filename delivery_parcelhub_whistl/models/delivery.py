@@ -237,13 +237,13 @@ class DeliveryCarrier(models.Model):
             ET.SubElement(shipment, "Account").text = self.whistl_account
 
             delivery_address = ET.SubElement(shipment, "DeliveryAddress")
-            ET.SubElement(
-                delivery_address, "ContactName"
-            ).text = picking.partner_id.name
+            ET.SubElement(delivery_address, "ContactName").text = (
+                picking.partner_id.name
+            )
             if picking.partner_id.parent_id:
-                ET.SubElement(
-                    delivery_address, "CompanyName"
-                ).text = picking.partner_id.parent_id.name
+                ET.SubElement(delivery_address, "CompanyName").text = (
+                    picking.partner_id.parent_id.name
+                )
             if picking.partner_id.email:
                 ET.SubElement(delivery_address, "Email").text = picking.partner_id.email
             ET.SubElement(delivery_address, "Phone").text = (
@@ -251,23 +251,23 @@ class DeliveryCarrier(models.Model):
             )
             ET.SubElement(delivery_address, "Address1").text = picking.partner_id.street
             if picking.partner_id.street2:
-                ET.SubElement(
-                    delivery_address, "Address2"
-                ).text = picking.partner_id.street2
+                ET.SubElement(delivery_address, "Address2").text = (
+                    picking.partner_id.street2
+                )
             ET.SubElement(delivery_address, "City").text = picking.partner_id.city
-            ET.SubElement(
-                delivery_address, "Area"
-            ).text = picking.partner_id.state_id.name
+            ET.SubElement(delivery_address, "Area").text = (
+                picking.partner_id.state_id.name
+            )
             ET.SubElement(delivery_address, "Postcode").text = picking.partner_id.zip
-            ET.SubElement(
-                delivery_address, "Country"
-            ).text = picking.partner_id.country_id.code
+            ET.SubElement(delivery_address, "Country").text = (
+                picking.partner_id.country_id.code
+            )
 
             ET.SubElement(shipment, "Reference1").text = picking.name
             ET.SubElement(shipment, "Reference2").text = order.name
-            ET.SubElement(
-                shipment, "ContentsDescription"
-            ).text = "Clothing/Protective Clothing"
+            ET.SubElement(shipment, "ContentsDescription").text = (
+                "Clothing/Protective Clothing"
+            )
 
             packages = ET.SubElement(shipment, "Packages")
             for package in picking.package_ids:
@@ -279,8 +279,9 @@ class DeliveryCarrier(models.Model):
                         {
                             "Description": line.product_id.name,
                             "Sku": line.product_id.default_code.replace("#", "-"),
-                            "OriginCountry": picking.location_id.company_id.country_id.code
-                            or "GB",
+                            "OriginCountry": (
+                                picking.location_id.company_id.country_id.code or "GB"
+                            ),
                             "Quantity": str(int(line.quantity)),
                             "Value": str(line.product_id.lst_price),
                             "Weight": str(line.product_id.weight),
@@ -310,9 +311,9 @@ class DeliveryCarrier(models.Model):
                 package_value = ET.SubElement(package_element, "Value")
                 package_value.text = str(package_total_value)
                 package_value.attrib["Currency"] = order.currency_id.name
-                ET.SubElement(
-                    package_element, "Contents"
-                ).text = "Clothing/Protective Clothing"
+                ET.SubElement(package_element, "Contents").text = (
+                    "Clothing/Protective Clothing"
+                )
                 package_customs_declaration = ET.SubElement(
                     package_element, "PackageCustomsDeclaration"
                 )
@@ -331,18 +332,18 @@ class DeliveryCarrier(models.Model):
                     item_declaration = ET.SubElement(
                         item_declarations, "ItemLevelDeclaration"
                     )
-                    ET.SubElement(
-                        item_declaration, "ProductType"
-                    ).text = "Clothing/Protective Clothing"
-                    ET.SubElement(
-                        item_declaration, "ProductDescription"
-                    ).text = product.get("Description")
+                    ET.SubElement(item_declaration, "ProductType").text = (
+                        "Clothing/Protective Clothing"
+                    )
+                    ET.SubElement(item_declaration, "ProductDescription").text = (
+                        product.get("Description")
+                    )
                     ET.SubElement(item_declaration, "ProductSKU").text = product.get(
                         "Sku"
                     )
-                    ET.SubElement(
-                        item_declaration, "ProductCountryOfOrigin"
-                    ).text = product.get("OriginCountry")
+                    ET.SubElement(item_declaration, "ProductCountryOfOrigin").text = (
+                        product.get("OriginCountry")
+                    )
                     ET.SubElement(item_declaration, "ProductQuantity").text = str(
                         product.get("Quantity")
                     )
@@ -352,15 +353,15 @@ class DeliveryCarrier(models.Model):
                     ET.SubElement(item_declaration, "ProductWeight").text = str(
                         product.get("Weight")
                     )
-                    ET.SubElement(
-                        item_declaration, "ProductHarmonisedCode"
-                    ).text = product.get("HsCode")
+                    ET.SubElement(item_declaration, "ProductHarmonisedCode").text = (
+                        product.get("HsCode")
+                    )
 
             # Customs Declaration
             customs_declaration = ET.SubElement(shipment, "CustomsDeclarationInfo")
-            ET.SubElement(
-                customs_declaration, "TermsOfTrade"
-            ).text = "DutiesAndTaxesUnpaid"
+            ET.SubElement(customs_declaration, "TermsOfTrade").text = (
+                "DutiesAndTaxesUnpaid"
+            )
             ET.SubElement(customs_declaration, "CategoryOfItem").text = "Sold"
 
             # Get Preferred Service
@@ -417,9 +418,9 @@ class DeliveryCarrier(models.Model):
             provider_id = service_ids.find("ns0:ServiceProviderId", ns)
             service_info_xml = ET.SubElement(shipment, "ServiceInfo")
             ET.SubElement(service_info_xml, "ServiceId").text = service_id.text
-            ET.SubElement(
-                service_info_xml, "ServiceCustomerUID"
-            ).text = service_uid.text
+            ET.SubElement(service_info_xml, "ServiceCustomerUID").text = (
+                service_uid.text
+            )
             ET.SubElement(service_info_xml, "ServiceProviderId").text = provider_id.text
 
             # Send to Whistl
@@ -476,10 +477,9 @@ class DeliveryCarrier(models.Model):
                         if label_data:
                             attachments_list.append(
                                 (
-                                    "Whistl_%s.%s"
-                                    % (
-                                        str(tracking),
-                                        self.whistl_label_format,
+                                    "Whistl_{tracking}.{label_fmt}".format(
+                                        tracking=str(tracking),
+                                        label_fmt=self.whistl_label_format,
                                     ),
                                     binascii.a2b_base64(label_data.text),
                                 )
@@ -506,7 +506,9 @@ class DeliveryCarrier(models.Model):
             picking.write(
                 {
                     "carrier_consignment_ref": picking.name,
-                    "whistl_carrier": "%s: %s" % (carrier_name, service_name),
+                    "whistl_carrier": "{carrier_name}: {service_name}".format(
+                        carrier_name=carrier_name, service_name=service_name
+                    ),
                     "delivery_state": "in_transit",
                 }
             )
@@ -641,14 +643,19 @@ class DeliveryCarrier(models.Model):
                             "date_event": datetime.datetime.strptime(
                                 event.get("EventTimestamp"), "%Y-%m-%dT%H:%M:%S"
                             ),
-                            "description": "%s%s%s: (%s>%s) %s"
-                            % (
-                                event.get("EventCategoryID"),
-                                event.get("EventSubCategoryID"),
-                                event.get("EventCategoryDescription") or "",
-                                ">" if event.get("EventCategoryDescription") else "",
-                                event.get("EventSubCategoryDescription"),
-                                event.get("EventDescription"),
+                            "description": (
+                                "{event_categ_id}{event_sub_categ_id}{event_cat_dsc}: "
+                                "({gt}>{event_sub_cat_dsc}) {event_dsc}"
+                            ).format(
+                                event_categ_id=event.get("EventCategoryID"),
+                                event_sub_categ_id=event.get("EventSubCategoryID"),
+                                event_cat_dsc=event.get("EventCategoryDescription")
+                                or "",
+                                gt=">" if event.get("EventCategoryDescription") else "",
+                                event_sub_cat_dsc=event.get(
+                                    "EventSubCategoryDescription"
+                                ),
+                                event_dsc=event.get("EventDescription"),
                             ),
                         }
                     )
@@ -658,12 +665,15 @@ class DeliveryCarrier(models.Model):
             )
             if current_state:
                 picking.delivery_state = current_state
-                picking.tracking_state = "%s>%s: (%s>%s) %s" % (
-                    latest_event.get("EventCategoryID"),
-                    latest_event.get("EventSubCategoryID"),
-                    latest_event.get("EventCategoryDescription"),
-                    latest_event.get("EventSubCategoryDescription"),
-                    latest_event.get("EventDescription"),
+                picking.tracking_state = (
+                    "{event_cat_id}>{event_sub_cat_id}: "
+                    "({event_cat_dsc}>{event_sub_cat_dsc}) {event_dsc}"
+                ).format(
+                    event_cat_id=latest_event.get("EventCategoryID"),
+                    event_sub_cat_id=latest_event.get("EventSubCategoryID"),
+                    event_cat_dsc=latest_event.get("EventCategoryDescription"),
+                    event_sub_cat_dsc=latest_event.get("EventSubCategoryDescription"),
+                    event_dsc=latest_event.get("EventDescription"),
                 )
                 if current_state in ["customer_delivered", "warehouse_delivered"]:
                     picking.date_delivered = picking.date_delivered or latest_event.get(
