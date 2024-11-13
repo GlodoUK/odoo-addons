@@ -5,7 +5,7 @@ from odoo.tests import TransactionCase, tagged
 class TestPurchase(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestPurchase, cls).setUpClass()
+        super().setUpClass()
         cls.partner_a = cls.env["res.partner"].create({"name": "Supplier Partner A"})
         cls.product_a = cls.env["product.product"].create(
             {

@@ -15,8 +15,8 @@ class ProductProduct(models.Model):
             # https://github.com/odoo/odoo/blob/15.0/addons/mrp/models/product.py#L304
             # Copied so that we do not need to depend on `mrp`.
             #
-            # The intersection of the values of the product and those of the line satisfy:
-            # * the number of items equals the number of attributes (since a product cannot
+            # The intersection of the values of the product and those of the line satisfy: # noqa: E501
+            # * the number of items equals the number of attributes (since a product cannot # noqa: E501
             #   have multiple values for the same attribute),
             # * the attributes are a subset of the attributes of the line.
             matches_all = len(
