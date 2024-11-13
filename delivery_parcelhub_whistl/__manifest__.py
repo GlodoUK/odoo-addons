@@ -2,7 +2,7 @@
     "name": "delivery_parcelhub_whistl",
     "summary": """Connector to integrate with Parcelhub/Whistl courier""",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
     "version": "15.0.1.0.0",
     "depends": [
