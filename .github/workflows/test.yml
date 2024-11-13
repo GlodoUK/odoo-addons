@@ -3,18 +3,30 @@ name: tests
 on:
   pull_request:
     branches:
+<<<<<<< HEAD
       - "15.0*"
   push:
     branches:
       - "15.0"
       - "15.0-ocabot-*"
+=======
+      - "17.0*"
+  push:
+    branches:
+      - "17.0"
+      - "17.0-ocabot-*"
+>>>>>>> odoo-addons/17.0
 
 jobs:
   unreleased-deps:
     runs-on: ubuntu-latest
     name: Detect unreleased dependencies
     steps:
+<<<<<<< HEAD
       - uses: actions/checkout@v2
+=======
+      - uses: actions/checkout@v3
+>>>>>>> odoo-addons/17.0
       - run: |
           for reqfile in requirements.txt test-requirements.txt ; do
               if [ -f ${reqfile} ] ; then
@@ -35,14 +47,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - container: ghcr.io/oca/oca-ci/py3.8-odoo15.0:latest
-            makepot: "false"
+          - container: ghcr.io/oca/oca-ci/py3.10-odoo17.0:latest
             name: test with Odoo
-          - container: ghcr.io/oca/oca-ci/py3.8-ocb15.0:latest
-            name: test with OCB
+            makepot: "false"
     services:
       postgres:
-        image: postgres:9.6
+        image: postgres:12.0
         env:
           POSTGRES_USER: odoo
           POSTGRES_PASSWORD: odoo
@@ -50,13 +60,14 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           persist-credentials: false
       - name: Install addons and dependencies
         run: oca_install_addons
       - name: Check licenses
         run: manifestoo -d . check-licenses
+        continue-on-error: true
       - name: Check development status
         run: manifestoo -d . check-dev-status --default-dev-status=Beta
         continue-on-error: true
