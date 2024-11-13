@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 /.venv
 /.pytest_cache
+<<<<<<< HEAD
+=======
+/.ruff_cache
+>>>>>>> odoo-addons/15.0
 
 # C extensions
 *.so
@@ -24,6 +28,22 @@ var/
 *.egg
 *.eggs
 
+<<<<<<< HEAD
+=======
+# Windows installers
+*.msi
+
+# Debian packages
+*.deb
+
+# Redhat packages
+*.rpm
+
+# MacOS packages
+*.dmg
+*.pkg
+
+>>>>>>> odoo-addons/15.0
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
