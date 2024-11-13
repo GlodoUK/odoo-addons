@@ -2,7 +2,7 @@
     "name": "product_meta_sale",
     "summary": "Glue module between product_meta and sale",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
     "version": "15.0.1.0.0",
     "depends": ["sale", "product_meta"],

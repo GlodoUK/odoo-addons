@@ -4,7 +4,7 @@
     "summary": "Summary",
     "category": "Inventory/Delivery",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["delivery"],
     "license": "AGPL-3",
 }

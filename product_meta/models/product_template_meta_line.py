@@ -50,7 +50,7 @@ class ProductTemplateMetaLine(models.Model):
         default to the "first".
         """
         self.ensure_one()
-        method = getattr(self, "_get_child_product_variant_{}".format(self.mode))
+        method = getattr(self, f"_get_child_product_variant_{self.mode}")
         return method(**kwargs)
 
     def _get_child_product_variant_specific(self, **kwargs):

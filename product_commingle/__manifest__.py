@@ -2,7 +2,7 @@
     "name": "product_commingle",
     "summary": "Product Commingling",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
     "version": "15.0.1.1.0",
     "depends": ["product"],

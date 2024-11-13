@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
     <record id="view_stock_move_future_form" model="ir.ui.view">
         <field name="name">view_stock_move_future_form</field>
@@ -8,31 +8,44 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="move_id" readonly="1"/>
-                        <label for="move_required"/>
+                        <field name="move_id" readonly="1" />
+                        <label for="move_required" />
                         <div>
-                            <field name="move_required" class="oe_inline"/>
-                            <field name="move_uom" class="oe_inline ml-1" groups="uom.group_uom"/>
+                            <field name="move_required" class="oe_inline" />
+                            <field
+                                name="move_uom"
+                                class="oe_inline ml-1"
+                                groups="uom.group_uom"
+                            />
                         </div>
                     </group>
                     <notebook>
                         <page string="Candidates to reserve against">
                             <field name="candidate_move_ids">
                                 <tree editable="top" create="false" edit="true">
-                                    <field name="selected" widget="boolean_toggle"/>
-                                    <field name="src_move_id" readonly="1" force_save="1"/>
-                                    <field name="max_qty" readonly="1" force_save="1"/>
-                                    <field name="src_move_uom" readonly="1"/>
-                                    <field name="date"/>
-                                    <field name="picking_id"/>
+                                    <field name="selected" widget="boolean_toggle" />
+                                    <field
+                                        name="src_move_id"
+                                        readonly="1"
+                                        force_save="1"
+                                    />
+                                    <field name="max_qty" readonly="1" force_save="1" />
+                                    <field name="src_move_uom" readonly="1" />
+                                    <field name="date" />
+                                    <field name="picking_id" />
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
                 <footer>
-                    <button name="action_link" string="Link" class="btn-primary" type="object"/>
-                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    <button
+                        name="action_link"
+                        string="Link"
+                        class="btn-primary"
+                        type="object"
+                    />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
                 </footer>
             </form>
         </field>
@@ -42,6 +55,8 @@
         <field name="res_model">stock.move.future</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="context">{'default_move_id': context.get('default_move_id')}</field>
+        <field
+            name="context"
+        >{'default_move_id': context.get('default_move_id')}</field>
     </record>
 </odoo>

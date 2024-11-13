@@ -6,7 +6,6 @@ def migrate(env, version):
     if not openupgrade.column_exists(
         env.cr, "product_product", "commingled_policy"
     ) and openupgrade.column_exists(env.cr, "product_template", "commingled_policy"):
-
         openupgrade.logged_query(
             env.cr,
             """

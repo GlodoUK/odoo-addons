@@ -4,7 +4,7 @@
        Add a note for  reason for inventory adjustment
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
     "version": "15.0.0.0.0",
     "depends": ["stock"],

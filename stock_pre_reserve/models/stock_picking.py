@@ -26,7 +26,6 @@ class StockPicking(models.Model):
 
     def _compute_move_ids_with_dest(self):
         for record in self:
-
             record.move_ids_with_dest = self.env["stock.move.prereserved"].search(
                 [("orig_picking_id", "=", record.id)]
             )

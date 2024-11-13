@@ -2,7 +2,7 @@
     "name": "stock_picking_validation_warning",
     "summary": "Partner warning on stock picking validation",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
     "version": "15.0.1.0.0",
     "depends": ["stock"],
