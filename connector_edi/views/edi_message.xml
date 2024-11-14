@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_edi_message_form" model="ir.ui.view">
+        <field name="name">view_edi_message_form</field>
+        <field name="model">edi.message</field>
+        <field name="arch" type="xml">
+            <form string="EDI message">
+                <header>
+                    <button
+                        name="action_migrate_legacy_body_to_attachment"
+                        type="object"
+                        string="Migrate Legacy Body to Attachment"
+                        invisible="not use_legacy_body"
+                    />
+                    <button
+                        name="action_read"
+                        string="Read Message"
+                        type="object"
+                        invisible="direction != 'in'"
+                    />
+                    <button
+                        name="action_send"
+                        string="Send Message"
+                        type="object"
+                        invisible="direction != 'out'"
+                    />
+                    <field name="state" widget="statusbar" clickable="True" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" />
+
+                    <group>
+                        <group>
+                            <field name="use_legacy_body" invisible="1" />
+                            <field name="backend_id" />
+                            <field name="partner_id" />
+
+                            <field name="external_id" />
+                            <field name="direction" />
+                            <field name="type" />
+                        </group>
+                        <group>
+                            <field name="envelope_id" />
+
+                            <field
+                                name="message_route_id"
+                                domain="[('backend_id', '=', backend_id)]"
+                            />
+                            <field
+                                name="envelope_route_id"
+                                domain="[('backend_id', '=', backend_id)]"
+                            />
+                            <field name="test" />
+                        </group>
+                        <group colspan="2" invisible="state != 'error'">
+                            <field name="exc_name" />
+                            <field name="exc_info" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Content">
+                            <group invisible="use_legacy_body">
+                                <field
+                                    name="content_filename"
+                                    groups="base.group_no_one"
+                                />
+                                <field name="content" filename="content_filename" />
+                            </group>
+                            <field name="legacy_body" invisible="not use_legacy_body" />
+                        </page>
+                        <page string="Related Documents" name="related_docs">
+                            <group>
+                                <field name="res_id" />
+                                <field name="model" />
+                                <field name="related" widget="reference" />
+                            </group>
+                            <group>
+                                <field name="acknowledged" />
+                                <field name="acknowledgement_message_id" />
+                                <field name="acknowledgement_for_message_ids">
+                                    <tree>
+                                        <field name="display_name" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Other Info" name="other">
+                            <group>
+                                <field name="metadata_string" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_edi_message_tree" model="ir.ui.view">
+        <field name="name">view_edi_message_tree</field>
+        <field name="model">edi.message</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="create_date desc"
+                decoration-danger="state == 'error'"
+                decoration-success="state == 'done'"
+            >
+                <field name="create_date" />
+                <field name="backend_id" />
+                <field name="partner_id" />
+                <field name="external_id" />
+                <field name="direction" />
+                <field name="type" />
+                <field name="envelope_id" widget="many2one" />
+                <field name="message_route_id" widget="many2one" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_edi_message_search" model="ir.ui.view">
+        <field name="name">view_edi_message_search</field>
+        <field name="model">edi.message</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" />
+                <field name="message_route_id" />
+                <field name="envelope_route_id" />
+                <field name="external_id" />
+                <filter
+                    name="pending"
+                    string="Pending"
+                    domain="[('state', '=', 'pending')]"
+                />
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]" />
+                <filter
+                    name="error"
+                    string="Error"
+                    domain="[('state', '=', 'error')]"
+                />
+                <separator />
+                <filter
+                    name="filter_in"
+                    string="In"
+                    domain="[('direction', '=', 'in')]"
+                />
+                <filter
+                    name="filter_in"
+                    string="Out"
+                    domain="[('direction', '=', 'out')]"
+                />
+            </search>
+        </field>
+    </record>
+    <record id="action_edi_message" model="ir.actions.act_window">
+        <field name="name">EDI messages</field>
+        <field name="res_model">edi.message</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_edi_message_tree" />
+    </record>
+    <record id="action_edi_message_requeue" model="ir.actions.server">
+        <field name="name">Requeue</field>
+        <field name="model_id" ref="model_edi_message" />
+        <field name="binding_model_id" ref="connector_edi.model_edi_message" />
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_pending()
+        </field>
+    </record>
+</odoo>
