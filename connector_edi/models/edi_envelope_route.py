@@ -288,7 +288,7 @@ class EdiEnvelopeRoute(models.Model):
             "priority",
             "channel",
         ]:
-            value = getattr(self, "%s_%s" % (prefix, i))
+            value = getattr(self, f"{prefix}_{i}")
             if value:
                 opts.update({i: value})
 
@@ -317,7 +317,7 @@ class EdiEnvelopeRoute(models.Model):
         ], "Must be an in/both route to use _run_in"
 
         with self.backend_id.work_on("edi.envelope") as work:
-            usage = "import.{action}".format(action=self.protocol)
+            usage = f"import.{self.protocol}"
             component = work.component(usage=usage)
             component.run(self, **kwargs)
 
@@ -330,7 +330,7 @@ class EdiEnvelopeRoute(models.Model):
         ], "Must be an out/both route to use _run_out"
 
         with self.backend_id.work_on("edi.envelope") as work:
-            usage = "export.{action}".format(action=self.protocol)
+            usage = f"export.{self.protocol}"
             component = work.component(usage=usage)
             component.run(self, **kwargs)
 
@@ -341,15 +341,13 @@ class EdiEnvelopeRoute(models.Model):
         if cron_ids:
             cron_ids.unlink()
 
-        return super(EdiEnvelopeRoute, self).unlink()
+        return super().unlink()
 
     def _cron_in_vals(self):
         self.ensure_one()
 
         return {
-            "name": "EDI: {} - Envelope Route In {}".format(
-                self.backend_id.name, self.name
-            ),
+            "name": f"EDI: {self.backend_id.name} - Envelope Route In {self.name}",
             "numbercall": -1,
             "interval_number": self.protocol_in_cron_interval_number,
             "interval_type": self.protocol_in_cron_interval_type,
@@ -368,9 +366,7 @@ record.with_delay(**record._with_delay_options())._run_in()
         self.ensure_one()
 
         return {
-            "name": "EDI: {} - Envelope Route Out {}".format(
-                self.backend_id.name, self.name
-            ),
+            "name": f"EDI: {self.backend_id.name} - Envelope Route Out {self.name}",
             "numbercall": -1,
             "interval_number": self.protocol_out_cron_interval_number,
             "interval_type": self.protocol_out_cron_interval_type,
@@ -425,7 +421,7 @@ record.with_delay(**record._with_delay_options())._run_out()
             record._cron_out_sync()
 
     def write(self, vals):
-        res = super(EdiEnvelopeRoute, self).write(vals)
+        res = super().write(vals)
 
         if not self.env.context.get(
             "edi_connector_envelope_route_skip_cron_sync", False
@@ -461,7 +457,6 @@ record.with_delay(**record._with_delay_options())._run_out()
     @api.constrains("protocol", "code_in", "code_out")
     def _check_protocol_python_code(self):
         for r in self.sudo().filtered(lambda r: r.protocol == "code"):
-
             if r.direction in ("in", "both"):
                 msg = test_python_expr(expr=(r.code_in or "").strip(), mode="exec")
                 if msg:

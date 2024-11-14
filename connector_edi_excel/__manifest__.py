@@ -5,11 +5,11 @@
     Add Pandas cokpatibility to connector_edi fpr Excel files ONLY
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": [
         "connector_edi",
     ],
     "data": [],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"python": ["pandas"]},
 }

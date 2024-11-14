@@ -13,7 +13,7 @@ class EdiEnvelopeRoute(models.Model):
     )
 
     def _alias_get_creation_values(self):
-        vals = super(EdiEnvelopeRoute, self)._alias_get_creation_values()
+        vals = super()._alias_get_creation_values()
         vals["alias_model_id"] = self.env["ir.model"]._get(self._name).id
         if self.id:
             vals["alias_defaults"] = {"edi_route_id": self.id}
@@ -49,7 +49,8 @@ class EdiEnvelopeRoute(models.Model):
                 "Can only handle message_new for envelope routes of type 'mail'"
             )
 
-        # switch to the SUPERUSER_ID to ensure that sales are not automatically assigned to the emailing partner
+        # switch to the SUPERUSER_ID to ensure that sales are
+        # not automatically assigned to the emailing partner
         envelope_id = (
             self.env["edi.envelope"]
             .with_user(SUPERUSER_ID)
@@ -85,9 +86,10 @@ class EdiEnvelopeRoute(models.Model):
                     )
                 )
 
-    # flake8: noqa: E101, W191, B950
+    # noqa: E101, W191, B950
     def action_mail_demo(self):
-        mime = """Received: from ROCKINGHAM.E4W.local (192.168.40.5) by ROCKINGHAM.E4W.local
+        mime = """
+Received: from ROCKINGHAM.E4W.local (192.168.40.5) by ROCKINGHAM.E4W.local
  (192.168.40.5) with Microsoft SMTP Server (TLS) id 15.0.847.32 via Mailbox
  Transport; Mon, 7 Aug 2017 11:02:36 +0100
 Received: from ROCKINGHAM.E4W.local (192.168.40.5) by ROCKINGHAM.E4W.local

@@ -5,9 +5,9 @@
     EDI Mail Protocol Support
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["connector_edi", "mail"],
     "data": ["views/edi_route.xml"],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": []},
 }

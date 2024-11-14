@@ -60,7 +60,7 @@ class StockMove(models.Model):
             fire_picking_event
         )
 
-        result = super(StockMove, self)._action_assign()
+        result = super()._action_assign()
 
         self._on_event_changes_after_dict(changes)
 
@@ -130,6 +130,6 @@ class StockMove(models.Model):
 
     def _do_unreserve(self):
         changes, _pickings, _states = self._on_event_changes_before_dict(False)
-        result = super(StockMove, self)._do_unreserve()
+        result = super()._do_unreserve()
         self._on_event_changes_after_dict(changes)
         return result

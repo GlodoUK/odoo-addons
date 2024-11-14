@@ -5,7 +5,7 @@
     EDI Product module
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": [
         "connector_edi",
     ],
@@ -16,6 +16,6 @@
         "views/edi_message.xml",
         "data/events.xml",
     ],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": []},
 }

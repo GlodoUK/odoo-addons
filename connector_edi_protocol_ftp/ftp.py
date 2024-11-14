@@ -8,7 +8,7 @@ import ftpparser
 import pycurl
 
 
-class Client(object):
+class Client:
     """
     An alternative to ftplib that uses pycurl, in order to avoid
     issues such as:
@@ -57,7 +57,7 @@ class Client(object):
             self.client.setopt(pycurl.SSL_VERIFYHOST, False)
         self.client.setopt(pycurl.CONNECTTIMEOUT, self.connect_timeout)
         if self.username and self.password:
-            self.client.setopt(pycurl.USERPWD, "%s:%s" % (self.username, self.password))
+            self.client.setopt(pycurl.USERPWD, f"{self.username}:{self.password}")
 
     def _perform(self):
         """Perform operation with retries."""
@@ -106,7 +106,7 @@ class Client(object):
         Please ideally use mlsd instead.
         """
 
-        warnings.warn(
+        warnings.warn(  # noqa: B028
             "List is not recommended, please us mlsd instead, unless"
             " absolutely necessary. The LIST command is not consistent across"
             " FTP servers, nor it standardised. However MLSD is relatively"

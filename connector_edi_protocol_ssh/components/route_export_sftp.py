@@ -32,7 +32,6 @@ class EdiRouteSftpExporterComponent(Component, MixinSafeFormatPath):
             username=route_id.ssh_username,
             password=route_id.ssh_password,
         ) as client:
-
             sftp = client.open_sftp()
 
             for envelope_id in envelope_ids:

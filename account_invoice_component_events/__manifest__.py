@@ -5,9 +5,9 @@
 Account Invoice Component Events
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["account", "connector", "component_event"],
     "data": [],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": ["mock"]},
 }

@@ -44,13 +44,13 @@ class EdiRouteFileExporterComponent(Component, MixinSafeFormatPath, MixinJobFrom
     def _run(self, route_id, envelope_id, file):
         args = {"mode": "w", "encoding": route_id.encoding}
 
-        with io.open(file, **args) as f:
+        with open(file, **args) as f:
             f.write(envelope_id.body)
 
         if route_id.file_path_out_use_done_mode == "suffix":
             # TODO: refactor this
-            done_file = "{}.DONE".format(file)
-            io.open(done_file, "wb").close()
+            done_file = f"{file}.DONE"
+            open(done_file, "wb").close()
 
         job = self._job_from_ctx()
         if job:

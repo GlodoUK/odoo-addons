@@ -34,7 +34,6 @@ class EdiRouteFtpExporterComponent(Component, MixinSafeFormatPath):
             route_id.ftp_password,
             use_ssl=route_id._get_ftp_use_ssl(),
         ) as conn:
-
             for envelope_id in envelope_ids:
                 try:
                     with self.env.cr.savepoint():

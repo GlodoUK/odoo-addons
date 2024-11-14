@@ -5,7 +5,7 @@
     EDI Sales module
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": [
         "connector_edi",
         "sale_stock",
@@ -21,6 +21,6 @@
         "views/edi_backend.xml",
         "views/edi_message.xml",
     ],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": []},
 }

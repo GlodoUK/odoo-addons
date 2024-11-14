@@ -23,7 +23,7 @@ class EdiBackendRouteEvent(models.Model):
     @api.depends("name", "res_model_id")
     def _compute_display_name(self):
         for record in self:
-            record.display_name = "{}:{}".format(record.res_model, record.name)
+            record.display_name = f"{record.res_model}:{record.name}"
 
     def name_get(self):
         result = []

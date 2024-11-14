@@ -14,7 +14,6 @@ class EdiRouteFtpImporterComponent(Component):
     _apply_on = "edi.envelope"
 
     def run(self, route_id, **kwargs):
-
         with ftp.Client(
             route_id._get_ftp_url(),
             route_id.ftp_username,

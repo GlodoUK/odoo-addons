@@ -157,7 +157,7 @@ class EdiBackend(models.Model):
         }
 
     def write(self, vals):
-        res = super(EdiBackend, self).write(vals)
+        res = super().write(vals)
 
         trigger_fields = ["active", "name"]
         if any(i in trigger_fields for i in vals.keys()):

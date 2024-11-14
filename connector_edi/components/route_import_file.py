@@ -1,5 +1,4 @@
 import glob
-import io
 import logging
 import os
 
@@ -29,7 +28,7 @@ class EdiRouteFileImporterComponent(
         else:
             args = {"mode": "r", "encoding": route_id.encoding}
 
-        with io.open(file, **args) as f:
+        with open(file, **args) as f:
             vals = {
                 "backend_id": self.backend_record.id,
                 "external_id": os.path.basename(file),
@@ -96,7 +95,7 @@ class EdiRouteFileImporterComponent(
             # TODO: refactor this
             current_done_file = None
             if done_file_mode == "suffix":
-                current_done_file = "{}.DONE".format(current_file)
+                current_done_file = f"{current_file}.DONE"
 
             if current_done_file and not os.path.exists(current_done_file):
                 # waiting on current done file

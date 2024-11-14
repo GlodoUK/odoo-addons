@@ -172,7 +172,7 @@ class EdiMessage(models.Model):
     @api.depends("model", "res_id")
     def _compute_reference(self):
         for res in self:
-            res.related = "{},{}".format(res.model, res.res_id)
+            res.related = f"{res.model},{res.res_id}"
 
     done_date = fields.Datetime(index=True)
 
@@ -348,9 +348,7 @@ class EdiMessage(models.Model):
                             usage=record.message_route_id._component_usage()
                         )
 
-                        method_name = "run_{direction}".format(
-                            direction=LOOKUP_DICT.get(record.direction)
-                        )
+                        method_name = f"run_{LOOKUP_DICT.get(record.direction)}"
                         method = getattr(exporter, method_name, None)
                         if not method:
                             raise NotImplementedError("Unknown message action")

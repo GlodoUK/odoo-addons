@@ -5,9 +5,9 @@
 Partner utility functions to search or create from values
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["base"],
     "data": [],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": []},
 }

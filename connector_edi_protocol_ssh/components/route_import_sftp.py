@@ -13,14 +13,12 @@ class EdiRouteSftpImporterComponent(Component):
     _apply_on = "edi.envelope"
 
     def run(self, route_id, **kwargs):
-
         with SSHClient(
             route_id.ssh_host,
             route_id.ssh_port,
             username=route_id.ssh_username,
             password=route_id.ssh_password,
         ) as client:
-
             sftp = client.open_sftp()
 
             dirname = os.path.dirname(route_id.ssh_path_in)

@@ -17,6 +17,6 @@ class EnvelopeCodecCodeComponent(Component):
                 self._safe_eval(
                     route_id.codec_code_enclose,
                     record=message_ids.filtered(
-                        lambda m: m.envelope_route_id == route_id
+                        lambda m, route_id=route_id: m.envelope_route_id == route_id
                     ),
                 )

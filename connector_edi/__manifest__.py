@@ -3,7 +3,7 @@
     "name": "connector_edi",
     "summary": "Base EDI module",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": [
         "base_setup",
         "base_sparse_field",
@@ -26,6 +26,6 @@
         "data/ir_cron.xml",
         "wizards/edi_upload_file.xml",
     ],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": ["requests", "lxml"]},
 }

@@ -132,7 +132,7 @@ class EdiEnvelope(models.Model):
         # Extract messages from an envelope
         self.ensure_one()
         with self.backend_id.work_on(self._name) as work:
-            usage = "codec.{action}".format(action=self.route_id.codec)
+            usage = f"codec.{self.route_id.codec}"
             exporter = work.component(usage=usage)
             exporter.open(self)
         self.action_done()
@@ -141,7 +141,9 @@ class EdiEnvelope(models.Model):
         route_ids = self.mapped("route_id")
         for route_id in route_ids:
             route_id.send_envelopes(
-                envelope_ids=self.filtered(lambda e: e.route_id == route_id)
+                envelope_ids=self.filtered(
+                    lambda e, route_id=route_id: e.route_id == route_id
+                )
             )
 
     @api.model
@@ -163,7 +165,7 @@ class EdiEnvelope(models.Model):
             )
 
         with route_id.backend_id.work_on(self._name) as work:
-            usage = "codec.{action}".format(action=route_id.codec)
+            usage = f"codec.{route_id.codec}"
             exporter = work.component(usage=usage)
             exporter.enclose(message_ids)
 

@@ -23,7 +23,7 @@ class CodecExcelComponent(Component):
                 xls = None
                 if (
                     attachment.mimetype
-                    == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  # noqa: E501
                 ):
                     xls = pd.ExcelFile(file_data, engine="openpyxl")
                 elif attachment.mimetype == "application/vnd.ms-excel":

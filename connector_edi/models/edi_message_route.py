@@ -111,7 +111,7 @@ class EdiMessageRoute(models.Model):
 
     def _component_usage(self):
         self.ensure_one()
-        return "action.{action}".format(action=self.action)
+        return f"action.{self.action}"
 
     def send_messages(self, **kwargs):
         # generate and send messages
@@ -168,10 +168,10 @@ class EdiMessageRoute(models.Model):
         if cron_ids:
             cron_ids.unlink()
 
-        return super(EdiMessageRoute, self).unlink()
+        return super().unlink()
 
     def write(self, vals):
-        res = super(EdiMessageRoute, self).write(vals)
+        res = super().write(vals)
 
         if not self.env.context.get(
             "connector_edi_message_route_skip_cron_sync", False
@@ -193,9 +193,7 @@ class EdiMessageRoute(models.Model):
         self.ensure_one()
 
         return {
-            "name": "EDI: {} - Message Route {}".format(
-                self.backend_id.name, self.name
-            ),
+            "name": f"EDI: {self.backend_id.name} - Message Route {self.name}",
             "numbercall": -1,
             "interval_number": self.cron_interval_number,
             "interval_type": self.cron_interval_type,

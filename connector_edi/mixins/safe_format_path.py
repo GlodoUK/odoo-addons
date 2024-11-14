@@ -22,9 +22,7 @@ class MixinSafeFormatPath:
 
         return os.path.join(
             os.path.dirname(formatted_path),
-            "{file}{ext}".format(
-                file=self._slugify(formatted_file[0]), ext=formatted_file[1]
-            ),
+            f"{self._slugify(formatted_file[0])}{formatted_file[1]}",
         )
 
     def _slugify(self, s, lowercase=False):

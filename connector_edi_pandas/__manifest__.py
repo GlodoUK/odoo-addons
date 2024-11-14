@@ -3,11 +3,11 @@
     "name": "connector_edi_pandas",
     "summary": "Add Pandas to the connector_edi safe_eval context",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": [
         "connector_edi",
     ],
     "data": [],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"python": ["pandas"]},
 }

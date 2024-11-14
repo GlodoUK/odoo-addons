@@ -5,8 +5,8 @@
 Stock Picking Events EDI integration
     """,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/edi",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["stock", "connector_edi", "stock_picking_component_events"],
     "data": ["data/edi.xml"],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
 }

@@ -153,7 +153,7 @@ class AbstractEdiComponent(AbstractComponent):
             # Automatically inject any secrets as SECRET_KEY_NAME
             eval_context.update(
                 {
-                    ("SECRET_{}".format(secret_id.key)): secret_id.value
+                    (f"SECRET_{secret_id.key}"): secret_id.value
                     for secret_id in self.backend_record.secret_ids
                 }
             )
@@ -186,7 +186,7 @@ class AbstractEdiComponent(AbstractComponent):
             if isinstance(e.__context__, (EdiException, RetryableJobError)):
                 # we want to erase the ValueError in this particular
                 # circumstance, so not using raise from syntax is OK
-                raise e.__context__  # noqa: disable=B904
+                raise e.__context__  # noqa: B904
             raise e
 
 

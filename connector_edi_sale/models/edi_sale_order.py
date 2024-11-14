@@ -61,7 +61,7 @@ class EdiSaleOrder(models.Model):
                 and partner.property_product_pricelist.id,
             )
 
-        return super(EdiSaleOrder, self).create(vals)
+        return super().create(vals)
 
     def action_confirm(self):
         self.mapped("odoo_id").action_confirm()
@@ -143,4 +143,4 @@ class EdiSaleOrderLine(models.Model):
                 )
             )
 
-        return super(EdiSaleOrderLine, self).create(vals_list)
+        return super().create(vals_list)

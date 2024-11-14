@@ -14,9 +14,7 @@ class MailThread(models.AbstractModel):
                 r[2]["message"] = message
                 is_envelope_route = True
 
-        res = super(MailThread, self)._message_route_process(
-            message, message_dict, routes
-        )
+        res = super()._message_route_process(message, message_dict, routes)
 
         if res and is_envelope_route:
             envelope_ids = self.env["edi.envelope"].browse(res)
