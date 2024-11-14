@@ -78,7 +78,8 @@ class ProductTemplate(models.Model):
         return [
             _("Configurable Products will generate their product variants on demand."),
             _(
-                "Configurable Products allow for custom inputs to be propagated through the system."
+                "Configurable Products allow for custom "
+                "inputs to be propagated through the system."
             ),
         ]
 
@@ -310,9 +311,7 @@ class ProductTemplate(models.Model):
         )
 
         if not is_possible and not self.env.context.get("skip_cpq_validate_ptav_ids"):
-            is_possible_ptals = (
-                self.valid_product_template_attribute_line_ids._without_no_variant_attributes()
-            )
+            is_possible_ptals = self.valid_product_template_attribute_line_ids._without_no_variant_attributes()  # noqa: E501
 
             extra_info = _("Likely exclusion is configured. Please check.")
 
@@ -339,7 +338,8 @@ class ProductTemplate(models.Model):
                 "%(tmpl_name)s configuration is not possible by configuration.\n"
                 "Using configuration: %(configuration)s\n"
                 "%(extra_info)s\n"
-                "If this is not on your order or configuration, please check the configuration of any child items."
+                "If this is not on your order or configuration, "
+                "please check the configuration of any child items."
             ) % {
                 "tmpl_name": self.display_name,
                 "configuration": ", ".join(combination_ptav_ids.mapped("display_name")),
@@ -510,11 +510,15 @@ class ProductTemplate(models.Model):
             "format_date": lambda date, date_format=False, lang_code=False: format_date(
                 self.env, date, date_format, lang_code
             ),
-            "format_datetime": lambda dt, tz=False, dt_format=False, lang_code=False: format_datetime(
-                self.env, dt, tz, dt_format, lang_code
+            "format_datetime": (
+                lambda dt, tz=False, dt_format=False, lang_code=False: format_datetime(
+                    self.env, dt, tz, dt_format, lang_code
+                )
             ),
-            "format_time": lambda time, tz=False, time_format=False, lang_code=False: format_time(
-                self.env, time, tz, time_format, lang_code
+            "format_time": (
+                lambda time, tz=False, time_format=False, lang_code=False: format_time(
+                    self.env, time, tz, time_format, lang_code
+                )
             ),
             "format_amount": lambda amount, currency, lang_code=False: format_amount(
                 self.env, amount, currency, lang_code
