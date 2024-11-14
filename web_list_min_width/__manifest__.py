@@ -2,7 +2,7 @@
     "name": "web_list_min_width",
     "summary": "Support min-width on a list column",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/web",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "license": "LGPL-3",
     "category": "Extra Tools",
     "version": "15.0.1.0.0",

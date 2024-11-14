@@ -4,7 +4,7 @@
     the page content if a user has left a model
     open, and it been altered in the meantime.""",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/web",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
     "version": "15.0.1.0.0",
     "depends": [
