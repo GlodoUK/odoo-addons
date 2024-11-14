@@ -2,7 +2,7 @@
     "name": "cpq_banding",
     "summary": "Banding/Fabric Custom Values",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/cpq",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
     "version": "17.0.1.0.0",
     "license": "LGPL-3",

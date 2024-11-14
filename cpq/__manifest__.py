@@ -2,7 +2,7 @@
     "name": "cpq",
     "summary": "Dynamic Configure-Price-Quote-style generation of products",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/cpq",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales/Sales",
     "version": "17.0.1.0.0",
     "depends": [

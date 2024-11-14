@@ -2,7 +2,7 @@
     "name": "cpq_mrp",
     "summary": "Glue module between CPQ and MRP",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/cpq",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Manufacturing/Manufacturing",
     "version": "17.0.1.1.0",
     "depends": ["cpq", "mrp"],

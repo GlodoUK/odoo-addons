@@ -2,7 +2,7 @@
     "name": "cpq_sale",
     "summary": "Glue module between CPQ and Sale",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/cpq",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
     "version": "17.0.1.0.0",
     "depends": ["cpq", "sale", "sale_product_configurator"],
