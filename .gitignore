@@ -3,10 +3,7 @@ __pycache__/
 *.py[cod]
 /.venv
 /.pytest_cache
-<<<<<<< HEAD
-=======
 /.ruff_cache
->>>>>>> odoo-addons/14.0
 
 # C extensions
 *.so
@@ -19,10 +16,6 @@ build/
 develop-eggs/
 dist/
 eggs/
-<<<<<<< HEAD
-lib/
-=======
->>>>>>> odoo-addons/14.0
 lib64/
 parts/
 sdist/
@@ -32,8 +25,6 @@ var/
 *.egg
 *.eggs
 
-<<<<<<< HEAD
-=======
 # Windows installers
 *.msi
 
@@ -47,7 +38,6 @@ var/
 *.dmg
 *.pkg
 
->>>>>>> odoo-addons/14.0
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

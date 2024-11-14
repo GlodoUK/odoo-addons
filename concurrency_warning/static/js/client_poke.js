@@ -5,7 +5,6 @@ odoo.define("glodo_helpdesk_live_update.client_poke", function (require) {
     var _t = Core._t;
     var Session = require("web.session");
     var WebClient = require("web.WebClient");
-    var NotificationService = require("web.NotificationService");
 
     WebClient.include({
         start: function () {
