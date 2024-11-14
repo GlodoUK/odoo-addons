@@ -30,12 +30,12 @@ class SaleOrderLine(models.Model):
         )
         if bom and previous_product_uom_qty:
             return previous_product_uom_qty.get(self.id, 0.0)
-        return super(SaleOrderLine, self)._get_qty_procurement(
+        return super()._get_qty_procurement(
             previous_product_uom_qty=previous_product_uom_qty
         )
 
     def _compute_qty_delivered(self):
-        res = super(SaleOrderLine, self)._compute_qty_delivered()
+        res = super()._compute_qty_delivered()
         for line in self:
             if line.qty_delivered_method == "stock_move" and line.product_id.cpq_ok:
                 # In the case of a kit cpq.dynamic.bom, we need to check if all
@@ -76,7 +76,8 @@ class SaleOrderLine(models.Model):
                     bom_returned = all(
                         [
                             moves.filtered(
-                                lambda m: m.location_dest_id.usage != "customer"
+                                lambda m, move=move: m.location_dest_id.usage
+                                != "customer"
                                 and m.to_refund
                                 and m.origin_returned_move_id.id == move.id
                             )
