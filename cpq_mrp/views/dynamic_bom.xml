@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_cpq_dynamic_bom_form" model="ir.ui.view">
+        <field name="name">view_cpq_dynamic_bom_form</field>
+        <field name="model">cpq.dynamic.bom</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" />
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <group>
+                        <group>
+                            <field name="active" invisible="1" />
+                            <field name="product_tmpl_id" />
+                            <field name="product_tmpl_uom_category_id" invisible="1" />
+                            <label for="product_qty" string="Quantity" />
+                            <div class="o_row">
+                                <field name="product_qty" />
+                                <field
+                                    name="product_uom_id"
+                                    options="{'no_open':True,'no_create':True}"
+                                    groups="uom.group_uom"
+                                    domain="[('category_id', '=', product_tmpl_uom_category_id)]"
+                                />
+                            </div>
+                        </group>
+                        <group>
+                            <field name="code" />
+                            <field name="type" widget="radio" />
+                            <p
+                                colspan="2"
+                                class="oe_grey oe_edit_only"
+                                attrs="{'invisible': [('type','!=','phantom')]}"
+                            >
+                                <ul>
+                                    A BoM of type kit is used to split the product into its components.
+                                    <li>
+                                        At the creation of a Manufacturing Order.
+                                    </li>
+                                    <li>
+                                        At the creation of a Stock Transfer.
+                                    </li>
+                                </ul>
+                            </p>
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                                options="{'no_create': True, 'no_open': True}"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Components" name="components">
+                            <field
+                                name="bom_line_ids"
+                                widget="one2many"
+                                context="{'default_parent_product_tmpl_id': product_tmpl_id, 'default_company_id': company_id, 'default_bom_id': id}"
+                            >
+                                <tree>
+                                    <field name="company_id" invisible="1" />
+                                    <field name="sequence" widget="handle" />
+                                    <field name="name" string="Product" />
+                                    <field name="condition_type" />
+                                    <field name="component_type" />
+                                    <field name="display_quantity" string="Quantity" />
+                                    <field name="uom_id" groups="uom.group_uom" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page
+                            string="Operations"
+                            name="operations"
+                            attrs="{'invisible': [('type', 'not in',('normal','phantom'))]}"
+                            groups="mrp.group_mrp_routings"
+                        >
+                            <p
+                            >Work Center operations aren't currently supported by dynamic BoMs.</p>
+                        </page>
+                        <page
+                            string="By-products"
+                            name="by_products"
+                            attrs="{'invisible': [('type','!=','normal')]}"
+                            groups="mrp.group_mrp_byproducts"
+                        >
+                            <p
+                            >By-products aren't currently supported by dynamic BoMs.</p>
+                        </page>
+                        <page string="Miscellaneous" name="miscellaneous">
+                            <group>
+                                <group>
+                                    <field
+                                        name="consumption"
+                                        attrs="{'invisible': [('type','=','phantom')]}"
+                                        widget="radio"
+                                    />
+                                </group>
+                                <group>
+                                    <field
+                                        name="picking_type_id"
+                                        attrs="{'invisible': [('type','=','phantom')], 'required': [('type', '=', 'normal')]}"
+                                        string="Operation"
+                                        groups="stock.group_adv_location"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" colspan="4" nolabel="1" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cpq_dynamic_bom_tree" model="ir.ui.view">
+        <field name="name">view_cpq_dynamic_bom_form</field>
+        <field name="model">cpq.dynamic.bom</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+                <field name="active" invisible="1" />
+                <field name="product_tmpl_id" />
+                <field name="code" optional="show" />
+                <field name="type" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="show"
+                />
+                <field name="product_qty" optional="hide" />
+                <field
+                    name="product_uom_id"
+                    groups="uom.group_uom"
+                    optional="hide"
+                    string="Unit of Measure"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_cpq_dynamic_bom_search" model="ir.ui.view">
+        <field name="name">view_cpq_dynamic_bom_search</field>
+        <field name="model">cpq.dynamic.bom</field>
+        <field name="arch" type="xml">
+            <search>
+                <field
+                    name="code"
+                    string="Bill of Materials"
+                    filter_domain="['|', ('code', 'ilike', self), ('product_tmpl_id', 'ilike', self)]"
+                />
+                <field name="product_tmpl_id" string="Product" />
+                <field name="bom_line_ids" string="Component" />
+                <filter
+                    string="Manufacturing"
+                    name="normal"
+                    domain="[('type', '=', 'normal')]"
+                />
+                <filter
+                    string="Kit"
+                    name="phantom"
+                    domain="[('type', '=', 'phantom')]"
+                />
+                <separator />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+                <group expand="0" string="Group By...">
+                    <filter
+                        string="Product"
+                        name="product"
+                        domain="[]"
+                        context="{'group_by': 'product_tmpl_id'}"
+                    />
+                    <filter
+                        string='BoM Type'
+                        name="group_by_type"
+                        domain="[]"
+                        context="{'group_by' : 'type'}"
+                    />
+                    <filter
+                        string='Unit of Measure'
+                        name="default_unit_of_measure"
+                        domain="[]"
+                        context="{'group_by' : 'product_uom_id'}"
+                    />
+               </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cpq_dynamic_bom_act_window" model="ir.actions.act_window">
+        <field name="name">Configurable Products Bill of Materials</field>
+        <field name="res_model">cpq.dynamic.bom</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Add a new dynamic bill of materials for a configurable product
+          </p>
+        </field>
+    </record>
+
+</odoo>

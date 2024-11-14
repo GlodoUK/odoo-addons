@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record model="ir.rule" id="rule_cpq_dynamic_bom_multi_company">
+        <field name="name">CPQ Dynamic BoM Multi-Company</field>
+        <field
+            name="model_id"
+            search="[('model','=','cpq.dynamic.bom')]"
+            model="ir.model"
+        />
+        <field
+            name="domain_force"
+        >['|',('company_id', 'in', company_ids),('company_id','=',False)]</field>
+    </record>
+    <record model="ir.rule" id="rule_cpq_dynamic_bom_line_multi_company">
+        <field name="name">CPQ Dynamic BoM Multi-Company</field>
+        <field
+            name="model_id"
+            search="[('model','=','cpq.dynamic.bom.line')]"
+            model="ir.model"
+        />
+        <field
+            name="domain_force"
+        >['|',('company_id', 'in', company_ids),('company_id','=',False)]</field>
+    </record>
+</odoo>
