@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_cpq_dynamic_bom_line_form" model="ir.ui.view">
+        <field name="name">view_cpq_dynamic_bom_line_form</field>
+        <field name="model">cpq.dynamic.bom.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="bom_product_tmpl_id" invisible="1" />
+                <group>
+                    <group string="Component">
+                        <field name="component_type" string="Type" widget="radio" />
+                        <field
+                            name="component_product_tmpl_id"
+                            invisible="component_type != 'template'"
+                            required="component_type == 'template'"
+                            string="Product Template"
+                        />
+                        <field
+                            name="component_product_tmpl_id_cpq_ok"
+                            invisible="component_type != 'template'"
+                        />
+                        <field
+                            name="component_product_tmpl_ptav_passthru_ids"
+                            widget="many2many_tags"
+                            invisible="component_type != 'template'"
+                            string="Passthru Attributes"
+                        />
+                        <p
+                            colspan="2"
+                            class="oe_grey oe_edit_only"
+                            invisible="component_type != 'template'"
+                        >
+                            The attributes above are able to be passed through from the parent to
+                            this component.
+                        </p>
+                        <field
+                            name="component_product_id"
+                            invisible="component_type != 'variant'"
+                            required="component_type == 'variant'"
+                            string="Product Variant"
+                        />
+                    </group>
+                    <group string="Quantity">
+                        <field name="quantity_type" widget="radio" string="Type" />
+                        <field
+                            name="quantity_fixed"
+                            invisible="quantity_type != 'fixed'"
+                            required="quantity_type == 'fixed'"
+                            string="Fixed"
+                        />
+                        <field
+                            name="quantity_ptav_custom_id"
+                            invisible="quantity_type != 'ptav_custom_id'"
+                            required="quantity_type == 'ptav_custom_id'"
+                            string="From Custom Value"
+                        />
+                        <field
+                            name="uom_id"
+                            options="{'no_open':True,'no_create':True}"
+                            groups="uom.group_uom"
+                        />
+                    </group>
+                </group>
+                <group string="Condition">
+                    <field name="condition_type" string="Type" widget="radio" />
+                    <field
+                        name="condition_domain"
+                        invisible="condition_type != 'domain'"
+                        widget="domain"
+                        options="{'model': 'product.product'}"
+                        string="Domain"
+                    />
+                    <field name="condition_possible_ptav_ids" invisible="1" />
+                    <field
+                        name="condition_ptav_ids"
+                        invisible="condition_type != 'ptav'"
+                        required="condition_type == 'ptav'"
+                        widget="many2many_tags"
+                        string="Apply on Variant Attributes"
+                    />
+                </group>
+                <group string="Work Center Operations" groups="mrp.group_mrp_routings">
+                    <p
+                    >Work Center operations aren't currently supported by dynamic BoMs.</p>
+                </group>
+            </form>
+        </field>
+    </record>
+
+</odoo>

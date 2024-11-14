@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_banding_form" model="ir.ui.view">
+        <field name="name">product.banding.form</field>
+        <field name="model">cpq.banding</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="active" column_invisible="1" />
+
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="action_view_children"
+                            icon="fa-clone"
+                        >
+                            <field
+                                string="Children"
+                                name="child_count"
+                                widget="statinfo"
+                            />
+                        </button>
+                    </div>
+
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        invisible="active == True"
+                    />
+
+                    <div class="oe_title">
+                        <label for="name" string="Banding" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Red" />
+                        </h1>
+                    </div>
+
+                    <group name="first" colspan="2">
+                        <field name="parent_id" class="oe_inline" />
+                    </group>
+
+                    <notebook>
+                        <page string="Notes">
+                            <field name="comment" />
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <field name="depth" />
+                                <field name="is_leaf" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="product_banding_tree" model="ir.ui.view">
+        <field name="name">product.banding.tree</field>
+        <field name="model">cpq.banding</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name" />
+                <field name="depth" />
+                <field name="child_count" />
+                <field name="is_leaf" optional="hide" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_banding_search" model="ir.ui.view">
+        <field name="name">view_product_banding_search</field>
+        <field name="model">cpq.banding</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <filter
+                    string="Root Level"
+                    name="filter_root"
+                    domain="[('depth', '=', 0)]"
+                />
+                <filter
+                    string="Leaf Only"
+                    name="filter_is_leaf"
+                    domain="[('is_leaf', '=', True)]"
+                />
+            </search>
+        </field>
+    </record>
+
+    <record id="product_banding_action" model="ir.actions.act_window">
+        <field name="name">Banding</field>
+        <field name="res_model">cpq.banding</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain" />
+        <field name="view_ids" eval="False" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Banding
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_sale_banding"
+        name="Banding"
+        parent="sale.prod_config_main"
+        action="product_banding_action"
+        sequence="8"
+    />
+    <menuitem
+        id="menu_stock_banding"
+        name="Banding"
+        parent="stock.menu_product_in_config_stock"
+        action="product_banding_action"
+        sequence="8"
+    />
+</odoo>

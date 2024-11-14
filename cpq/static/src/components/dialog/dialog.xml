@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+
+    <t t-name="cpq.ConfigureDialogDialog" owl="1">
+        <Dialog size="size" title="title">
+            <div class="row">
+                <div class="col-auto">
+                    <img
+                        t-attf-src="/web/image/product.template/{{ props.productTmplId }}/image_128"
+                    />
+                </div>
+                <div class="col">
+
+                    <div
+                        t-if="!state.valid &amp;&amp; Object.keys(state.errors).length &gt; 0"
+                        class="alert alert-warning"
+                        role="alert"
+                    >
+                        <ul
+                            t-foreach="Object.entries(state.errors)"
+                            t-as="e"
+                            t-key="e[0]"
+                            class="list-unstyled mb-0"
+                        >
+                            <li t-esc="e[1]" />
+                        </ul>
+                    </div>
+
+                    <div
+                        t-if="state.productTmplId.description_sale"
+                        t-esc="state.productTmplId.description_sale"
+                        class="mb-3"
+                    />
+
+                    <t t-foreach="state.ptalIds" t-as="i" t-key="i.id">
+                        <ProductTmplAttrib
+                            id="i.id"
+                            attribute="i"
+                            onSelect="(ev) =&gt; this._addOrUpdateSelected(i.id, ev.target.value)"
+                            onCustom="(v, ev) =&gt; this._addOrUpdateSelected(i.id, v, ev.target.value)"
+                            selected="state.selected"
+                        />
+                    </t>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button
+                    class="btn btn-primary"
+                    t-on-click="onCreate"
+                    t-att-disabled="!state.valid"
+                >
+                    Confirm
+                </button>
+                <button class="btn btn-secondary" t-on-click="onClose">
+                    Cancel
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
