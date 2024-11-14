@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+
+    <t t-name="cpq.ConfigureDialogDialog" owl="1">
+        <div class="o_dialog">
+            <div
+                role="dialog"
+                class="modal"
+                tabindex="-1"
+                t-att-class="{ o_technical_modal: technical, o_modal_full: fullscreen }"
+                t-ref="modal"
+            >
+                <div class="modal-dialog" t-att-class="size">
+                    <div class="modal-content" t-att-class="contentClass">
+                        <header t-if="renderHeader" class="modal-header">
+                            <h4 class="modal-title">
+                                <t t-esc="title" />
+                            </h4>
+                            <button
+                                type="button"
+                                class="close"
+                                aria-label="Close"
+                                tabindex="-1"
+                                t-on-click="_onDiscard"
+                            >×</button>
+                        </header>
+                        <main class="modal-body">
+                            <t t-call="{{ constructor.bodyTemplate }}" />
+                        </main>
+                        <footer t-if="renderFooter" class="modal-footer">
+                            <t t-call="{{ constructor.footerTemplate }}" />
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="cpq.ConfigureDialogFooter" owl="1">
+        <button
+            class="btn btn-primary"
+            t-on-click="_onClickCreate"
+            t-att-disabled="!canCreate"
+        >
+            Confirm
+        </button>
+        <button class="btn btn-secondary" t-on-click="_onDiscard">
+            <t>Back</t>
+        </button>
+    </t>
+
+    <t t-name="cpq.ConfigureDialogBody" owl="1">
+        <div class="row">
+            <div class="col-auto">
+                <img
+                    t-attf-src="/web/image/product.template/{{ props.productTmplId }}/image_128"
+                />
+            </div>
+            <div class="col">
+
+                <div
+                    t-if="!state.valid &amp;&amp; Object.keys(state.errors).length &gt; 0"
+                    class="alert alert-warning"
+                    role="alert"
+                >
+                    <ul
+                        t-foreach="Object.entries(state.errors)"
+                        t-as="e"
+                        t-key="e[0]"
+                        class="list-unstyled mb-0"
+                    >
+                        <li t-esc="e[1]" />
+                    </ul>
+                </div>
+
+                <div
+                    t-if="state.productTmplId.description_sale"
+                    t-esc="state.productTmplId.description_sale"
+                    class="mb-3"
+                />
+
+                <t t-foreach="state.ptalIds" t-as="i" t-key="i.id">
+                    <ProductTmplAttrib
+                        id="i.id"
+                        attribute="i"
+                        onSelect="(ev) =&gt; this._addOrUpdateSelected(i.id, ev.target.value)"
+                        onCustom="(v, ev) =&gt; this._addOrUpdateSelected(i.id, v, ev.target.value)"
+                        selected="state.selected"
+                    />
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>
