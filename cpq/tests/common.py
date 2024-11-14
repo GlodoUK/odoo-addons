@@ -4,7 +4,7 @@ from odoo.tests.common import TransactionCase
 class TestCpqCommon(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestCpqCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.prod_attrib_colour = cls.env["product.attribute"].create({"name": "Colour"})
         cls.prod_attrib_colour_red = cls.env["product.attribute.value"].create(

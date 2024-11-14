@@ -29,9 +29,7 @@ class ProductAttributeCustomValue(models.Model):
     @api.depends("ptav_id.display_name", "custom_value")
     def _compute_name(self):
         for record in self:
-            record.name = "{}: {}".format(
-                record.ptav_id.display_name, record.custom_value
-            )
+            record.name = f"{record.ptav_id.display_name}: {record.custom_value}"
 
     @api.depends("ptav_id", "custom_value")
     def _compute_hash(self):
