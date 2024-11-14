@@ -14,8 +14,10 @@ class ProductConfiguratorController(Controller):
             )
         )
 
-        for (k, v) in combination.items():
-            ptav_id = valid_product_tmpl_ptav_ids.filtered(lambda v: v.id == int(k))
+        for k, v in combination.items():
+            ptav_id = valid_product_tmpl_ptav_ids.filtered(
+                lambda v, k=k: v.id == int(k)
+            )
             ptav_id.ensure_one()
 
             if ptav_id.is_custom:

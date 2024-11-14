@@ -6,9 +6,7 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     def _stock_account_get_anglo_saxon_price_unit(self):
-        price_unit = super(
-            AccountMoveLine, self
-        )._stock_account_get_anglo_saxon_price_unit()
+        price_unit = super()._stock_account_get_anglo_saxon_price_unit()
 
         sale_line_id = fields.first(self.sale_line_ids).with_context(active_test=False)
         bom = self.env["cpq.dynamic.bom"]
@@ -57,11 +55,13 @@ class AccountMoveLine(models.Model):
 
         moves = sale_line_id.move_ids
         average_price_unit = 0
-        for (product, product_dict) in bom._get_exploded_qty_dict(
+        for product, product_dict in bom._get_exploded_qty_dict(
             sale_line_id.product_id
         ).items():
             factor = product_dict.get("qty")
-            prod_moves = moves.filtered(lambda m: m.product_id == product)
+            prod_moves = moves.filtered(
+                lambda m, product=product: m.product_id == product
+            )
             prod_qty_invoiced = factor * qty_invoiced
             prod_qty_to_invoice = factor * qty_to_invoice
             product = product.with_company(self.company_id).with_context(

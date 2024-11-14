@@ -55,10 +55,7 @@ class ProductBanding(models.Model):
     def _compute_display_name(self):
         for record in self:
             if record.parent_id:
-                record.display_name = "%s/%s" % (
-                    record.parent_id.display_name,
-                    record.name,
-                )
+                record.display_name = f"{record.parent_id.display_name}/{record.name}"
             else:
                 record.display_name = record.name
 

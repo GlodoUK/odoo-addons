@@ -28,7 +28,9 @@ class ProductProduct(models.Model):
 
         for component in components:
             line_qty = components[component]["qty"]
-            moves = stock_moves.filtered(lambda m: m.product_id == component)
+            moves = stock_moves.filtered(
+                lambda m, component=component: m.product_id == component
+            )
             value += line_qty * component._compute_average_price(
                 qty_invoiced * line_qty, qty_to_invoice * line_qty, moves
             )

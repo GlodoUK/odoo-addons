@@ -145,7 +145,7 @@ class ProductAttributeLine(models.Model):
             "ptav_ids": [
                 ptav_id._cpq_get_combination_info()
                 for ptav_id in i.product_template_value_ids.filtered(
-                    lambda l: l.ptav_active
+                    lambda attr_line: attr_line.ptav_active
                 )
             ],
         }

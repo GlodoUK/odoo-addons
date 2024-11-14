@@ -91,7 +91,8 @@ class ProductTemplate(models.Model):
                 ):
                     record.cpq_dynamic_bom_ids.message_post(
                         body=_(
-                            "Archived due product template not longer being configurable"
+                            "Archived due product template not "
+                            "longer being configurable"
                         )
                     )
                     record.cpq_dynamic_bom_ids.write({"active": False})

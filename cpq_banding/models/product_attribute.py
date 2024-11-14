@@ -11,9 +11,7 @@ class ProductAttributeCustomValue(models.Model):
         # XXX: This is horrific. This needs to be sorted.
         for record in self.filtered(lambda v: v.ptav_id.cpq_custom_type == "banding"):
             banding_id = self.env["cpq.banding"].browse(int(record.custom_value))
-            record.name = "{}: {}".format(
-                record.ptav_id.display_name, banding_id.display_name
-            )
+            record.name = f"{record.ptav_id.display_name}: {banding_id.display_name}"
         return res
 
 
@@ -41,7 +39,6 @@ class ProductAttributeValue(models.Model):
     def _cpq_sanitise_banding_domain(self, domain):
         self.ensure_one()
         if not self.cpq_banding_relaxed_validation:
-
             return expression.AND(
                 [
                     domain,
