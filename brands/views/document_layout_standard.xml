@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template
+        id="brands.external_layout_standard"
+        inherit_id="web.external_layout_standard"
+        priority="99"
+    >
+        <xpath
+            expr="//div[@t-attf-class='header o_company_#{company.id}_layout']//img"
+            position="replace"
+        >
+
+            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
+                <img
+                    t-att-src="image_data_uri(o.brand_id.logo)"
+                    style="max-height: 45px"
+                    alt="Logo"
+                />
+            </t>
+            <t t-else="">
+                <img
+                    t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    style="max-height: 45px"
+                    alt="Logo"
+                />
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div class="col-6" name="company_address">
+                <t t-if="o and 'brand_id' in o and o.brand_id">
+                    <div
+                        t-field="o.brand_id.partner_id"
+                        t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"
+                    />
+                </t>
+                <t t-else="">
+                    <span
+                        t-if="company.company_details"
+                        t-field="company.company_details"
+                    />
+                </t>
+            </div>
+        </xpath>
+
+        <xpath
+            expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']"
+            position="replace"
+        >
+            <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <ul class="list-inline mb4">
+                        <t t-if="o and 'brand_id' in o and o.brand_id">
+                            <li
+                                t-if="o.brand_id.partner_id.phone"
+                                class="list-inline-item"
+                            >Phone: <span t-field="o.brand_id.partner_id.phone" /></li>
+                            <li
+                                t-if="o.brand_id.partner_id.email"
+                                class="list-inline-item"
+                            >Email: <span t-field="o.brand_id.partner_id.email" /></li>
+                            <li
+                                t-if="o.brand_id.partner_id.website"
+                                class="list-inline-item"
+                            >Web: <span t-field="o.brand_id.partner_id.website" /></li>
+                            <li
+                                t-if="o.brand_id.partner_id.vat"
+                                class="list-inline-item"
+                            ><t
+                                    t-esc="o.brand_id.partner_id.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="o.brand_id.partner_id.vat" /></li>
+                        </t>
+                        <t t-else="">
+                            <div t-field="company.report_footer" />
+                        </t>
+                    </ul>
+
+                    <div t-if="report_type == 'pdf'" class="text-muted"> Page: <span
+                            class="page"
+                        /> / <span class="topage" />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+</odoo>
