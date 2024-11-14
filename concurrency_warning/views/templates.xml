@@ -2,7 +2,10 @@
   <data>
     <template id="assets_backend" inherit_id="web.assets_backend">
       <xpath expr=".">
-        <script type="text/javascript" src="/concurrency_warning/static/js/client_poke.js"/>
+        <script
+                    type="text/javascript"
+                    src="/concurrency_warning/static/js/client_poke.js"
+                />
       </xpath>
     </template>
   </data>
