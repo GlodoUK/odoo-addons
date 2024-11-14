@@ -8,7 +8,7 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["connector_edi"],
     "data": ["views/edi_route.xml"],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {
         "bin": [],
         "python": ["paramiko", "scp", "cryptography"],

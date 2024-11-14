@@ -30,5 +30,5 @@
     "images": [],
     "demo": [],
     "external_dependencies": {"bin": [], "python": ["requests", "lxml"]},
-    "license": "Other proprietary",
+    "license": "LGPL-3",
 }

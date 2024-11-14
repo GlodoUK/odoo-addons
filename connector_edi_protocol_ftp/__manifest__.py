@@ -10,5 +10,5 @@
         "deb": ["libcurl4-openssl-dev"],
         "python": ["ftpparser", "pycurl"],
     },
-    "license": "Other proprietary",
+    "license": "LGPL-3",
 }
