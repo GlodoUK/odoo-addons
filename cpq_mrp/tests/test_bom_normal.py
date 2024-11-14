@@ -6,7 +6,7 @@ from odoo.addons.cpq.tests.common import TestCpqCommon
 class TestNormalBom(TestCpqCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestNormalBom, cls).setUpClass()
+        super().setUpClass()
 
         cls.product_bolt = cls.env["product.product"].create(
             {"type": "product", "name": "Bolt"}
@@ -124,7 +124,7 @@ class TestNormalBom(TestCpqCommon):
     def assertBoMExplosionEqual(self, parts, expected):
         self.assertEqual(len(parts), len(expected))
 
-        for found, expected in zip(parts, expected):
+        for found, expected in zip(parts, expected):  # noqa: B020
             (found_product_id, found_quantity, found_uom, _found_cpq_bom_line) = found
             (
                 expected_product_id,
@@ -136,12 +136,11 @@ class TestNormalBom(TestCpqCommon):
             self.assertEqual(
                 found_product_id,
                 expected_product_id,
-                "Found: %s (%s), Expected %s (%s))"
-                % (
-                    found_product_id,
-                    found_product_id.display_name,
-                    expected_product_id,
-                    expected_product_id.display_name,
+                "Found: {p_id} ({d_name}), Expected {ep_id} ({e_dname}))".format(
+                    p_id=found_product_id,
+                    d_name=found_product_id.display_name,
+                    ep_id=expected_product_id,
+                    e_dname=expected_product_id.display_name,
                 ),
             )
             self.assertEqual(found_quantity, expected_quantity)
@@ -192,7 +191,7 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950
+                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950, E501
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",
@@ -204,7 +203,9 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_base_cpq.id,
+                            "component_product_tmpl_id": (
+                                self.product_tmpl_chair_base_cpq.id
+                            ),
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",
@@ -321,7 +322,7 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950
+                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950, E501
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",
@@ -333,7 +334,9 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_base_cpq.id,
+                            "component_product_tmpl_id": (
+                                self.product_tmpl_chair_base_cpq.id
+                            ),
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",

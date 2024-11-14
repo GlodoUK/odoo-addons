@@ -100,10 +100,9 @@ class DynamicBom(models.Model):
         return [
             (
                 bom.id,
-                "%s%s"
-                % (
-                    bom.code and "[%s] " % bom.code or "",
-                    bom.product_tmpl_id.display_name,
+                "{bom_code}{display_name}".format(
+                    bom_code=bom.code and "[%s] " % bom.code or "",
+                    display_name=bom.product_tmpl_id.display_name,
                 ),
             )
             for bom in self
@@ -190,7 +189,7 @@ class DynamicBom(models.Model):
         components = {}
         bom_lines = self.explode(product_id, 1.0)
 
-        for (product, qty, uom, _cpq_bom_line_id) in bom_lines:
+        for product, qty, uom, _cpq_bom_line_id in bom_lines:
             if components.get(product, False):
                 if uom != components[product]["uom"]:
                     from_uom = uom
@@ -465,7 +464,7 @@ class DynamicBomLine(models.Model):
         if self._skip_bom_line(parent_product_id):
             return
 
-        method_explode_quantity_name = "_explode_quantity_{}".format(self.quantity_type)
+        method_explode_quantity_name = f"_explode_quantity_{self.quantity_type}"
         quantity = getattr(self, method_explode_quantity_name)(
             parent_product_id, parent_quantity
         )
@@ -473,9 +472,7 @@ class DynamicBomLine(models.Model):
         if float_is_zero(quantity, precision_rounding=self.uom_id.rounding):
             return
 
-        method_explode_product_name = "_explode_get_product_from_{}".format(
-            self.component_type
-        )
+        method_explode_product_name = f"_explode_get_product_from_{self.component_type}"
         product_id = getattr(self, method_explode_product_name)(parent_product_id)
 
         if product_id.cpq_ok and product_id.product_tmpl_id.cpq_dynamic_bom_ids:
@@ -496,7 +493,7 @@ class DynamicBomLine(models.Model):
 
             standard_kit_bom_res = []
 
-            for (mrp_bom_line_id, mrp_bom_line_dict) in lines_done:
+            for mrp_bom_line_id, mrp_bom_line_dict in lines_done:
                 # Adjust the quantities to the quantities of a procurement if
                 # its UoM isn't the same as the one of the quant and the
                 # parameter 'propagate_uom' is not set.
@@ -517,8 +514,9 @@ class DynamicBomLine(models.Model):
 
             return standard_kit_bom_res
 
-        # adjust the quantities to the quantities of a procurement if its UoM isn't the same
-        # as the one of the quant and the parameter 'propagate_uom' is not set.
+        # adjust the quantities to the quantities of a procurement
+        # if its UoM isn't the same as the one of the quant and the
+        # parameter 'propagate_uom' is not set.
         component_qty, procurement_uom = self.uom_id._adjust_uom_quantities(
             quantity, product_id.uom_id
         )
@@ -556,7 +554,7 @@ class DynamicBomLine(models.Model):
 
             if passthru_id.is_custom:
                 custom_value_id = parent_product_id.cpq_custom_value_ids.filtered(
-                    lambda v: v.ptav_id == ptav_id
+                    lambda v, ptav_id=ptav_id: v.ptav_id == ptav_id
                 )
                 if custom_value_id:
                     passthru_custom_dict.update(

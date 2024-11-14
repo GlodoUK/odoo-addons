@@ -190,7 +190,8 @@ class StockRule(models.Model):
                 ):
                     production.message_post(
                         body=_(
-                            "This production order has been created from Replenishment Report."
+                            "This production order has been created "
+                            "from Replenishment Report."
                         ),
                         message_type="comment",
                         subtype_xmlid="mail.mt_note",
