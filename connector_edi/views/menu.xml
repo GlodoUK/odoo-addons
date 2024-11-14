@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <menuitem
+        id="menu_edi_root"
+        parent="connector.menu_connector_root"
+        name="EDI"
+        sequence="10"
+        groups="connector.group_connector_manager"
+    />
+
+
+    <menuitem id="menu_edi_conf" name="Configuration" parent="menu_edi_root" />
+
+
+    <menuitem
+        id="menu_edi_backend"
+        name="Backends"
+        parent="menu_edi_conf"
+        action="action_edi_backend"
+        sequence="1"
+    />
+
+    <menuitem
+        id="menu_edi_envelope_route"
+        name="Envelope Routes"
+        parent="menu_edi_conf"
+        action="action_edi_envelope_route"
+        sequence="2"
+    />
+
+    <menuitem
+        id="menu_edi_route"
+        name="Message Routes"
+        parent="menu_edi_conf"
+        action="action_edi_route"
+        sequence="3"
+    />
+
+    <menuitem id="menu_edi_data" name="Data" parent="menu_edi_root" />
+
+    <menuitem
+        id="menu_edi_envelope"
+        name="Envelopes"
+        parent="menu_edi_data"
+        action="action_edi_envelope"
+        sequence="1"
+    />
+
+    <menuitem
+        id="menu_edi_message"
+        name="Messages"
+        parent="menu_edi_data"
+        action="action_edi_message"
+        sequence="2"
+    />
+
+</odoo>

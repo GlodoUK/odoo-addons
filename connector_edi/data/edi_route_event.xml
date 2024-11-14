@@ -1,0 +1,6 @@
+<odoo>
+    <record model="edi.route.event" id="route_event_edi_on_create">
+        <field name="res_model_id" ref="model_edi_message" />
+        <field name="name">on_record_create</field>
+    </record>
+</odoo>

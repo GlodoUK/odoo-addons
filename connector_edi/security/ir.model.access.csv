@@ -1,0 +1,17 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_edi_backend","edi_backend connector manager","model_edi_backend","connector.group_connector_manager",1,1,1,1
+"access_edi_envelope_route","edi_envelope_route connector manager","model_edi_envelope_route","connector.group_connector_manager",1,1,1,1
+"access_edi_route","edi_route connector manager","model_edi_route","connector.group_connector_manager",1,1,1,1
+"access_edi_route_event","edi_route_event connector manager","model_edi_route_event","connector.group_connector_manager",1,1,1,1
+"access_edi_envelope","edi_envelope connector manager","model_edi_envelope","connector.group_connector_manager",1,1,1,1
+"access_edi_message","edi_message connector manager","model_edi_message","connector.group_connector_manager",1,1,1,1
+"access_edi_mapping","edi_mapping connector manager","model_edi_mapping","connector.group_connector_manager",1,1,1,1
+"access_edi_backend_internal","edi_backend connector internal users","model_edi_backend","base.group_user",1,0,0,0
+"access_edi_envelope_route_internal","edi_envelope_route connector internal users","model_edi_envelope_route","base.group_user",1,0,0,0
+"access_edi_route_internal","edi_route connector internal users","model_edi_route","base.group_user",1,0,0,0
+"access_edi_route_event_internal","edi_route_event connector internal users","model_edi_route_event","base.group_user",1,0,0,0
+"access_edi_envelope_internal","edi_envelope connector internal users","model_edi_envelope","base.group_user",1,0,0,0
+"access_edi_message_internal","edi_message connector internal users","model_edi_message","base.group_user",1,0,0,0
+"access_edi_mapping_internal","edi_mapping connector internal users","model_edi_mapping","base.group_user",1,0,0,0
+"access_edi_secret","edi_secret connector manager","model_edi_secret","connector.group_connector_manager",1,1,1,1
+"access_edi_upload_file","edi_upload_file","model_edi_upload_file","base.group_user",1,1,1,1

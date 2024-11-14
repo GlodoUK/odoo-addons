@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_edi_route_event_tree" model="ir.ui.view">
+        <field name="name">view_edi_route_event_tree</field>
+        <field name="model">edi.route.event</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_edi_route_event_search" model="ir.ui.view">
+        <field name="name">view_edi_route_event_search</field>
+        <field name="model">edi.route.event</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="res_model" />
+            </search>
+        </field>
+    </record>
+</odoo>
