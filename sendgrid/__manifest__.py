@@ -5,7 +5,7 @@
     "version": "16.0.1.0.0",
     "application": False,
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/server-tools",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "license": "LGPL-3",
     "depends": [
         "base",
