@@ -2,7 +2,7 @@
     "name": "partner_social_media",
     "summary": "Adds social media information on partner",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/partner-contact",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Extra Tools",
     "version": "14.0.1.0.0",
     "depends": ["base_setup"],

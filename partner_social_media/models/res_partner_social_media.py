@@ -30,7 +30,7 @@ class ResPartnerSocialMediaProvider(models.Model):
 
         url = self.url_format.format(account=account)
 
-        link = '<a href="{url}" target="_blank"><i class="{css}"></i> {account}</a>'.format(
+        link = '<a href="{url}" target="_blank"><i class="{css}"></i> {account}</a>'.format(  # noqa: E501
             url=url,
             css=self.font_awesome,
             account=account,
