@@ -3,8 +3,8 @@
     "name": "twilio_sms",
     "summary": "Twilio SMS Gateway",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/server-tools",
-    "license": "Other proprietary",
+    "website": "https://github.com/GlodoUK/odoo-addons",
+    "license": "LGPL-3",
     "depends": ["sms"],
     "external_dependencies": {"python": ["twilio", "phonenumbers"]},
     "data": [

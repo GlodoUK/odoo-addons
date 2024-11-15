@@ -24,7 +24,7 @@ class SmsApi(models.AbstractModel):
             'state':  string: 'insufficient_credit' or 'wrong_number_format' or 'success',
             'credit': integer: number of credits spent to send this SMS,
         }]
-        """
+        """  # noqa: E501
 
         icp = self.env["ir.config_parameter"].sudo()
 
