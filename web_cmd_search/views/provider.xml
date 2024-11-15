@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_web_cmd_search_provider_list" model="ir.ui.view">
+        <field name="name">view_web_cmd_search_provider_list</field>
+        <field name="model">web.cmd.search.provider</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="model_id" />
+                <field name="limit" />
+            </tree>
+        </field>
+    </record>
+
+    <record
+        id="action_web_cmd_search_provider_act_window"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Command Palette Global Search Provider</field>
+        <field name="res_model">web.cmd.search.provider</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No providers found. Let's create one!
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_custom"
+        name="Command Palette Global Search"
+        parent="base.menu_custom"
+    />
+    <menuitem
+        id="menu_custom_provider"
+        name="Provider"
+        parent="menu_custom"
+        action="action_web_cmd_search_provider_act_window"
+    />
+</odoo>
