@@ -17,7 +17,7 @@ class CrmLead(models.Model):
             ].get_stage_duration(lead)
 
     def write(self, vals):
-        res = super(CrmLead, self).write(vals)
+        res = super().write(vals)
         if "stage_id" in vals:
             for lead in self:
                 self.env["crm.lead.stage.change.tracker"].monitor_n_log_stage_duration(
@@ -27,7 +27,7 @@ class CrmLead(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        leads = super(CrmLead, self).create(vals_list)
+        leads = super().create(vals_list)
         for lead in leads:
             self.env["crm.lead.stage.change.tracker"].monitor_n_log_stage_duration(lead)
         return leads
