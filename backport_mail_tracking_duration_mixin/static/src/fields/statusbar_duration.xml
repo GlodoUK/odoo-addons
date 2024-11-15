@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t
+        t-name="backport_mail_tracking_duration_mixin.StatusBarDurationField"
+        t-inherit="web.StatusBarField"
+        t-inherit-mode="primary"
+    >
+        <xpath expr="//t[@t-if='item.isSelected']/button" position="inside">
+            <span t-esc="item.name" />
+            <span
+                t-if="item.shortTimeInStage"
+                t-att-title="item.fullTimeInStage"
+                class="ms-2 small"
+            >
+                <t t-esc="item.shortTimeInStage" />
+            </span>
+        </xpath>
+        <xpath expr="//t[@t-if='item.isSelected']/button" position="attributes">
+            <attribute name="t-esc" />
+        </xpath>
+
+        <xpath expr="//t[@t-elif='isDisabled']/button" position="inside">
+            <span t-esc="item.name" />
+            <span
+                t-if="item.shortTimeInStage"
+                t-att-title="item.fullTimeInStage"
+                class="ms-2 small"
+            >
+                <t t-esc="item.shortTimeInStage" />
+            </span>
+        </xpath>
+        <xpath expr="//t[@t-elif='isDisabled']/button" position="attributes">
+            <attribute name="t-esc" />
+        </xpath>
+
+        <xpath expr="//t[@t-else='']/button" position="inside">
+            <span t-esc="item.name" />
+            <span
+                t-if="item.shortTimeInStage"
+                t-att-title="item.fullTimeInStage"
+                class="ms-2 small"
+            >
+                <t t-esc="item.shortTimeInStage" />
+            </span>
+        </xpath>
+        <xpath expr="//t[@t-else='']/button" position="attributes">
+            <attribute name="t-esc" />
+        </xpath>
+    </t>
+</templates>
