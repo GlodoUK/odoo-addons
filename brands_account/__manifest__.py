@@ -7,11 +7,12 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "license": "LGPL-3",
-    "depends": ["brands"],
+    "depends": ["brands", "sale"],
     "data": [
         "views/report_invoice.xml",
         "views/res_bank.xml",
         "views/res_partner_bank.xml",
         "views/report_saleorder_document.xml",
+        "views/sale_portal_template.xml",
     ],
 }
