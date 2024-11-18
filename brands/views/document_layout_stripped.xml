@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template
+        id="brands.external_layout_striped"
+        inherit_id="web.external_layout_striped"
+        priority="99"
+    >
+        <xpath expr="//div[hasclass('o_background_header')]//img" position="replace">
+
+            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
+                <img
+                    t-att-src="image_data_uri(o.brand_id.logo)"
+                    class="float-left"
+                    alt="Logo"
+                />
+            </t>
+            <t t-else="">
+                <img
+                    t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    class="float-left"
+                    alt="Logo"
+                />
+            </t>
+        </xpath>
+
+        <xpath expr="//div[hasclass('company_address')]" position="replace">
+            <div class="float-left company_address">
+                <t t-if="o and 'brand_id' in o and o.brand_id">
+                    <div>
+                        <strong t-field="o.brand_id.partner_id.name" />
+                    </div>
+                    <span
+                        t-field="o.brand_id.partner_id"
+                        t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: true}"
+                    />
+                </t>
+                <t t-else="">
+                    <span
+                        t-if="company.company_details"
+                        t-field="company.company_details"
+                    />
+                </t>
+            </div>
+        </xpath>
+
+        <xpath
+            expr="//div[@t-attf-class='o_company_#{company.id}_layout footer o_background_footer']"
+            position="replace"
+        >
+            <div
+                t-attf-class="o_company_#{company.id}_layout footer o_background_footer"
+            >
+                <div class="text-center">
+                    <ul class="list-inline text-muted">
+                        <t t-if="o and 'brand_id' in o and o.brand_id">
+                            <li t-if="o.brand_id.phone" class="list-inline-item">
+                                <i
+                                    class="fa fa-phone"
+                                    role="img"
+                                    aria-label="Phone"
+                                    title="Phone"
+                                />
+                                <span t-field="o.brand_id.phone" />
+                            </li>
+                            <li t-if="o.brand_id.email" class="list-inline-item">
+                                <i
+                                    class="fa fa-at"
+                                    role="img"
+                                    aria-label="Email"
+                                    title="Email"
+                                />
+                                <span t-field="o.brand_id.email" />
+                            </li>
+                            <li t-if="o.brand_id.website" class="list-inline-item">
+                                <i
+                                    class="fa fa-globe"
+                                    role="img"
+                                    aria-label="Website"
+                                    title="Website"
+                                />
+                                <span t-field="o.brand_id.website" />
+                            </li>
+                            <li t-if="o.brand_id.vat" class="list-inline-item"><i
+                                    class="fa fa-building-o"
+                                    role="img"
+                                    aria-label="Fiscal number"
+                                /><t
+                                    t-esc="o.brand_id.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="o.brand_id.vat" /></li>
+                        </t>
+                        <t t-else="">
+                            <li t-if="company.phone" class="list-inline-item">
+                                <i
+                                    class="fa fa-phone"
+                                    role="img"
+                                    aria-label="Phone"
+                                    title="Phone"
+                                />
+                                <span t-field="company.phone" />
+                            </li>
+                            <li t-if="company.email" class="list-inline-item">
+                                <i
+                                    class="fa fa-at"
+                                    role="img"
+                                    aria-label="Email"
+                                    title="Email"
+                                />
+                                <span t-field="company.email" />
+                            </li>
+                            <li t-if="company.website" class="list-inline-item">
+                                <i
+                                    class="fa fa-globe"
+                                    role="img"
+                                    aria-label="Website"
+                                    title="Website"
+                                />
+                                <span t-field="company.website" />
+                            </li>
+                            <li t-if="company.vat" class="list-inline-item"><i
+                                    class="fa fa-building-o"
+                                    role="img"
+                                    aria-label="Fiscal number"
+                                /><t
+                                    t-esc="company.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="company.vat" /></li>
+                        </t>
+                    </ul>
+                    <ul class="list-inline">
+                        <div t-field="company.report_footer" />
+                    </ul>
+                    <div t-if="report_type == 'pdf'" class="text-muted"> Page: <span
+                            class="page"
+                        /> of <span class="topage" />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+</odoo>
