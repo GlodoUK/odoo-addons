@@ -5,11 +5,15 @@
         inherit_id="account.report_invoice_document"
         priority="99"
     >
-        <xpath expr="//div[@id='qrcode']" position="before">
+        <xpath expr="//p[@name='payment_communication']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+        <xpath expr="//p[@name='payment_communication']" position="after">
             <t
                 t-set="partner_bank"
-                t-value="o.brand_id and o.brand_id.partner_id.bank_ids and o.brand_id.partner_id.bank_ids[0]"
+                t-value="o.brand_id and o.brand_id.partner_id.bank_ids and o.brand_id.partner_id.bank_ids[0] or o.partner_bank_id"
             />
+            <!-- <p name="payment_communication"> Payment Communication: <span class="fw-bold" t-field="o.payment_reference">INV/2023/00001</span></p> -->
             <div t-if="partner_bank and o.move_type in ['out_invoice', 'in_refund']">
                 <p>Please make payment to: <br />
                 </p>

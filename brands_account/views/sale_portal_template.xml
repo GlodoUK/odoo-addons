@@ -9,41 +9,7 @@
                 t-set="partner_bank"
                 t-value="sale_order.brand_id and sale_order.brand_id.partner_id.bank_ids and sale_order.brand_id.partner_id.bank_ids[0]"
             />
-            <div t-if="partner_bank">
-                <p>Please make payment to: <br />
-                </p>
-                <div>
-                    <strong>
-                        Account Holder:
-                    </strong>
-                    <span
-                        t-field="partner_bank.acc_holder_name"
-                        t-if="partner_bank.acc_holder_name"
-                    />
-                    <span
-                        t-field="partner_bank.partner_id"
-                        t-if="not partner_bank.acc_holder_name"
-                    />
-                    <br />
-
-                </div>
-                <div>
-                    <strong>Account #: </strong>
-                    <span t-field="partner_bank.acc_number" />
-                </div>
-                <div>
-                    <strong>Sort
-                        Code: </strong>
-                    <span t-field="partner_bank.bank_sort_code" />
-                    <br />
-                </div>
-                <div>
-                    <strong>
-                        IBAN: </strong>
-                    <span t-field="partner_bank.iban" />
-                    <br />
-                </div>
-            </div>
+            <t t-call="brands_account.brand_partner_payment_instructions" />
         </xpath>
     </template>
 </odoo>

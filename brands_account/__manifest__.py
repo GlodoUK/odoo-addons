@@ -9,9 +9,10 @@
     "license": "LGPL-3",
     "depends": ["brands", "sale"],
     "data": [
-        "views/report_invoice.xml",
         "views/res_bank.xml",
         "views/res_partner_bank.xml",
+        "views/brand_partner_payment_instruction_template.xml",
+        "views/report_invoice.xml",
         "views/report_saleorder_document.xml",
         "views/sale_portal_template.xml",
     ],
