@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+
+    <template
+        id="report_sale_order_document"
+        inherit_id="sale.report_saleorder_document"
+    >
+        <xpath expr="//p[@id='fiscal_position_remark']" position="before">
+            <t
+                t-set="partner_bank"
+                t-value="doc.brand_id and doc.brand_id.partner_id.bank_ids and doc.brand_id.partner_id.bank_ids[0]"
+            />
+            <t t-call="brands_account.brand_partner_payment_instructions" />
+        </xpath>
+    </template>
+</odoo>

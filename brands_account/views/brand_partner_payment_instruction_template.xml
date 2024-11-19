@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template
+        id="brand_partner_payment_instructions"
+        name="Brand Partner Payment Instructions"
+    >
+        <div t-if="partner_bank">
+            <p>Please make payment to: <br />
+            </p>
+            <div>
+                <strong>
+                    Account Holder:
+                </strong>
+                <span
+                    t-field="partner_bank.acc_holder_name"
+                    t-if="partner_bank.acc_holder_name"
+                />
+                <span
+                    t-field="partner_bank.partner_id"
+                    t-if="not partner_bank.acc_holder_name"
+                />
+                <br />
+
+            </div>
+            <div>
+                <strong>Account #: </strong>
+                <span t-field="partner_bank.acc_number" />
+            </div>
+            <div>
+                <strong>Sort
+                    Code: </strong>
+                <span t-field="partner_bank.bank_sort_code" />
+                <br />
+            </div>
+            <div>
+                <strong>
+                    IBAN: </strong>
+                <span t-field="partner_bank.iban" />
+                <br />
+            </div>
+        </div>
+    </template>
+
+</odoo>
