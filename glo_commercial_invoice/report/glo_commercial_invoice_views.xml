@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="glo_commercial_invoice_report">
         <t t-call="web.html_container">
@@ -31,7 +31,8 @@
                     </div>
                     <div class="mt-5 clearfix">
                         <div class="text-center mb-5">
-                            <h6>The exporter of the products covered by this document declares
+                            <h6
+                            >The exporter of the products covered by this document declares
                                 that, except where otherwise clearly indicated,
                                 these products are of EU preferential origin.</h6>
                         </div>
@@ -66,16 +67,10 @@
                             >
                                 <thead>
                                     <tr>
-                                        <th
-                                            name="th_commodity_code"
-                                            class="text-start"
-                                        >
+                                        <th name="th_commodity_code" class="text-start">
                                             <span>Commodity Code</span>
                                         </th>
-                                        <th
-                                            name="th_description"
-                                            class="text-start"
-                                        >
+                                        <th name="th_description" class="text-start">
                                             <span>Description</span>
                                         </th>
                                         <th name="th_quantity" class="text-end">
@@ -131,9 +126,7 @@
                                             </td>
                                             <td name="td_quantity" class="text-end">
                                                 <span t-field="line.quantity" />
-                                                <span
-                                                    t-field="line.product_uom_id"
-                                                />
+                                                <span t-field="line.product_uom_id" />
                                             </td>
                                             <td name="td_price_unit">
                                                 <span
@@ -182,9 +175,7 @@
                                                 <tr class="border-black fw-bold">
                                                     <td>Total Amount</td>
                                                     <td class="text-end">
-                                                        <span
-                                                            t-out="overall_total"
-                                                        />
+                                                        <span t-out="overall_total" />
                                                     </td>
                                                 </tr>
                                                 <tr class="border-black fw-bold">
@@ -212,12 +203,14 @@
                         </div>
                     </div>
                     <div class="mt-4 text-center">
-                        <p>The exporter of the products covered by this document (Exporter Reference
+                        <p
+                        >The exporter of the products covered by this document (Exporter Reference
                             No <span
                                 t-field="o.partner_id.vat"
                             /> ) declares that, except where otherwise
                             clearly indicated, these products are of UK preferential origin.</p>
-                        <p> I declare that the products covered by this document are not subject
+                        <p
+                        > I declare that the products covered by this document are not subject
                             to any export or import prohibitions &amp; restrictions.</p>
                     </div>
                     <div class="mt-5 text-start">
