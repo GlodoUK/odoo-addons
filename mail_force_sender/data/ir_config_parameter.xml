@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="mail_force_sender" model="ir.config_parameter">
+        <field name="key">mail.force_sender</field>
+        <field name="value">1</field>
+    </record>
+</odoo>
