@@ -1,0 +1,17 @@
+<odoo>
+    <record id="product_supplierinfo_tree_view" model="ir.ui.view">
+        <field name="name">product_supplierinfo_tree_view</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_tmpl_id']" position="after">
+                <field name="possible_ptav_ids" widget="many2many_tags" invisible="1" />
+                <field
+                    name="apply_on_ptav_ids"
+                    widget="many2many_tags"
+                    attrs="{'invisible': [('product_id', '!=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
