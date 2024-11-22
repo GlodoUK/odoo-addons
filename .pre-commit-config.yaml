@@ -35,7 +35,7 @@ repos:
           - --header
           - "# generated from manifests external_dependencies"
   - repo: https://github.com/OCA/mirrors-flake8
-    rev: v3.4.1
+    rev: v4.0.1
     hooks:
       - id: flake8
         name: flake8 excluding __init__.py
@@ -50,10 +50,9 @@ repos:
           - --exit-zero
         verbose: true
         additional_dependencies: &pylint_deps
-          - pylint-odoo==3.5.0
+          - pylint-odoo==3.7.1
       - id: pylint
         name: pylint with mandatory checks
         args:
           - --rcfile=.pylintrc-mandatory
         additional_dependencies: *pylint_deps
-

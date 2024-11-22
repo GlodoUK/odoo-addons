@@ -6,7 +6,10 @@ class StockRule(models.Model):
 
     def _make_po_get_domain(self, values, partner):
         domain = super(StockRule, self)._make_po_get_domain(values, partner)
-        if not partner.property_supplier_consolidation or partner.property_supplier_consolidation == "consolidate":
+        if (
+            not partner.property_supplier_consolidation or
+            partner.property_supplier_consolidation == "consolidate"
+        ):
             return domain
 
         group_id = values.get("group_id")
@@ -14,7 +17,9 @@ class StockRule(models.Model):
         if not group_id or not group_id.sale_id:
             return domain
 
-        domain += (("order_line.move_dest_ids.group_id.sale_id", "=", group_id.sale_id.id),)
+        domain += (
+            ("order_line.move_dest_ids.group_id.sale_id", "=", group_id.sale_id.id),
+        )
         return domain
 
 

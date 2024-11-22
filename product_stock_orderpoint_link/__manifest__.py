@@ -5,15 +5,13 @@
     rules, and allows reorderpoints to be created from product templates and
     variants.
     """,
-    'author': "GlodoUK",
-    'website': "https://www.glodo.uk/",
+    'author': "Glo Networks",
+    'website': "https://github.com/GlodoUK/odoo-addons",
     'category': 'Uncategorized',
     'version': '12.0.1.0.0',
     'depends': ['stock'],
     'data': [
         'views/views.xml',
     ],
-    'demo': [
-    ],
-    "application": True,
+    'license': 'AGPL-3',
 }

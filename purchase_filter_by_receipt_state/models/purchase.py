@@ -3,18 +3,19 @@ from odoo.tools import float_is_zero, float_compare
 
 
 RECEIPT_STATES = [
-            ("no", "No Receipts"),
-            ("none", "All Outstanding"),
-            ("partial", "Some Outstanding"),
-            ("complete", "Fully Receipted"),
-            ("overcompleted", "Over Receipted"),
-        ]
+    ("no", "No Receipts"),
+    ("none", "All Outstanding"),
+    ("partial", "Some Outstanding"),
+    ("complete", "Fully Receipted"),
+    ("overcompleted", "Over Receipted"),
+]
 
 
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
-    receipt_status = fields.Selection(RECEIPT_STATES,
+    receipt_status = fields.Selection(
+        RECEIPT_STATES,
         default='no',
         store=True,
         readonly=True,
@@ -29,7 +30,12 @@ class PurchaseOrder(models.Model):
                 record.receipt_status = "no"
                 continue
 
-            line_receipt_status = record.order_line.filtered(lambda l: l.state != 'cancel').mapped('receipt_status')
+            line_receipt_status = (
+                record
+                .order_line
+                .filtered(lambda l: l.state != 'cancel')
+                .mapped('receipt_status')
+            )
 
             if all(
                 receipt_status == "none"
@@ -64,7 +70,8 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    receipt_status = fields.Selection(RECEIPT_STATES,
+    receipt_status = fields.Selection(
+        RECEIPT_STATES,
         default='no',
         store=True,
         readonly=True,
@@ -85,7 +92,11 @@ class PurchaseOrderLine(models.Model):
 
             remaining = record.product_uom_qty - record.qty_received
 
-            if remaining > 0 and float_compare(record.product_uom_qty, remaining, precision_digits=precision) == 0:
+            if remaining > 0 and float_compare(
+                record.product_uom_qty,
+                remaining,
+                precision_digits=precision
+            ) == 0:
                 record.receipt_status = "none"
                 continue
 
