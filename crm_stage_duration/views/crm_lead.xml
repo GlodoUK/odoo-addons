@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+
+    <!-- Extend crm.lead Form view with the new field "Stage Duration" -->
+    <record id="crm_lead_tree" model="ir.ui.view">
+        <field name="name">crm.lead.tree</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor" />
+        <field name="arch" type="xml">
+            <field name="stage_id" position="after">
+                <field name="stage_duration" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Extend the crm.lead Kanban view with the new field "Stage Duration" -->
+    <record id="crm_lead_case_kanban" model="ir.ui.view">
+        <field name="name">crm.lead.kanban</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[hasclass('oe_kanban_bottom_right')]/field[@name='user_id']"
+                position="before"
+            >
+                    <field name="stage_duration" />
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>
