@@ -1,0 +1,21 @@
+{
+    "version": "14.0.1.0.0",
+    "name": "brands",
+    "summary": "Allows a sale order and product to be associated with a brand",
+    "category": "Sales",
+    "application": True,
+    "author": "Glo Networks",
+    "website": "https://github.com/GlodoUK/odoo-addons",
+    "license": "Other proprietary",
+    "depends": ["sale", "product"],
+    "external_dependencies": {"python": [], "bin": []},
+    "data": [
+        "security/ir.model.access.csv",
+        "views/glo_brand.xml",
+        "views/account.xml",
+        "views/sale.xml",
+        "views/product.xml",
+        "views/templates.xml",
+        "data/data.xml",
+    ],
+}
