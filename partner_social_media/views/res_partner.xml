@@ -1,0 +1,83 @@
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Social Media">
+                    <field name="social_media_ids">
+                        <kanban>
+                            <field name="provider_id" />
+                            <field name="account" />
+                            <field name="website" />
+                            <field name="image_128" />
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div class="oe_kanban_global_click">
+                                        <div class="o_kanban_image">
+                                            <img
+                                                alt="Provider image"
+                                                t-if="record.image_128.raw_value"
+                                                t-att-src="kanban_image('res.partner.social.media.provider', 'image_128', record.provider_id.raw_value)"
+                                            />
+                                            <t t-if="!record.image_128.raw_value">
+                                                <field name="provider_id" />
+                                            </t>
+                                        </div>
+                                        <div class="oe_kanban_details">
+                                            <field name="account" />
+                                            <div t-if="record.website.raw_value"><field
+                                                    name="website"
+                                                    widget="url"
+                                                /></div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                </page>
+            </xpath>
+            <xpath
+                expr="//field[@name='child_ids']/form//field[@name='mobile']"
+                position="after"
+            >
+                <field
+                    name="social_media_ids"
+                    attrs="{'invisible': [('type', 'not in', ('contact', 'other', 'private'))]}"
+                >
+                    <kanban>
+                        <field name="provider_id" />
+                        <field name="account" />
+                        <field name="website" />
+                        <field name="image_128" />
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_kanban_global_click">
+                                    <div class="o_kanban_image">
+                                        <img
+                                            alt="Provider image"
+                                            t-if="record.image_128.raw_value"
+                                            t-att-src="kanban_image('res.partner.social.media.provider', 'image_128', record.provider_id.raw_value)"
+                                        />
+                                        <t t-if="!record.image_128.raw_value">
+                                            <field name="provider_id" />
+                                        </t>
+                                    </div>
+                                    <div class="oe_kanban_details">
+                                        <field name="account" />
+                                        <div t-if="record.website.raw_value"><field
+                                                name="website"
+                                                widget="url"
+                                            /></div>
+                                    </div>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                </field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

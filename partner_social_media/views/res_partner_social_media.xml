@@ -1,0 +1,66 @@
+<odoo>
+    <record id="view_social_form" model="ir.ui.view">
+        <field name="name">view_social_form</field>
+        <field name="model">res.partner.social.media</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field
+                            name="type"
+                            widget="radio"
+                            options="{'horizontal': true}"
+                        />
+                        <field
+                            name="website"
+                            widget="url"
+                            attrs="{'invisible': [('type', '=', 'manual')], 'required': [('type', '=', 'auto')]}"
+                            string="Paste Link"
+                        />
+                        <field
+                            name="provider_id"
+                            force_save="1"
+                            attrs="{'invisible': [('type', '=', 'auto')]}"
+                        />
+                        <field
+                            name="account"
+                            force_save="1"
+                            attrs="{'invisible': [('type', '=', 'auto')]}"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_provider_form" model="ir.ui.view">
+        <field name="name">view_provider_form</field>
+        <field name="model">res.partner.social.media.provider</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="image_1920" widget="image" />
+                        <field name="url_format" />
+                        <field name="extract_regex" />
+                        <field name="website" />
+                        <field name="font_awesome" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_provider_tree" model="ir.ui.view">
+        <field name="name">view_provider_tree</field>
+        <field name="model">res.partner.social.media.provider</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="image_128" widget="image" />
+                <field name="url_format" />
+                <field name="website" />
+                <field name="font_awesome" />
+            </tree>
+        </field>
+    </record>
+</odoo>
