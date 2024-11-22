@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_template_form_view_bom_button" model="ir.ui.view">
+        <field name="name">product.template</field>
+        <field name="model">product.template</field>
+        <field
+            name="inherit_id"
+            ref="stock.product_template_form_view_procurement_button"
+        />
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_open_product_lot']" position="after">
+                <button
+                    class="oe_stat_button"
+                    name="action_view_cpq_dynamic_bom"
+                    type="object"
+                    invisible="cpq_ok == False or cpq_dynamic_bom_count == 0"
+                    icon="fa-flask"
+                    groups="mrp.group_mrp_user"
+                >
+                    <field
+                        string="Dynamic Bill of Materials"
+                        name="cpq_dynamic_bom_count"
+                        widget="statinfo"
+                    />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
