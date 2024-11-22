@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="crm_case_form_view_oppor" model="ir.ui.view">
+        <field name="name">crm_case_form_view_oppor</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_form_view_oppor" />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="brand_id" placeholder="Brand"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_create_opportunity_simplified" model="ir.ui.view">
+        <field name="name">view_create_opportunity_simplified</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_create_opportunity_simplified" />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="brand_id" placeholder="Brand"/>
+            </field>
+        </field>
+    </record>
+</odoo>
