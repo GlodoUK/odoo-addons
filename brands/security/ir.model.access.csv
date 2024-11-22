@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_glo_brand_manager,brand,model_glo_brand,base.group_partner_manager,1,1,1,1
+access_glo_brand_system,brand,model_glo_brand,base.group_system,1,1,1,1
+access_glo_brand_public,brand.public,model_glo_brand,,1,0,0,0
