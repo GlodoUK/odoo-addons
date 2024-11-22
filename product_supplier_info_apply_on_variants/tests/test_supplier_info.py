@@ -28,28 +28,28 @@ class TestSupplierInfo(TransactionCase):
         self.env["product.supplierinfo"].create(
             [
                 {
-                    "name": self.wood_corner.id,
+                    "partner_id": self.wood_corner.id,
                     "product_tmpl_id": self.ipad_mini.product_tmpl_id.id,
                     "delay": 3,
                     "min_qty": 1,
                     "price": 750,
                 },
                 {
-                    "name": self.azure_int.id,
+                    "partner_id": self.azure_int.id,
                     "product_tmpl_id": self.ipad_mini.product_tmpl_id.id,
                     "delay": 3,
                     "min_qty": 1,
                     "price": 790,
                 },
                 {
-                    "name": self.azure_int.id,
+                    "partner_id": self.azure_int.id,
                     "product_tmpl_id": self.ipad_mini.product_tmpl_id.id,
                     "delay": 3,
                     "min_qty": 3,
                     "price": 785,
                 },
                 {
-                    "name": self.azure_int.id,
+                    "partner_id": self.azure_int.id,
                     "product_tmpl_id": self.monitor.product_tmpl_id.id,
                     "delay": 3,
                     "min_qty": 3,
@@ -116,7 +116,7 @@ class TestSupplierInfo(TransactionCase):
             [
                 {
                     "sequence": 1,
-                    "name": self.azure_int.id,
+                    "partner_id": self.azure_int.id,
                     "product_tmpl_id": thingy.id,
                     "delay": 3,
                     "min_qty": 99,
@@ -124,7 +124,7 @@ class TestSupplierInfo(TransactionCase):
                 },
                 {
                     "sequence": 2,
-                    "name": self.azure_int.id,
+                    "partner_id": self.azure_int.id,
                     "product_tmpl_id": thingy.id,
                     "delay": 3,
                     "min_qty": 1,
@@ -135,7 +135,7 @@ class TestSupplierInfo(TransactionCase):
                 },
                 {
                     "sequence": 3,
-                    "name": self.azure_int.id,
+                    "partner_id": self.azure_int.id,
                     "product_tmpl_id": thingy.id,
                     "delay": 3,
                     "min_qty": 1,
