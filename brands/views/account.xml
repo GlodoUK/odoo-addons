@@ -1,0 +1,44 @@
+<odoo>
+    <!-- Add brand to invoice -->
+    <record model="ir.ui.view" id="invoice_form">
+        <field name="name">glo_brand.invoice_form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']/div" position="before">
+                <field name="brand_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_invoice_tree">
+        <field name="name">glo_brand.view_invoice_tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="brand_id" optional="show" widget="badge" />
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_invoice_filter">
+        <field name="name">view_account_invoice_filter</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="brand_id" />
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <separator />
+                <filter
+                    string="Brand"
+                    name="brand_id"
+                    domain="[]"
+                    context="{'group_by':'brand_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

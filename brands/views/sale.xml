@@ -1,0 +1,70 @@
+<odoo>
+    <!-- Add brand to sale order -->
+    <record model="ir.ui.view" id="view_order_form">
+        <field name="name">glo_brand.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="brand_id" />
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='name']"
+                position="after"
+            >
+                <field
+                    name="brand_id"
+                    optional="show"
+                    decoration-danger="not brand_id == order_brand_id"
+                />
+                <field name="order_brand_id" attrs="{'column_invisible': True}" />
+            </xpath>
+            <!-- <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                <attribute name="decoration-danger">not brand_id == order_brand_id</attribute>
+            </xpath> -->
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_quotation_tree">
+        <field name="name">glo_brand.view_quotation_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="brand_id" optional="show" widget="badge" />
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_order_tree">
+        <field name="name">glo_brand.view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="brand_id" optional="show" widget="badge" />
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_sales_order_filter">
+        <field name="name">view_sales_order_filter</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="brand_id" />
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <separator />
+                <filter
+                    string="Brand"
+                    name="brand_id"
+                    domain="[]"
+                    context="{'group_by':'brand_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
