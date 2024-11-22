@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="view_order_form_inherited" model="ir.ui.view">
+            <field name="name">view_order_form_inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="priority">75</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="receipt_status" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_tree_inherited" model="ir.ui.view">
+            <field name="name">view_order_tree_inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree" />
+            <field name="priority">75</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_status']" position="before">
+                    <field name="receipt_status"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_filter" model="ir.ui.view">
+            <field name="name">view_purchase_order_filter</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='not_invoiced']" position="before">
+                    <filter string="No Receipts" name="pickings_complete" domain="[('receipt_status','=','no')]" />
+                    <filter string="All Receipts Outstanding" name="pickings_complete" domain="[('receipt_status','=','none')]" />
+                    <filter string="Some Receipts Outstanding" name="pickings_partially_complete" domain="[('receipt_status','=','partial')]" />
+                    <filter string="Fully Receipted" name="pickings_overcompleted" domain="[('receipt_status','=','complete')]" />
+                    <filter string="Over Receipted" name="pickings_overcompleted" domain="[('receipt_status','=','overcompleted')]" />
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
