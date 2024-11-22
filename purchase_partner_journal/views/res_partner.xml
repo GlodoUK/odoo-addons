@@ -1,0 +1,16 @@
+<odoo>
+    <record id="view_partner_property_form" model="ir.ui.view">
+        <field name="name">view_partner_property_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <group name="purchase" position="inside">
+                <field
+                    name="property_purchase_journal_id"
+                    options="{'no_create': True, 'no_open': True}"
+                />
+            </group>
+        </field>
+    </record>
+</odoo>
