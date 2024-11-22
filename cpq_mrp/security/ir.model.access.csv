@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cpq_dynamic_bom,access_cpq_dynamic_bom,model_cpq_dynamic_bom,mrp.group_mrp_user,1,0,0,0
+access_cpq_dynamic_bom_line,access_cpq_dynamic_bom_line,model_cpq_dynamic_bom_line,mrp.group_mrp_user,1,0,0,0
+access_cpq_dynamic_bom_manager,access_cpq_dynamic_bom_manager,model_cpq_dynamic_bom,mrp.group_mrp_manager,1,1,1,1
+access_cpq_dynamic_bom_line_manager,access_cpq_dynamic_bom_line_manager,model_cpq_dynamic_bom_line,mrp.group_mrp_manager,1,1,1,1
+access_cpq_dynamic_bom_stock,access_cpq_dynamic_bom_stock,model_cpq_dynamic_bom,stock.group_stock_user,1,0,0,0
+access_cpq_dynamic_bom_line_stock,access_cpq_dynamic_bom_line_stock,model_cpq_dynamic_bom_line,stock.group_stock_user,1,0,0,0
