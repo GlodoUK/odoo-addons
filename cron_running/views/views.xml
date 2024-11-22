@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <record id="ir_cron_view_tree" model="ir.ui.view">
+      <field name="name">ir_cron_view_tree</field>
+      <field name="model">ir.cron</field>
+      <field name="inherit_id" ref="base.ir_cron_view_tree"/>
+      <field name="priority">75</field>
+      <field name="arch" type="xml">
+        <field name="active" position="after">
+          <field name="running"/>
+        </field>
+      </field>
+    </record>
+  </data>
+</odoo>

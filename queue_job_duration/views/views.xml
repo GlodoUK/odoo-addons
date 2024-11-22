@@ -1,0 +1,13 @@
+<odoo>
+    <record model="ir.ui.view" id="view_queue_job_tree">
+        <field name="name">view_queue_job_tree</field>
+        <field name="priority">75</field>
+        <field name="model">queue.job</field>
+        <field name="inherit_id" ref="queue_job.view_queue_job_tree"/>
+        <field name="arch" type="xml">
+            <field name="date_done" position="after">
+                <field name="duration" widget="float"/>
+            </field>
+        </field>
+    </record>
+</odoo>
