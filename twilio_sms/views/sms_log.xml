@@ -1,0 +1,52 @@
+<odoo>
+    <record id="action_window_twilio_sms_log" model="ir.actions.act_window">
+        <field name="name">Twilio SMS Logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">twilio_sms.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_twilio_sms_log_tree" model="ir.ui.view">
+        <field name="name">view_twilio_sms_log_tree</field>
+        <field name="model">twilio_sms.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="to" />
+                <field name="create_date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_twilio_sms_log_form" model="ir.ui.view">
+        <field name="name">view_twilio_sms_log_form</field>
+        <field name="model">twilio_sms.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="to" />
+                        <field name="account_sid" />
+                        <field name="body" />
+                        <field name="api_response" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_custom_twilio_sms_root"
+        parent="base.menu_custom"
+        name="Twilio SMS"
+    />
+    <menuitem
+        id="menu_custom_twilio_sms_log"
+        parent="menu_custom_twilio_sms_root"
+        name="Logs"
+        action="action_window_twilio_sms_log"
+    />
+</odoo>
