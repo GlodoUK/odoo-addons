@@ -1,0 +1,29 @@
+<odoo>
+    <data noupdate="1">
+        <record id="main_brand" model="glo.brand">
+            <field name="name">Your Company Brand</field>
+            <field name="partner_id" ref="base.main_partner" />
+        </record>
+
+        <record id="other_brand_partner" model="res.partner">
+            <field name="name">Other Partner Brand</field>
+            <field name="street">Address 1</field>
+            <field name="street2">Address 2</field>
+            <field name="city">City</field>
+            <field name="zip">AA1 1AA</field>
+            <field name="country_id" ref="base.uk"></field>
+            <field name="phone">01234 567890</field>
+            <field name="website">https://www.somebranddomain.com/</field>
+            <field name="email">info@somebranddomain.com</field>
+            <field name="customer">False</field>
+            <field name="supplier">False</field>
+        </record>
+
+        <record id="other_brand" model="glo.brand">
+            <field name="name">Other Partner Brand</field>
+            <field name="partner_id" ref="other_brand_partner"/>
+        </record>
+
+        <function model="glo.brand" name="_change_report_layout_id" />
+    </data>
+</odoo>
