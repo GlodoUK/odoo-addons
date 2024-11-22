@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_brand_search_form_view" model="ir.ui.view">
+        <field name="name">glo.brand.search.form</field>
+        <field name="model">glo.brand</field>
+        <field name="arch" type="xml">
+            <search string="Product Brand">
+                <field name="name" />
+                <field name="is_default" />
+            </search>
+        </field>
+    </record>
+
+    <record id="view_product_brand_form" model="ir.ui.view">
+        <field name="name">glo.brand.form</field>
+        <field name="model">glo.brand</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="logo" widget="image" class="oe_avatar" />
+                    <div class="oe_title">
+                        <label for="name" string="Brand Name" class="oe_edit_only" />
+                        <h1><field name="name" /></h1>
+                    </div>
+                    <group>
+                        <field name="is_default" />
+                        <field name="active" />
+                        <field name="partner_id" />
+                        <field name="street" />
+                        <field name="street2" />
+                        <field name="city" />
+                        <field name="state_id" />
+                        <field name="zip" />
+                        <field name="country_id" />
+                        <field name="phone" />
+                        <field name="email" />
+                        <field name="website" />
+                        <field name="vat" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_brand_tree" model="ir.ui.view">
+        <field name="name">glo.brand.tree</field>
+        <field name="model">glo.brand</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_product_brand">
+        <field name="name">Brand</field>
+        <field name="res_model">glo.brand</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="product_brand_menu"
+        name="Brands"
+        parent="sale.menu_sale_config"
+        sequence="6"
+        action="action_product_brand"
+        groups="base.group_user"
+    />
+
+    <!-- Add brand to sale order -->
+    <record model="ir.ui.view" id="view_order_form">
+        <field name="name">glo_brand.view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="brand_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add brand to invoice -->
+    <record model="ir.ui.view" id="invoice_form">
+        <field name="name">glo_brand.invoice_form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']/div" position="before">
+                <field name="brand_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add brand to product -->
+    <record id="product_template_form_brand_add" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <field name="sale_ok" position="before">
+                <field name="brand_id" placeholder="Brand" /><div />
+            </field>
+        </field>
+    </record>
+
+    <template
+        id="brands.external_layout_boxed"
+        inherit_id="web.external_layout_boxed"
+        priority="99"
+    >
+        <xpath expr="//div[hasclass('o_boxed_header')]//img" position="replace">
+
+            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
+                <img t-att-src="image_data_uri(o.brand_id.logo)" alt="Logo" />
+            </t>
+            <t t-else="">
+                <img
+                    t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    alt="Logo"
+                />
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div name="company_address" class="float-right mb4">
+                <t t-if="o and 'brand_id' in o and o.brand_id">
+                    <span
+                        t-field="o.brand_id.partner_id"
+                        t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"
+                    />
+                </t>
+                <t t-else="">
+                    <span
+                        t-if="company.company_details"
+                        t-field="company.company_details"
+                    />
+                </t>
+            </div>
+        </xpath>
+
+        <xpath
+            expr="//div[@t-attf-class='footer o_boxed_footer o_company_#{company.id}_layout']"
+            position="replace"
+        >
+            <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
+                <div class="text-center">
+                    <ul class="list-inline">
+                        <t t-if="o and 'brand_id' in o and o.brand_id">
+                            <li
+                                t-if="o.brand_id.phone"
+                                class="list-inline-item"
+                            >Tel: <span t-field="o.brand_id.phone" /></li>
+                            <li
+                                t-if="o.brand_id.email"
+                                class="list-inline-item"
+                            >Mail: <span t-field="o.brand_id.email" /></li>
+                            <li
+                                t-if="o.brand_id.website"
+                                class="list-inline-item"
+                            >Web: <span t-field="o.brand_id.website" /></li>
+                            <li t-if="o.brand_id.vat" class="list-inline-item"><t
+                                    t-esc="o.brand_id.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="o.brand_id.vat" /></li>
+                        </t>
+                        <t t-else="">
+                            <li t-if="company.phone" class="list-inline-item">Tel: <span
+                                    t-field="company.phone"
+                                /></li>
+                            <li
+                                t-if="company.email"
+                                class="list-inline-item"
+                            >Mail: <span t-field="company.email" /></li>
+                            <li
+                                t-if="company.website"
+                                class="list-inline-item"
+                            >Web: <span t-field="company.website" /></li>
+                            <li t-if="company.vat" class="list-inline-item"><t
+                                    t-esc="company.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="company.vat" /></li>
+                        </t>
+                    </ul>
+                    <div t-field="company.report_footer" />
+                    <div t-if="report_type == 'pdf'">
+                        Page: <span class="page" /> / <span class="topage" />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+    <template
+        id="brands.external_layout_striped"
+        inherit_id="web.external_layout_striped"
+        priority="99"
+    >
+        <xpath expr="//div[hasclass('o_background_header')]//img" position="replace">
+
+            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
+                <img
+                    t-att-src="image_data_uri(o.brand_id.logo)"
+                    class="float-left"
+                    alt="Logo"
+                />
+            </t>
+            <t t-else="">
+                <img
+                    t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    class="float-left"
+                    alt="Logo"
+                />
+            </t>
+        </xpath>
+
+        <xpath expr="//div[hasclass('company_address')]" position="replace">
+            <div class="float-left company_address">
+                <t t-if="o and 'brand_id' in o and o.brand_id">
+                <div>
+                    <strong t-field="o.brand_id.partner_id.name" />
+                </div>
+                <span
+                        t-field="o.brand_id.partner_id"
+                        t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: true}"
+                    />
+                </t>
+                <t t-else="">
+                    <span
+                        t-if="company.company_details"
+                        t-field="company.company_details"
+                    />
+                </t>
+            </div>
+        </xpath>
+
+        <xpath
+            expr="//div[@t-attf-class='o_company_#{company.id}_layout footer o_background_footer']"
+            position="replace"
+        >
+            <div
+                t-attf-class="o_company_#{company.id}_layout footer o_background_footer"
+            >
+                <div class="text-center">
+                    <ul class="list-inline text-muted">
+                        <t t-if="o and 'brand_id' in o and o.brand_id">
+                            <li t-if="o.brand_id.phone" class="list-inline-item"><i
+                                    class="fa fa-phone"
+                                    role="img"
+                                    aria-label="Phone"
+                                    title="Phone"
+                                /> <span t-field="o.brand_id.phone" /></li>
+                            <li t-if="o.brand_id.email" class="list-inline-item"><i
+                                    class="fa fa-at"
+                                    role="img"
+                                    aria-label="Email"
+                                    title="Email"
+                                /> <span t-field="o.brand_id.email" /></li>
+                            <li t-if="o.brand_id.website" class="list-inline-item"><i
+                                    class="fa fa-globe"
+                                    role="img"
+                                    aria-label="Website"
+                                    title="Website"
+                                /> <span t-field="o.brand_id.website" /></li>
+                            <li t-if="o.brand_id.vat" class="list-inline-item"><i
+                                    class="fa fa-building-o"
+                                    role="img"
+                                    aria-label="Fiscal number"
+                                /><t
+                                    t-esc="o.brand_id.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="o.brand_id.vat" /></li>
+                        </t>
+                        <t t-else="">
+                            <li t-if="company.phone" class="list-inline-item"><i
+                                    class="fa fa-phone"
+                                    role="img"
+                                    aria-label="Phone"
+                                    title="Phone"
+                                /> <span t-field="company.phone" /></li>
+                            <li t-if="company.email" class="list-inline-item"><i
+                                    class="fa fa-at"
+                                    role="img"
+                                    aria-label="Email"
+                                    title="Email"
+                                /> <span t-field="company.email" /></li>
+                            <li t-if="company.website" class="list-inline-item"><i
+                                    class="fa fa-globe"
+                                    role="img"
+                                    aria-label="Website"
+                                    title="Website"
+                                /> <span t-field="company.website" /></li>
+                            <li t-if="company.vat" class="list-inline-item"><i
+                                    class="fa fa-building-o"
+                                    role="img"
+                                    aria-label="Fiscal number"
+                                /><t
+                                    t-esc="company.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="company.vat" /></li>
+                        </t>
+                    </ul>
+                    <ul class="list-inline">
+                        <div t-field="company.report_footer" />
+                    </ul>
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page" /> of <span class="topage" />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+    <template
+        id="brands.external_layout_bold"
+        inherit_id="web.external_layout_bold"
+        priority="99"
+    >
+        <xpath expr="//div[hasclass('o_clean_header')]//img" position="replace">
+
+            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
+                <img t-att-src="image_data_uri(o.brand_id.logo)" alt="Logo" />
+            </t>
+            <t t-else="">
+                <img
+                    t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    alt="Logo"
+                />
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div class="col-5 offset-1" name="company_address">
+                <ul class="list-unstyled">
+                <t t-if="o and 'brand_id' in o and o.brand_id">
+                        <strong><li t-if="o.brand_id.partner_id.name"><span
+                                    t-field="o.brand_id.partner_id.name"
+                                /></li></strong>
+                        <li t-if="o.brand_id.partner_id.vat"><t
+                                t-esc="o.brand_id.partner_id.country_id.vat_label or 'Tax ID'"
+                            />: <span t-field="o.brand_id.partner_id.vat" /></li>
+                        <li t-if="o.brand_id.partner_id.phone">Tel: <span
+                                t-field="o.brand_id.partner_id.phone"
+                            /></li>
+                        <li t-if="o.brand_id.partner_id.email"><span
+                                t-field="o.brand_id.partner_id.email"
+                            /></li>
+                        <li t-if="o.brand_id.partner_id.website"><span
+                                t-field="o.brand_id.partner_id.website"
+                            /></li>
+                </t>
+                <t t-else="">
+                    <strong><li t-if="company.name"><span
+                                    t-field="company.name"
+                                /></li></strong>
+                    <li t-if="forced_vat or company.vat">
+                        <t t-esc="company.country_id.vat_label or 'Tax ID'" />:
+                        <span t-if="forced_vat" t-esc="forced_vat" />
+                        <span t-else="" t-field="company.vat" />
+                    </li>
+                    <li t-if="company.phone">Tel: <span
+                                class="o_force_ltr"
+                                t-field="company.phone"
+                            /></li>
+                    <li t-if="company.email"><span t-field="company.email" /></li>
+                    <li t-if="company.website"><span t-field="company.website" /></li>
+                </t>
+                </ul>
+            </div>
+        </xpath>
+
+        <xpath
+            expr="//div[@t-attf-class='footer o_clean_footer o_company_#{company.id}_layout']"
+            position="replace"
+        >
+            <div t-attf-class="footer o_clean_footer o_company_#{company.id}_layout">
+                <div class="row">
+                    <div class="col-4">
+                        <div t-field="company.report_footer" />
+                    </div>
+                    <div class="col-4">
+                        <t t-if="o and 'brand_id' in o and o.brand_id">
+                            <span
+                                class="company_address"
+                                t-field="o.brand_id.partner_id"
+                                t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: true}"
+                            />
+                        </t>
+                        <t t-else="">
+                            <span
+                                t-if="company.company_details"
+                                t-field="company.company_details"
+                            />
+                        </t>
+                    </div>
+                    <div class="col-3">
+                        <h5 class="mt0 mb0" t-field="company.report_header" />
+                    </div>
+                    <div class="col-1">
+                        <ul
+                            t-if="report_type == 'pdf'"
+                            class="list-inline pagenumber float-right text-center"
+                        >
+                            <li class="list-inline-item"><strong><span
+                                        class="page"
+                                    /></strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+    <template
+        id="brands.external_layout_standard"
+        inherit_id="web.external_layout_standard"
+        priority="99"
+    >
+        <xpath
+            expr="//div[@t-attf-class='header o_company_#{company.id}_layout']//img"
+            position="replace"
+        >
+
+            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
+                <img
+                    t-att-src="image_data_uri(o.brand_id.logo)"
+                    style="max-height: 45px"
+                    alt="Logo"
+                />
+            </t>
+            <t t-else="">
+                <img
+                    t-if="company.logo"
+                    t-att-src="image_data_uri(company.logo)"
+                    style="max-height: 45px"
+                    alt="Logo"
+                />
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div class="col-6" name="company_address">
+                <t t-if="o and 'brand_id' in o and o.brand_id">
+                    <div
+                        t-field="o.brand_id.partner_id"
+                        t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"
+                    />
+                </t>
+                <t t-else="">
+                    <span
+                        t-if="company.company_details"
+                        t-field="company.company_details"
+                    />
+                </t>
+            </div>
+        </xpath>
+
+        <xpath
+            expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']"
+            position="replace"
+        >
+            <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <ul class="list-inline mb4">
+                        <t t-if="o and 'brand_id' in o and o.brand_id">
+                            <li
+                                t-if="o.brand_id.partner_id.phone"
+                                class="list-inline-item"
+                            >Phone: <span t-field="o.brand_id.partner_id.phone" /></li>
+                            <li
+                                t-if="o.brand_id.partner_id.email"
+                                class="list-inline-item"
+                            >Email: <span t-field="o.brand_id.partner_id.email" /></li>
+                            <li
+                                t-if="o.brand_id.partner_id.website"
+                                class="list-inline-item"
+                            >Web: <span t-field="o.brand_id.partner_id.website" /></li>
+                            <li
+                                t-if="o.brand_id.partner_id.vat"
+                                class="list-inline-item"
+                            ><t
+                                    t-esc="o.brand_id.partner_id.country_id.vat_label or 'Tax ID'"
+                                />: <span t-field="o.brand_id.partner_id.vat" /></li>
+                        </t>
+                        <t t-else="">
+                            <div t-field="company.report_footer" />
+                        </t>
+                    </ul>
+
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page" /> / <span class="topage" />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+</odoo>
