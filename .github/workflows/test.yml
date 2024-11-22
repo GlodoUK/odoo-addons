@@ -3,30 +3,18 @@ name: tests
 on:
   pull_request:
     branches:
-<<<<<<< HEAD
-      - "15.0*"
-  push:
-    branches:
-      - "15.0"
-      - "15.0-ocabot-*"
-=======
       - "17.0*"
   push:
     branches:
       - "17.0"
       - "17.0-ocabot-*"
->>>>>>> odoo-addons/17.0
 
 jobs:
   unreleased-deps:
     runs-on: ubuntu-latest
     name: Detect unreleased dependencies
     steps:
-<<<<<<< HEAD
-      - uses: actions/checkout@v2
-=======
       - uses: actions/checkout@v3
->>>>>>> odoo-addons/17.0
       - run: |
           for reqfile in requirements.txt test-requirements.txt ; do
               if [ -f ${reqfile} ] ; then
