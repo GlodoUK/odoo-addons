@@ -7,7 +7,7 @@
     "application": True,
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
-    "license": "Other proprietary",
+    "license": "AGPL-3",
     "depends": ["onchange_helper"],
     "external_dependencies": {"python": [], "bin": []},
     "data": [],
