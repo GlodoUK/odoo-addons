@@ -8,19 +8,19 @@ class TestPreReserve(TestPreReserveCommon):
         self.receipt_move._action_confirm()
 
         move_line = self.receipt_move.move_line_ids[0]
-        self.assertEqual(move_line.product_qty, 100.0)
-        self.assertEqual(move_line.qty_done, 0.0)
-        move_line.qty_done = 100.0
+        self.assertEqual(move_line.quantity, 100.0)
+        self.assertFalse(move_line.picked)
+        move_line.picked = True
 
         self.receipt_move._action_done()
 
-        self.assertEqual(self.customer_move1.reserved_availability, 0.0)
-        self.assertEqual(self.customer_move2.reserved_availability, 0.0)
+        self.assertEqual(self.customer_move1.quantity, 0.0)
+        self.assertEqual(self.customer_move2.quantity, 0.0)
 
         (self.customer_move1 + self.customer_move2)._action_assign()
 
-        self.assertEqual(self.customer_move1.reserved_availability, 75.0)
-        self.assertEqual(self.customer_move2.reserved_availability, 25.0)
+        self.assertEqual(self.customer_move1.quantity, 75.0)
+        self.assertEqual(self.customer_move2.quantity, 25.0)
 
     def test_preserve(self):
         self.customer_move1._action_confirm()
@@ -43,19 +43,19 @@ class TestPreReserve(TestPreReserveCommon):
         )
 
         move_line = self.receipt_move.move_line_ids[0]
-        self.assertEqual(move_line.product_qty, 100.0)
-        self.assertEqual(move_line.qty_done, 0.0)
-        move_line.qty_done = 100.0
+        self.assertEqual(move_line.quantity, 100.0)
+        self.assertFalse(move_line.picked)
+        move_line.picked = True
 
         self.receipt_move._action_done()
 
-        self.assertEqual(self.customer_move1.reserved_availability, 0.0)
-        self.assertEqual(self.customer_move2.reserved_availability, 50.0)
+        self.assertEqual(self.customer_move1.quantity, 0.0)
+        self.assertEqual(self.customer_move2.quantity, 50.0)
 
         (self.customer_move1 + self.customer_move2)._action_assign()
 
-        self.assertEqual(self.customer_move1.reserved_availability, 50.0)
-        self.assertEqual(self.customer_move2.reserved_availability, 50.0)
+        self.assertEqual(self.customer_move1.quantity, 50.0)
+        self.assertEqual(self.customer_move2.quantity, 50.0)
 
     def test_unlink_preserve(self):
         self.customer_move1._action_confirm()
