@@ -3,7 +3,7 @@
     "summary": """
         Wizard to create BoM component lines based on matching product attributes""",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Inventory",
     "version": "17.0.1.0.0",
     "depends": ["product", "product_variant_configurator", "mrp"],

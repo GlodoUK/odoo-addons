@@ -109,9 +109,7 @@ This may not be accurate if other links are made/broken"""
         # therefore it will never be 100% accurate.
 
         src_move_available = src_move_id.product_uom_qty - sum(
-            src_move_id.move_dest_ids.mapped(
-                lambda c: c.product_uom_qty - c.reserved_availability
-            )
+            src_move_id.move_dest_ids.mapped(lambda c: c.product_uom_qty - c.quantity)
         )
 
         if (
@@ -127,9 +125,7 @@ This may not be accurate if other links are made/broken"""
                 % (src_move_id)
             )
 
-        dest_move_required = (
-            dest_move_id.product_uom_qty - dest_move_id.reserved_availability
-        )
+        dest_move_required = dest_move_id.product_uom_qty - dest_move_id.quantity
 
         potentially_reserved = 0.0
 
@@ -271,7 +267,7 @@ This may not be accurate if other links are made/broken"""
             src_move_available = src_move_id.product_uom_qty
 
             for dest_move_id in src_move_id.move_dest_ids:
-                qty = dest_move_id.product_uom_qty - dest_move_id.reserved_availability
+                qty = dest_move_id.product_uom_qty - dest_move_id.quantity
 
                 reserved = 0
 

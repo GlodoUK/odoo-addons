@@ -3,7 +3,7 @@
     "summary": """
         Simple wizard to build dynamic variants from a product template""",
     "author": "Glo Networks",
-    "website": "https://github.com/GlodoUK/stock-delivery",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Inventory",
     "version": "17.0.1.0.0",
     "depends": ["product", "product_variant_configurator"],
