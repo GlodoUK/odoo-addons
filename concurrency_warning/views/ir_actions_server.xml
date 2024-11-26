@@ -1,0 +1,22 @@
+<odoo>
+    <record model="ir.ui.view" id="view_server_action_form">
+        <field name="name">view_server_action_form</field>
+        <field name="model">ir.actions.server</field>
+        <field name="inherit_id" ref="base.view_server_action_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Poke"
+                    name="poke"
+                    attrs="{'invisible': [('state', '!=', 'poke')]}"
+                >
+                    <group>
+                        <field name="poke_msg" />
+                        <field name="poke_refresh" />
+                        <field name="poke_type" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
