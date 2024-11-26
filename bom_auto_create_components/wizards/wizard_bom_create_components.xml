@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="wizard_bom_create_components_form" model="ir.ui.view">
+        <field name="name">wizard_bom_create_components_form</field>
+        <field name="model">wizard.bom.create.components</field>
+        <field name="arch" type="xml">
+            <form string="Components Creation">
+                <sheet>
+                    <group name="product_info">
+                        <field name="product_tmpl_id" />
+                        <field name="variants_to_create" />
+                        <field name="component_product_id" />
+                    </group>
+                    <field
+                        name="line_ids"
+                        nolabel="1"
+                        invisible="not component_product_id or not line_ids"
+                    >
+                        <tree editable="top" create="false" delete="false">
+                            <field name="attribute_id" readonly="1" force_save="1" />
+                            <field name="required" readonly="1" force_save="1" />
+                            <field name="attribute_value_ids" widget="many2many_tags" />
+                            <field
+                                name="selected_value_ids"
+                                attrs="{'required': [('required', '=', True)]}"
+                                widget="many2many_tags"
+                                domain="[('id', 'in', attribute_value_ids or [])]"
+                                options="{'no_create': True}"
+                            />
+                        </tree>
+                    </field>
+                    <p
+                        invisible="not component_product_id or (component_product_id and line_ids)"
+                    >There
+                        are no
+                        matching attribute values in the two selected products</p>
+                </sheet>
+                <footer>
+                    <button
+                        string="Create Components"
+                        name="action_create_components"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="wizard_bom_create_components_action" model="ir.actions.act_window">
+        <field name="name">Bom Auto Component Creation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.bom.create.components</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
