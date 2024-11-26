@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product_normal_form_view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span
+                    class="d-inline-block"
+                    attrs="{'invisible': [('cpq_ok', '=', False)]}"
+                >
+                    <field name="cpq_ok" />
+                    <label for="cpq_ok" />
+                </span>
+            </xpath>
+            <xpath expr="//page[@name='general_information']/group" position="inside">
+                <group name="general_cpq" string="Configurable Info" colspan="2">
+                    <field name="cpq_custom_value_ids" widget="many2many_tags" />
+                    <field name="cpq_combination_indices" />
+                    <field name="cpq_custom_combination_indices" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_product_tree_view" model="ir.ui.view">
+        <field name="name">product_product_tree_view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='product_template_variant_value_ids']"
+                position="after"
+            >
+                <field name="cpq_ok" />
+                <field
+                    name="cpq_custom_value_ids"
+                    widget="many2many_tags"
+                    attrs="{'invisible': [('cpq_ok', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

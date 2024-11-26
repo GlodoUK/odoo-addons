@@ -8,3 +8,5 @@ paramiko
 pycurl
 requests
 scp
+phonenumbers
+twilio

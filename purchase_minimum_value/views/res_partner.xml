@@ -1,0 +1,38 @@
+<odoo>
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">purchase_minimum_value list</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='purchase']" position="inside">
+                <label for="property_minimum_purchase_order_action" />
+                <div>
+                    <div>
+                        <field
+                            name="property_minimum_purchase_order_action"
+                            nolabel="1"
+                        />
+
+                        <div
+                            attrs="{'invisible': [('property_minimum_purchase_order_action', '!=', 'block')]}"
+                        >
+                            <field
+                                name="property_minimum_purchase_order_currency_id"
+                                nolabel="1"
+                                attrs="{'required': [('property_minimum_purchase_order_action', '=', 'block')]}"
+                            />
+
+                            <field
+                                name="property_minimum_purchase_order_value"
+                                nolabel="1"
+                                attrs="{'required': [('property_minimum_purchase_order_action', '=', 'block')]}"
+                                widget="monetary"
+                                options="{'currency_field': 'property_minimum_purchase_order_currency_id'}"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
