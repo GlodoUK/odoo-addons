@@ -1,0 +1,52 @@
+<odoo>
+    <record id="view_edi_envelope_route_form" model="ir.ui.view">
+        <field name="name">view_edi_envelope_route_form</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_envelope_route_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='protocol']" position="after">
+                <field name="is_magento" invisible="1" />
+                <field
+                    name="magento_endpoint"
+                    attrs="{'required': [('protocol', '=', 'magento')], 'invisible': [('protocol', '!=' , 'magento')]}"
+                />
+                <field
+                    name="magento_skip_cancelled_orders"
+                    attrs="{'invisible': ['|', ('protocol', '!=' , 'magento'), ('magento_endpoint', '!=', 'orders/')]}"
+                />
+                <field
+                    name="magento_skip_unpaid_orders"
+                    attrs="{'invisible': ['|', ('protocol', '!=' , 'magento'), ('magento_endpoint', '!=', 'orders/')]}"
+                />
+            </xpath>
+            <xpath expr="//notebook" path="inside">
+                <page
+                    name="Magento Settings"
+                    attrs="{'invisible': ['|', ('is_magento', '!=', True),('protocol', '!=', 'magento')]}"
+                >
+                    <group
+                        attrs="{'invisible': ['|', '|', ('protocol', '!=', 'magento'), ('direction', '=', 'out'), ('magento_endpoint', '!=', 'products/')]}"
+                    >
+                        <field name="magento_override_existing_products" />
+                    </group>
+                    <group
+                        attrs="{'invisible': ['|', ('protocol', '!=', 'magento'), ('direction', '=', 'out')]}"
+                        string="Record filters"
+                    >
+                        <field
+                            name="magento_filters"
+                            placeholder="{&#10;#Example&#10;# Each line treated as AND&#10;'filter1': {'value': 'value1', 'operation': 'eq'},&#10;'filter2': {'value': 'value2', 'operation': 'gt'},&#10;'filter3': {'value': 'value3', 'operation': 'lt'},&#10;'_or1': {&#10;# Each sub-line treated as OR&#10;'filter4': {'value': 'value4', 'operation': 'eq'},&#10;'filter5': {'value': 'value5', 'operation': 'eq'},&#10;},&#10;'_or2': {&#10;# Each OR must have a unique identifier&#10;'filter6': {'value': 'value6', 'operation': 'eq'},&#10;'filter7': {'value': 'value7', 'operation': 'eq'},&#10;},&#10;}"
+                        />
+                    </group>
+                    <group
+                        attrs="{'invisible': ['|', '|', ('protocol', '!=', 'magento'), ('direction', '=', 'out'), ('magento_endpoint', '!=', 'products/')]}"
+                        string="Product Attribute Filters"
+                    >
+                        <field name="magento_in_ignore_attributes" />
+                        <field name="magento_in_readonly_attributes" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

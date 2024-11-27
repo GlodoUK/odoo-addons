@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="edi_magento_journal" model="account.journal">
+        <field name="name">Magento Payments</field>
+        <field name="code">MAG</field>
+        <field name="type">bank</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+</odoo>

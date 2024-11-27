@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_edi_res_partner_base_group_user,edi_res_partner internal users,model_edi_res_partner,base.group_user,1,0,0,0
+access_edi_res_partner_connector_group_connector_manager,edi_res_partner connector manager,model_edi_res_partner,connector.group_connector_manager,1,1,1,1

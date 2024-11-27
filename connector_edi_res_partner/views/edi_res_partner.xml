@@ -1,0 +1,19 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_res_partner_form">
+        <field name="name">view_edi_res_partner_form</field>
+        <field name="model">edi.res.partner</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="backend_id" widget="many2one" />
+                        <field name="edi_message_id" widget="many2one" />
+                        <field name="edi_external_id" />
+                        <field name="edi_metadata_string" />
+                        <field name="odoo_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

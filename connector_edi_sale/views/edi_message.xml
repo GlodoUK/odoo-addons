@@ -1,0 +1,22 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_message_form">
+        <field name="name">view_edi_message_form</field>
+        <field name="model">edi.message</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_message_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='related_docs']" position="inside">
+                <group>
+                <field name="edi_sale_order_ids" string="Sales">
+                    <tree>
+                        <field name="odoo_id" widget="many2one" />
+                        <field name="state" />
+                        <field name="create_date" />
+                        <field name="write_date" />
+                    </tree>
+                </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

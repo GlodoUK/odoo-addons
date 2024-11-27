@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="wizard_magento_update_attribute" model="ir.ui.view">
+        <field name="name">wizard_magento_update_attribute</field>
+        <field name="model">wizard.magento.update.attribute</field>
+        <field name="arch" type="xml">
+            <form string="Update Magento Attribute">
+                <group>
+                    <field name="backend_id" attrs="{'invisible': True}" />
+                    <field name="available_attribute_ids" attrs="{'invisible': True}" />
+                    <field name="product_ids" attrs="{'invisible': True}" />
+                    <field
+                        name="attribute_id"
+                        domain="[('id', 'in', available_attribute_ids)]"
+                    />
+                    <field name="readonly" invisible="1" />
+                </group>
+                <group>
+                    <field name="is_selection" attrs="{'invisible': True}" />
+                    <field
+                        name="field_type"
+                        attrs="{'invisible': [('attribute_id', '=', False)], 'readonly': True}"
+                    />
+                    <field
+                        name="frontend_input"
+                        attrs="{'invisible': [('attribute_id', '=', False)], 'readonly': True}"
+                    />
+                    <field
+                        name="selected_value"
+                        widget="many2many_tags"
+                        attrs="{'invisible': [('is_selection', '=', False)], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field
+                        name="text_value"
+                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'textarea', 'select', 'multiselect', 'date', 'price', 'weight', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field
+                        name="multi_text_value"
+                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'text', 'select', 'multiselect', 'date', 'price', 'weight', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field
+                        name="boolean_value"
+                        widget="boolean_toggle"
+                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', '!=', 'boolean')], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field
+                        name="date_value"
+                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', '!=', 'date')], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field
+                        name="float_value"
+                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'text', 'textarea', 'select', 'multiselect', 'date', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field
+                        name="int_value"
+                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'text', 'textarea', 'select', 'multiselect', 'date', 'price', 'weight', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                    />
+                    <field name="value" string="Value" attrs="{'invisible': True}" />
+                </group>
+                <footer>
+                    <button
+                        name="update_attributes"
+                        string="Update"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_update_magento_attribute" model="ir.actions.act_window">
+        <field name="name">Update Magento Attribute</field>
+        <field name="res_model">wizard.magento.update.attribute</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

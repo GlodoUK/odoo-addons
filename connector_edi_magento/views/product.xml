@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product_template_form_view</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_push_to_magento"
+                    string="Push to Magento"
+                    type="object"
+                />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="magento_page" string="Magento" groups="base.group_no_one">
+                    <group>
+                        <field name="magento_attribute_set_id" />
+                    </group>
+                    <label for="magento_attributes" />
+                    <field
+                        name="magento_attributes"
+                        attrs="{'invisible': [('magento_attribute_set_id', '=', False)]}"
+                        context="{'default_product_id': id, 'default_attribute_set_id': magento_attribute_set_id}"
+                    >
+                        <tree decoration-muted="readonly" limit="100">
+                            <field name="available_attribute_ids" invisible="1" />
+                            <field name="readonly" invisible="1" />
+                            <field
+                                name="attribute_id"
+                                domain="[('id', 'in', available_attribute_ids)]"
+                                attrs="{'required': True}"
+                            />
+                            <field name="final_value" string="Value" />
+                        </tree>
+                        <form>
+                            <sheet>
+                                <p
+                                    class="alert alert-warning"
+                                    role="alert"
+                                    attrs="{'invisible': [('readonly', '=', False)]}"
+                                >READ ONLY</p>
+                                <group>
+                                    <field name="attribute_set_id" invisible="1" />
+                                    <field
+                                        name="available_attribute_ids"
+                                        invisible="1"
+                                    />
+                                    <field name="is_selection" invisible="1" />
+                                    <field name="readonly" invisible="1" />
+                                    <field
+                                        name="attribute_id"
+                                        domain="[('id', 'in', available_attribute_ids)]"
+                                        attrs="{'required': True}"
+                                    />
+                                    <field
+                                        name="field_type"
+                                        attrs="{'invisible': [('attribute_id', '=', False)], 'readonly': True}"
+                                    />
+                                    <field
+                                        name="frontend_input"
+                                        attrs="{'invisible': [('attribute_id', '=', False)], 'readonly': True}"
+                                    />
+                                    <field
+                                        name="selected_value"
+                                        widget="many2many_tags"
+                                        attrs="{'invisible': [('is_selection', '=', False)], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="text_value"
+                                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'textarea', 'select', 'multiselect', 'date', 'price', 'weight', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="multi_text_value"
+                                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'text', 'select', 'multiselect', 'date', 'price', 'weight', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="boolean_value"
+                                        widget="boolean_toggle"
+                                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', '!=', 'boolean')], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="date_value"
+                                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', '!=', 'date')], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="float_value"
+                                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'text', 'textarea', 'select', 'multiselect', 'date', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="int_value"
+                                        attrs="{'invisible': ['|',('is_selection', '=', True),('frontend_input', 'in', [False, '', 'text', 'textarea', 'select', 'multiselect', 'date', 'price', 'weight', 'boolean', 'media_image', 'gallery'])], 'readonly': [('readonly', '=', True)]}"
+                                    />
+                                    <field
+                                        name="final_value"
+                                        string="Value"
+                                        attrs="{'invisible': True}"
+                                    />
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+    <record model="edi.route.event" id="route_event_stock_picking_done">
+        <field name="res_model_id" ref="stock.model_stock_picking" />
+        <field name="name">on_picking_done</field>
+    </record>
+    <record model="edi.route.event" id="route_event_invoice_out_open">
+        <field name="res_model_id" ref="account.model_account_move" />
+        <field name="name">on_out_invoice_open</field>
+    </record>
+</odoo>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_edi_envelope_route_form" model="ir.ui.view">
+        <field name="name">view_edi_envelope_route_form</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="arch" type="xml">
+            <form string="EDI route">
+                <header>
+                    <button
+                        name="collect_envelopes"
+                        type="object"
+                        string="Collect Envelopes"
+                        attrs="{'invisible': [('direction', 'not in', ['in', 'both'])]}"
+                    />
+                    <button
+                        name="send_envelopes"
+                        type="object"
+                        string="Send Envelopes"
+                        attrs="{'invisible': [('direction', 'not in', ['out', 'both'])]}"
+                    />
+                    <button
+                        name="action_sync_cron"
+                        type="object"
+                        string="Sync Scheduled Actions"
+                    />
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="name" />
+                        </group>
+                        <group>
+                            <field name="direction" />
+                        </group>
+                    </group>
+                    <div
+                        class="alert alert-warning"
+                        role="alert"
+                        attrs="{'invisible': [('warn_external_id_updateable', '=', False)]}"
+                    >
+                        Editing through this editor is not advised. Upon next app upgrade some changes may be lost.
+                        <br />
+                        This configuration is defined through XML and is marked as updateable.
+                    </div>
+                    <notebook>
+                        <page name="protocol" string="Protocol">
+                            <group>
+                                <field name="protocol" />
+                            </group>
+                            <group
+                                attrs="{'invisible': [('direction', 'not in', ['in', 'both'])]}"
+                            >
+                                <group>
+                                    <field name="protocol_in_trigger" />
+                                </group>
+
+                                <group
+                                    attrs="{'invisible': [('protocol_in_trigger', '!=', 'schedule')]}"
+                                >
+
+                                    <label
+                                        for="protocol_in_cron_interval_number"
+                                        string="Execute Every"
+                                    />
+                                    <div>
+                                        <field
+                                            name="protocol_in_cron_interval_number"
+                                            class="oe_inline"
+                                        />
+                                        <field
+                                            name="protocol_in_cron_interval_type"
+                                            class="oe_inline"
+                                        />
+                                    </div>
+
+                                    <field name="protocol_in_cron_id" readonly="1" />
+                                </group>
+                            </group>
+                            <group
+                                attrs="{'invisible': [('direction', 'not in', ['out', 'both'])]}"
+                            >
+                                <group>
+                                    <field name="protocol_out_trigger" />
+                                </group>
+                                <group
+                                    attrs="{'invisible': [('protocol_out_trigger', '!=', 'schedule')]}"
+                                >
+                                    <label
+                                        for="protocol_out_cron_interval_number"
+                                        string="Execute Every"
+                                    />
+                                    <div>
+                                        <field
+                                            name="protocol_out_cron_interval_number"
+                                            class="oe_inline"
+                                        />
+                                        <field
+                                            name="protocol_out_cron_interval_type"
+                                            class="oe_inline"
+                                        />
+                                    </div>
+                                    <field name="protocol_out_cron_id" readonly="1" />
+                                </group>
+                            </group>
+
+                            <group attrs="{'invisible': [('protocol', '!=', 'code')]}">
+                                <field
+                                    name="code_in"
+                                    attrs="{'invisible': [('direction', 'not in', ['in', 'both'])]}"
+                                    options="{'mode': 'python'}"
+                                    widget="ace"
+                                />
+
+                                <field
+                                    name="code_out"
+                                    attrs="{'invisible': [('direction', 'not in', ['out', 'both'])]}"
+                                    options="{'mode': 'python'}"
+                                    widget="ace"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('protocol', '!=', 'file')]}">
+                                <field
+                                    name="file_path_in"
+                                    attrs="{'invisible': [('direction', 'not in', ['in', 'both'])]}"
+                                />
+                                <field
+                                    name="file_path_in_use_done_mode"
+                                    attrs="{'invisible': [('direction', 'not in', ['in', 'both'])]}"
+                                />
+                                <field
+                                    name="file_path_archive"
+                                    attrs="{'invisible': [('direction', 'not in', ['in', 'both'])]}"
+                                />
+                                <field
+                                    name="file_path_out"
+                                    attrs="{'invisible': [('direction', 'not in', ['out', 'both'])]}"
+                                />
+                                <field
+                                    name="file_path_out_use_done_mode"
+                                    attrs="{'invisible': [('direction', 'not in', ['out', 'both'])]}"
+                                />
+                            </group>
+                        </page>
+                        <page name="codec" string="Codec">
+                            <group>
+                                <field name="codec" />
+                                <field name="encoding" />
+                            </group>
+
+                            <group attrs="{'invisible': [('codec', '!=', 'code')]}">
+                                <field
+                                    name="codec_code_open"
+                                    options="{'mode': 'python'}"
+                                    widget="ace"
+                                />
+
+                                <field
+                                    name="codec_code_enclose"
+                                    options="{'mode': 'python'}"
+                                    widget="ace"
+                                />
+                            </group>
+                        </page>
+                        <page string="Queue" name="queue_options">
+                            <group>
+                                <field name="queue_priority" />
+                                <field name="queue_identity_exact" />
+                                <field name="queue_channel" />
+                                <field name="queue_max_retries" />
+
+                                <field name="queue_enclose_messages_priority" />
+                                <field name="queue_enclose_messages_identity_exact" />
+                                <field name="queue_enclose_messages_channel" />
+
+                                <field name="queue_open_messages_priority" />
+                                <field name="queue_open_messages_identity_exact" />
+                                <field name="queue_open_messages_channel" />
+                            </group>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group>
+                                    <field
+                                        name="vacuum_content"
+                                        widget="boolean_toggle"
+                                    />
+                                    <field
+                                        name="vacuum_content_after_days"
+                                        attrs="{'invisible': [('vacuum_content', '=', False)]}"
+                                    />
+                                    <button
+                                        name="action_vacuum_content"
+                                        type="object"
+                                        string="Vacuum"
+                                        attrs="{'invisible': [('vacuum_content', '=', False)]}"
+                                    />
+                                </group>
+                                <group>
+                                    <field name="warn_external_id_updateable" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_edi_envelope_route_tree" model="ir.ui.view">
+        <field name="name">view_edi_envelope_route_tree</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name" />
+                <field name="protocol" />
+                <field name="direction" />
+                <field name="codec" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_edi_envelope_route_search" model="ir.ui.view">
+        <field name="name">view_edi_envelope_route_search</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="backend_id" widget="many2one" />
+                <filter
+                    name="archived"
+                    domain="[('active', '=', False)]"
+                    string="Archived"
+                />
+                <separator />
+                <filter
+                    name="direction_in"
+                    string="In"
+                    domain="[('direction', '=', 'in')]"
+                />
+                <filter
+                    name="direction_out"
+                    string="Out"
+                    domain="[('direction', '=', 'out')]"
+                />
+                <filter
+                    name="direction_in_out"
+                    string="In &amp; Out"
+                    domain="[('direction', '=', 'both')]"
+                />
+                <group string="Group By">
+                    <filter
+                        string="Backend"
+                        name="groupby_backend_id"
+                        domain="[]"
+                        context="{'group_by':'backend_id'}"
+                    />
+                    <filter
+                        string="Direction"
+                        name="groupby_direction"
+                        domain="[]"
+                        context="{'group_by':'direction'}"
+                    />
+                    <filter
+                        string="Protocol"
+                        name="groupby_protocol"
+                        domain="[]"
+                        context="{'group_by':'protocol'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_edi_envelope_route" model="ir.actions.act_window">
+        <field name="name">EDI Envelope Routes</field>
+        <field name="res_model">edi.envelope.route</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_edi_envelope_route_tree" />
+        <field name="context">{'search_default_groupby_backend_id': 1}</field>
+    </record>
+</odoo>

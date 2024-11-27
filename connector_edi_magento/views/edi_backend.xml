@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="edi_magento_view_backend_form" model="ir.ui.view">
+        <field name="name">edi_magento_view_backend_form</field>
+        <field name="model">edi.backend</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_backend_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline_block">
+                    <field name="is_magento" />
+                    <label for="is_magento" />
+                </span>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="oauth"
+                    string="Magento"
+                    attrs="{'invisible': [('is_magento', '=', False)]}"
+                >
+                    <div>
+                        <h4>Step 1:</h4>
+                        <ul>
+                            <li>Create an integration in Magento<br />
+                                (Magento Admin &gt; System &gt; Integrations)
+                            </li>
+                            <li
+                            >Ensure you allow access (at least) to the following resources:<br
+                                />
+                                Sales, Catalog, Customers<br
+                                />As well as any other modules you need to access.
+                            </li>
+                        </ul>
+                        <p><strong
+                            >Note:</strong> Make sure the Megento integration is "Active"</p>
+                        <h4>Step 2:</h4>
+                        <p>Enter the resulting credentials below:</p>
+                        <group name="oauth_auth">
+                            <field name="magento_oauth_base_url" />
+                            <field name="magento_oauth_consumer_key" />
+                            <field
+                                name="magento_oauth_consumer_secret"
+                                password="true"
+                            />
+                            <field name="magento_oauth_token" />
+                            <field name="magento_oauth_token_secret" password="true" />
+                        </group>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_magento_attribute","magento_attribute connector manager","model_magento_attribute","connector.group_connector_manager",1,1,1,1
+"access_magento_attribute_user","magento_attribute connector user","model_magento_attribute","base.group_user",1,0,0,0
+"access_magento_attribute_option","magento_attribute_option connector manager","model_magento_attribute_option","connector.group_connector_manager",1,1,1,1
+"access_magento_attribute_option_user","magento_attribute_option connector user","model_magento_attribute_option","base.group_user",1,0,0,0
+"access_magento_attribute_set","magento_attribute_set connector manager","model_magento_attribute_set","connector.group_connector_manager",1,1,1,1
+"access_magento_attribute_set_user","magento_attribute_set connector user","model_magento_attribute_set","base.group_user",1,0,0,0
+"access_magento_attribute_selection","magento_attribute_selection connector manager","model_magento_attribute_selection","base.group_user",1,1,1,1
+"access_wizard_magento_update_attribute","wizard_magento_update_attribute","model_wizard_magento_update_attribute","base.group_user",1,1,1,1
+"access_edi_magento_address","access_edi_magento_address","model_edi_magento_address","base.group_user",1,0,0,0
+"access_edi_magento_address_connector_manager","access_edi_magento_address_connector_manager","model_edi_magento_address","connector.group_connector_manager",1,1,1,1
+base.access_ir_model_fields_user,ir_model_fields all,base.model_ir_model_fields,base.group_user,1,0,0,0

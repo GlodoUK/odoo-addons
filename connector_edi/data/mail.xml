@@ -1,0 +1,12 @@
+<odoo noupdate="1">
+    <record id="mt_message_error" model="mail.message.subtype">
+        <field name="name">EDI Message Error</field>
+        <field name="res_model">edi.message</field>
+        <field name="default" eval="True" />
+    </record>
+    <record id="mt_envelope_error" model="mail.message.subtype">
+        <field name="name">EDI Envelope Error</field>
+        <field name="res_model">edi.envelope</field>
+        <field name="default" eval="True" />
+    </record>
+</odoo>
