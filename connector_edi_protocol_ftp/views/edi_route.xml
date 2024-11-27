@@ -1,0 +1,29 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_envelope_route_form">
+        <field name="name">view_edi_envelope_route_form</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_envelope_route_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='protocol']" position="inside">
+                <group
+                    name="protocol_ftp"
+                    attrs="{'invisible': [('protocol', '!=', 'ftp')]}"
+                >
+                    <field name="ftp_protocol" />
+                    <field name="ftp_host" />
+                    <field name="ftp_port" />
+                    <field name="ftp_username" />
+                    <field name="ftp_password" password="True" />
+                    <field name="ftp_path_in" />
+                    <field name="ftp_path_out" />
+                    <field name="ftp_list_method" />
+                    <field
+                        name="ftp_delete"
+                        string="Delete source files after download?"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

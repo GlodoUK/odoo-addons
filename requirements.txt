@@ -1,3 +1,8 @@
 # generated from manifests external_dependencies
+ftpparser
+lxml
+pandas
 phonenumbers
+pycurl
+requests
 twilio

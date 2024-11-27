@@ -1,0 +1,38 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_envelope_route_form">
+        <field name="name">view_edi_envelope_route_form</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_envelope_route_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='protocol']" position="inside">
+                <group
+                    name="protocol_mail"
+                    attrs="{'invisible': [('protocol', '!=', 'mail')]}"
+                >
+                <label for="alias_name" string="Email Alias" />
+                <div name="alias_def">
+                    <field
+                            name="alias_id"
+                            class="oe_read_only oe_inline"
+                            string="Email Alias"
+                            required="0"
+                        />
+                    <div
+                            class="oe_edit_only oe_inline"
+                            name="edit_alias"
+                            style="display: inline;"
+                        >
+                        <field name="alias_name" class="oe_inline" />@<field
+                                name="alias_domain"
+                                class="oe_inline"
+                                readonly="1"
+                            />
+                    </div>
+                </div>
+                <field name="alias_contact" string="Accept Emails From" />
+            </group>
+        </xpath>
+    </field>
+</record>
+</odoo>
