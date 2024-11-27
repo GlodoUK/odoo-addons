@@ -1,0 +1,26 @@
+<odoo>
+    <record model="edi.route.event" id="route_event_stock_move_done">
+        <field name="res_model_id" ref="stock.model_stock_move" />
+        <field name="name">on_move_done</field>
+    </record>
+    <record model="edi.route.event" id="route_event_stock_move_reserved_changed">
+        <field name="res_model_id" ref="stock.model_stock_move" />
+        <field name="name">on_move_reserved_changed</field>
+    </record>
+    <record model="edi.route.event" id="route_event_stock_picking_in_cancel">
+        <field name="res_model_id" ref="stock.model_stock_picking" />
+        <field name="name">on_picking_in_cancel</field>
+    </record>
+    <record model="edi.route.event" id="route_event_stock_picking_out_cancel">
+        <field name="res_model_id" ref="stock.model_stock_picking" />
+        <field name="name">on_picking_out_cancel</field>
+    </record>
+    <record model="edi.route.event" id="route_event_stock_picking_assigned">
+        <field name="res_model_id" ref="stock.model_stock_picking" />
+        <field name="name">on_picking_assigned</field>
+    </record>
+    <record model="edi.route.event" id="route_event_stock_picking_unreserved">
+        <field name="res_model_id" ref="stock.model_stock_picking" />
+        <field name="name">on_picking_unreserved</field>
+    </record>
+</odoo>

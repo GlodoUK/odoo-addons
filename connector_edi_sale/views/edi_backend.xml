@@ -1,0 +1,13 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_backend_form">
+        <field name="name">view_edi_backend_form</field>
+        <field name="model">edi.backend</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_backend_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='hints']" position="inside">
+                <field name="hint_sale_carrier" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

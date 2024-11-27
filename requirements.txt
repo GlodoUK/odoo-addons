@@ -1,3 +1,12 @@
 # generated from manifests external_dependencies
+cryptography<37
+ftpparser
+lxml
+mock
+pandas
+paramiko
 phonenumbers
+pycurl
+requests
+scp
 twilio
