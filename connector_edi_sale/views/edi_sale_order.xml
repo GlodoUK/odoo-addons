@@ -1,0 +1,37 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_sale_order_form">
+        <field name="name">view_edi_sale_order_form</field>
+        <field name="model">edi.sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="edi_external_id" />
+                            <field name="edi_message_id" />
+                            <field name="edi_metadata_string" />
+                        </group>
+                        <group>
+                            <field name="odoo_id" />
+                            <field name="client_order_ref" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="edi_order_line_ids">
+                                <tree>
+                                    <field name="odoo_id" />
+                                    <field name="edi_line_ref" />
+                                    <field name="edi_metadata_string" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<odoo>
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="connector_edi_res_partner.view_partner_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='edi_partner_ids']" position="after">
+                <group
+                    name="edi_magento_address_ids"
+                    string="EDI Magento Address Bindings"
+                >
+                    <field name="edi_magento_address_ids" nolabel="1" colspan="2">
+                        <tree create="false">
+                            <field name="edi_message_id" widget="many2one" />
+                            <field name="edi_external_id" />
+                            <field name="backend_id" widget="many2one" />
+                            <field name="edi_metadata_string" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='edi_partner_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['&amp;', ('edi_partner_count', '&lt;', 1), ('edi_magento_address_ids', '=', False)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='edi_partner_ids']//tree" position="inside">
+                <field name="magento_customer_is_guest" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,4 +1,9 @@
 # generated from manifests external_dependencies
 human_readable
+lxml
+mock
+oauthlib
 phonenumbers
+requests
+requests_oauthlib
 twilio

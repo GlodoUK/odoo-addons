@@ -1,0 +1,55 @@
+<odoo>
+    <record model="ir.ui.view" id="product_template_form_view">
+        <field name="name">product_template_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_view_edi_messages"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-envelope-open-o"
+                    attrs="{'invisible': [('edi_message_count', '&lt;=', 0)]}"
+                >
+                    <field
+                        name="edi_message_count"
+                        widget="statinfo"
+                        string="EDI Messages"
+                    />
+                </button>
+            </xpath>
+            <xpath expr="//notebook" position="before">
+                <field name="edi_product_count" invisible="1" />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="edi_product_ids"
+                    string="EDI"
+                    attrs="{'invisible': [('edi_product_count', '&lt;', '1')]}"
+                >
+                    <label
+                        for="edi_product_tmpl_ids"
+                        string="EDI Product Templates"
+                    /><br />
+                    <field name="edi_product_tmpl_ids" nolabel="1">
+                        <tree create="false">
+                            <field name="edi_message_id" widget="many2one" />
+                            <field name="edi_external_id" />
+                            <field name="backend_id" widget="many2one" />
+                        </tree>
+                    </field>
+                    <label for="edi_product_ids" string="EDI Product Variants" /><br />
+                    <field name="edi_product_ids" nolabel="1">
+                        <tree create="false">
+                            <field name="edi_message_id" widget="many2one" />
+                            <field name="edi_external_id" />
+                            <field name="backend_id" widget="many2one" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

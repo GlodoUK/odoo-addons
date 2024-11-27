@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_edi_product_product","edi_product_product connector manager","model_edi_product_product","connector.group_connector_manager",1,1,1,1
+"access_edi_product_product_internal","edi_product_product internal","model_edi_product_product","base.group_user",1,0,0,0
+"access_edi_product_template","edi_product_template connector manager","model_edi_product_template","connector.group_connector_manager",1,1,1,1
+"access_edi_product_template_internal","edi_product_template internal","model_edi_product_template","base.group_user",1,0,0,0

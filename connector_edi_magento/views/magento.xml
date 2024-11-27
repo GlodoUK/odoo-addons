@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="edi_magento_attribute_view_tree" model="ir.ui.view">
+        <field name="name">edi_magento_attribute_view_tree</field>
+        <field name="model">magento.attribute</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="readonly">
+                <field name="sequence" widget="handle" />
+                <field name="backend_id" />
+                <field name="magento_id" />
+                <field name="name" />
+                <field name="code" />
+                <field name="frontend_input" />
+                <field name="is_selection" />
+                <field name="options" widget="many2many_tags" optional="hide" />
+                <field name="readonly" optional="hide" />
+                <field name="mapped_field" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="edi_magento_attribute_view_form" model="ir.ui.view">
+        <field name="name">edi_magento_attribute_view_form</field>
+        <field name="model">magento.attribute</field>
+        <field name="arch" type="xml">
+            <form string="Magento Attribute">
+                <sheet>
+                    <group>
+                        <field name="backend_id" />
+                        <field name="magento_id" />
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="field_type" />
+                        <field name="frontend_input" />
+                        <field name="readonly" />
+                        <field name="is_single_select" />
+                        <field name="mapped_field" />
+                        <field name="options">
+                            <tree>
+                                <field name="name" />
+                                <field name="value" string="Magento Value" />
+                            </tree>
+                        </field>
+                        <field name="sequence" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_edi_magento_attribute" model="ir.actions.act_window">
+        <field name="name">Magento Attributes</field>
+        <field name="res_model">magento.attribute</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="edi_magento_attribute_view_tree" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Attributes will be automatically created when you import products from Magento.
+            </p>
+        </field>
+    </record>
+
+    <record id="edi_magento_menu" model="ir.ui.menu">
+        <field name="name">Magento</field>
+        <field name="parent_id" ref="connector.menu_connector_root" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="sequence" eval="10" />
+    </record>
+    <record id="edi_magento_attribute_menu" model="ir.ui.menu">
+        <field name="name">Magento Attributes</field>
+        <field name="parent_id" ref="edi_magento_menu" />
+        <field name="sequence" eval="2" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="action" ref="action_edi_magento_attribute" />
+    </record>
+
+    <record id="edi_magento_attribute_set_view_tree" model="ir.ui.view">
+        <field name="name">edi_magento_attribute_set_view_tree</field>
+        <field name="model">magento.attribute.set</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="magento_id" />
+                <field name="name" />
+                <field name="attribute_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="edi_magento_attribute_set_view_form" model="ir.ui.view">
+        <field name="name">edi_magento_attribute_set_view_form</field>
+        <field name="model">magento.attribute.set</field>
+        <field name="arch" type="xml">
+            <form string="Magento Attribute Set">
+                <sheet>
+                    <group>
+                        <field name="backend_id" />
+                        <field name="magento_id" />
+                        <field name="name" />
+                        <field name="attribute_ids">
+                            <tree>
+                                <field name="name" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_edi_magento_attribute_set" model="ir.actions.act_window">
+        <field name="name">Magento Attribute Sets</field>
+        <field name="res_model">magento.attribute.set</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="edi_magento_attribute_set_view_tree" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Attribute Sets will be automatically created when you import products from Magento.
+            </p>
+        </field>
+    </record>
+
+    <record id="edi_magento_attribute_set_menu" model="ir.ui.menu">
+        <field name="name">Magento Attribute Sets</field>
+        <field name="parent_id" ref="edi_magento_menu" />
+        <field name="sequence" eval="1" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="action" ref="action_edi_magento_attribute_set" />
+    </record>
+</odoo>

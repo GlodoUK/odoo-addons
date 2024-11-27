@@ -1,0 +1,19 @@
+<odoo>
+    <record model="edi.route.event" id="route_event_product_write">
+        <field name="res_model_id" ref="model_product_product" />
+        <field name="name">on_record_write_edi</field>
+    </record>
+    <record model="edi.route.event" id="route_event_product_create">
+        <field name="res_model_id" ref="model_product_product" />
+        <field name="name">on_record_create_edi</field>
+    </record>
+
+    <record model="edi.route.event" id="route_event_product_template_write">
+        <field name="res_model_id" ref="model_product_template" />
+        <field name="name">on_record_write_edi</field>
+    </record>
+    <record model="edi.route.event" id="route_event_product_template_create">
+        <field name="res_model_id" ref="model_product_template" />
+        <field name="name">on_record_create_edi</field>
+    </record>
+</odoo>
