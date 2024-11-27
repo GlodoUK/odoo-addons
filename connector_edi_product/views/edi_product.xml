@@ -1,0 +1,42 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_product_variant_form">
+        <field name="name">view_edi_product_form</field>
+        <field name="model">edi.product.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="edi_external_id" />
+                            <field name="edi_message_id" />
+                            <field name="edi_metadata_string" />
+                        </group>
+                        <group>
+                            <field name="odoo_id" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_edi_product_template_form">
+        <field name="name">view_edi_product_tmpl_form</field>
+        <field name="model">edi.product.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="edi_external_id" />
+                            <field name="edi_message_id" />
+                            <field name="edi_metadata_string" />
+                        </group>
+                        <group>
+                            <field name="odoo_id" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

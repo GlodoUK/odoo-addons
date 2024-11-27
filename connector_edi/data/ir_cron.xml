@@ -1,0 +1,27 @@
+<odoo>
+    <record id="ir_cron_edi_message_vacuum" model="ir.cron">
+        <field name="name">AutoVacuum EDI Message Content</field>
+        <field ref="model_edi_route" name="model_id" />
+        <field eval="True" name="active" />
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+        <field name="state">code</field>
+        <field name="code">model.search([]).action_vacuum_content()</field>
+    </record>
+
+    <record id="ir_cron_edi_envelope_vacuum" model="ir.cron">
+        <field name="name">AutoVacuum EDI Envelope Content</field>
+        <field ref="model_edi_envelope_route" name="model_id" />
+        <field eval="True" name="active" />
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+        <field name="state">code</field>
+        <field name="code">model.search([]).action_vacuum_content()</field>
+    </record>
+</odoo>
