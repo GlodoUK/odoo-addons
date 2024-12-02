@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product_normal_form_view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <div>
+                    <field name="commingled_ok" />
+                    <label for="commingled_ok" />
+                </div>
+            </xpath>
+            <xpath expr="//notebook/page[@name='general_information']" position="after">
+                <page name="page_commingled" string="Commingled">
+                   <field name="commingled_ids" />
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="product_template_only_form_view">
+        <field name="name">product_template_only_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <div>
+                    <field
+                        name="commingled_ok"
+                        attrs="{'readonly': [('product_variant_count', '&gt;', 1)]}"
+                    />
+                    <label for="commingled_ok" />
+                </div>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='general_information']" position="after">
+                <page
+                    name="page_commingled"
+                    string="Commingled"
+                    attrs="{'invisible': ['|', ('product_variant_count', '&gt;', 1), ('commingled_ok', '=', False)]}"
+                >
+                   <field name="commingled_ids" />
+               </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_variant_easy_edit_view">
+        <field name="name">product_variant_easy_edit_view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='codes']/.." position="inside">
+                <group>
+                    <field name="commingled_ok" />
+                    <field
+                        name="commingled_ids"
+                        attrs="{'invisible': [('commingled_ok', '=', False)]}"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

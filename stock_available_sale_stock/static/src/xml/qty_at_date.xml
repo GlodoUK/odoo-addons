@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates>
+    <div
+        t-name="QtyDetailPopOver"
+        t-inherit="sale_stock.QtyDetailPopOver"
+        t-inherit-mode="extension"
+    >
+        <xpath expr="//table/tbody/t" position="before">
+            <tr>
+                <td>
+                    <strong>Immediately Usable Today</strong>
+                </td>
+                <td style="min-width: 50px; text-align: right;">
+                    <b
+                        t-esc="data.qty_immediately_usable_today"
+                        t-att-class="!data.will_be_fulfilled ? 'text-danger': ''"
+                    /> <t t-esc="data.product_uom.data.display_name" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Potential Today</strong>
+                </td>
+                <td style="min-width: 50px; text-align: right;">
+                    <b
+                        t-esc="data.qty_potential_today"
+                        t-att-class="!data.will_be_fulfilled ? 'text-danger': ''"
+                    /> <t t-esc="data.product_uom.data.display_name" />
+                </td>
+            </tr>
+
+        </xpath>
+    </div>
+</templates>

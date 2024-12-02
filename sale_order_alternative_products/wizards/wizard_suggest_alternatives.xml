@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="wizard_suggest_alternatives" model="ir.ui.view">
+        <field name="name">wizard_suggest_alternatives</field>
+        <field name="model">wizard.suggest_alternatives</field>
+        <field name="arch" type="xml">
+            <form string="Suggest Alternatives">
+                <group>
+                    <field name="order_line_id" attrs="{'invisible': True}" />
+                    <field name="product_id" readonly="1" string="Alternative to..." />
+                    <field name="demand" readonly="1" />
+                    <field name="alternative_ids" readonly="1" nolabel="1" colspan="2">
+                        <tree decoration="">
+                            <field name="name" />
+                            <field name="qty_available" />
+                            <field name="virtual_available" />
+                        </tree>
+                    </field>
+                    <field
+                        name="use_alt"
+                        domain="[('id', 'in', alternative_ids)]"
+                        string="Select Alternative"
+                    />
+                </group>
+                <footer>
+                    <button
+                        name="action_replace"
+                        class="btn-primary"
+                        string="Replace"
+                        type="object"
+                    />
+                    <button special="cancel" string="Cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product_template_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_res_partner_warehouse_quants"
+                    type="object"
+                    icon="fa-cubes"
+                    class="oe_stat_button"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <field
+                            string="Partner Warehouse Qty"
+                            name="res_partner_warehouse_qty"
+                            widget="statinfo"
+                            nolabel="1"
+                            class="mr4"
+                        />
+                        <field name="uom_name" />
+                        <span class="o_stat_text">With Suppliers</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
