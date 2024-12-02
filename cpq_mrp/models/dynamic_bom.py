@@ -76,6 +76,12 @@ class DynamicBom(models.Model):
         compute="_compute_possible_product_template_attribute_value_ids",
     )
 
+    workcenter_id = fields.Many2one(
+        "mrp.workcenter",
+        string="Work Center",
+        help="Work Center to be used for manufacturing orders with this BoM.",
+    )
+
     _sql_constraints = [
         (
             "qty_positive",
@@ -106,7 +112,8 @@ class DynamicBom(models.Model):
     @api.constrains("product_tmpl_id")
     def _ensure_product_tmpl_id_cpq_ok(self):
         if not all(self.mapped("product_tmpl_id.cpq_ok")):
-            raise ValidationError(_("Product Template must be enabled as configurable"))
+            raise ValidationError(
+                _("Product Template must be enabled as configurable"))
 
     @api.constrains("type", "picking_type_id")
     def _ensure_manufacture_has_picking_type_id(self):
@@ -116,6 +123,16 @@ class DynamicBom(models.Model):
         if self.filtered(lambda b: b.type == "normal" and not b.picking_type_id):
             raise ValidationError(
                 _("Manufactured dynamic BoMs must have an operation type set")
+            )
+
+    @api.constrains("type", "workcenter_id")
+    def _ensure_manufacture_has_workcenter_id(self):
+        if not self.user_has_groups("mrp.group_mrp_user"):
+            return
+
+        if self.filtered(lambda b: b.type == "normal" and not b.workcenter_id):
+            raise ValidationError(
+                _("Manufactured dynamic BoMs must have a work center set")
             )
 
     @api.onchange("product_tmpl_id")
@@ -173,6 +190,10 @@ class DynamicBom(models.Model):
             sub_bom_lines = bom_line._explode_line(product_id, quantity)
             if sub_bom_lines:
                 bom_lines.extend(sub_bom_lines)
+
+        # Add work center information to the exploded lines
+        for line in bom_lines:
+            line[3].workcenter_id = self.workcenter_id
 
         return bom_lines
 
@@ -428,9 +449,11 @@ class DynamicBomLine(models.Model):
 
             if record.quantity_type == "fixed":
                 # XXX(Karl): This is lazy. Lets do it properly.
-                precision = len(str(record.uom_id.rounding or "0.01").split(".")[1])
+                precision = len(
+                    str(record.uom_id.rounding or "0.01").split(".")[1])
 
-                record.display_quantity = float_repr(record.quantity_fixed, precision)
+                record.display_quantity = float_repr(
+                    record.quantity_fixed, precision)
                 continue
 
             if record.quantity_type == "ptav_custom_id":
@@ -468,7 +491,8 @@ class DynamicBomLine(models.Model):
             return
 
         method_explode_product_name = f"_explode_get_product_from_{self.component_type}"
-        product_id = getattr(self, method_explode_product_name)(parent_product_id)
+        product_id = getattr(self, method_explode_product_name)(
+            parent_product_id)
 
         if product_id.cpq_ok and product_id.product_tmpl_id.cpq_dynamic_bom_ids:
             # have we got a dynamic bom inside of a dynamic bom?
@@ -484,7 +508,8 @@ class DynamicBomLine(models.Model):
         if standard_kit_bom_id and not product_id.cpq_ok:
             # we've got a standard mrp.bom kit inside of this item.
             # we should explode that and add that to our output.
-            (_boms_done, lines_done) = standard_kit_bom_id.explode(product_id, quantity)
+            (_boms_done, lines_done) = standard_kit_bom_id.explode(
+                product_id, quantity)
 
             standard_kit_bom_res = []
 
