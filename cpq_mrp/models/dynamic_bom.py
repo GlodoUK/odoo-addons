@@ -76,6 +76,12 @@ class DynamicBom(models.Model):
         compute="_compute_possible_product_template_attribute_value_ids",
     )
 
+    workcenter_id = fields.Many2one(
+        "mrp.workcenter",
+        string="Work Center",
+        help="Work Center to be used for manufacturing orders with this BoM.",
+    )
+
     _sql_constraints = [
         (
             "qty_positive",
@@ -116,6 +122,16 @@ class DynamicBom(models.Model):
         if self.filtered(lambda b: b.type == "normal" and not b.picking_type_id):
             raise ValidationError(
                 _("Manufactured dynamic BoMs must have an operation type set")
+            )
+
+    @api.constrains("type", "workcenter_id")
+    def _ensure_manufacture_has_workcenter_id(self):
+        if not self.user_has_groups("mrp.group_mrp_user"):
+            return
+
+        if self.filtered(lambda b: b.type == "normal" and not b.workcenter_id):
+            raise ValidationError(
+                _("Manufactured dynamic BoMs must have a work center set")
             )
 
     @api.onchange("product_tmpl_id")
@@ -173,6 +189,10 @@ class DynamicBom(models.Model):
             sub_bom_lines = bom_line._explode_line(product_id, quantity)
             if sub_bom_lines:
                 bom_lines.extend(sub_bom_lines)
+
+        # Add work center information to the exploded lines
+        for line in bom_lines:
+            line[3].workcenter_id = self.workcenter_id
 
         return bom_lines
 
