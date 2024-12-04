@@ -1,0 +1,16 @@
+<odoo>
+    <record model="ir.ui.view" id="view_order_form">
+        <field name="name">view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="priority">100</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="name">action_check_delivery_confirm</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                <attribute name="name">action_check_delivery_confirm</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

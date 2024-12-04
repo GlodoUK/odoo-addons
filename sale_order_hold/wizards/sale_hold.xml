@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record model="ir.ui.view" id="view_wizard_sale_order_hold_form">
+        <field name="name">view_wizard_sale_order_hold_form</field>
+        <field name="model">wizard.sale.order.hold</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="sale_ids" widget="many2many_tags" />
+                    <field name="reason_ids" widget="many2many_tags" />
+                    <field name="msg" />
+                </group>
+                <footer>
+                    <button
+                        type="object"
+                        name="process"
+                        string="Place on Hold"
+                        class="oe_highlight"
+                    />
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_wizard_sale_order_hold" model="ir.actions.act_window">
+        <field name="name">Place on Hold</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.sale.order.hold</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_sale_order_hold_form" />
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="sale.model_sale_order" />
+    </record>
+</odoo>
