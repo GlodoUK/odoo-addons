@@ -1,0 +1,17 @@
+<odoo>
+    <template
+        id="cart_lines"
+        inherit_id="website_sale.cart_lines"
+        name="Shopping Cart Lines"
+    >
+        <xpath expr="//table" position="before">
+            <div
+                t-if='website_sale_order.warning_lease'
+                class="alert alert-danger"
+                role="alert"
+            >
+              <t t-esc='website_sale_order.warning_lease' />
+            </div>
+        </xpath>
+    </template>
+</odoo>

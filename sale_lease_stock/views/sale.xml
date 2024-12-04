@@ -1,0 +1,85 @@
+<odoo>
+    <record id="sale_view_order_form" model="ir.ui.view">
+        <field name="name">sale_view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    name="action_view_lease_schedules"
+                    type="object"
+                    icon="fa-area-chart"
+                    attrs="{'invisible':[('lease_schedule_count', '=', 0)]}"
+                >
+                   <field
+                        string="Lease Schedule"
+                        name="lease_schedule_count"
+                        widget="statinfo"
+                    />
+               </button>
+           </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                <attribute name="editable" />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='product_id']"
+                position="after"
+            >
+                <field name="can_lease_product" invisible="1" />
+                <field
+                    name="is_lease"
+                    widget="boolean_toggle"
+                    attrs="{'invisible': [('can_lease_product', '=', False)]}"
+                />
+                <field name="product_template_id" invisible="1" />
+                <field
+                    name="lease_pricing_id"
+                    string="Lease Pricing &amp; Duration"
+                    attrs="{'invisible': [('is_lease', '=', False)]}"
+                    domain="['&amp;', '&amp;', ('product_template_id', '=', product_template_id), '|', ('product_variant_ids', '=', False), ('product_variant_ids.id', '=', product_id), '|', ('pricelist_id', '=', False), ('pricelist_id', '=', parent.pricelist_id)]"
+                />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/form//label[@for='customer_lead']"
+                position="before"
+            >
+                <field
+                    name="date_lease_start"
+                    attrs="{'invisible': [('is_lease', '=', False)]}"
+                />
+                <field
+                    name="date_lease_end"
+                    attrs="{'invisible': [('is_lease', '=', False)]}"
+                />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='product_id']"
+                position="after"
+            >
+                <field
+                    name="is_lease"
+                    attrs="{'invisible': [('product_id', '=', False)]}"
+                />
+
+                <field
+                    name="lease_pricing_id"
+                    attrs="{'invisible': [('is_lease', '=', False)]}"
+                    domain="[('product_template_id', '=', product_template_id)]"
+                />
+            </xpath>
+
+            <xpath
+                expr="//field[@name='order_line']/form//div[@name='invoice_lines']"
+                position="attributes"
+            >
+                <attribute name="readonly">True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
