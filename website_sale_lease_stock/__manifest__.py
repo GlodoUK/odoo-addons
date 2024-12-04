@@ -1,7 +1,7 @@
 {
     "name": "website_sale_lease_stock",
     "summary": "Leasing: Integrates sale_stock_lease with website_sale",
-    "author": "Glodo",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Website",
     "version": "14.0.1.0.1",

@@ -30,7 +30,6 @@ class SaleOrder(models.Model):
         super().update_prices()
         # Apply correct lease prices with respect to pricelist
         for line_id in self.order_line.filtered(lambda line: line.is_lease):
-
             if not line_id.lease_pricing_id:
                 line_id.price_unit = line_id.product_id.lst_price
                 continue
@@ -51,7 +50,7 @@ class SaleOrder(models.Model):
         for record in self:
             partner_id = record.partner_id
             lines = record.order_line.filtered(
-                lambda l: l.product_id and not l.is_delivery
+                lambda line: line.product_id and not line.is_delivery
             )
 
             if not partner_id.sale_ok and False in lines.mapped("is_lease"):
@@ -70,7 +69,9 @@ class SaleOrder(models.Model):
                     )
                 )
 
-            if lines.filtered(lambda l: l.is_lease and not l.product_id.lease_ok):
+            if lines.filtered(
+                lambda line: line.is_lease and not line.product_id.lease_ok
+            ):
                 raise UserError(
                     _(
                         "You cannot confirm a sale order with a product that is not "
@@ -78,7 +79,9 @@ class SaleOrder(models.Model):
                     )
                 )
 
-            if lines.filtered(lambda l: not l.is_lease and not l.product_id.sale_ok):
+            if lines.filtered(
+                lambda line: not line.is_lease and not line.product_id.sale_ok
+            ):
                 raise UserError(
                     _(
                         "You cannot confirm a sale order with a product that is not "
@@ -88,7 +91,7 @@ class SaleOrder(models.Model):
 
         res = super().action_confirm()
 
-        for line_id in self.mapped("order_line").filtered(lambda l: l.is_lease):
+        for line_id in self.mapped("order_line").filtered(lambda line: line.is_lease):
             duration = line_id.lease_pricing_id.duration
 
             for i in range(0, duration):
@@ -198,7 +201,7 @@ class SaleOrderLine(models.Model):
     )
     def _get_to_invoice_qty(self):
         # Leased lines are invoiced separately from lease schedules
-        leased = self.filtered(lambda l: l.is_lease)
+        leased = self.filtered(lambda line: line.is_lease)
         for line in leased:
             line.qty_to_invoice = 0.0
 
@@ -214,7 +217,7 @@ class SaleOrderLine(models.Model):
     )
     def _compute_invoice_status(self):
         # Leased lines are invoiced separately from lease schedules
-        leased = self.filtered(lambda l: l.is_lease)
+        leased = self.filtered(lambda line: line.is_lease)
         leased.write(
             {
                 "invoice_status": "no",
@@ -309,14 +312,18 @@ class SaleOrderLine(models.Model):
         "lease_schedule_ids.state",
     )
     def _get_invoice_qty(self):
-        leased = self.filtered(lambda l: l.is_lease and l.state in ["sale", "done"])
+        leased = self.filtered(
+            lambda line: line.is_lease and line.state in ["sale", "done"]
+        )
 
         for line in leased:
             qty_done = 0.0
 
             if line.lease_schedule_ids:
                 qty_done = (line.product_uom_qty / len(line.lease_schedule_ids)) * len(
-                    line.lease_schedule_ids.filtered(lambda l: l.state == "done")
+                    line.lease_schedule_ids.filtered(
+                        lambda lease_line: lease_line.state == "done"
+                    )
                 )
 
             line.qty_invoiced = qty_done

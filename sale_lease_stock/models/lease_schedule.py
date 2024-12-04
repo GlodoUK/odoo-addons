@@ -170,7 +170,7 @@ class LeaseSchedule(models.Model):
         return action
 
     def action_create_invoices(self):
-        invoiceable = self.filtered(lambda l: l.state == "pending")
+        invoiceable = self.filtered(lambda line: line.state == "pending")
         invoice_grouping_keys = self._get_invoice_grouping_keys()
         invoice_vals_list = sorted(
             [record._get_invoice_vals() for record in invoiceable],

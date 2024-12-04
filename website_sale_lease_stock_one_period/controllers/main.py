@@ -1,4 +1,4 @@
-from odoo import http, fields
+from odoo import fields, http
 from odoo.http import request, route
 
 from odoo.addons.website_sale.controllers.main import WebsiteSale
@@ -17,45 +17,63 @@ class WebsiteSale(WebsiteSale):
 
         order = request.website.sale_get_order(force_create=1)
         lease_period_id = fields.first(
-            order
-            .mapped('order_line')
-            .filtered(
-                lambda l: l.is_lease
-            )
-            .mapped('lease_pricing_id')
+            order.mapped("order_line")
+            .filtered(lambda line: line.is_lease)
+            .mapped("lease_pricing_id")
         )
 
         line = order.order_line.filtered(
-            lambda l: l.id == res.get('line_id')
+            lambda order_line: order_line.id == res.get("line_id")
         )
-        if default_period and lease_period_id and line and line.can_lease_product and not line.is_lease and not line.lease_pricing_id:
-            default_line_lease_period = request.env['sale_lease_stock.pricing'].search([
-                '&', '&',
-                ('product_template_id', '=', line.product_id.product_tmpl_id.id),
-                '|',
-                ('product_variant_ids', '=', False),
-                ('product_variant_ids.id', '=', line.product_id.id),
-                '|',
-                ('pricelist_id', '=', False),
-                ('pricelist_id', '=', order.pricelist_id.id),
-                ('duration', '=', lease_period_id.duration),
-                ('unit', '=', lease_period_id.unit),
-            ], limit=1)
+        if (
+            default_period
+            and lease_period_id
+            and line
+            and line.can_lease_product
+            and not line.is_lease
+            and not line.lease_pricing_id
+        ):
+            default_line_lease_period = request.env["sale_lease_stock.pricing"].search(
+                [
+                    "&",
+                    "&",
+                    ("product_template_id", "=", line.product_id.product_tmpl_id.id),
+                    "|",
+                    ("product_variant_ids", "=", False),
+                    ("product_variant_ids.id", "=", line.product_id.id),
+                    "|",
+                    ("pricelist_id", "=", False),
+                    ("pricelist_id", "=", order.pricelist_id.id),
+                    ("duration", "=", lease_period_id.duration),
+                    ("unit", "=", lease_period_id.unit),
+                ],
+                limit=1,
+            )
 
-            line.write({
-                "lease_pricing_id": default_line_lease_period.id,
-                "is_lease": True,
-            })
+            line.write(
+                {
+                    "lease_pricing_id": default_line_lease_period.id,
+                    "is_lease": True,
+                }
+            )
             order._compute_lease_info()
 
-            res['website_sale.cart_lines'] = request.env['ir.ui.view']._render_template("website_sale.cart_lines", {
-                'website_sale_order': order,
-                'date': fields.Date.today(),
-                'suggested_products': order._cart_accessories()
-            })
-            res['website_sale.short_cart_summary'] = request.env['ir.ui.view']._render_template("website_sale.short_cart_summary", {
-                'website_sale_order': order,
-            })
+            res["website_sale.cart_lines"] = request.env["ir.ui.view"]._render_template(
+                "website_sale.cart_lines",
+                {
+                    "website_sale_order": order,
+                    "date": fields.Date.today(),
+                    "suggested_products": order._cart_accessories(),
+                },
+            )
+            res["website_sale.short_cart_summary"] = request.env[
+                "ir.ui.view"
+            ]._render_template(
+                "website_sale.short_cart_summary",
+                {
+                    "website_sale_order": order,
+                },
+            )
 
         if order.warning_lease:
             # XXX: We're overriding the warning message here because there's no

@@ -20,11 +20,11 @@ class SaleOrder(models.Model):
         if kwargs.get("lease"):
             lease_id = int(kwargs.get("lease"))
             return lines.filtered(
-                lambda l: l.lease_pricing_id.id == lease_id and l.is_lease
+                lambda line: line.lease_pricing_id.id == lease_id and line.is_lease
             )
 
         # otherwise just find any line which isn't a leasing line
-        return lines.filtered(lambda l: not l.is_lease)
+        return lines.filtered(lambda line: not line.is_lease)
 
     def _cart_update(
         self, product_id=None, line_id=None, add_qty=0, set_qty=0, **kwargs
@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
             line_id=line_id,
             add_qty=add_qty,
             set_qty=set_qty,
-            **kwargs
+            **kwargs,
         )
 
         line_id = self.env["sale.order.line"].browse(res["line_id"])
@@ -70,10 +70,9 @@ class SaleOrderLine(models.Model):
 
     @api.depends("product_id.display_name", "is_lease")
     def _compute_name_short(self):
-
         super()._compute_name_short()
 
-        for record in self.filtered(lambda l: l.is_lease):
+        for record in self.filtered(lambda line: line.is_lease):
             record.name_short = "{} ({} {})".format(
                 record.name_short,
                 record.lease_pricing_id.duration,

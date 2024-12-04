@@ -72,7 +72,8 @@ class TestSaleOrder(TestSaleCommon):
         self.assertEqual(
             lease_schedule_ids[0].state,
             "done",
-            "after creating an invoice from a lease schedule the schedule state must be done",
+            "after creating an invoice from a lease "
+            "schedule the schedule state must be done",
         )
 
         self.assertEqual(

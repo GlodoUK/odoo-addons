@@ -57,7 +57,8 @@ class SaleOrder(models.Model):
 
             if is_leased_count > 1:
                 record.warning_lease = _(
-                    "You cannot mix and match lease and non-lease products in the same order."
+                    "You cannot mix and match lease and non-lease "
+                    "products in the same order."
                 )
                 clear_warning = False
 

@@ -1,7 +1,7 @@
 {
     "name": "sale_lease_stock",
     "summary": "Leasing using Stock (rental-lite)",
-    "author": "Glodo",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
     "version": "14.0.1.0.0",
