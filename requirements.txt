@@ -5,8 +5,8 @@ lxml
 mock
 pandas
 paramiko
+phonenumbers
 pycurl
 requests
 scp
-phonenumbers
 twilio
