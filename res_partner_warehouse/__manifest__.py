@@ -1,0 +1,21 @@
+{
+    "name": "res_partner_warehouse",
+    "summary": "Partner 'Virtual' Warehouses",
+    "author": "Glo Networks",
+    "website": "https://github.com/GlodoUK/odoo-addons",
+    "category": "Inventory",
+    "version": "14.0.1.0.0",
+    "depends": ["base", "stock", "product"],
+    "data": [
+        "security/res_group.xml",
+        "security/ir.model.access.csv",
+        "views/res_partner.xml",
+        "views/res_partner_warehouse.xml",
+        "views/res_partner_warehouse_quant.xml",
+        "views/product_supplierinfo.xml",
+        "views/product_template.xml",
+        "views/menus.xml",
+        "views/res_config_settings.xml",
+    ],
+    "license": "LGPL-3",
+}
