@@ -1,7 +1,7 @@
 {
     "name": "delivery_carrier_calendar",
     "summary": "Delivery Carrier Calendar",
-    "author": "Glodo",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Delivery",
     "version": "12.0.1.0.0",
