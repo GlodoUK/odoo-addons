@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+    <record id="sale_order_view_search_inherit_sale_inherited" model="ir.ui.view">
+      <field name="name">sale.order.search.inherit.sale inherited</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+      <field name="arch" type="xml">
+        <xpath expr="//search" position="inside">
+          <filter string="Complete Delivery" name="pickings_complete" domain="[('delivery_status','=','complete')]" />
+          <filter string="Partially Delivery" name="pickings_partially_complete" domain="[('delivery_status','=','partial')]" />
+          <filter string="Overcompleted Delivery" name="pickings_overcompleted" domain="[('delivery_status','=','overcompleted')]" />
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_order_form_inherited" model="ir.ui.view">
+      <field name="name">sale.order.form inherited</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form" />
+      <field name="priority">75</field>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+          <field name="delivery_status" readonly="1"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_order_tree_inherited" model="ir.ui.view">
+      <field name="name">sale.order.tree inherited</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_tree" />
+      <field name="priority">75</field>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='invoice_status']" position="after">
+          <field name="delivery_status" readonly="1"/>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
