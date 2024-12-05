@@ -14,4 +14,5 @@
     "depends": ["base", "sale_management", "stock"],
     "data": ["views/views.xml"],
     "demo": [],
+    "license": "Other proprietary",
 }

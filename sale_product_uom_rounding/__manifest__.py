@@ -15,4 +15,5 @@
     ],
     'demo': [
     ],
+    'license': 'Other proprietary',
 }
