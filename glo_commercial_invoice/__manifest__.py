@@ -5,7 +5,7 @@
     "category": "Sales",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "author": "Glo Networks",
-    "license": "LGPL-3",
+    "license": "Other proprietary",
     "depends": ["sale", "stock", "sale_stock", "account_intrastat"],
     "data": [
         "views/stock_picking_views.xml",
