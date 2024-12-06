@@ -1,0 +1,26 @@
+<odoo>
+    <record id="action_purchases_to_invoice" model="ir.actions.act_window">
+        <field name="name">Orders to Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="purchase.purchase_order_view_tree" />
+        <field name="domain">[('invoice_status','=','to invoice')]</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search" />
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem
+        id="menu_purchase_invoicing"
+        name="To Invoice"
+        parent="purchase.menu_purchase_root"
+        sequence="3"
+    />
+
+    <menuitem
+        id="menu_purchase_to_invoice"
+        action="action_purchases_to_invoice"
+        parent="menu_purchase_invoicing"
+        sequence="2"
+    />
+</odoo>

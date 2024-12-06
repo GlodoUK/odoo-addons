@@ -1,0 +1,24 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_envelope_route_form">
+        <field name="name">view_edi_envelope_route_form</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_envelope_route_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='protocol']" position="inside">
+                <group name="protocol_ssh" invisible="protocol not in ('scp', 'sftp')">
+                    <field name="ssh_host" />
+                    <field name="ssh_port" />
+                    <field name="ssh_username" />
+                    <field name="ssh_password" password="True" />
+                    <field name="ssh_path_in" />
+                    <field name="ssh_path_out" />
+                    <field
+                        name="ssh_delete"
+                        string="Delete source files after download?"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

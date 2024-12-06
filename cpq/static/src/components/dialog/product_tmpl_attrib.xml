@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+    <!-- Attributes line template -->
+    <t t-name="cpq.ProductTmplAttrib" owl="1">
+        <!-- If the attribute line contains only one attribute value, we don't show the attribute
+             value template or the attribute line title unless the single attribute value is custom,
+             whereas in this case, only the title of the attribute line and the custom value
+        template are rendered. -->
+        <div>
+            <div class="mb-3">
+                <!-- TODO(Karl) can we get these into Owl components instead? -->
+                <t t-call="{{ getPTAVTemplate() }}" />
+            </div>
+
+            <div
+                class="mb-3"
+                t-if="props.attribute.ptav_ids.some((e) =&gt; e.is_custom)"
+            >
+                <div
+                    t-foreach="props.attribute.ptav_ids.filter((e) =&gt; e.is_custom)"
+                    t-as="ptav"
+                    t-key="ptav.id"
+                >
+                    <t t-if="props.selected.hasOwnProperty(ptav.id)">
+                        <strong t-esc="ptav.name" class="form-label" />
+
+                        <!-- TODO(Karl): This should be migrated into using their own Owl components -->
+
+                        <t t-if="[false, 'char'].includes(ptav.cpq_custom_type) ">
+                            <input
+                                type="text"
+                                class="form-control o_input"
+                                t-on-input="(ev) =&gt; props.onCustom(ptav.id, ev)"
+                                t-att-value="props.selected[ptav.id]"
+                            />
+                        </t>
+                        <t t-elif="['float', 'integer'].includes(ptav.cpq_custom_type)">
+                            <input
+                                type="number"
+                                class="form-control o_input"
+                                t-attf-step="{{ ptav.cpq_custom_type === 'float' ? 0.01 : 1 }}"
+                                t-on-input="(ev) =&gt; props.onCustom(ptav.id, ev)"
+                                t-att-value="props.selected[ptav.id]"
+                            />
+                        </t>
+                        <t t-elif="ptav.cpq_custom_type === 'many2one'">
+                            <b>unsupported</b>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+    <!-- Attributes value templates -->
+    <t t-name="cpq.ProductTmplAttrib-select" owl="1">
+        <label
+            t-att-for="'ptal-' + props.id"
+            t-esc="props.attribute.name"
+            class="form-label font-weight-bold"
+        >
+            <t t-esc="props.attribute.name" />
+        </label>
+        <select
+            class="form-control"
+            t-on-change="props.onSelect"
+            t-att-name="'ptal-' + props.id"
+            t-att-id="'ptal-' + props.id"
+        >
+            <option />
+            <option
+                t-foreach="props.attribute.ptav_ids"
+                t-as="ptav"
+                t-key="ptav.id"
+                t-att-value="ptav.id"
+                t-att-selected="props.selected[ptav.id] ? 'selected' : undefined"
+                t-esc="ptav.name"
+                t-att-class="{ 'css_not_available': ptav.excluded }"
+            />
+        </select>
+    </t>
+
+    <t t-name="cpq.ProductTmplAttrib-radio" owl="1">
+        <strong t-esc="props.attribute.name" class="form-label d-block mb-2" />
+
+        <div
+            t-foreach="props.attribute.ptav_ids"
+            t-as="ptav"
+            class="form-check form-check-inline"
+            t-key="ptav.id"
+        >
+            <input
+                type="radio"
+                class="form-check-input"
+                t-att-id="ptav.id"
+                t-att-value="ptav.id"
+                t-att-checked="props.selected[ptav.id] ? 'selected' : undefined"
+                t-att-name="'ptal-' + props.id"
+                t-on-change="props.onSelect"
+                t-attf-style="accent-color: {{ ptav.html_color ? ptav.html_color : '' }}"
+            />
+            <label
+                class="form-check-label"
+                t-att-class="{ 'css_not_available': ptav.excluded }"
+                t-att-for="ptav.id"
+            >
+                <span t-esc="ptav.name" />
+            </label>
+        </div>
+    </t>
+
+    <t t-name="cpq.ProductTmplAttrib-color" owl="1">
+        <strong t-esc="props.attribute.name" class="form-label d-block mb-2" />
+        <ul class="list-inline">
+            <li
+                t-foreach="props.attribute.ptav_ids"
+                t-as="ptav"
+                t-key="ptav.id"
+                class="list-inline-item me-1"
+            >
+                <label
+                    t-attf-style="background-color: {{ptav.is_custom ? '' : ptav.html_color}}; width: 40px; height: 40px;"
+                    class="css_attribute_color"
+                    t-att-class="{ 'css_attribute_color': 1, 'active': props.selected.hasOwnProperty(ptav.id) }"
+                    t-att-title="ptav.name"
+                >
+                    <input
+                        type="radio"
+                        class="form-check-input"
+                        t-att-id="ptav.id"
+                        t-att-value="ptav.id"
+                        t-att-checked="props.selected[ptav.id] ? 'selected' : undefined"
+                        t-att-name="'ptal-' + props.id"
+                        t-on-change="props.onSelect"
+                        t-attf-style="accent-color: {{ ptav.html_color ? ptav.html_color : '' }}"
+                    />
+                </label>
+            </li>
+        </ul>
+    </t>
+</templates>
