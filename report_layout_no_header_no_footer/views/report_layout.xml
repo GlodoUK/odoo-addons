@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="external_layout_bold" inherit_id="web.external_layout_bold">
+            <xpath expr="//div[contains(@t-attf-class, 'header')]" position="attributes">
+                <attribute name="t-if">not no_header</attribute>
+            </xpath>
+
+            <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="attributes">
+                <attribute name="t-if">not no_footer</attribute>
+            </xpath>
+        </template>
+
+    <template id="external_layout_boxed" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="attributes">
+            <attribute name="t-if">not no_header</attribute>
+        </xpath>
+
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="attributes">
+            <attribute name="t-if">not no_footer</attribute>
+        </xpath>
+    </template>
+
+    <template id="external_layout_standard" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="attributes">
+            <attribute name="t-if">not no_header</attribute>
+        </xpath>
+
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="attributes">
+            <attribute name="t-if">not no_footer</attribute>
+        </xpath>
+    </template>
+
+    <template id="external_layout_striped" inherit_id="web.external_layout_striped">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="attributes">
+            <attribute name="t-if">not no_header</attribute>
+        </xpath>
+
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="attributes">
+            <attribute name="t-if">not no_footer</attribute>
+        </xpath>
+    </template>
+</odoo>
