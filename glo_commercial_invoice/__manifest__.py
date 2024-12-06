@@ -6,7 +6,7 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "author": "Glo Networks",
     "license": "LGPL-3",
-    "depends": ["sale", "stock", "sale_stock"],
+    "depends": ["sale", "stock", "sale_stock", "account_intrastat"],
     "data": [
         "views/stock_picking_views.xml",
         "report/glo_commercial_invoice_views.xml",
