@@ -3,7 +3,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import Form, TransactionCase, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -47,15 +47,14 @@ class TestUpdateMoveDate(TransactionCase):
             datetime(2025, 1, 1, 6, 0, 0),  # 6AM 2025 1st Jan
         )
 
-        date_planned_initial = order_id.date_planned
-
-        order_id.write(
-            {"date_planned": date_planned_initial + relativedelta(days=5)}
-        )
+        with Form(order_id) as form:
+            date_planned_initial = order_id.date_planned
+            form.date_planned = date_planned_initial + relativedelta(days=5)
+            form.save()
 
         self.assertEqual(
             order_id.picking_ids.move_ids.date,
-            datetime(2025, 1, 6, 6, 0, 0),  # 6AM 2025 6th Jan
+            datetime(2025, 1, 6, 6, 0, 0),  # 6AM 2025 6st Jan
         )
 
     @freeze_time("2025-01-01 06:00:00")
