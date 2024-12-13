@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
@@ -11,25 +12,33 @@ class TestUpdateMoveDate(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.partner_id = cls.env["res.partner"].create({
-            "name": "Example",
-        })
+        cls.partner_id = cls.env["res.partner"].create(
+            {
+                "name": "Example",
+            }
+        )
 
-        cls.product_id = cls.env["product.product"].create({
-            "name": "Product",
-            "type": "product",
-        })
+        cls.product_id = cls.env["product.product"].create(
+            {
+                "name": "Product",
+                "type": "product",
+            }
+        )
 
     @freeze_time("2025-01-01 06:00:00")
     def test_update_move_date(self):
-        order_id = self.env["purchase.order"].create({
-            "partner_id": self.partner_id.id,
-        })
+        order_id = self.env["purchase.order"].create(
+            {
+                "partner_id": self.partner_id.id,
+            }
+        )
 
-        order_line_id = self.env["purchase.order.line"].create({
-            "order_id": order_id.id,
-            "product_id": self.product_id.id,
-        })
+        order_line_id = self.env["purchase.order.line"].create(
+            {
+                "order_id": order_id.id,
+                "product_id": self.product_id.id,
+            }
+        )
 
         order_id.button_confirm()
 
@@ -40,9 +49,9 @@ class TestUpdateMoveDate(TransactionCase):
 
         date_planned_initial = order_line_id.date_planned
 
-        order_line_id.write({
-            "date_planned": date_planned_initial + relativedelta(days=5)
-        })
+        order_line_id.write(
+            {"date_planned": date_planned_initial + relativedelta(days=5)}
+        )
 
         self.assertEqual(
             order_id.picking_ids.move_ids.date,
