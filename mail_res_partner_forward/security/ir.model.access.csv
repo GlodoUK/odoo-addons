@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_partner_forwarding_rules,access_res_partner_forwarding_rules,model_res_partner_forwarding_rule,base.group_user,1,1,1,1
+access_mail_message_forwarding_history,access_mail_message_forwarding_history,model_mail_message_forwarding_history,,1,1,1,1
+access_ir_model,access_ir_model,base.model_ir_model,base.group_user,1,0,0,0
