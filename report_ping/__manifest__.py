@@ -1,7 +1,7 @@
 {
     "name": "report_ping",
     "summary": "report pings",
-    "author": "Glodo",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "license": "Other proprietary",
     "category": "Reporting",
