@@ -3,7 +3,7 @@
     "summary": """Adds some utility css classes to increase the size of the
 chatter.""",
     "license": "LGPL-3",
-    "author": "Glodo",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
     "version": "13.0.1.0.0",
