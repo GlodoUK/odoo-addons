@@ -10,8 +10,7 @@
     "data": ["views/edi_route.xml"],
     "license": "Other proprietary",
     "external_dependencies": {
-        "bin": [],
-        "python": ["pycurl", "ftpparser"],
         "deb": ["libcurl4-openssl-dev"],
+        "python": ["ftpparser", "pycurl"],
     },
 }
