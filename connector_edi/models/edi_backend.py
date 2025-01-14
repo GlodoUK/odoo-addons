@@ -1,5 +1,6 @@
 import datetime
 import json
+from collections import defaultdict
 
 from babel.dates import format_date
 
@@ -242,35 +243,30 @@ class EdiBackend(models.Model):
             edi_message_id.action_migrate_legacy_body_to_attachment()
 
     def _compute_envelope_count(self):
-        envelope_data = self.env["edi.envelope"].read_group(
-            domain=[("backend_id", "in", self.ids)],
-            fields=["backend_id", "state"],
-            groupby=["backend_id", "state"],
-            lazy=False,
+        self.env.cr.execute(
+            """
+        SELECT
+            backend_id, COUNT(*), state
+        FROM edi_envelope
+        WHERE
+            backend_id in %s
+        GROUP BY backend_id, state
+        """,
+            [tuple(self.ids)],
         )
 
-        mapped_data = {}
+        mapped_data = defaultdict(lambda: defaultdict(lambda: 0))
 
-        for i in envelope_data:
-            backend = i["backend_id"][0]
-            state = i["state"]
-            if backend not in mapped_data:
-                mapped_data[backend] = {
-                    "__total": 0,
-                }
-
-            mapped_data[backend]["__total"] += i["__count"]
-            mapped_data[backend][state] = i["__count"]
+        for i in self.env.cr.fetchall():
+            backend, count, state = i
+            mapped_data[backend]["__total"] += count
+            mapped_data[backend][state] = count
 
         for record in self:
-            record.envelope_count = mapped_data.get(record.id, {}).get("__total", 0.0)
-            record.envelope_error_count = mapped_data.get(record.id, {}).get(
-                "error", 0.0
-            )
-            record.envelope_pending_count = mapped_data.get(record.id, {}).get(
-                "pending", 0.0
-            )
-            record.envelope_done_count = mapped_data.get(record.id, {}).get("done", 0.0)
+            record.envelope_count = mapped_data[record.id]["__total"]
+            record.envelope_error_count = mapped_data[record.id]["error"]
+            record.envelope_pending_count = mapped_data[record.id]["pending"]
+            record.envelope_done_count = mapped_data[record.id]["done"]
 
     message_count = fields.Integer(compute="_compute_message_count", store=False)
     message_pending_count = fields.Integer(
@@ -280,35 +276,30 @@ class EdiBackend(models.Model):
     message_done_count = fields.Integer(compute="_compute_message_count", store=False)
 
     def _compute_message_count(self):
-        message_data = self.env["edi.message"].read_group(
-            domain=[("backend_id", "in", self.ids)],
-            fields=["backend_id", "state"],
-            groupby=["backend_id", "state"],
-            lazy=False,
+        self.env.cr.execute(
+            """
+        SELECT
+            backend_id, COUNT(*), state
+        FROM edi_message
+        WHERE
+            backend_id in %s
+        GROUP BY backend_id, state
+        """,
+            [tuple(self.ids)],
         )
 
-        mapped_data = {}
+        mapped_data = defaultdict(lambda: defaultdict(lambda: 0))
 
-        for i in message_data:
-            backend = i["backend_id"][0]
-            state = i["state"]
-            if backend not in mapped_data:
-                mapped_data[backend] = {
-                    "__total": 0,
-                }
-
-            mapped_data[backend]["__total"] += i["__count"]
-            mapped_data[backend][state] = i["__count"]
+        for i in self.env.cr.fetchall():
+            backend, count, state = i
+            mapped_data[backend]["__total"] += count
+            mapped_data[backend][state] = count
 
         for record in self:
-            record.message_count = mapped_data.get(record.id, {}).get("__total", 0.0)
-            record.message_error_count = mapped_data.get(record.id, {}).get(
-                "error", 0.0
-            )
-            record.message_pending_count = mapped_data.get(record.id, {}).get(
-                "pending", 0.0
-            )
-            record.message_done_count = mapped_data.get(record.id, {}).get("done", 0.0)
+            record.message_count = mapped_data[record.id]["__total"]
+            record.message_error_count = mapped_data[record.id]["error"]
+            record.message_pending_count = mapped_data[record.id]["pending"]
+            record.message_done_count = mapped_data[record.id]["done"]
 
     show_kanban_dashboard_graph = fields.Boolean(
         default=True,
