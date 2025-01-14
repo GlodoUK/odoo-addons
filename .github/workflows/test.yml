@@ -1,5 +1,9 @@
 name: tests
 
+env:
+  # XXX: Temporary workaround until we can understand why 15.0 specifically is unhappy trying to install and find curl-config.
+  EXCLUDE: connector_edi_protocol_ftp
+
 on:
   pull_request:
     branches:
