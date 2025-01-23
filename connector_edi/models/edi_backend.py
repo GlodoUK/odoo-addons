@@ -250,6 +250,7 @@ class EdiBackend(models.Model):
         FROM edi_envelope
         WHERE
             backend_id in %s
+            and active is true
         GROUP BY backend_id, state
         """,
             [tuple(self.ids)],
@@ -283,6 +284,7 @@ class EdiBackend(models.Model):
         FROM edi_message
         WHERE
             backend_id in %s
+            and active is true
         GROUP BY backend_id, state
         """,
             [tuple(self.ids)],
