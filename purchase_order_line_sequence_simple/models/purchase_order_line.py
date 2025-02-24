@@ -3,17 +3,26 @@ from odoo import api, fields, models
 
 class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
+    _order = "sequence, id"
 
-    line_sequence = fields.Integer(
-        "Line Number",
+    sequence = fields.Integer(
+        "Hidden Sequence",
+        help="Gives the sequence of the line when displaying the purchase order.",
+        default=9999,
     )
-   
-    @api.model_create_multi
-    def create(self, vals_list):
-        res = super().create(vals_list)
-       
-        for line in res:
-            line.order_id._compute_max_line_sequence()
-            line.line_sequence = line.order_id.max_line_sequence
 
-        return res
+    visible_sequence = fields.Integer(
+        "Line Number",
+        help="Displays the sequence of the line in the purchase order.",
+        compute="_compute_visible_sequence",
+        store=True,
+    )
+
+    @api.depends("order_id.order_line", "sequence")
+    def _compute_visible_sequence(self):
+        for purchase in self.mapped("order_id"):
+            sequence = 1
+            order_lines = purchase.order_line.filtered(lambda pol: not pol.display_type)
+            for line in sorted(order_lines, key=lambda pol: pol.sequence):
+                line.visible_sequence = sequence
+                sequence += 1
