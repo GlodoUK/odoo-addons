@@ -28,5 +28,3 @@ Example usage
       <field name="state">poke</field>
       <field name="trigger">on_write</field>
     </record>
-
-
