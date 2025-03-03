@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_edi_sale_order","edi_sale_order connector manager","model_edi_sale_order","connector.group_connector_manager",1,1,1,1
+"access_edi_sale_order_line","edi_sale_order_line connector manager","model_edi_sale_order_line","connector.group_connector_manager",1,1,1,1
+"access_edi_sale_order_internal","edi_sale_order internal","model_edi_sale_order","base.group_user",1,0,0,0
+"access_edi_sale_order_line_internal","edi_sale_order_line internal","model_edi_sale_order_line","base.group_user",1,0,0,0
