@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_ping,access_report_ping,model_report_ping,base.group_user,1,1,1,1
+access_report_ping_attach,access_report_ping_attach,model_report_ping_attach,base.group_user,1,1,1,1

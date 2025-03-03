@@ -1,0 +1,110 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="report_ping_list">
+      <field name="name">report_ping_list</field>
+      <field name="model">report.ping</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" />
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="report_ping_form">
+        <field name="name">report_ping_form</field>
+        <field name="model">report.ping</field>
+        <field name="arch" type="xml">
+          <form>
+            <header>
+                <button name="send_ping" type="object" string="Send Ping" />
+            </header>
+            <sheet>
+                <group>
+                      <field name="name" />
+                      <field name="template_id" />
+                      <button
+                                name="action_add_follower"
+                                type="object"
+                                string="Add a Follower"
+                            />
+                </group>
+                <notebook>
+                    <page id="report" string="Report">
+                        <field
+                                    name="report_ids"
+                                    context="{'default_ping_id': active_id}"
+                                >
+                            <tree>
+                              <field name="report_id" />
+                              <field name="model_name" />
+                              <field name="model_domain" />
+                            </tree>
+                          </field>
+                    </page>
+                    <page id="cron" string="Cron">
+                      <group>
+                        <field name="cron_active" />
+                        <field
+                                        name="cron_interval"
+                                        attrs="{'invisible': [('cron_active', '=', False)]}"
+                                    />
+                        <field
+                                        name="cron_interval_type"
+                                        attrs="{'invisible': [('cron_active', '=', False)]}"
+                                    />
+                        <field name="cron_id" readonly="1" groups="base.group_no_one" />
+                      </group>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" />
+                <field name="message_ids" widget="mail_thread" />
+            </div>
+          </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="report_ping_attach_form">
+        <field name="name">report_ping_attach_form</field>
+        <field name="model">report.ping.attach</field>
+        <field name="arch" type="xml">
+          <form>
+            <sheet>
+                <group>
+                      <field name="ping_id" />
+                      <field name="report_id" />
+                      <field name="model_name" />
+                      <field
+                                name="model_domain"
+                                widget="domain"
+                                options="{'model': 'model_name'}"
+                            />
+                </group>
+            </sheet>
+          </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="report_ping_action_window">
+      <field name="name">Report Pings</field>
+      <field name="res_model">report.ping</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            name="Report Pings"
+            id="menu_root"
+            web_icon="report_ping,static/description/icon.png"
+        />
+
+    <menuitem
+            name="List"
+            id="menu_list"
+            parent="menu_root"
+            action="report_ping_action_window"
+        />
+
+  </data>
+</odoo>
