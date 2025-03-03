@@ -57,6 +57,8 @@ jobs:
           persist-credentials: false
       - name: Apt update
         run: apt -y update
+      - name: FIXME Apt install deps manually because oca_install_addons fails?
+        run: apt install -y libcurl4-openssl-dev libssl-dev
       - name: Install addons and dependencies
         run: oca_install_addons
       - name: Check licenses
