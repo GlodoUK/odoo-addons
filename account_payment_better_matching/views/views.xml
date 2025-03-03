@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_account_payment_form" model="ir.ui.view">
+        <field name="name">view_account_payment_form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="payment_reconciled" invisible="1" />
+                <button
+                    class="oe_stat_button"
+                    name="open_payment_matching_screen_better"
+                    string="Advanced Matching"
+                    type="object"
+                    attrs="{'invisible':['|', ('state','!=', 'posted'),('payment_reconciled','=', True)]}"
+                    icon="fa-university"
+                />
+                <button
+                    class="oe_stat_button"
+                    name="open_payment_matching_screen_result"
+                    string="Matched Items"
+                    type="object"
+                    icon="fa-balance-scale"
+                    attrs="{'invisible':[('state','!=', 'posted')]}"
+                />
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

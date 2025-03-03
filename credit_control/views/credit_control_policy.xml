@@ -1,0 +1,130 @@
+<odoo>
+    <record model="ir.ui.view" id="credit_control_classification_form">
+        <field name="name">credit_control_classification_form</field>
+        <field name="model">credit.control.classification</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="credit_control_rule_form">
+        <field name="name">credit_control_rule_form</field>
+        <field name="model">credit.control.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" widget="text" />
+                        <field name="classification_id" />
+                        <field name="rule" />
+                        <field name="event" />
+                        <field name="active" />
+
+                    </group>
+                    <group>
+                        <field
+                            name="sale_domain"
+                            widget="domain"
+                            options="{'model': 'sale.order'}"
+                            attrs="{'invisible': [('rule', '!=', 'sale_domain')]}"
+                        />
+                        <field
+                            name="partner_domain"
+                            widget="domain"
+                            options="{'model': 'res.partner'}"
+                            attrs="{'invisible': [('rule', '!=', 'partner_domain')]}"
+                        />
+                        <field
+                            name="code"
+                            widget="ace"
+                            options="{'mode': 'python'}"
+                            attrs="{'invisible': [('rule', '!=', 'code')]}"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="credit_control_policy_list">
+        <field name="name">credit_control_policy_list</field>
+        <field name="model">credit.control.policy</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="rule_count" />
+                <field name="partner_count" />
+                <field name="default" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="credit_control_policy_form">
+        <field name="name">credit_control_policy_form</field>
+        <field name="model">credit.control.policy</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            name="action_open_partners"
+                            type="object"
+                            icon="fa-user"
+                        >
+                            <field
+                                name="partner_count"
+                                widget="statinfo"
+                                string="Partners"
+                            />
+                        </button>
+                    </div>
+                    <label for="name" string="Display Name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" default_focus="1" placeholder="Name" />
+                    </h1>
+                    <group>
+                        <field name="action" />
+                        <field name="active" widget="boolean_toggle" />
+                        <field name="default" widget="boolean_toggle" />
+                    </group>
+                    <notebook>
+                        <page string="Rules">
+                            <field name="rule_ids">
+                                <tree decoration-muted="active == False">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="classification_id" />
+                                    <field name="name" />
+                                    <field name="rule" />
+                                    <field name="event" />
+                                    <field name="active" invisible="1" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="credit_control_policy_action_window">
+        <field name="name">Credit Control Policies</field>
+        <field name="res_model">credit.control.policy</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="wwuk_credit_control" id="menu_root" />
+    <menuitem
+        name="Credit Control Policies"
+        id="credit_control_policy_account_menu"
+        parent="account.account_management_menu"
+        action="credit_control_policy_action_window"
+    />
+    <menuitem
+        name="Credit Control Policies"
+        id="credit_control_policy_sale_menu"
+        parent="sale.menu_sale_config"
+        action="credit_control_policy_action_window"
+    />
+</odoo>
