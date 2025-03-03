@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="LeafletView.markerList">
+        <div class="o_marker_list_container d-none d-lg-block col-2">
+            <div class="o_marker_list_header">
+                <header>
+                    <i class="fa fa-list" />
+                    <span t-esc="widget.panelTitle" />
+                </header>
+            </div>
+            <ul class="o_marker_list_details">
+                <t t-call="LeafletView.markerListItem" />
+            </ul>
+        </div>
+    </t>
+    <t t-name="LeafletView.markerListItem">
+        <t t-esc="widget.attrs" />
+        <t t-foreach="widget.state.records" t-as="record">
+            <li
+                t-att-title="record[widget.fieldLat] and record[widget.fieldLong] ? undefined : 'Latitude or Longitude missing'"
+            >
+                <t t-if="record[widget.fieldLat] and record[widget.fieldLong]">
+                    <a href="" t-att-data-record-id="record.id">
+                        <t t-esc="record.display_name" />
+                    </a>
+                </t>
+                <t t-else="">
+                    <span t-esc="record.display_name" class="text-muted" />
+                </t>
+            </li>
+        </t>
+    </t>
+</templates>

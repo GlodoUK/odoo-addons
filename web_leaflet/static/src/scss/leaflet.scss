@@ -1,0 +1,73 @@
+.o_leaflet_view {
+    height: 100%;
+
+    .o_leaflet_container {
+        height: 100%;
+
+        div {
+            .center {
+                display: flex;
+                justify-content: left;
+                align-items: flex-end;
+            }
+
+            .divider {
+                width: 5px;
+                height: auto;
+                display: inline-block;
+            }
+        }
+    }
+
+    .o_marker_list_container {
+        padding: 8px 8px 8px 22px;
+        background-color: white;
+        border-left: 1px solid #dee2e6;
+        height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        cursor: default;
+
+        .o_marker_list_header {
+            padding: 8px 0;
+            text-transform: uppercase;
+            color: #666666;
+
+            i {
+                color: $o-enterprise-color;
+                margin-right: 0.25rem;
+            }
+
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .o_marker_list_details {
+            padding-left: 0px;
+            padding-bottom: 0px;
+            a {
+                color: $gray-900;
+            }
+            > li {
+                list-style-position: inside;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        ul.o_marker_list_details {
+            list-style: none;
+            cursor: default;
+            padding-bottom: 2px;
+        }
+    }
+
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-content {
+        border-radius: 0 !important;
+        margin: 0;
+        padding-right: 20px;
+    }
+}
