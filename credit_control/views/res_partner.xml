@@ -1,0 +1,27 @@
+<odoo>
+    <record model="ir.ui.view" id="view_partner_property_form">
+        <field name="name">view_partner_property_form</field>
+        <field name="model">res.partner</field>
+        <field name="priority">75</field>
+        <field name="inherit_id" ref="account.view_partner_property_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group" position="inside">
+                <group
+                    name="credit_control_policy"
+                    string="Credit Control"
+                    groups="credit_control.group_credit_control_user"
+                >
+                    <field name="credit_control_policy_id" />
+                    <field
+                        name="credit_control_limit"
+                        attrs="{'invisible': [('credit_control_policy_id', '=', False)]}"
+                    />
+                    <field
+                        name="credit_control_used"
+                        attrs="{'invisible': [('credit_control_policy_id', '=', False)]}"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

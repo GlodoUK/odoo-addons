@@ -1,0 +1,10 @@
+<odoo>
+    <record id="activity_sale_hold" model="mail.activity.type">
+        <field name="name">Hold</field>
+        <field name="icon">fa-hand-paper-o</field>
+        <field name="delay_count">0</field>
+        <field name="sequence">99</field>
+        <field name="decoration_type">warning</field>
+        <field name="res_model">sale.order</field>
+    </record>
+</odoo>

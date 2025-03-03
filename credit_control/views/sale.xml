@@ -1,0 +1,47 @@
+<odoo>
+    <template id="template_hold_msg">
+        <div>
+            <t t-esc="object.display_name" /> has been placed on <t
+                t-esc="classification"
+            /> hold.
+            <div class="mt16" t-if="msg">
+                <p t-esc="msg" />
+            </div>
+        </div>
+    </template>
+    <record model="ir.ui.view" id="sale_order_form_view">
+        <field name="name">sale_order_form_view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
+                <field name="credit_control_hold" invisible="1" />
+                <widget
+                    name="web_ribbon"
+                    text="Sale Held"
+                    bg_color="bg-danger"
+                    attrs="{'invisible': [('credit_control_hold', '=', False)]}"
+                />
+            </xpath>
+            <xpath expr="//group[@name='sale_info']" position="inside">
+                <field name="skip_credit_control_rules" />
+            </xpath>
+
+        </field>
+    </record>
+    <record id="credit_control_sale_order_view_search_inherit_sale" model="ir.ui.view">
+        <field name="name">credit.control.sale.order.search.inherit.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='order_date']" position="after">
+                <filter
+                    string="On Hold"
+                    name="credit_control_on_hold"
+                    domain="[('credit_control_hold', '=', True)]"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
