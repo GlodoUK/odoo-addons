@@ -57,8 +57,6 @@ jobs:
           persist-credentials: false
       - name: Apt update
         run: apt -y update
-      - name: Apt install deps manually
-        run: apt install -y libcurl4-openssl-dev libssl-dev
       - name: Install addons and dependencies
         run: oca_install_addons
       - name: Check licenses
