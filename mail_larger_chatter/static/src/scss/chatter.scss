@@ -1,0 +1,7 @@
+.o_form_view {
+    @include media-breakpoint-up(xxl, $o-extra-grid-breakpoints) {
+        > .oe_chatter_lg {
+            width: 50%;
+        }
+    }
+}
