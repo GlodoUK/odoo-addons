@@ -56,6 +56,8 @@ jobs:
         with:
           persist-credentials: false
       - name:
+        run: apt -y update
+      - name:
         run: apt install -y libcurl4-openssl-dev libssl-dev
       - name: Install addons and dependencies
         run: oca_install_addons
