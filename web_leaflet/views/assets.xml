@@ -1,0 +1,32 @@
+<odoo>
+    <template id="assets_backend" name="map assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/web_leaflet/static/src/js/leaflet_controller.js"
+            />
+            <script
+                type="text/javascript"
+                src="/web_leaflet/static/src/js/leaflet_model.js"
+            />
+            <script
+                type="text/javascript"
+                src="/web_leaflet/static/src/js/leaflet_renderer.js"
+            />
+            <script
+                type="text/javascript"
+                src="/web_leaflet/static/src/js/leaflet_view.js"
+            />
+            <link
+                rel="stylesheet"
+                type="text/css"
+                href="/web_leaflet/static/lib/leaflet/leaflet.css"
+            />
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/web_leaflet/static/src/scss/leaflet.scss"
+            />
+        </xpath>
+    </template>
+</odoo>
