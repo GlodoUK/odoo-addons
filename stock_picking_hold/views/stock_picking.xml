@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record model="ir.ui.view" id="view_picking_form">
+        <field name="name">view_picking_form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='extra']/group/group" position="inside">
+                <field name="hold" />
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="after">
+                <widget
+                    name="web_ribbon"
+                    title="On Hold"
+                    bg_color="bg-danger"
+                    attrs="{'invisible': [('hold', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.actions.server" id="action_stock_picking_hold">
+        <field name="name">Hold</field>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="state">code</field>
+        <field name="code">
+records = record.filtered(lambda r: not r.hold)
+if not records:
+    raise UserError("All selected records are already on hold!")
+records.action_hold()
+        </field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+    <record model="ir.actions.server" id="action_stock_picking_unhold">
+        <field name="name">Release from Hold</field>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="state">code</field>
+        <field name="code">
+records = records.filtered(lambda r: r.hold)
+if not records:
+    raise UserError("No selected records are on hold!")
+records.action_unhold()
+        </field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+</odoo>

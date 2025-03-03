@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_picking_withcarrier_out_form" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="show_open_website_url" invisible="1" />
+            </xpath>
+            <xpath expr="//button[@name='open_website_url']" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'invisible': [('show_open_website_url', '=', False)]}</attribute>
+                <attribute name="string">Carrier Website</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='carrier_tracking_ref']/parent::div"
+                position="after"
+            >
+                <field name="carrier_consignment_ref" />
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Delivery &amp; Tracking Info"
+                    attrs="{'invisible': [('state', '!=', 'done')]}"
+                >
+                    <group>
+                        <group>
+                    <field name="carrier_id" readonly="1" force_save="1" />
+                    <field name="date_shipped" />
+                    <field name="date_delivered" />
+                    <field name="delivery_state" />
+                    <field name="tracking_state" class="oe_inline" />
+                    <field
+                                name="date_next_tracking_update"
+                                groups="base.group_no_one"
+                            />
+                    <button
+                                name="tracking_state_update"
+                                string="Update tracking state"
+                                type="object"
+                                class="oe_inline"
+                                attrs="{'invisible': ['|', ('delivery_state', 'in', ['customer_delivered', 'canceled_shipment']), ('delivery_type', 'in', ['base_one_rule', 'fixed'])]}"
+                            />
+                </group>
+                <group>
+                    <field
+                                name="tracking_signature_ids"
+                                options="{'no_open': True}"
+                                string="Signatures"
+                            >
+                        <tree>
+                            <field name="date_signed" />
+                            <field name="signee" />
+                            <field
+                                        name="attachment"
+                                        widget="binary"
+                                        filename="attachment_name"
+                                    />
+                            <field name="attachment_name" invisible="1" />
+                        </tree>
+                    </field>
+                    <field
+                                name="tracking_history_ids"
+                                options="{'no_open': True}"
+                                string="History"
+                            >
+                        <tree>
+                            <field name="date_event" />
+                            <field name="description" />
+                        </tree>
+                    </field>
+                </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

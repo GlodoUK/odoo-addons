@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="whistl_shipping_delivery_carrier_form" model="ir.ui.view">
+        <field name="name">whistl_shipping_delivery_carrier_form</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+        <field name="model">delivery.carrier</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Whistl"
+                    attrs="{'invisible': [('delivery_type', '!=', 'whistl')]}"
+                >
+                    <group>
+                        <group>
+                            <field name="whistl_base_url" />
+                            <field
+                                name="whistl_username"
+                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                            />
+                            <field
+                                name="whistl_password"
+                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                                password="True"
+                            />
+                            <field
+                                name="whistl_account"
+                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                            />
+                            <field
+                                name="whistl_tracking_api_key"
+                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                            />
+                        </group>
+                        <group string="Services">
+                            <p
+                            >Before Continuing, visit your Whistl/Parcelhub account to configure a service preference list:</p>
+                            <a
+                                href="https://despatch.whistl.co.uk/ServicePreferenceList"
+                                role="button"
+                                class="btn btn-primary"
+                                name="whistl_account"
+                                target="_blank"
+                            >View Whistl Account</a>
+                            <p
+                            >Then enter the ID of your chosen preference list below.</p>
+                            <field
+                                name="whistl_service_preference_list"
+                                options="{'format': 0}"
+                            />
+                            <field name="whistl_label_format" />
+                            <field name="whistl_label_size" />
+                        </group>
+                    </group>
+                </page>
+                <page
+                    name="whistl_debug"
+                    string="Whistl Debug"
+                    attrs="{'invisible': [('delivery_type', '!=', 'whistl')]}"
+                    groups="base.group_no_one"
+                >
+                    <group>
+                        <field name="whistl_token" />
+                        <field name="whistl_refresh_token" />
+                        <field name="whistl_token_expiry" />
+                        <button
+                            name="action_reset_tokens"
+                            string="Reset Tokens"
+                            type="object"
+                            class="oe_highlight"
+                        />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_withcarrier_out_form" model="ir.ui.view">
+        <field name="name">view_picking_withcarrier_out_form</field>
+        <field name="model">stock.picking</field>
+        <field
+            name="inherit_id"
+            ref="delivery_state_events.view_picking_withcarrier_out_form"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tracking_state']" position="after">
+                <field
+                    name="whistl_shipment_id"
+                    readonly="1"
+                    attrs="{'invisible': [('delivery_type', '!=', 'whistl')]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

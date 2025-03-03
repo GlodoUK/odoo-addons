@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree//button[@name='action_show_details']" position="after">
+                <button
+                    name="action_open_form"
+                    type="object"
+                    icon="fa-info"
+                    width="0.1"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

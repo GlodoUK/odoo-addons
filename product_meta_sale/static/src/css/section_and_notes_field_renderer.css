@@ -1,0 +1,7 @@
+.o_data_cell_product_meta_indent > .o_field_widget::before {
+    content: "⮡";
+    font-size: 1.3em;
+
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}

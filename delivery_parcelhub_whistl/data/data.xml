@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="whistl_product" model="product.product">
+        <field name="name">Whistl/Parcelhub Shipping</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries" />
+    </record>
+    <record id="whistl_carrier" model="delivery.carrier">
+        <field name="name">Whistl/Parcelhub</field>
+        <field name="delivery_type">whistl</field>
+        <field name="product_id" ref="whistl_product" />
+    </record>
+    <record id="whistl_package" model="stock.package.type">
+        <field name="name">Whistl/Parcelhub Package</field>
+        <field name="package_carrier_type">whistl</field>
+        <field name="packaging_length" eval="20" />
+        <field name="width" eval="20" />
+        <field name="height" eval="20" />
+    </record>
+</odoo>

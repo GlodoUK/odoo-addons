@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="jkc_view_order_form" model="ir.ui.view">
+        <field name="name">jkc_view_order_form</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="model">sale.order</field>
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/tree/field[@name='product_uom']"
+                position="before"
+            >
+                <field name="alternatives" attrs="{'column_invisible': True}" />
+                <button
+                    name="action_suggest_alts"
+                    type="object"
+                    icon="fa-superpowers"
+                    title="Suggest Alternatives"
+                    attrs="{'invisible': [('product_id', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

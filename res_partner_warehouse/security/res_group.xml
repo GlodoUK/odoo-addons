@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="0">
+    <record id="group_select_seller" model="res.groups">
+        <field name="name">Partner Warehouse Affects Purchase Seller Selection</field>
+        <field name="category_id" ref="base.module_category_hidden" />
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<odoo>
+    <record model="ir.ui.view" id="view_picking_form">
+        <field name="name">view_picking_form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="priority">76</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
+                <widget
+                    name="web_ribbon"
+                    text="Hold"
+                    bg_color="bg-danger"
+                    attrs="{'invisible': [('hold', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

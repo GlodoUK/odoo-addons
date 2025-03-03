@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_product_commingled_form" model="ir.ui.view">
+        <field name="name">view_product_commingled_form</field>
+        <field name="model">product.commingled</field>
+        <field name="arch" type="xml">
+            <form string="Commingled Products">
+                <group>
+                    <field name="product_id" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_product_commingled_tree" model="ir.ui.view">
+        <field name="name">view_product_commingled_tree</field>
+        <field name="model">product.commingled</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="product_id" widget="many2one" />
+            </tree>
+        </field>
+    </record>
+</odoo>
