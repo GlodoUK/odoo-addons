@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_sale_order_missing_delivery_form" model="ir.ui.view">
+        <field name="name">view_sale_order_missing_delivery_form</field>
+        <field name="model">sale.order.missing.delivery</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="order_id" invisible="1" />
+                <p>Missing shipping charge!</p>
+                <footer>
+                    <button
+                        string="Add Shipping"
+                        name="action_add_shipping"
+                        class="oe_highlight"
+                        type="object"
+                        data-hotkey="z"
+                    />
+                    <button
+                        string="Confirm Without"
+                        name="action_confirm"
+                        type="object"
+                        class="oe_highlight"
+                        data-hotkey="q"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

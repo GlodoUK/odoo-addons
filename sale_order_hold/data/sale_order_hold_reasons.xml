@@ -1,0 +1,11 @@
+<odoo noupdate="1">
+    <record id="sale_order_hold_reason_wrong_item" model="sale.order.hold.reason">
+        <field name="name">Wrong Item</field>
+    </record>
+    <record id="sale_order_hold_reason_internal" model="sale.order.hold.reason">
+        <field name="name">Internal Issue</field>
+    </record>
+    <record id="sale_order_hold_reason_review" model="sale.order.hold.reason">
+        <field name="name">To Review</field>
+    </record>
+</odoo>

@@ -1,0 +1,46 @@
+<odoo>
+    <record id="view_quotation_tree" model="ir.ui.view">
+        <field name="name">view_quotation_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="hold" />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="hold" />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
+                <widget
+                    name="web_ribbon"
+                    text="On Hold"
+                    bg_color="bg-danger"
+                    attrs="{'invisible': [('hold', '=', False)]}"
+                />
+            </xpath>
+            <xpath expr="//group[@name='sales_person']" position="inside">
+                <field name="hold" />
+            </xpath>
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="hold_reason_ids" widget="many2many_tags" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

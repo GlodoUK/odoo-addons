@@ -1,0 +1,32 @@
+<odoo>
+    <record model="ir.ui.view" id="view_wizard_sale_order_unhold_form">
+        <field name="name">view_wizard_sale_order_unhold_form</field>
+        <field name="model">wizard.sale.order.unhold</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="sale_ids" widget="many2many_tags" />
+                    <field name="msg" />
+                </group>
+                <footer>
+                    <button
+                        type="object"
+                        name="process"
+                        string="Release from Hold"
+                        class="oe_highlight"
+                    />
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_wizard_sale_order_unhold" model="ir.actions.act_window">
+        <field name="name">Release from Hold</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.sale.order.unhold</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_sale_order_unhold_form" />
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="sale.model_sale_order" />
+    </record>
+</odoo>
