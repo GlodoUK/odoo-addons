@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="template_hold_msg">
+        <div>
+            <t t-esc="object.display_name" /> has been placed on <t
+                t-esc="classification"
+            /> hold.
+            <div class="mt16" t-if="msg">
+                <p t-esc="msg" />
+            </div>
+        </div>
+    </template>
+</odoo>

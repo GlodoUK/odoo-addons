@@ -1,0 +1,27 @@
+<odoo>
+    <record id="group_restrict_account_journal" model="res.groups">
+        <field name="name">Restrict Account Journal Access</field>
+    </record>
+    <record model="ir.rule" id="rule_account_move">
+        <field name="name">Account Move Security</field>
+        <field name="model_id" ref="account.model_account_move" />
+        <field
+            name="groups"
+            eval="[(4, ref('account_journal_restrict_by_user.group_restrict_account_journal'))]"
+        />
+        <field
+            name="domain_force"
+        >['|', ('journal_id.restricted_user_ids', '=', False), ('journal_id.restricted_user_ids', 'in', user.id)]</field>
+    </record>
+    <record model="ir.rule" id="rule_account_move_line">
+        <field name="name">Account Move Line Security</field>
+        <field name="model_id" ref="account.model_account_move_line" />
+        <field
+            name="groups"
+            eval="[(4, ref('account_journal_restrict_by_user.group_restrict_account_journal'))]"
+        />
+        <field
+            name="domain_force"
+        >['|', ('move_id.journal_id.restricted_user_ids', '=', False), ('move_id.journal_id.restricted_user_ids', 'in', user.id)]</field>
+    </record>
+</odoo>
