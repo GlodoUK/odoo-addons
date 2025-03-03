@@ -1,0 +1,7 @@
+<odoo>
+<record id="job_function_account_move_partial_reconcile" model="queue.job.function">
+    <field name="model_id" ref="account.model_account_move_line" />
+    <field name="method">partial_reconcile</field>
+    <!-- <field name="channel_id" ref="root.account_move_line_reconcile_queued" /> -->
+</record>
+</odoo>
