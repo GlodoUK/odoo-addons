@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+
+        <template id="assets_backend" name="web_many2many_list" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/web_many2many_list/static/src/js/many2many_list.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

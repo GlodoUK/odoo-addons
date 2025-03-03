@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="website.assets_backend" name="Disable Form Swipe">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_no_swipe/static/src/js/no_swipe.js" />
+        </xpath>
+    </template>
+</odoo>

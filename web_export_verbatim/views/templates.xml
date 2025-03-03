@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <template id="assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script
+                    type="text/javascript"
+                    src="/web_export_verbatim/static/src/js/web_export_view.js"
+                />
+            </xpath>
+        </template>
+    </data>
+</odoo>
