@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_sale_lease_stock_pricing_public,access_product_sale_lease_stock_pricing_public,sale_lease_stock.model_sale_lease_stock_pricing,,1,0,0,0
