@@ -1,0 +1,52 @@
+<odoo>
+    <record id="view_users_form_mail" model="ir.ui.view">
+        <field name="name">view_users_form_mail</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='notification_type']" position="after">
+                <label for="forwarding_enabled" />
+                <div>
+                    <field
+                        name="forwarding_enabled"
+                        widget="boolean_toggle"
+                        class="oe_inline"
+                    />
+                    <button
+                        icon="fa-pencil"
+                        name="action_open_forwarding_rules"
+                        type="object"
+                        string="Edit Rules"
+                        class="oe_inline btn-sm"
+                        attrs="{'invisible': [('forwarding_enabled', '=', False)]}"
+                    />
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_users_form_mail_preferences" model="ir.ui.view">
+        <field name="name">view_users_form_simple_modif</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="after">
+                <label for="forwarding_enabled" />
+                <div>
+                    <field
+                        name="forwarding_enabled"
+                        widget="boolean_toggle"
+                        class="oe_inline"
+                    />
+                    <button
+                        icon="fa-pencil"
+                        name="action_open_forwarding_rules"
+                        type="object"
+                        string="Edit Rules"
+                        class="oe_inline btn-sm"
+                        attrs="{'invisible': [('forwarding_enabled', '=', False)]}"
+                    />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

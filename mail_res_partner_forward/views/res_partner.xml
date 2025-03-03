@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website']" position="before">
+                <label for="forwarding_enabled" />
+                <div>
+                    <field
+                        name="forwarding_enabled"
+                        widget="boolean_toggle"
+                        class="oe_inline"
+                    />
+                    <button
+                        icon="fa-pencil"
+                        name="action_open_forwarding_rules"
+                        type="object"
+                        string="Edit Rules"
+                        class="oe_inline btn-sm"
+                        attrs="{'invisible': [('forwarding_enabled', '=', False)]}"
+                    />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -3,6 +3,7 @@ cryptography<37
 ftpparser
 lxml
 mock
+odoo_test_helper
 pandas
 paramiko
 phonenumbers
