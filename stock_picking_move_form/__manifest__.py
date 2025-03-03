@@ -10,5 +10,5 @@
     "data": [
         "views/stock_picking.xml",
     ],
-    "license": "AGPL-3",
+    "license": "LGPL-3",
 }
