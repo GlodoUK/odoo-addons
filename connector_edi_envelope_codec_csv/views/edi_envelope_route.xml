@@ -1,0 +1,17 @@
+<odoo>
+    <record model="ir.ui.view" id="view_edi_envelope_route_form">
+        <field name="name">view_edi_envelope_route_form</field>
+        <field name="model">edi.envelope.route</field>
+        <field name="inherit_id" ref="connector_edi.view_edi_envelope_route_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='codec']" position="inside">
+                <group name="codec_csv" attrs="{'invisible': [('codec', '!=', 'csv')]}">
+                    <field name="codec_csv_quoting"/>
+                    <field name="codec_csv_delimiter"/>
+                    <field name="codec_csv_field"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
