@@ -1,0 +1,13 @@
+<templates id="template">
+    <t t-name="WebExportTreeViewXls">
+        <div class="btn-group btn-group-sm d-none">
+            <button
+                class="btn btn-default export_treeview_xls"
+                type="button"
+                title="Export xls"
+            >
+            <i t-translation="off" class="fa fa-file-excel-o" /> Export As-is
+        </button>
+        </div>
+    </t>
+</templates>

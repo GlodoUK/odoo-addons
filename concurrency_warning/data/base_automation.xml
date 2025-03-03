@@ -1,0 +1,20 @@
+<odoo>
+
+  <data>
+
+    <record id="poke_sale_order_on_write" model="base.automation">
+      <field name="name">Poke on Sale Order Change</field>
+      <field name="model_id" ref="sale.model_sale_order"/>
+      <field name="state">poke</field>
+      <field name="trigger">on_write</field>
+    </record>
+
+    <record id="poke_purchase_order_on_write" model="base.automation">
+      <field name="name">Poke on Purchase Order Change</field>
+      <field name="model_id" ref="purchase.model_purchase_order"/>
+      <field name="state">poke</field>
+      <field name="trigger">on_write</field>
+    </record>
+
+  </data>
+</odoo>

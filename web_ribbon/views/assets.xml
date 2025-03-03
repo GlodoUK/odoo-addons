@@ -1,0 +1,8 @@
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_ribbon/static/src/js/widgets/ribbon.js"></script>
+            <link rel="stylesheet" type="text/scss" href="/web_ribbon/static/src/scss/ribbon.scss"/>
+        </xpath>
+    </template>
+</odoo>

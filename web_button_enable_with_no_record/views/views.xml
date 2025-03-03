@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="assets_backend" name="wwuk_so_stock_levels" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_button_enable_with_no_record/static/src/js/listrender.js"></script>
+        </xpath>
+    </template>
+
+</odoo>
