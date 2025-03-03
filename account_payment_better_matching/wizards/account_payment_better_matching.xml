@@ -1,0 +1,108 @@
+<odoo>
+    <data>
+
+        <record id="account_move_line_tree" model="ir.ui.view">
+            <field name="name">account_move_line_tree</field>
+            <field name="model">account.move.line</field>
+            <field name="mode">primary</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="name"/>
+                    <field name="invoice_id"/>
+                    <field name="amount_residual" sum="Total"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="amount_currency"/>
+                    <field name="amount_residual_currency" sum="Total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="account_move_line_search" model="ir.ui.view">
+            <field name="name">account_move_line_search</field>
+            <field name="model">account.move.line</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="Date" name="filter_date" date="date"/>
+                    <filter string="Invoice Date" name="filter_invoice_date" date="invoice_date"/>
+                    <field name="invoice_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_payment_better_matching_form" model="ir.ui.view">
+            <field name="name">account_payment_better_matching_form</field>
+            <field name="priority">20</field>
+            <field name="model">account.payment.better.matching</field>
+            <field name="arch" type="xml">
+                <form string="Payment Matching">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="payment_id" readonly="1" force_save="1"/>
+                                <field name="payment_currency_id" invisible="1"/>
+                                <field name="payment_amount_signed"/>
+
+                            </group>
+                            <group>
+                                <field name="move_line_residual"/>
+
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="matched_amount_signed"/>
+                                <field name="amount_unmatched"/>
+
+                                <field name="balanced"/>
+                                <field name="partial_reconcile"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Matched Move Lines">
+                                <field name="matched_move_line_ids"
+                                    widget="many2many_list"
+                                    readonly="0"
+                                    options="{'no_quick_create':True}"
+                                    domain="[('partner_id', '=', partner_id), ('reconciled', '=', False), ('account_id', '=', account_id), ('id', '!=', move_line_id)]"
+                                    context="{
+                                    'tree_view_ref': 'account_payment_better_matching.account_move_line_tree',
+                                    'search_view_ref': 'account_payment_better_matching.account_move_line_search'
+                                    }">
+                                <tree editable="bottom">
+                                    <field name="date" readonly="True"/>
+                                    <field name="partner_id" readonly="True"/>
+                                    <field name="name" readonly="True"/>
+                                    <field name="invoice_id" readonly="True"/>
+                                    <field name="amount_residual" sum="Total" readonly="True"/>
+                                    <field name="company_currency_id" invisible="1" readonly="True"/>
+                                    <field name="amount_currency" readonly="True"/>
+                                    <field name="amount_residual_currency" readonly="True"/>
+                                    <field name="reconcile_override" attrs="{'column_invisible':[('parent.partial_reconcile','=',False)]}"/>
+                                    <field name="currency_id" invisible="1" sum="Total" readonly="True"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Other Information">
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="move_line_id"/>
+                                <field name="account_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                    <footer>
+                        <button class="btn-primary" type="object" name="process" string="Reconcile" confirm="This is not balanced. This will result in partial matching. Do you wish to continue?" attrs="{'invisible': [('balanced', '!=', False)]}" />
+                        <button class="btn-primary" type="object" name="process" string="Reconcile" confirm="Are you happy and wish to continue?" attrs="{'invisible': [('balanced', '!=', True)]}" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</data>
+</odoo>
