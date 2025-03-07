@@ -102,15 +102,24 @@ jobs:
         run: |
           ln -sf ${GITHUB_WORKSPACE}/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
 
-      - name: Init DB
+      - name: Setup odoo.conf
         run: |
-          uv run -- \
-            odoo -i base \
-            --addons-path=${GITHUB_WORKSPACE}/enterprise,${GITHUB_WORKSPACE}/odoo-addons \
-            --stop-after-init
+          echo "[options]" > odoo.conf
+          echo "addons_path=enterprise,odoo-addons" >> odoo.conf
 
-      - run: |
-          unbuffer uv run -- coverage run --include "odoo-addons/*" --branch \
+      - name: Init DB
+        env:
+          ODOO_RC: odoo.conf
+        run: |
+          source .venv/bin/activate
+          odoo -i base --stop-after-init
+
+      - name: Run tests
+        env:
+          ODOO_RC: odoo.conf
+        run: |
+          source .venv/bin/activate
+          unbuffer coverage run --include "odoo-addons/*" --branch \
               odoo \
               -i $(manifestoo --select-addons-dir odoo-addons list --separator=, --sort topological) \
               --test-enable \
