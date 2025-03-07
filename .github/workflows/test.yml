@@ -108,7 +108,7 @@ jobs:
 
       - name: Install any extra python dependencies
         run: |
-          deps=$(uv run -- pyproject-dependencies ./*/pyproject.toml ./setup/*/setup.py)
+          deps=$(uv run -- pyproject-dependencies odoo-addons/*/pyproject.toml odoo-addons/setup/*/setup.py)
           if [ -n "$deps" ]; then
               uv pip install ${deps}
           fi
