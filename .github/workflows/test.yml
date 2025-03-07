@@ -97,7 +97,8 @@ jobs:
 
       # Symlink workaround for https://github.com/astral-sh/uv/issues/2744
       - run: |
-          ln -sf odoo/odoo-bin .venv/bin/odoo
+          ln -sf ${GITHUB_WORKSPACE}/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
+          ls -la ${GITHUB_WORKSPACE}/.venv/bin/odoo
 
       - name: Init DB
         run: |
