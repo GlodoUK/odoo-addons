@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - "17.0"
-      - "17.0-ocabot-*"
 
 jobs:
   unreleased-deps:
@@ -28,16 +27,9 @@ jobs:
               fi
           done
   test:
-    runs-on: ubuntu-22.04
-    container: ${{ matrix.container }}
-    name: ${{ matrix.name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - container: ghcr.io/oca/oca-ci/py3.10-odoo17.0:latest
-            name: test with Odoo
-            makepot: "false"
+    runs-on: ubuntu
+    container: ghcr.io/astral-sh/uv:python3.11-bookworm-slim:latest
+    name: Odoo
     services:
       postgres:
         image: postgres:12.0
@@ -47,26 +39,66 @@ jobs:
           POSTGRES_DB: odoo
         ports:
           - 5432:5432
+    env:
+      PGHOST: odoo
+      PGPASSWORD: odoo
+      PGDATABASE: odoo
     steps:
-      - uses: actions/checkout@v3
+      - name: Apt update and dependencies
+        run: |
+          apt-get -yqq update
+          apt-get install -yqq --no-install-recommends \
+            build-essential \
+            libpq-dev \
+            libldap2-dev \
+            libsasl2-dev \
+            libxml2-dev \
+            libxslt-dev \
+            libcurl4-openssl-dev \
+            libssl-dev
+
+      - uses: actions/checkout@v4
+        with:
+          repository: "odoo/odoo"
+          ref: "17.0"
+          persist-credentials: false
+          path: ${GITHUB_WORKSPACE}/odoo
+
+      - uses: actions/checkout@v4
+        with:
+          repository: "GlodoUK/enterprise"
+          ref: "17.0"
+          persist-credentials: false
+          path: ${GITHUB_WORKSPACE}/enterprise
+          token: ${{ secrets.GLODOUK_ENTERPRISE_GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Apt update
-        run: apt -y update
-      - name: FIXME Apt install deps manually because oca_install_addons fails?
-        run: apt install -y libcurl4-openssl-dev libssl-dev
-      - name: Install addons and dependencies
-        run: oca_install_addons
-      - name: Check licenses
-        run: manifestoo -d . check-licenses
-        continue-on-error: true
-      - name: Check development status
-        run: manifestoo -d . check-dev-status --default-dev-status=Beta
-        continue-on-error: true
-      - name: Initialize test db
-        run: oca_init_test_database
-      - name: Run tests
-        run: oca_run_tests
-      - name: Update .pot files
-        run: oca_export_and_push_pot https://x-access-token:${{ secrets.GIT_PUSH_TOKEN }}@github.com/${{ github.repository }}
-        if: ${{ matrix.makepot == 'true' && github.event_name == 'push' && github.repository_owner == 'GlodoUK' }}
+          path: ${GITHUB_WORKSPACE}/odoo-addons
+
+      - run: |
+          uv venv && \
+            uv pip install -r odoo/requirements.txt && \
+            uv pip install -e odoo && \
+            uv pip install -r odoo-addons/requirements.txt && \
+            uv pip install \
+              click-odoo-contrib \
+              manifestoo \
+              checklog-odoo \
+              coverage
+
+      # Symlink workaround for https://github.com/astral-sh/uv/issues/2744
+      - run: |
+          ln -sf odoo/odoo-bin .venv/bin/odoo
+
+      - name: Init DB
+        run: |
+          uv run odoo -i --addons-path=src/enterprise,src/odoo-addons --stop-after-init
+
+      - run: |
+          unbuffer uv run coverage run --include "src/odoo-addons/*" --branch \
+              odoo \
+              -i $(manifestoo --select-addons-dir src/odoo-addons list --separator=, --sort topological) \
+              --test-enable \
+              --stop-after-init | checklog-odoo
