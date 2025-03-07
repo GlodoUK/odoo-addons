@@ -95,20 +95,23 @@ jobs:
               checklog-odoo \
               coverage
 
-      # Symlink workaround for https://github.com/astral-sh/uv/issues/2744
-      - run: |
+        # Symlink workaround for:
+        # - https://github.com/astral-sh/uv/issues/2744
+        # - https://github.com/pypa/setuptools/issues/4863
+      - name: Overwriting odoo-bin as workaround for pypa/setuptools/issues/4863
+        run: |
           ln -sf ${GITHUB_WORKSPACE}/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
 
       - name: Init DB
         run: |
           uv run -- \
             odoo -i base \
-            --addons-path=${GITHUB_WORKSPACE}/src/enterprise,${GITHUB_WORKSPACE}/src/odoo-addons \
+            --addons-path=${GITHUB_WORKSPACE}/enterprise,${GITHUB_WORKSPACE}/odoo-addons \
             --stop-after-init
 
       - run: |
-          unbuffer uv run -- coverage run --include "src/odoo-addons/*" --branch \
+          unbuffer uv run -- coverage run --include "odoo-addons/*" --branch \
               odoo \
-              -i $(manifestoo --select-addons-dir src/odoo-addons list --separator=, --sort topological) \
+              -i $(manifestoo --select-addons-dir odoo-addons list --separator=, --sort topological) \
               --test-enable \
               --stop-after-init | checklog-odoo
