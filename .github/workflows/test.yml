@@ -35,8 +35,8 @@ jobs:
           done
   test:
     runs-on: ubuntu-latest
-    container: ghcr.io/astral-sh/uv:python3.11-bookworm-slim:latest
-    name: Odoo
+    container: ghcr.io/astral-sh/uv:python3.11-bookworm-slim
+    name: Test
     services:
       postgres:
         image: postgres:12.0
