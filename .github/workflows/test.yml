@@ -104,6 +104,13 @@ jobs:
         run: |
           ln -sf ${GITHUB_WORKSPACE}/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
 
+      - name: Install any extra dependencies
+        run: |
+          deps=$(uv run -- manifestoo -d odoo-addons list-external-dependencies deb --transitive)
+          if [ -n "$deps" ]; then
+              apt-get install -yqq --no-install-recommends ${deps}
+          fi
+
       - name: Setup odoo.conf
         run: |
           echo "[options]" > odoo.conf
@@ -113,16 +120,14 @@ jobs:
         env:
           ODOO_RC: odoo.conf
         run: |
-          . .venv/bin/activate
-          odoo -i base --stop-after-init
+          uv run -- click-odoo-initdb --no-cache -n $PGDATABASE
 
       - name: Run tests
         env:
           ODOO_RC: odoo.conf
         run: |
-          . .venv/bin/activate
-          unbuffer coverage run --include "odoo-addons/*" --branch \
+          unbuffer uv run -- coverage run --include "odoo-addons/*" --branch \
               .venv/bin/odoo \
-              -i $(manifestoo --select-addons-dir odoo-addons list --separator=, --sort topological) \
+              -i $(uv run -- manifestoo --select-addons-dir odoo-addons list --separator=, --sort topological) \
               --test-enable \
-              --stop-after-init | checklog-odoo
+              --stop-after-init | uv run -- checklog-odoo
