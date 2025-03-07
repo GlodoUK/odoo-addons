@@ -58,13 +58,12 @@ jobs:
           apt-get install -yqq --no-install-recommends \
             expect \
             build-essential \
+            git \
             libpq-dev \
             libldap2-dev \
             libsasl2-dev \
             libxml2-dev \
-            libxslt-dev \
-            libcurl4-openssl-dev \
-            libssl-dev
+            libxslt-dev
 
       - uses: actions/checkout@v4
         with:
