@@ -85,6 +85,8 @@ jobs:
           path: ${GITHUB_WORKSPACE}/odoo-addons
 
       - run: |
+          ls -la . && \
+          ls -la odoo/ && \
           uv venv && \
             uv pip install -r odoo/requirements.txt && \
             uv pip install -e odoo && \
