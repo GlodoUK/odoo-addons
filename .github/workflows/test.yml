@@ -69,24 +69,22 @@ jobs:
           repository: "odoo/odoo"
           ref: "17.0"
           persist-credentials: false
-          path: ${GITHUB_WORKSPACE}/odoo
+          path: odoo
 
       - uses: actions/checkout@v4
         with:
           repository: "GlodoUK/enterprise"
           ref: "17.0"
           persist-credentials: false
-          path: ${GITHUB_WORKSPACE}/enterprise
+          path: enterprise
           token: ${{ secrets.GLODOUK_ENTERPRISE_GITHUB_TOKEN }}
 
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-          path: ${GITHUB_WORKSPACE}/odoo-addons
+          path: odoo-addons
 
       - run: |
-          ls -la . && \
-          ls -la odoo/ && \
           uv venv && \
             uv pip install -r odoo/requirements.txt && \
             uv pip install -e odoo && \
@@ -103,7 +101,7 @@ jobs:
 
       - name: Init DB
         run: |
-          uv run odoo -i --addons-path=src/enterprise,src/odoo-addons --stop-after-init
+          uv run odoo -i base --addons-path=src/enterprise,src/odoo-addons --stop-after-init
 
       - run: |
           unbuffer uv run coverage run --include "src/odoo-addons/*" --branch \
