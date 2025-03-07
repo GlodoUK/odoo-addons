@@ -14,6 +14,7 @@ env:
   LANG: C.UTF-8
   LC_ALL: C.UTF-8
   DEBIAN_FRONTEND: noninteractive
+  UV_INDEX_URLL:
 
 jobs:
   unreleased-deps:
@@ -92,6 +93,7 @@ jobs:
             uv pip install -e odoo && \
             uv pip install -r odoo-addons/requirements.txt && \
             uv pip install \
+              pyproject-dependencies \
               click-odoo-contrib \
               manifestoo \
               checklog-odoo \
@@ -104,7 +106,14 @@ jobs:
         run: |
           ln -sf ${GITHUB_WORKSPACE}/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
 
-      - name: Install any extra dependencies
+      - name: Install any extra python dependencies
+        run: |
+          deps=$(uv run -- pyproject-dependencies ./*/pyproject.toml ./setup/*/setup.py)
+          if [ -n "$deps" ]; then
+              uv pip install ${deps}
+          fi
+
+      - name: Install any extra apt dependencies
         run: |
           deps=$(uv run -- manifestoo -d odoo-addons list-external-dependencies deb --transitive)
           if [ -n "$deps" ]; then
