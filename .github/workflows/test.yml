@@ -107,7 +107,7 @@ jobs:
       - name: Setup odoo.conf
         run: |
           echo "[options]" > odoo.conf
-          echo "addons_path=enterprise,odoo-addons" >> odoo.conf
+          echo "addons_path=odoo/addons,enterprise,odoo-addons" >> odoo.conf
 
       - name: Init database
         env:
@@ -122,7 +122,7 @@ jobs:
         run: |
           . .venv/bin/activate
           unbuffer coverage run --include "odoo-addons/*" --branch \
-              odoo \
+              .venv/bin/odoo \
               -i $(manifestoo --select-addons-dir odoo-addons list --separator=, --sort topological) \
               --test-enable \
               --stop-after-init | checklog-odoo
