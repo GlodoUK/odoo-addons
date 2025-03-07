@@ -55,6 +55,7 @@ jobs:
         run: |
           apt-get -yqq update
           apt-get install -yqq --no-install-recommends \
+            expect \
             build-essential \
             libpq-dev \
             libldap2-dev \
