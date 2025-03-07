@@ -84,7 +84,8 @@ jobs:
           persist-credentials: false
           path: odoo-addons
 
-      - run: |
+      - name: Bootstrap venv
+        run: |
           uv venv && \
             uv pip install -r odoo/requirements.txt && \
             uv pip install -e odoo && \
@@ -98,7 +99,7 @@ jobs:
         # Symlink workaround for:
         # - https://github.com/astral-sh/uv/issues/2744
         # - https://github.com/pypa/setuptools/issues/4863
-      - name: Overwriting odoo-bin as workaround for pypa/setuptools/issues/4863
+      - name: Overwriting odoo-bin in venv as workaround for pypa/setuptools/issues/4863
         run: |
           ln -sf ${GITHUB_WORKSPACE}/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
 
@@ -107,18 +108,18 @@ jobs:
           echo "[options]" > odoo.conf
           echo "addons_path=enterprise,odoo-addons" >> odoo.conf
 
-      - name: Init DB
+      - name: Init database
         env:
           ODOO_RC: odoo.conf
         run: |
-          source .venv/bin/activate
+          . .venv/bin/activate
           odoo -i base --stop-after-init
 
       - name: Run tests
         env:
           ODOO_RC: odoo.conf
         run: |
-          source .venv/bin/activate
+          . .venv/bin/activate
           unbuffer coverage run --include "odoo-addons/*" --branch \
               odoo \
               -i $(manifestoo --select-addons-dir odoo-addons list --separator=, --sort topological) \
