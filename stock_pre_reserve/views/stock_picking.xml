@@ -20,6 +20,7 @@
                     icon="fa-link"
                     context="{'default_move_id': id}"
                     invisible="show_action_link_move_orig_ids == False"
+                    title="Show candidate moves to link"
                     width="0.1"
                 />
                 <button
@@ -28,6 +29,7 @@
                     icon="fa-unlink"
                     column_invisible="show_action_unlink_move_orig_ids== False"
                     confirm="This will break all the linked origin move links. Are you sure you wish to continue?"
+                    title="Unlink origin moves"
                     width="0.1"
                 />
             </xpath>

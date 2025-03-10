@@ -104,42 +104,6 @@ class ChecklistTemplate(models.Model):
             "domain": [("checklist_template_id", "=", self.id)],
         }
 
-    @api.model_create_multi
-    def create(self, vals):
-        res = super().create(vals)
-        for record in res:
-            matching_records = self.env[record.res_model].search(
-                ast.literal_eval(res.domain)
-            )
-            for checklisted in matching_records:
-                checklisted.update_checklist_items()
-        return res
-
-    def write(self, vals):
-        before_res_model = self.res_model
-        before_matching_records = self.env[self.res_model]
-        for record in self:
-            before_matching_records |= self.env[self.res_model].search(
-                ast.literal_eval(record.domain)
-            )
-        res = super().write(vals)
-        new_res_model = vals.get("res_model", self.res_model)
-        matching_records = self.env[new_res_model]
-        for record in self:
-            matching_records |= self.env[new_res_model].search(
-                ast.literal_eval(record.domain)
-            )
-        if new_res_model != before_res_model:
-            no_longer_matching_records = before_matching_records
-        else:
-            no_longer_matching_records = before_matching_records - matching_records
-        no_longer_matching_records.with_context(
-            skip_checklist_block=True
-        ).checklist_item_ids.unlink()
-        for record in matching_records:
-            record.update_checklist_items()
-        return res
-
 
 class ChecklistTemplateLine(models.Model):
     _name = "glo_checklist.template.line"

@@ -14,52 +14,60 @@ class StockMovePrereserved(models.Model):
     """
 
     move_orig_id = fields.Many2one(
-        "stock.move",
-        required=True,
-        index=True,
+        "stock.move", required=True, index=True, string="Origin stock move"
     )
     move_dest_id = fields.Many2one(
-        "stock.move",
-        required=True,
-        index=True,
+        "stock.move", required=True, index=True, string="Destination stock move"
     )
 
     orig_product_id = fields.Many2one(
         related="move_orig_id.product_id",
         store=False,
+        string="Origin product",
     )
     dest_product_id = fields.Many2one(
         related="move_dest_id.product_id",
         store=False,
+        string="Destination product",
     )
 
-    orig_state = fields.Selection(related="move_orig_id.state", store=False)
-    dest_state = fields.Selection(related="move_dest_id.state", store=False)
+    orig_state = fields.Selection(
+        related="move_orig_id.state", store=False, string="Origin state"
+    )
+    dest_state = fields.Selection(
+        related="move_dest_id.state", store=False, string="Destination state"
+    )
 
     orig_product_uom_qty = fields.Float(
-        related="move_orig_id.product_uom_qty",
-        store=False,
+        related="move_orig_id.product_uom_qty", store=False, string="Origin demand"
     )
     dest_product_uom_qty = fields.Float(
-        related="move_dest_id.product_uom_qty",
-        store=False,
+        related="move_dest_id.product_uom_qty", store=False, string="Destination demand"
     )
 
     orig_product_uom = fields.Many2one(
         related="move_orig_id.product_uom",
         store=False,
+        string="Origin Unit of Measure",
     )
     dest_product_uom = fields.Many2one(
         related="move_dest_id.product_uom",
         store=False,
+        string="Destination Unit of Measure",
     )
 
     orig_picking_id = fields.Many2one(
-        related="move_orig_id.picking_id", store=True, index=True
+        related="move_orig_id.picking_id",
+        store=True,
+        index=True,
+        string="Origin picking",
     )
 
     dest_picking_id = fields.Many2one(
-        related="move_dest_id.picking_id", store=True, index=True
+        related="move_dest_id.picking_id",
+        store=True,
+        index=True,
+        string="Destination picking",
     )
 
     product_uom_qty_reserved = fields.Float(

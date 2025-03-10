@@ -1,4 +1,4 @@
-name: tests
+name: test
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
       - uses: pre-commit/action@v3.0.1
@@ -30,12 +30,15 @@ jobs:
               exit 1
           fi
 
-  unreleased-deps:
+  test:
     runs-on: ubuntu-latest
-    name: Detect unreleased dependencies
     steps:
-      - uses: actions/checkout@v3
-      - run: |
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Detect unreleased dependencies
+        run: |
           for reqfile in requirements.txt test-requirements.txt ; do
               if [ -f ${reqfile} ] ; then
                   result=0
@@ -48,119 +51,12 @@ jobs:
               fi
           done
 
-  test:
-    runs-on: ubuntu-latest
-    container: ghcr.io/astral-sh/uv:python3.11-bookworm-slim
-    name: Test
-    services:
-      postgres:
-        image: postgres:12.0
+      - name: Build CI image
         env:
-          POSTGRES_USER: odoo
-          POSTGRES_PASSWORD: odoo
-          POSTGRES_DB: odoo
-        ports:
-          - 5432:5432
-    env:
-      PGHOST: postgres
-      PGUSER: odoo
-      PGPASSWORD: odoo
-      PGDATABASE: odoo
-      UV_NO_CACHE: true
-      UV_PYTHON_DOWNLOADS: never
-      LANG: C.UTF-8
-      LC_ALL: C.UTF-8
-      DEBIAN_FRONTEND: noninteractive
-      # This PEP 503 index uses odoo addons from OCA and redirects the rest to PyPI,
-      # in effect hiding all non-OCA Odoo addons that are on PyPI.
-      UV_INDEX_URL: https://wheelhouse.odoo-community.org/oca-simple-and-pypi
-    steps:
-      - name: Apt update and dependencies
+          GITHUB_TOKEN: ${{ secrets.GLODOUK_ENTERPRISE_GITHUB_TOKEN }}
         run: |
-          apt-get -yqq update
-          apt-get install -yqq --no-install-recommends \
-            expect \
-            build-essential \
-            git \
-            libpq-dev \
-            libldap2-dev \
-            libsasl2-dev \
-            libxml2-dev \
-            libxslt-dev \
-            nodejs
+          docker compose -f .ci/docker-compose.yaml build --build-arg GITHUB_TOKEN="$GITHUB_TOKEN"
 
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-          path: "src/private"
-
-      - uses: actions/checkout@v4
-        with:
-          repository: "odoo/odoo"
-          ref: "17.0"
-          persist-credentials: false
-          path: src/odoo
-
-      - uses: actions/checkout@v4
-        with:
-          repository: "GlodoUK/enterprise"
-          ref: "17.0"
-          persist-credentials: false
-          path: src/enterprise
-          token: ${{ secrets.GLODOUK_ENTERPRISE_GITHUB_TOKEN }}
-
-      - name: Bootstrap venv
+      - name: Run CI
         run: |
-          uv venv && \
-            uv pip install -r src/odoo/requirements.txt && \
-            uv pip install -e src/odoo && \
-            uv pip install \
-              manifestoo \
-              whool \
-              checklog-odoo \
-              pyproject-dependencies \
-              coverage
-
-        # Symlink workaround for:
-        # - https://github.com/astral-sh/uv/issues/2744
-        # - https://github.com/pypa/setuptools/issues/4863
-      - name: Overwriting odoo-bin in venv as workaround for pypa/setuptools/issues/4863
-        run: |
-          ln -sf ${GITHUB_WORKSPACE}/src/odoo/odoo-bin ${GITHUB_WORKSPACE}/.venv/bin/odoo
-
-      - name: Fetch extra python dependencies
-        run:  |
-          deps=$(uv run -- pyproject-dependencies \
-            --no-isolation \
-            --ignore-build-errors \
-            src/private/*/pyproject.toml src/private/setup/*/setup.py \
-          )
-          if [ -n "${deps}" ]; then
-            uv pip install ${deps}
-          fi
-
-      - name: Install any extra apt dependencies
-        run: |
-          DEPS=$(uv run -- manifestoo -d src/private list-external-dependencies deb --transitive --ignore-missing)
-          if [ -n "${DEPS}" ]; then
-              apt-get install -yqq --no-install-recommends ${DEPS}
-          fi
-
-      - name: Bootstrap database
-        run: |
-          ADDONS=$(uv run -- manifestoo --select-addons-dir src/private list --separator=, --sort=topological)
-          uv run -- odoo -d ${PGDATABASE} -i ${ADDONS} --addons-path=src/odoo/addons,src/enterprise,src/private --stop-after-init --max-cron-threads=0
-
-      - name: Run tests
-        run: |
-          ADDONS=$(uv run -- manifestoo --select-addons-dir src/private list --separator=, --sort=topological)
-          unbuffer uv run -- odoo \
-              -d ${PGDATABASE} \
-              -i ${ADDONS} \
-              --max-cron-threads=0
-              --addons-path=src/odoo/addons,src/enterprise,src/private
-              --test-enable \
-              --stop-after-init | checklog-odoo
-
-      - name: Check licenses
-        run: uv run -- manifestoo -d src/private check-licenses
+          docker compose -f .ci/docker-compose.yaml up --exit-code-from odoo

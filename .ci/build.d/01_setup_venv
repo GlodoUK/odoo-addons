@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Apt deps we need
+apt-get install -yq  --no-install-recommends \
+  libldap2-dev \
+  libpq-dev \
+  libsasl2-dev \
+  libxml2-dev \
+  libxslt-dev \
+  nodejs
+
+# Create a venv
+uv venv
+# Upgrade setuptools to handle
+# - https://github.com/astral-sh/uv/issues/2744
+# - https://github.com/pypa/setuptools/issues/4863
+uv pip install -U setuptools
+# Install Odoo, ensure we're using editable_mode=compat to avoid import problems
+uv pip install -r src/odoo/requirements.txt
+uv pip install -e src/odoo --config-setting editable_mode=compat
+# Install extra dependencies that Odoo doesn't ship with.
+uv pip install \
+  lxml[html_clean]
+# Extras we need
+uv pip install \
+  checklog-odoo \
+  coverage \
+  manifestoo \
+  pyproject-dependencies \
+  whool
