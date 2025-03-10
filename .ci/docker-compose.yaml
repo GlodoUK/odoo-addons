@@ -1,0 +1,30 @@
+services:
+  odoo:
+    build:
+      dockerfile: .ci/Dockerfile
+      context: ../
+      args:
+        ODOO_VERSION: "16.0"
+    depends_on:
+      - db
+    environment:
+      - PGDATABASE=odoo
+      - PGUSER=odoo
+      - PGHOST=db
+      - PGPASSWORD=odoo
+    tty: true
+    volumes:
+      - filestore:/var/lib/odoo:z
+
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+    volumes:
+      - db:/var/lib/postgresql/data:z
+
+volumes:
+  filestore:
+  db:
