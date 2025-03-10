@@ -10,6 +10,6 @@
     "depends": ["glo_checklists", "account_accountant"],
     "data": [],
     "demo": [],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
     "auto_install": True,
 }
