@@ -12,7 +12,7 @@ class EdiSaleOrder(models.Model):
     _inherits = {"sale.order": "odoo_id"}
 
     odoo_id = fields.Many2one(
-        "sale.order", string="Sale Order", required=True, ondelete="cascade"
+        "sale.order", required=True, ondelete="cascade", string="EDI Sale Order Binding"
     )
 
     edi_message_id = fields.Many2one(

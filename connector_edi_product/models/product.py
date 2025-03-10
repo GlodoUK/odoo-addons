@@ -26,9 +26,11 @@ class ProductTemplate(models.Model):
         "edi.product.template",
         "odoo_id",
         copy=False,
+        string="EDI Product Template Bindings",
     )
     edi_product_ids = fields.One2many(
         related="product_variant_ids.edi_product_ids",
+        string="EDI Product Variant Bindings",
     )
 
     edi_product_count = fields.Integer(compute="_compute_edi_product_count", store=True)
@@ -71,9 +73,7 @@ class ProductProduct(models.Model):
     _inherit = ["product.product", "edi.message.mixin"]
 
     edi_product_ids = fields.One2many(
-        "edi.product.product",
-        "odoo_id",
-        copy=False,
+        "edi.product.product", "odoo_id", copy=False, string="EDI Product Bindings"
     )
 
     edi_product_count = fields.Integer(compute="_compute_edi_product_count", store=True)

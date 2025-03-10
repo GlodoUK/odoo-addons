@@ -7,9 +7,7 @@ class SaleOrder(models.Model):
     _inherit = ["sale.order", "edi.message.mixin"]
 
     edi_sale_order_ids = fields.One2many(
-        "edi.sale.order",
-        "odoo_id",
-        copy=False,
+        "edi.sale.order", "odoo_id", copy=False, string="EDI Sale Order Bindings"
     )
 
     edi_sale_order_count = fields.Integer(
@@ -36,7 +34,9 @@ class SaleOrder(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    edi_sale_order_line_ids = fields.One2many("edi.sale.order.line", "odoo_id")
+    edi_sale_order_line_ids = fields.One2many(
+        "edi.sale.order.line", "odoo_id", string="EDI Sale Order Line Bindings"
+    )
 
     edi_sale_order_line_count = fields.Integer(
         compute="_compute_edi_sale_order_line_count", store=True

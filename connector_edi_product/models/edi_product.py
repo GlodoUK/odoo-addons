@@ -41,7 +41,7 @@ class EdiProductTemplate(models.Model):
     _description = "EDI Product Template"
 
     odoo_id = fields.Many2one(
-        "product.template", string="Product", required=True, ondelete="cascade"
+        "product.template", string="EDI Binding", required=True, ondelete="cascade"
     )
 
     edi_message_id = fields.Many2one(

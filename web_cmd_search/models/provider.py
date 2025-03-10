@@ -8,7 +8,7 @@ class WebCmdSearchProvider(models.Model):
 
     sequence = fields.Integer(default=10)
     model_id = fields.Many2one("ir.model", required=True, ondelete="cascade")
-    model_name = fields.Char(related="model_id.model")
+    model_name = fields.Char(related="model_id.model", string="Model name")
     limit = fields.Integer(default=5)
 
     @api.model
