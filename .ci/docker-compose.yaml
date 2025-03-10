@@ -15,7 +15,6 @@ services:
     tty: true
     volumes:
       - filestore:/var/lib/odoo:z
-      - .:/opt/odoo/src/private:z
 
   db:
     image: postgres:15
