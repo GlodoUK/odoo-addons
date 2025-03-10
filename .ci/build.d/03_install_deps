@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+APT_DEPS=$(manifestoo -d src/private list-external-dependencies deb --transitive --ignore-missing)
+if [ -n "${APT_DEPS}" ]; then
+    apt-get install -yqq --no-install-recommends ${APT_DEPS}
+fi
+
+PY_DEPS=$(pyproject-dependencies \
+  --no-isolation \
+  --ignore-build-errors \
+  src/private/*/pyproject.toml src/private/setup/*/setup.py \
+)
+if [ -n "${PY_DEPS}" ]; then
+  uv pip install ${PY_DEPS}
+fi
