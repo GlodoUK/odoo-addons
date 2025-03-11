@@ -14,14 +14,14 @@ Example usage:
 
 .. code-block:: xml
 
-<t t-call="web.external_layout">
-    <t t-set="no_header" t-value="True" />
-    <t t-set="no_footer" t-value="True" />
-</t>
+  <t t-call="web.external_layout">
+      <t t-set="no_header" t-value="True" />
+      <t t-set="no_footer" t-value="True" />
+  </t>
 
 .. code-block:: xml
 
-<xpath expr="//t[@t-call='web.external_layout']" position="inside">
-    <t t-set="no_header" t-value="True" />
-    <t t-set="no_footer" t-value="True" />
-<xpath>
+  <xpath expr="//t[@t-call='web.external_layout']" position="inside">
+      <t t-set="no_header" t-value="True" />
+      <t t-set="no_footer" t-value="True" />
+  <xpath>

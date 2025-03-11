@@ -22,7 +22,7 @@ class ProductBanding(models.Model):
     parent_id = fields.Many2one(
         comodel_name="cpq.banding", string="Parent", ondelete="cascade"
     )
-    parent_path = fields.Char(index=True)
+    parent_path = fields.Char(index=True, unaccent=False)
     depth = fields.Integer(compute="_compute_depth", store=True)
     child_ids = fields.One2many(
         comodel_name="cpq.banding",
