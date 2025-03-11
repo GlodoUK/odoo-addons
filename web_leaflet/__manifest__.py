@@ -8,7 +8,7 @@
     "data": ["views/assets.xml"],
     "qweb": ["static/xml/templates.xml"],
     "auto_install": False,
-    "author": "Glodo",
+    "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "license": "LGPL-3",
 }
