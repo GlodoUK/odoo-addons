@@ -8,7 +8,8 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         check_missing_delivery_line = (
-            config["test_enable"] and self.env.context.get("test_delivery_force_delivery_line")
+            config["test_enable"] 
+            and self.env.context.get("test_delivery_force_delivery_line")
         ) or not config["test_enable"]
         if check_missing_delivery_line:
             for order in self:
