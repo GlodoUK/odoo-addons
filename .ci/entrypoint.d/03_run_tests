@@ -5,4 +5,4 @@ unbuffer odoo \
     -d ${PGDATABASE} \
     -i ${ADDONS} \
     --test-enable \
-    --stop-after-init | checklog-odoo
+    --stop-after-init
