@@ -9,7 +9,9 @@ class EdiMagentoAddress(models.Model):
     _inherit = "edi.binding"
     _inherits = {"res.partner": "odoo_id"}
 
-    odoo_id = fields.Many2one("res.partner", required=True, ondelete="cascade")
+    odoo_id = fields.Many2one(
+        "res.partner", required=True, ondelete="cascade", string="EDI Contact Binding"
+    )
 
     edi_message_id = fields.Many2one(
         "edi.message",

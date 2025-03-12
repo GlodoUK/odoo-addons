@@ -123,7 +123,7 @@ repos:
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
   - repo: https://github.com/OCA/pylint-odoo
-    rev: v8.0.19
+    rev: v9.1.0
     hooks:
       - id: pylint_odoo
         name: pylint with optional checks
@@ -134,3 +134,7 @@ repos:
       - id: pylint_odoo
         args:
           - --rcfile=.pylintrc-mandatory
+  - repo: https://github.com/OCA/maintainer-tools
+    rev: 4932764926c650bad64bff56e15a7d68dbbf89a9
+    hooks:
+      - id: oca-gen-addons-table

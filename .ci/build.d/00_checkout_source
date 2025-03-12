@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# FIXME: Use Dockerfile RUN --mount=cache
+
+mkdir -p src/odoo
+git clone --depth 1 --branch ${ODOO_VERSION} https://${GITHUB_TOKEN}@github.com/odoo/odoo.git src/odoo
+
+mkdir -p src/enterprise
+git clone --depth 1 --branch ${ODOO_VERSION} https://${GITHUB_TOKEN}@github.com/GlodoUK/enterprise.git src/enterprise
+
+# Workaround https://github.com/odoo/odoo/issues/187021
+sed -i -E "s/(gevent==)21\.8\.0( ; sys_platform != 'win32' and python_version > '3.9' and python_version <= '3.10')/\122.10.2\2/" src/odoo/requirements.txt
+sed -i -E "s/(greenlet==)1\.1\.2( ; sys_platform != 'win32' and python_version  > '3.9' and python_version <= '3.10')/\12.0.2\2/" src/odoo/requirements.txt
