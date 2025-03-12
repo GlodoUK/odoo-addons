@@ -17,7 +17,8 @@ class SaleOrder(models.Model):
                     raise UserError(
                         _(
                             "All orders must contain a delivery line!\n\n"
-                            "Please use the 'Add Shipping' button to add a delivery line."
+                            "Please use the 'Add Shipping' button to add a"
+                            " delivery line."
                         )
                     )
         return super().action_confirm()
