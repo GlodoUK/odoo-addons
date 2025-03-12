@@ -21,7 +21,11 @@ class TestForceDeliveryLine(TransactionCase):
         )
 
     def test_force_delivery_cost(self):
-        sale_order = self.env["sale.order"].create({"partner_id": self.partner.id})
+        sale_order = (
+            self.env["sale.order"]
+            .with_context(test_delivery_force_delivery_line=True)
+            .create({"partner_id": self.partner.id})
+        )
 
         self.env["sale.order.line"].create(
             {
