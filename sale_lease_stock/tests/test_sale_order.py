@@ -41,7 +41,7 @@ class TestSaleOrder(TestSaleCommon):
                         0,
                         0,
                         {
-                            "product_id": self.product_lease.id,
+                            "product_id": self.product_lease.product_variant_ids[0].id,
                             "is_lease": True,
                             "lease_pricing_id": self.product_lease.lease_pricing_ids[
                                 0
