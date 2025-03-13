@@ -5,5 +5,5 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["helpdesk"],
     "data": ["views/helpdesk_ticket_views.xml"],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
