@@ -27,15 +27,10 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_ticket_type_ids(self):
         domain = self._prepare_ticket_type_ids_domain()
-        return request.env["helpdesk.ticket.type"].sudo().search(domain)
+        return request.env["helpdesk.ticket.category"].sudo().search(domain)
 
     def _prepare_default_category(self):
-        return (
-            request.env["helpdesk.ticket.type"]
-            .sudo()
-            .search([("name", "=", "Question")], limit=1)
-            .id
-        )
+        return request.env.sudo().ref("helpdesk_ticket_category.type_issue").id
 
     def _new_ticket_get_page_view_values(self, **kw):
         return {
@@ -91,7 +86,7 @@ class CustomerPortal(CustomerPortal):
             "name": kw.get("subject"),
             "description": kw.get("description"),
             "priority": kw.get("priority", "0"),
-            "ticket_type_id": int(kw.get("category")),
+            "ticket_categ_id": int(kw.get("category")),
         }
         values.update(self._new_ticket_get_ticket_extra_values(**kw))
 
