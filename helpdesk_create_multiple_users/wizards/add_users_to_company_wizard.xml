@@ -1,0 +1,36 @@
+<odoo>
+    <record id="glo_add_users_to_company_wizard_form" model="ir.ui.view">
+        <field name="name">glo_add_users_to_company_wizard_form</field>
+        <field name="model">add.users.to.company.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="parent_id" />
+                    </group>
+                    <group />
+                </group>
+                <group>
+                    <field name="welcome_message" />
+                </group>
+                <group>
+                    <field name="user_info_ids" widget='one2many'>
+                        <tree editable="bottom">
+                            <field name="name" />
+                            <field name="email" />
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button
+                        type="object"
+                        name="post_add_users_to_company"
+                        string="Confirm"
+                        class="oe_highlight"
+                    />
+                    <button special="cancel" string="Cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

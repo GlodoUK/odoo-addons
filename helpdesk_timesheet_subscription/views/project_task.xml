@@ -1,0 +1,21 @@
+<odoo>
+    <record
+        id="helpdesk_timesheet_subscription_view_task_form2_inherited"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >helpdesk_timesheet_subscription_view_task_form2_inherited</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='timesheet_ids']/tree/field[@name='employee_id']"
+                position="after"
+            >
+<!--                TODO take default glo_log_time_id from employee_id.glo_default_log_time_id -->
+                <field name="glo_log_time_id" required="1" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

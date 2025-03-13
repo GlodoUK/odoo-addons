@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.Message" t-inherit-mode="extension">
+        <xpath expr="//span[hasclass('o_Message_commandStar')]" position="after">
+            <t
+                t-if="message.message_type == 'email' or message.message_type == 'comment'"
+            >
+            <div
+                    t-on-click="_onClickSplitTicket"
+                    class="btn-secondary pl-1 pr-1"
+                    style="cursor: pointer;"
+                >Split to new ticket</div>
+            </t>
+        </xpath>
+    </t>
+</templates>

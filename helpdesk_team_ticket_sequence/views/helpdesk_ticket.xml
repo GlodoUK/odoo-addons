@@ -1,0 +1,33 @@
+<odoo>
+    <record id="helpdesk_ticket_search_form" model="ir.ui.view">
+        <field name="name">helpdesk_ticket_search_form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="number" />
+            </xpath>
+        </field>
+    </record>
+    <record id="helpdesk_ticket_view_number_kanban" model="ir.ui.view">
+        <field name="name">helpdesk_ticket_view_number_kanban</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_kanban" />
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']/.." position="replace">
+                <strong><field name="name" /> (<field name="number" />)</strong>
+            </xpath>
+        </field>
+    </record>
+    <record id="helpdesk_ticket_view_number_form" model="ir.ui.view">
+        <field name="name">helpdesk_ticket_view_number_form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                (<field name="number" />)
+            </xpath>
+        </field>
+    </record>
+</odoo>

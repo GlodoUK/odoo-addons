@@ -1,0 +1,21 @@
+<odoo>
+    <record
+        id="helpdesk_timesheet_subscription_product_template_only_form_view"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >helpdesk_timesheet_subscription_product_template_only_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="is_uom_time" invisible="1" />
+                <field
+                    name="is_time_replenisher"
+                    attrs="{'invisible':[('is_uom_time', '!=', True), ('detailed_type', '!=', 'service')]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

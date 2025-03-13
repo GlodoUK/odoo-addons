@@ -1,0 +1,32 @@
+<odoo>
+    <record
+        id="helpdesk_timesheet_subscription_helpdesk_team_view_form_inherit_helpdesk_timesheet"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >helpdesk_timesheet_subscription_helpdesk_team_view_form_inherit_helpdesk_timesheet</field>
+        <field name="model">helpdesk.team</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk_timesheet.helpdesk_team_view_form_inherit_helpdesk_timesheet"
+        />
+        <field name="arch" type="xml">
+<!--            <xpath expr="//field[@name='project_id']\.." position="after">-->
+<!--                <div attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}" class="pt-4">-->
+<!--                    <label for="glo_product_id"/>-->
+<!--                    <field name="glo_product_id" class="oe_inline"/>-->
+<!--                </div>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='project_id']/.." position="after">
+                <div
+                    attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}"
+                    class="pt-4"
+                >
+                    <label for="glo_product_id" />
+                    <field name="glo_product_id" class="oe_inline" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

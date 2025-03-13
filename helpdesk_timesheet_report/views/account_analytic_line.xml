@@ -1,0 +1,44 @@
+<odoo>
+    <record id="helpdesk_timesheet_report_hr_timesheet_line_tree" model="ir.ui.view">
+        <field name="name">helpdesk_timesheet_report_hr_timesheet_line_tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="helpdesk_ticket_id" optional="show" />
+                <field name="glo_client_company_id" optional="hide" />
+                <field
+                    name="glo_ticket_category_ids"
+                    optional="hide"
+                    widget="many2many_tags"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="helpdesk_timesheet_report_hr_timesheet_line_search" model="ir.ui.view">
+        <field name="name">helpdesk_timesheet_report_hr_timesheet_line_search</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="helpdesk_ticket_id" optional="show" />
+                <field name="glo_client_company_id" optional="hide" />
+                <field name="glo_ticket_category_ids" optional="show" />
+            </xpath>
+            <xpath expr="//filter[@name='groupby_task']" position="after">
+                <filter
+                    string="Helpdesk Ticket"
+                    name="groupby_helpdesk_ticket_id"
+                    domain="[]"
+                    context="{'group_by': 'helpdesk_ticket_id'}"
+                />
+                <filter
+                    string="Company"
+                    name="groupby_glo_client_company_id"
+                    domain="[]"
+                    context="{'group_by': 'glo_client_company_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

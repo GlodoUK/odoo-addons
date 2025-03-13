@@ -1,0 +1,110 @@
+<odoo>
+    <record
+        model="ir.ui.view"
+        id="helpdesk_timesheet_subscription_glo_partner_time_balance_tree"
+    >
+        <field
+            name="name"
+        >helpdesk_timesheet_subscription_glo_partner_time_balance_tree</field>
+        <field name="model">glo.partner.time.balance</field>
+        <field name="arch" type="xml">
+<!--             editable="bottom"-->
+            <tree>
+                <field name="partner_id" optional="hidden" />
+                <field name="product_id" />
+                <field name="time_balance" widget="float_time" />
+            </tree>
+        </field>
+    </record>
+    <record
+        model="ir.ui.view"
+        id="helpdesk_timesheet_subscription_glo_partner_time_balance_form"
+    >
+        <field
+            name="name"
+        >helpdesk_timesheet_subscription_glo_partner_time_balance_form</field>
+        <field name="model">glo.partner.time.balance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box">
+                        <button
+                            class="oe_stat_button"
+                            icon="fa-info-circle"
+                            type="object"
+                            name="action_redirect_to_balance_history"
+                        >
+                            History
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" />
+                            <field name="product_id" />
+                        </group>
+                        <group>
+                            <field name="time_balance" widget="float_time" />
+                        </group>
+                    </group>
+                </sheet>
+<!--                <div class="oe_chatter">-->
+<!--                     <field name="message_follower_ids" widget="mail_followers"/>-->
+<!--                     <field name="message_ids" widget="mail_thread"/>-->
+<!--                </div>-->
+            </form>
+        </field>
+    </record>
+    <!--    Balance by company-->
+    <record id="glo_partner_time_balance_filter" model="ir.ui.view">
+        <field name="name">glo.partner.time.balance.filter</field>
+        <field name="model">glo.partner.time.balance</field>
+        <field name="arch" type="xml">
+            <search string="Search Company">
+                <field
+                    name="partner_id"
+                    domain="[('is_company', '=', True)]"
+                    operator="child_of"
+                />
+                <separator />
+                    <group expand="0" name="group_by" string="Group By">
+                        <filter
+                        name="partner_id"
+                        string="Company"
+                        domain="[]"
+                        context="{'group_by' : 'partner_id'}"
+                    />
+                        <filter
+                        name="product_id"
+                        string="Product"
+                        context="{'group_by': 'product_id'}"
+                    />
+                    </group>
+            </search>
+        </field>
+    </record>
+    <record id="report_balance_by_company_act" model="ir.actions.act_window">
+        <field name="name">Balance by Company</field>
+        <field name="res_model">glo.partner.time.balance</field>
+<!--        <field name="domain">[('glo_client_company_id', '!=', False)]</field>-->
+        <field name="context">{'group_by':'partner_id'}</field>
+        <field
+            name="search_view_id"
+            ref="helpdesk_timesheet_subscription.glo_partner_time_balance_filter"
+        />
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            There is no companies with balance yet.
+          </p>
+        </field>
+    </record>
+
+
+    <menuitem
+        id="helpdesk_timesheet_subscription_menu_contacts"
+        parent="contacts.menu_contacts"
+        action="report_balance_by_company_act"
+        name="Balance By Company"
+        sequence="5"
+    />
+
+</odoo>

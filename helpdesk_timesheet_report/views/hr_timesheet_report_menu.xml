@@ -1,0 +1,10 @@
+<odoo>
+    <menuitem
+        id="menu_custom_timesheets_reports_timesheet"
+        name="Custom"
+        parent="hr_timesheet.menu_timesheets_reports"
+        sequence="20"
+    />
+    <!--        groups="hr_timesheet.group_timesheet_manager"-->
+
+</odoo>

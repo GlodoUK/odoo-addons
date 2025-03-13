@@ -1,0 +1,41 @@
+<odoo>
+    <template
+        id="helpdesk_portal_reopen_tickets_followup_reopen_ticket"
+        name="Helpdesk Tickets"
+        inherit_id="helpdesk.tickets_followup"
+        priority="99"
+    >
+        <xpath
+            expr="//button[@data-target='#helpdesk_ticket_close_modal']/.."
+            position="replace"
+        />
+        <xpath expr="//div[hasclass('text-truncate')]" position="inside">
+            <a
+                t-if="ticket.stage_id.is_close"
+                role="button"
+                class="btn btn-success btn-sm float-right mb-1 pt-1 mr-1"
+                t-att-href="'/my/ticket/reopen/%s/%s' % (ticket.id, ticket.access_token)"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="If the issue has not been solved, you can reopen the request."
+            >
+                <small>
+                    <b>Reopen this ticket</b>
+                </small>
+            </a>
+            <button
+                t-if="ticket.team_id.allow_portal_ticket_closing and not ticket.stage_id.is_close and not ticket.closed_by_partner"
+                class="btn btn-dark btn-sm float-right mr-1"
+                data-target="#helpdesk_ticket_close_modal"
+                data-toggle="modal"
+            >
+                <small
+                    data-toggle="tooltip"
+                    title="If the issue has been solved, you can close the request."
+                >
+                    <b>Close this ticket</b>
+                </small>
+            </button>
+        </xpath>
+    </template>
+</odoo>

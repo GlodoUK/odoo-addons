@@ -1,0 +1,180 @@
+<odoo>
+    <template
+        id="helpdesk_portal_new_ticket_portal_searchbar"
+        inherit_id="portal.portal_searchbar"
+    >
+        <xpath expr="//div[@id='o_portal_navbar_content']" position="before">
+            <t t-if="page_name == 'ticket'">
+                <a href="/my/tickets/new" class="btn btn-primary">
+                    Submit a Ticket
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <template
+        id="portal_my_home_menu_helpdesk"
+        name="Portal layout : helpdesk new ticket menu entries"
+        inherit_id="portal.portal_breadcrumbs"
+        priority="75"
+    >
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'ticket_new'" t-attf-class="breadcrumb-item active">
+                New Ticket
+            </li>
+        </xpath>
+    </template>
+    <template id="template_helpdesk_ticket_new" name="Helpdesk Tickets">
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'" />
+
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_body">
+                    <form method="post">
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            t-att-value="request.csrf_token()"
+                        />
+                        <div class="form-group">
+                            <label for="team">Team</label>
+                            <div>
+                                <select
+                                    id="team"
+                                    name="team"
+                                    required="required"
+                                    class="custom-select"
+                                >
+                                    <t t-foreach="team_ids" t-as="team_id">
+                                        <option t-att-value="team_id.id">
+                                            <t t-esc="team_id.display_name" />
+
+                                            <t t-if="team_id.description">
+                                                - <t t-esc="team_id.description" />
+                                            </t>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input
+                                id="subject"
+                                name="subject"
+                                placeholder="Subject"
+                                type="text"
+                                aria-describedby="subjectHelpBlock"
+                                required="required"
+                                class="form-control"
+                            />
+                            <span
+                                id="subjectHelpBlock"
+                                class="form-text text-muted"
+                            >A brief reference</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                cols="40"
+                                rows="5"
+                                aria-describedby="descriptionHelpBlock"
+                                required="required"
+                                class="form-control"
+                            />
+                            <span
+                                id="descriptionHelpBlock"
+                                class="form-text text-muted"
+                            >A description of your issue, please include as much as detail as possible</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <div>
+                                <t t-foreach="priorities" t-as="priority">
+                                    <div
+                                        class="custom-control custom-radio custom-control-inline"
+                                    >
+                                        <t t-if="priority[0] == '1'">
+                                            <input
+                                                name="priority"
+                                                t-attf-id="priority_{{priority[0]}}"
+                                                t-attf-value="{{priority[0]}}"
+                                                type="radio"
+                                                class="custom-control-input"
+                                                t-att-checked="1"
+                                                required="required"
+                                            />
+                                        </t>
+                                        <t t-else="">
+                                            <input
+                                                name="priority"
+                                                t-attf-id="priority_{{ priority[0] }}"
+                                                t-attf-value="{{priority[0]}}"
+                                                type="radio"
+                                                class="custom-control-input"
+                                                required="required"
+                                            />
+                                        </t>
+                                        <label
+                                            t-attf-for="priority_{{ priority[0] }}"
+                                            class="custom-control-label"
+                                            t-esc="priority[1]"
+                                        />
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <div>
+                                <select
+                                    id="category"
+                                    name="category"
+                                    required="required"
+                                    class="custom-select"
+                                >
+                                    <t t-foreach="ticket_type_ids" t-as="type_id">
+                                        <option
+                                            t-att-value="type_id.id"
+                                            t-esc="type_id.display_name"
+                                        />
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button
+                                name="submit"
+                                type="submit"
+                                class="btn btn-primary"
+                            >Submit</button>
+                        </div>
+                    </form>
+                </t>
+            </t>
+        </t>
+    </template>
+<!--    <template id="portal_my_home" inherit_id="portal.portal_my_home" priority="20">-->
+<!--        <xpath-->
+<!--            expr="//t[@t-call='portal.portal_layout']/div[hasclass('o_portal_my_home')]/h3"-->
+<!--            position="before"-->
+<!--        >-->
+<!--            <div class="mb-3">-->
+<!--                <h3>Actions</h3>-->
+<!--                <div-->
+<!--                    class="btn-toolbar"-->
+<!--                    role="toolbar"-->
+<!--                    aria-label="Toolbar with button groups"-->
+<!--                >-->
+<!--                  <div class="btn-group mr-2" role="group" aria-label="First group">-->
+<!--                      <a href="/my/tickets/new" class="btn btn-primary">-->
+<!--                          Submit a Ticket-->
+<!--                      </a>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </xpath>-->
+<!--    </template>-->
+</odoo>

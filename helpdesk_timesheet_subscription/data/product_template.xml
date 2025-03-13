@@ -1,0 +1,54 @@
+<odoo>
+    <record
+        id="helpdesk_timesheet_subscription_product_template_it_support"
+        model="product.template"
+    >
+        <field name="name">IT Support</field>
+        <field name="list_price">80.0</field>
+        <field name="sale_ok" eval="True" />
+        <field name="purchase_ok" eval="False" />
+        <field name="is_time_replenisher" eval="True" />
+        <field name="recurring_invoice" eval="True" />
+        <field name="type">service</field>
+        <field name="service_policy">ordered_timesheet</field>
+        <field name="uom_id" ref="uom.product_uom_hour" />
+        <field name="uom_po_id" ref="uom.product_uom_hour" />
+        <field
+            name="description_sale"
+        >IT Support time, promising to help with any non-technical issues regarding odoo and it's modules.</field>
+        <field name="categ_id" ref="product.product_category_3" />
+<!--        <field name="invoice_policy">delivery</field>-->
+<!--        <field name="public_categ_ids" eval="[(6, 0, [ref('website_sale.services')])]"/>-->
+        <field
+            name="image_1920"
+            type="base64"
+            file="helpdesk_timesheet_subscription/static/src/img/support.png"
+        />
+    </record>
+    <record
+        id="helpdesk_timesheet_subscription_product_template_dev_support"
+        model="product.template"
+    >
+        <field name="name">DEV Support</field>
+        <field name="list_price">100.0</field>
+        <field name="sale_ok" eval="True" />
+        <field name="purchase_ok" eval="False" />
+        <field name="is_time_replenisher" eval="True" />
+        <field name="recurring_invoice" eval="True" />
+        <field name="type">service</field>
+        <field name="service_policy">ordered_timesheet</field>
+        <field name="uom_id" ref="uom.product_uom_hour" />
+        <field name="uom_po_id" ref="uom.product_uom_hour" />
+        <field
+            name="description_sale"
+        >DEV Support time, promising to help with any technical issues regarding odoo and it's modules.</field>
+        <field name="categ_id" ref="product.product_category_3" />
+<!--        <field name="invoice_policy">delivery</field>-->
+<!--        <field name="public_categ_ids" eval="[(6, 0, [ref('website_sale.services')])]"/>-->
+        <field
+            name="image_1920"
+            type="base64"
+            file="helpdesk_timesheet_subscription/static/src/img/support.png"
+        />
+    </record>
+</odoo>

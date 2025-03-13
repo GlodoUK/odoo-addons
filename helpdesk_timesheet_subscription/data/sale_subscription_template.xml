@@ -1,0 +1,27 @@
+<odoo>
+    <record
+        id="helpdesk_timesheet_subscription_monthly_subscription"
+        model="sale.subscription.template"
+    >
+        <field name="name">Monthly Support Subscription</field>
+        <field name="code">MON_SUPP</field>
+        <field name="recurring_interval">1</field>
+        <field name="recurring_rule_type">monthly</field>
+<!--        TODO when do we send invoice?-->
+        <field name="payment_mode">success_payment</field>
+        <field
+            name="invoice_mail_template_id"
+            ref="sale_subscription.mail_template_subscription_invoice"
+        />
+        <field name="user_closable">True</field>
+        <field name="auto_close_limit">15</field>
+        <field
+            name="product_ids"
+            eval="[(6, 0, [ref('helpdesk_timesheet_subscription.helpdesk_timesheet_subscription_product_template_dev_support')])]"
+        />
+<!--        TODO how should we health check-->
+<!--                    <field name="good_health_domain">[('recurring_monthly', '&gt;=', 20)]</field>-->
+<!--            <field name="bad_health_domain">[('recurring_monthly', '&lt;', 20)]</field>-->
+    </record>
+
+</odoo>

@@ -1,0 +1,11 @@
+<odoo noupdate="1">
+    <record id="helpdesk_channel_phone" model="helpdesk.channel">
+        <field name="name">Phone</field>
+    </record>
+    <record id="helpdesk_channel_email" model="helpdesk.channel">
+        <field name="name">Email</field>
+    </record>
+    <record id="helpdesk_channel_twitter" model="helpdesk.channel">
+        <field name="name">Twitter</field>
+    </record>
+</odoo>

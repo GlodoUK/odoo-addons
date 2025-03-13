@@ -1,0 +1,83 @@
+<odoo>
+    <template
+        id="helpdesk_timesheet_subscription_portal_helpdesk_ticket"
+        name="Portal helpdesk ticket custom"
+        inherit_id="helpdesk.portal_helpdesk_ticket"
+    >
+        <xpath expr="//t/t/t/t/thead/tr" position="inside">
+            <th id="total_hours_td" class="text-center w-100">Total Hours</th>
+            <th
+                id="last_updated_td"
+                class="text-center w-100"
+            >Last Updated Information</th>
+        </xpath>
+        <xpath expr="//t/t/t/t/t/tr" position="inside">
+            <td class="text-center">
+                <span
+                    class="badge badge-info"
+                    t-field="ticket.total_hours_spent"
+                    t-options="{'widget': 'float_time'}"
+                />
+            </td>
+            <td class="text-wrap">
+                <span t-field="ticket.glo_last_updated" />
+            </td>
+        </xpath>
+    </template>
+    <template
+        id="helpdesk_timesheet_subscription_tickets_followup"
+        inherit_id="helpdesk.tickets_followup"
+        name="Helpdesk Tickets Custom"
+    >
+        <xpath
+            expr="//t/t/t/div/div/h5/div/small[hasclass('text-right')]"
+            position="before"
+        >
+            <div class="row mb-1">
+                <div class="col-12">
+                    <small class="text-right">Total Hours:</small>
+                    <span
+                        class="badge badge-info"
+                        t-field="ticket.total_hours_spent"
+                        t-options="{'widget': 'float_time'}"
+                    />
+                </div>
+            </div>
+        </xpath>
+    </template>
+<!--    Adds balance on top navbar-->
+    <template
+        id="helpdesk_timesheet_frontend_layout"
+        inherit_id="portal.frontend_layout"
+        name="Helpdesk Timesheet Frontend Layout"
+    >
+        <xpath expr="//ul[@id='top_menu']" position="inside">
+            <t t-if="balance_items">
+                <li class="nav-item dropdown o_no_autohide_item">
+                    <a
+                        href="#"
+                        role="button"
+                        data-toggle="dropdown"
+                        class="dropdown-toggle nav-link"
+                        aria-expanded="false"
+                    >
+                        Balance <span class="badge badge-info" t-esc="sum_balance" />
+                    </a>
+                    <div
+                        role="menu"
+                        class="dropdown-menu js_usermenu dropdown-menu-right"
+                    >
+                        <t t-foreach="balance_items" t-as="balance_item">
+                            <a href="#" role="menuitem" class="dropdown-item">
+                                <t t-esc="balance_item" /> <span
+                                    class="badge badge-info"
+                                    t-esc="balance_item_value"
+                                />
+                            </a>
+                        </t>
+                    </div>
+                </li>
+            </t>
+        </xpath>
+    </template>
+</odoo>

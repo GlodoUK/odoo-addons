@@ -1,0 +1,15 @@
+<odoo>
+    <record id="helpdesk_account_move_link_view_move_form" model="ir.ui.view">
+        <field name="name">helpdesk_account_move_link_view_move_form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_info']" position="inside">
+                <group string="Helpdesk">
+                    <field name="helpdesk_ticket_id" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

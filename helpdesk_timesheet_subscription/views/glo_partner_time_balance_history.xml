@@ -1,0 +1,26 @@
+<odoo>
+    <record
+        model="ir.ui.view"
+        id="helpdesk_timesheet_subscription_glo_partner_time_balance_history_tree"
+    >
+        <field
+            name="name"
+        >helpdesk_timesheet_subscription_glo_partner_time_balance_history_tree</field>
+        <field name="model">glo.partner.time.balance.history</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="create_date" />
+                <field name="create_uid" optional="hidden" />
+                <field name="write_date" optional="hidden" />
+                <field name="write_uid" optional="hidden" />
+                <field name="partner_time_balance_id" optional="hidden" />
+                <field name="name" />
+<!--                <field name="model_id" optional="hidden"/>-->
+                <field name="model_model" optional="hidden" />
+                <field name="res_id" optional="hidden" />
+                <field name="time_balance_addition" widget="float_time" />
+                <field name="result_time_balance" widget="float_time" />
+            </tree>
+        </field>
+    </record>
+</odoo>
