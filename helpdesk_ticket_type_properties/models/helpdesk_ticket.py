@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class HelpdeskTicketType(models.Model):
-    _inherit = "helpdesk.ticket.type"
+    _inherit = "helpdesk.ticket.category"
 
     ticket_type_properties_definition = fields.PropertiesDefinition("Ticket Properties")
 
@@ -11,7 +11,7 @@ class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
     ticket_type_properties = fields.Properties(
-        definition="ticket_type_id.ticket_type_properties_definition"
+        definition="ticket_categ_id.ticket_type_properties_definition"
     )
 
     def _display_ticket_type_properties(self):
