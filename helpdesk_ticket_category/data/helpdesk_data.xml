@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="type_question" model="helpdesk.ticket.category">
+        <field name="name">Question</field>
+    </record>
+
+    <record id="type_issue" model="helpdesk.ticket.category">
+        <field name="name">Issue</field>
+    </record>
+</odoo>
