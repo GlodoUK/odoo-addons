@@ -11,5 +11,5 @@
         "views/sale_order_views.xml",
         "views/sale_portal_templates.xml",
     ],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
