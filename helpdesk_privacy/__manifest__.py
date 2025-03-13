@@ -12,5 +12,5 @@
     "web.assets_frontend": [
         "helpdesk_privacy/static/src/js/*.js",
     ],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
