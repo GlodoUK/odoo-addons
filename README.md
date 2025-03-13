@@ -25,6 +25,7 @@ addon | version | maintainers | summary
 [helpdesk_privacy](helpdesk_privacy/) | 18.0.1.0.0 |  | Helpdesk Privacy
 [helpdesk_sale_order_account_move_link](helpdesk_sale_order_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Sale Order Account Move Link
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 18.0.1.0.0 |  | Helpdesk Sale Order Link
+[helpdesk_ticket_category](helpdesk_ticket_category/) | 18.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 18.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 18.0.1.0.0 |  | Helpdesk Ticket Type Properties
 [web_cmd_search](web_cmd_search/) | 18.0.1.0.0 |  | Adds a global command search to quick access records

@@ -7,5 +7,5 @@
         "helpdesk_account_move_link",
         "helpdesk_sale_order_link",
     ],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
