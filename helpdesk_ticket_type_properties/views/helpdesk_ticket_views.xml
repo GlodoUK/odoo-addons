@@ -19,7 +19,7 @@
                             hideKanbanOption="1"
                         />
                     </div>
-                    <div class="col-6" invisible="not ticket_type_id">
+                    <div class="col-6" invisible="not ticket_categ_id">
                         <label
                             for="ticket_type_properties"
                             string="Ticket Type Properties"
