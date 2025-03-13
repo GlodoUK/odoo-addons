@@ -4,7 +4,7 @@
     "version": "16.0.1.0.0",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
-    "license": "LGPL-3",
+    "license": "Other proprietary",
     "category": "Hidden",
     "depends": ["helpdesk"],
     "data": ["security/ir.model.access.csv", "views/helpdesk_rules.xml"],
