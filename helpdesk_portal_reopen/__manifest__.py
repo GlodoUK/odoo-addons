@@ -8,5 +8,5 @@
         "views/helpdesk_portal_templates.xml",
         "views/helpdesk_team_views.xml",
     ],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
