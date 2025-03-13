@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template
+        id="template_helpdesk_ticket_new"
+        inherit_id="helpdesk_portal_new_ticket.template_helpdesk_ticket_new"
+    >
+        <xpath expr="//form//button[@name='submit']/parent::div" position="before">
+            <div class="form-check my-3">
+                <input
+                    type="checkbox"
+                    name="privacy"
+                    id="privacy"
+                    class="form-check-input"
+                    t-att-checked="'checked' if privacy else None"
+                />
+                <label
+                    for="privacy"
+                    class="form-check-label"
+                >Only I can access this ticket</label>
+            </div>
+        </xpath>
+    </template>
+</odoo>
