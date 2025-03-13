@@ -8,5 +8,5 @@
         "helpdesk_privacy",
     ],
     "data": ["views/helpdesk_portal_templates.xml"],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
