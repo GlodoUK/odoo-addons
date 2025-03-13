@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="helpdesk_team_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.team.form</field>
+        <field name="model">helpdesk.team</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//setting[label[@for='message_partner_ids']]" position="after">
+                <setting class="col-lg-12">
+                    <label for="escalate_message_partner_ids" />
+                    <div class="text-muted">
+                        Receive notifications whenever tickets are escalated in this team
+                    </div>
+                    <div class="mt16">
+                        <span>Followers</span>
+                        <field
+                            name="escalate_message_partner_ids"
+                            string="Follow All Team's Escalated Tickets"
+                            widget="many2many_tags_email"
+                        />
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
