@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_helpdesk_rule","access_helpdesk_rule","model_helpdesk_rule",helpdesk.group_helpdesk_manager,1,1,1,1
+"access_helpdesk_rule_tag_action","access_helpdesk_rule_tag_action","model_helpdesk_rule_tag_action",helpdesk.group_helpdesk_manager,1,1,1,1
+"access_helpdesk_rule_internal_user","access_helpdesk_rule_internal_user","model_helpdesk_rule",base.group_user,1,0,0,0
+"access_helpdesk_rule_tag_action_internal_user","access_helpdesk_rule_tag_action_internal_user","model_helpdesk_rule_tag_action",base.group_user,1,0,0,0

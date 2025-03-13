@@ -1,0 +1,152 @@
+<odoo>
+    <template
+        id="helpdesk_privacy_tickets_followup"
+        inherit_id="helpdesk.tickets_followup"
+    >
+        <xpath expr="//t[@t-set='entries']/ul" position="inside">
+            <li class="list-group-item flex-grow-1">
+                <div class="d-flex align-items-center">
+                    <strong class="me-2">
+                        Privacy
+                    </strong>
+
+                    <a
+                        role="button"
+                        t-if="ticket.is_private"
+                        class="btn btn-light"
+                        t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
+                        title="This is currently private and restricted to followers of this ticket."
+                    >
+                        <i class="fa fa-lock me-1" /> Private
+                    </a>
+
+                    <a
+                        role="button"
+                        t-else=""
+                        class="btn btn-light"
+                        t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
+                        title="This is currently public and all members of your company can view this ticket."
+                    >
+                        <i class="fa fa-unlock me-1" /> Public
+                    </a>
+                </div>
+                <span
+                    class="d-block text-muted"
+                    t-if="ticket.is_private"
+                >Only followers of this ticket can view this ticket.</span>
+                <span
+                    class="d-block text-muted"
+                    t-else=""
+                >All members of your company can view this ticket.</span>
+            <div class="col-12 col-md-12 mt-3">
+                <strong>Followers</strong>
+
+                    <ul class="list-unstyled">
+                        <li t-foreach="ticket.message_partner_ids" t-as="partner">
+                            <div class="d-flex flex-row align-items-center mb-2">
+                                <img
+                                    class="rounded-circle o_portal_contact_img"
+                                    t-att-src="image_data_uri(partner.avatar_1024)"
+                                    alt="Contact"
+                                />
+                                <div
+                                    t-out="partner"
+                                    t-options='{"widget": "contact", "fields": ["name"]}'
+                                    class="ms-2"
+                                />
+                                <form
+                                    t-attf-action="/helpdesk/ticket/unfollow/#{ticket.id}"
+                                    method="post"
+                                    role="form"
+                                    class="ms-auto"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="csrf_token"
+                                        t-att-value="request.csrf_token()"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="partner_id"
+                                        t-att-value="partner.id"
+                                    />
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-danger fa fa-trash"
+                                    />
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <button
+                        class="btn btn-light ms-auto"
+                        data-bs-target="#helpdesk_ticket_followers_modal"
+                        data-bs-toggle="modal"
+                    >
+                        <i class="fa fa-plus" aria-hidden="true" /> Add more
+                        </button>
+
+                <div
+                        class="modal"
+                        tabindex="-1"
+                        role="dialog"
+                        id="helpdesk_ticket_followers_modal"
+                    >
+                    <div class="modal-dialog mt-5" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add new followers</h5>
+                                <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    />
+                            </div>
+                            <form
+                                    t-attf-action="/helpdesk/ticket/follow/#{ticket.id}"
+                                    method="post"
+                                    role="form"
+                                >
+                                <input
+                                        type="hidden"
+                                        name="csrf_token"
+                                        t-att-value="request.csrf_token()"
+                                    />
+                                <div class="modal-body helpdesk_privacy_followers">
+                                    <select
+                                            multiple="multiple"
+                                            class="js_select2 w-100"
+                                            name="partner_ids"
+                                        >
+                                        <option
+                                                t-foreach="ticket._privacy_possible_followers()"
+                                                t-as="partner"
+                                                t-att-value="partner.id"
+                                            >
+                                            <t t-out="partner.name" />
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                            type="submit"
+                                            class="btn btn-danger"
+                                        >Add</button>
+                                    <button
+                                            type="button"
+                                            class="btn btn-light"
+                                            data-bs-dismiss="modal"
+                                        >Discard</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </li>
+        </xpath>
+    </template>
+</odoo>

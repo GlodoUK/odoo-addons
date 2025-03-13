@@ -1,0 +1,63 @@
+<odoo>
+    <template
+        id="helpdesk_portal_reopen_tickets_followup_reopen_ticket"
+        name="Helpdesk Tickets"
+        inherit_id="helpdesk.tickets_followup"
+    >
+        <xpath expr="//t[@t-set='entries']/ul" position="inside">
+            <li class="list-group-item flex-grow-1 d-flex flex-wrap align-items-center">
+                <strong class="d-block w-100">Status</strong>
+                <t t-out="ticket.stage_id.display_name" />
+                    <button
+                    class="ms-auto btn btn-light mt-2 d-block"
+                    data-bs-target="#helpdesk_ticket_reopen_modal"
+                    data-bs-toggle="modal"
+                    t-if="ticket.team_id.allow_portal_ticket_reopen and ticket.stage_id.fold"
+                >
+                        Reopen Ticket
+                    </button>
+
+                <p
+                    class="w-100 text-muted m-0"
+                    t-if="ticket.stage_id.description"
+                >This means... <t t-out="ticket.stage_id.description" /></p>
+
+                <div
+                    class="modal"
+                    tabindex="-1"
+                    role="dialog"
+                    id="helpdesk_ticket_reopen_modal"
+                >
+                    <div class="modal-dialog mt-5" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Reopen ticket</h5>
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                />
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you wish to proceed?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a
+                                    role="button"
+                                    class="btn btn-primary"
+                                    t-att-href="'/my/ticket/reopen/%s/%s' % (ticket.id, ticket.access_token)"
+                                >Reopen the ticket</a>
+                                <button
+                                    type="button"
+                                    class="btn btn-light"
+                                    data-bs-dismiss="modal"
+                                >Discard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </xpath>
+     </template>
+</odoo>

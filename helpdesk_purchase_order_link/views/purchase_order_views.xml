@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_helpdesk_ticket_ids"
+                    attrs="{'invisible': [('ticket_count', '=', 0)]}"
+                    groups="helpdesk.group_helpdesk_user"
+                    icon="fa-pencil"
+                >
+                    <field string="Ticket" name="ticket_count" widget="statinfo" />
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="helpdesk_ticket_ids" widget="many2many_tags" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

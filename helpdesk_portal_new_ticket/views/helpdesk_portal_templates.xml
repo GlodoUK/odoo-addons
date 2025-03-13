@@ -1,0 +1,162 @@
+<odoo>
+
+    <template
+        id="portal_breadcrumbs"
+        inherit_id="portal.portal_breadcrumbs"
+        priority="20"
+    >
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <t t-if="page_name == 'ticket_new'">
+                <li t-attf-class="breadcrumb-item">
+                    <a href="/my/tickets">Tickets</a>
+                </li>
+                <li t-attf-class="breadcrumb-item active">
+                    New
+                </li>
+            </t>
+        </xpath>
+    </template>
+
+    <template
+        id="helpdesk_portal_new_ticket_portal_searchbar"
+        inherit_id="portal.portal_searchbar"
+    >
+        <xpath expr="//div[@id='o_portal_navbar_content']/div/div" position="before">
+            <t t-if="page_name == 'ticket'">
+                <a href="/my/tickets/new" class="btn btn-primary me-3">
+                    Create a new ticket
+                </a>
+            </t>
+        </xpath>
+    </template>
+    <template id="template_helpdesk_ticket_new">
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'" />
+
+            <form method="post" class="portal_helpdesk_ticket_create">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    t-att-value="request.csrf_token()"
+                />
+                <div class="mb-2" t-if="len(team_ids) &gt; 1">
+                    <label class="form-label">Team</label>
+                    <div>
+                        <t t-foreach="team_ids" t-as="team_id">
+                            <div class="form-check">
+                                <input
+                                    name="team"
+                                    t-attf-id="team_id_{{ team_id.id }}"
+                                    t-attf-value="{{team_id.id}}"
+                                    type="radio"
+                                    class="form-check-input"
+                                    required="required"
+                                />
+                                <label
+                                    t-attf-for="team_id_{{ team_id.id }}"
+                                    class="form-check-label"
+                                    t-esc="team_id.display_name"
+                                />
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <t t-else="">
+                    <input
+                        type="hidden"
+                        name="team"
+                        t-attf-value="{{ team_ids[0].id }}"
+                    />
+                </t>
+
+                <div class="mb-2">
+                    <label class="form-label" for="subject">Subject</label>
+                    <input
+                        id="subject"
+                        name="subject"
+                        placeholder="Subject"
+                        type="text"
+                        aria-describedby="subjectHelpBlock"
+                        required="required"
+                        class="form-control"
+                    />
+                    <span
+                        id="subjectHelpBlock"
+                        class="form-text text-muted"
+                    >A brief reference</span>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        cols="40"
+                        rows="5"
+                        aria-describedby="descriptionHelpBlock"
+                        required="required"
+                        class="form-control"
+                    />
+                    <span
+                        id="descriptionHelpBlock"
+                        class="form-text text-muted"
+                    >A description of your issue, please include as much as detail as possible</span>
+                </div>
+                <div class="mb-2">
+                    <label>Priority</label>
+                    <div>
+                        <t t-foreach="priorities" t-as="priority">
+                            <div class="form-check">
+                                <input
+                                    name="priority"
+                                    t-attf-id="priority_{{ priority[0] }}"
+                                    t-attf-value="{{priority[0]}}"
+                                    type="radio"
+                                    class="form-check-input"
+                                    required="required"
+                                    t-att-checked="'checked' if priority[0] == default_priority else False"
+                                />
+                                <label
+                                    t-attf-for="priority_{{ priority[0] }}"
+                                    class="form-check-label"
+                                    t-esc="priority[1]"
+                                />
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="category">Category</label>
+                    <div>
+                        <select
+                            id="category"
+                            name="category"
+                            required="required"
+                            class="form-select"
+                        >
+                            <option
+                                value=""
+                                disabled="disabled"
+                                selected="selected"
+                                hidden="hidden"
+                            >Select your category</option>
+                            <t t-foreach="ticket_type_ids" t-as="type_id">
+                                <option
+                                    t-att-value="type_id.id"
+                                    t-esc="type_id.display_name"
+                                    t-att-selected="'selected' if default_category == type_id.id else False"
+                                />
+                            </t>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-2 pt-2">
+                    <button
+                        name="submit"
+                        type="submit"
+                        class="btn btn-primary"
+                    >Submit</button>
+                </div>
+            </form>
+        </t>
+    </template>
+</odoo>

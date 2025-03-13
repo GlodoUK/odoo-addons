@@ -1,0 +1,17 @@
+<odoo>
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div
+                class="col-auto col-3 mw-100 mb-2"
+                t-if="o.helpdesk_ticket_ids"
+                name="ticket_ids"
+            >
+                <strong>Helpdesk Ticket(s):</strong>
+                <p
+                    class="m-0"
+                    t-out="', '.join(o.helpdesk_ticket_ids.mapped('ticket_ref'))"
+                />
+            </div>
+        </xpath>
+    </template>
+</odoo>

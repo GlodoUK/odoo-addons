@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="helpdesk_portal_ticket_rule" model="ir.rule">
+        <field name="name">Tickets: portal users: following</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket" />
+        <field name="domain_force">
+            [
+                ('team_privacy_visibility', '=', 'portal'),
+                ('commercial_partner_id', '=', user.partner_id.commercial_partner_id.id),
+                ('is_private', '=', False),
+            ]
+        </field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+    </record>
+</odoo>
