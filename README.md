@@ -1,4 +1,3 @@
-[![Pre-commit Status](https://github.com/GlodoUK/odoo-addons/actions/workflows/pre-commit.yml/badge.svg?branch=15.0)](https://github.com/GlodoUK/odoo-addons/actions/workflows/pre-commit.yml?query=branch%3A15.0)
 [![Build Status](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml/badge.svg?branch=15.0)](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml?query=branch%3A15.0)
 
 # Addons for Odoo
