@@ -10,5 +10,5 @@
         "views/purchase_order_templates.xml",
         "views/purchase_order_views.xml",
     ],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
