@@ -24,6 +24,19 @@ addon | version | maintainers | summary
 [connector_edi_sale](connector_edi_sale/) | 16.0.1.0.0 |  | EDI Sales module
 [credit_control](credit_control/) | 16.0.1.0.0 |  | Credit Control Policies
 [crm_stage_duration](crm_stage_duration/) | 16.0.0.0.0 |  | Monitors and adds stage duration on kanban and tree views, and also the chatter
+[helpdesk_account_move_link](helpdesk_account_move_link/) | 16.0.1.0.0 |  | Links Account Moves to Helpdesk Tickets
+[helpdesk_commercial_partner](helpdesk_commercial_partner/) | 16.0.1.0.0 |  | Make commercial_partner_id a stored field on helpdesk tickets.
+[helpdesk_concurrency_warning](helpdesk_concurrency_warning/) | 16.0.1.0.0 |  | Updates helpdesk tickets automatically while open
+[helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 16.0.1.0.0 |  | Create a helpdesk ticket directly within the portal
+[helpdesk_portal_new_ticket_ticket_type_properties](helpdesk_portal_new_ticket_ticket_type_properties/) | 16.0.1.0.0 |  | Glue module between website_helpdesk_ticket_create and helpdesk_ticket_type_properties.
+[helpdesk_portal_reopen](helpdesk_portal_reopen/) | 16.0.1.0.0 |  | Allow tickets to be reopened via the portal
+[helpdesk_privacy](helpdesk_privacy/) | 16.0.1.0.0 |  | Adds private tickets with limited access
+[helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 16.0.1.0.0 |  | Helpdesk Purchase Order Link
+[helpdesk_rules](helpdesk_rules/) | 16.0.1.0.0 |  | Helpdesk - Automatically apply rules
+[helpdesk_sale_order_account_move_link](helpdesk_sale_order_account_move_link/) | 16.0.1.0.0 |  | Bridges helpdesk_sale_order_link and helpdesk_account_move_link
+[helpdesk_sale_order_link](helpdesk_sale_order_link/) | 16.0.1.0.0 |  | Links Sales Orders to Helpdesk Tickets
+[helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 16.0.1.0.0 |  | Allow a user to escalate a helpdesk ticket through the customer portal.
+[helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 16.0.1.0.0 |  | Adds a Properties field ticket_type_properties to helpdesk.ticket
 [sendgrid](sendgrid/) | 16.0.1.0.0 |  | Handle Inbound Email through Sendgrid Webhooks
 [stock_picking_component_events](stock_picking_component_events/) | 16.0.1.0.0 |  | Stock Picking Component Events
 [twilio_sms](twilio_sms/) | 16.0.2.0.0 |  | Twilio SMS Gateway

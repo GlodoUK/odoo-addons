@@ -1,0 +1,50 @@
+<odoo>
+    <template
+        id="helpdesk_ticket_sale_order_link_portal"
+        name="Portal: Helpdesk Tickets with Sale Order link"
+        inherit_id="helpdesk.tickets_followup"
+        priority="75"
+    >
+        <xpath expr="//div[@name='description']" position="after">
+            <div
+                class="row mb-4"
+                t-if="ticket.so_ids"
+                id="quotations"
+                name="Quotations"
+            >
+                <strong class="col-12">Linked Quotations</strong>
+                <div class="col-12">
+                    <p t-foreach="ticket.so_ids" t-as="sale">
+                        <a t-attf-href="/my/orders/#{sale.id}">
+                            <t t-esc="sale.name" />
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template
+        id="helpdesk_sale_order_ticket_link_portal"
+        name="Portal: Sale Order with Helpdesk Ticket link"
+        inherit_id="sale.sale_order_portal_content"
+        priority="75"
+    >
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div
+                class="row mb-4"
+                t-if="sale_order.helpdesk_tickets_ids"
+                id="ticket"
+                name="Ticket"
+            >
+                <strong class="col-12">Linked Helpdesk Tickets</strong>
+                <div class="col-12">
+                    <p t-foreach="sale_order.helpdesk_tickets_ids" t-as="ticket">
+                        <a t-attf-href="/helpdesk/ticket/#{ticket.id}">
+                            <t t-esc="ticket.name" />
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

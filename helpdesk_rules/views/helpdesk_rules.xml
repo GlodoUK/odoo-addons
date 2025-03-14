@@ -1,0 +1,104 @@
+<odoo>
+    <record id="helpdesk_rule_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk_rule_view_tree</field>
+        <field name="model">helpdesk.rule</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="trigger" />
+                <field name="action" />
+                <field name="stop" />
+            </tree>
+        </field>
+    </record>
+    <record id="helpdesk_rule_view_form" model="ir.ui.view">
+        <field name="name">helpdesk_rule_view_form</field>
+        <field name="model">helpdesk.rule</field>
+        <field name="arch" type="xml">
+            <form string="Team" class="oe_form_configuration">
+                <sheet>
+                    <div class="oe_title" id='title'>
+                        <label for="name" class="oe_edit_only" />
+                        <h1 id="name"><field
+                                name="name"
+                                placeholder="Helpdesk Rule..."
+                            /></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="team_id" />
+                            <field name="trigger" />
+                            <field
+                                name="domain"
+                                widget="domain"
+                                options="{'model': 'helpdesk.ticket', 'in_dialog': True}"
+                            />
+                        </group>
+                        <group>
+                            <field name="action" />
+                            <field name="stop" />
+                            <field name="debug" />
+                            <field
+                                name="stage_id"
+                                domain="[('team_ids', '=', team_id)]"
+                                attrs="{'invisible': [('action', '!=', 'set_stage')]}"
+                            />
+                            <field
+                                name="priority"
+                                attrs="{'invisible': [('action', '!=', 'set_priority')]}"
+                            />
+                            <field
+                                name="tag_ids"
+                                attrs="{'invisible': [('action', '!=', 'change_tags')]}"
+                            >
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="action" />
+                                    <field
+                                        name="tag_id"
+                                        attrs="{'invisible': [('action', '=', 'clear')]}"
+                                    />
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible': [('action', '!=', 'code')]}">
+                        <field name="code" widget="ace" options="{'mode': 'python'}" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="helpdesk_team_view_form" model="ir.ui.view">
+        <field name="name">helpdesk_team_view_form</field>
+        <field name="model">helpdesk.team</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_view_rules"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-gavel"
+                    string="Rules"
+                >
+                    <field name="rule_count" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="helpdesk_rule_action" model="ir.actions.act_window">
+        <field name="name">Rules</field>
+        <field name="res_model">helpdesk.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new rule for your helpdesk team
+          </p><p>
+              Automatically apply rules to your helpdesk tickets
+          </p>
+        </field>
+    </record>
+</odoo>

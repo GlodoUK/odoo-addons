@@ -1,0 +1,30 @@
+<odoo>
+    <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
+
+        <xpath expr="//div[@name='description']" position="inside">
+
+            <div
+                class="col-4"
+                t-foreach="ticket.ticket_type_properties"
+                t-as="prop"
+                t-if="prop['type'] in ('char', 'boolean', 'integer', 'float', 'decimal', 'date', 'selection', 'tags') and prop['value']"
+            >
+                <strong><t t-out="prop['string']" /></strong>
+                <p
+                    t-out="prop['value']"
+                    t-if="prop['type'] in ('char', 'boolean', 'integer', 'float', 'decimal', 'date')"
+                />
+                <p
+                    t-out="''.join(map(lambda x: x[1], filter(lambda s: s[0] == prop['value'], prop['selection'])))"
+                    t-if="prop['type'] == 'selection'"
+                />
+                <p t-out="', '.join(prop['value'])" t-if="prop['type'] == 'tags'" />
+            </div>
+
+
+        </xpath>
+
+
+
+    </template>
+</odoo>

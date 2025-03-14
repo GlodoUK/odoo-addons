@@ -1,0 +1,51 @@
+<odoo>
+    <record id="helpdesk_team_view_form" model="ir.ui.view">
+        <field name="name">helpdesk_team_view_form</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
+        <field name="model">helpdesk.team</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='self-Service']" position="inside">
+                <div class="col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="allow_portal_ticket_reopen" />
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_portal_ticket_reopen" />
+                        <div class="text-muted">
+                            Allow your customers to reopen tickets via the portal
+                        </div>
+                        <div
+                            attrs="{'invisible': [('allow_portal_ticket_reopen', '=', False)]}"
+                            class="mt16"
+                        >
+                            <label for="reopen_ticket_stage" />
+                            <field
+                                name="reopen_ticket_stage"
+                                domain="[('team_ids', 'in', id)]"
+                                attrs="{'required': [('allow_portal_ticket_reopen', '=', True)]}"
+                            />
+                            <div class="text-muted">
+                                Where should reopened tickets go?
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="o_setting_left_pane mt16"
+                        attrs="{'invisible': [('allow_portal_ticket_reopen', '=', False)]}"
+                    >
+                        <field name="clear_assigned_on_reopen" />
+                    </div>
+                    <div
+                        class="o_setting_right_pane pt16"
+                        attrs="{'invisible': [('allow_portal_ticket_reopen', '=', False)]}"
+                    >
+                        <label for="clear_assigned_on_reopen" />
+                        <div class="text-muted">
+                            When a ticket is reopened, clear the assignee
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <!-- Inherited Form View -->
+    <record id="helpdesk_ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="after">
+                <field name="is_escalated" invisible="1" />
+                <widget
+                    name="web_ribbon"
+                    title="Escalated"
+                    bg_color="bg-danger"
+                    attrs="{'invisible': [('is_escalated', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+    <!-- Inherited Kanban View -->
+    <record id="helpdesk_ticket_view_kanban" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.kanban</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//t[@t-name='kanban-box']//div//strong[hasclass('o_kanban_record_title')]"
+                position="before"
+            >
+                <field name="is_escalated" invisible="1" />
+                <div
+                    class="text-center"
+                    style="color:#fff; background-color: #f00; height: 1em; line-height: 0.9em; margin: 0 5px;"
+                    attrs="{'invisible': [('is_escalated', '=', False)]}"
+                >
+                    <small>Escalated</small>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <!-- Inherited List View -->
+    <record id="helpdesk_tickets_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree[1]" position="inside">
+                <field name="is_escalated" invisible="1" />
+            </xpath>
+            <xpath expr="//tree[1]" position="attributes">
+                <attribute name="decoration-danger">
+                    is_escalated==True
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- Inherited Search View -->
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='urgent_priority']" position="before">
+                <filter
+                    string="Escalated"
+                    domain="[('is_escalated', '=', True)]"
+                    name="is_escalated"
+                />
+                <separator />
+            </xpath>
+        </field>
+    </record>
+    <record
+        id="action_helpdesk_ticket_toggle_escalated_server"
+        model="ir.actions.server"
+    >
+        <field name="name">Toggle Escalated</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket" />
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_toggle_escalated()</field>
+    </record>
+</odoo>
