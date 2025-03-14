@@ -59,8 +59,8 @@ class ResPartner(models.Model):
             if from_model_id:
                 update_balance_history_id = (
                     partner_balance_id.balance_history_ids.filtered(
-                        lambda history_id: history_id.model_model == from_model_id._name
-                        and history_id.res_id == from_model_id.id
+                        lambda history_id: history_id.model_model == from_model_id._name  # noqa: B023
+                        and history_id.res_id == from_model_id.id  # noqa: B023
                     )
                 )
             if update_balance_history_id:

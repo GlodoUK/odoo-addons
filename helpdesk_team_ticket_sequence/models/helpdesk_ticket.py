@@ -32,7 +32,7 @@ class HelpdeskTicket(models.Model):
             name = "%s (#%d)" % (ticket.name, ticket._origin.id)
 
             if ticket.number != "/":
-                name = "%s (%s)" % (ticket.name, ticket.number)
+                name = f"{ticket.name} ({ticket.number})"
 
             result.append((ticket.id, name))
         return result

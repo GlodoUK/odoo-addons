@@ -8,7 +8,7 @@ from odoo.tools import groupby as groupbyelem
 from odoo.addons.portal.controllers.portal import CustomerPortal
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 
-from .controllers.new_ticket_customer_portal import (
+from .new_ticket_customer_portal import (
     NewTicketCustomerPortalSubscribers,
 )
 
@@ -129,8 +129,8 @@ class CustomerPortalHelpdeskPrivacy(CustomerPortal):
             last_message_cust = []
             last_message_sup = []
             for ticket_id in (
-                last_author_dict.keys()  # noqa: pylint disable=consider-iterating-dictionary
-            ):  # noqa: pylint disable=consider-iterating-dictionary
+                last_author_dict.keys()  # noqa: C0201
+            ):  # noqa: C0201
                 if last_author_dict[ticket_id] == ticket_author_dict[ticket_id]:
                     last_message_cust.append(ticket_id)
                 else:

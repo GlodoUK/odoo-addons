@@ -53,14 +53,14 @@ class HelpdeskTicket(models.Model):
                     "contentUrl": None,
                     "content": {
                         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "speak": "<s>f'Ticket {ACTION_NAME_DICT.get(message_action)}'</s>",
+                        "speak": "<s>f'Ticket {ACTION_NAME_DICT.get(message_action)}'</s>",  # noqa: E501
                         "type": "AdaptiveCard",
                         "version": "1.2",
                         "msTeams": {"width": "full"},
                         "body": [
                             {
                                 "type": "TextBlock",
-                                "text": f"Ticket {ACTION_NAME_DICT.get(message_action)}",
+                                "text": f"Ticket {ACTION_NAME_DICT.get(message_action)}",  # noqa: E501
                                 "weight": "Bolder",
                                 "spacing": "None",
                                 "fontType": "Default",
