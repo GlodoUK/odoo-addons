@@ -16,6 +16,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
+[helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 18.0.1.0.0 |  | Helpdesk Purchase Order Link
 [web_cmd_search](web_cmd_search/) | 18.0.1.0.0 |  | Adds a global command search to quick access records
 
 [//]: # (end addons)
