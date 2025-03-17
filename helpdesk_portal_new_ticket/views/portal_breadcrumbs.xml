@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template id="portal_breadcrumbs" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <t t-if="page_name == 'ticket_new'">
+                <li class="breadcrumb-item">
+                    <a href="/my/tickets">Tickets</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    New
+                </li>
+            </t>
+        </xpath>
+    </template>
+</odoo>

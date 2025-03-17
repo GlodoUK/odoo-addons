@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template id="template_helpdesk_ticket_new" name="New Ticket">
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'" />
+
+            <form id="helpdesk_ticket_new" method="post">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    t-att-value="request.csrf_token()"
+                />
+
+                <div class="my-3">
+                    <label class="form-label" for="team">
+                        Team
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="team"
+                        name="team"
+                        required="required"
+                    >
+                        <t t-foreach="team_ids" t-as="team_id">
+                            <option t-att-value="team_id.id">
+                                <t t-out="team_id.display_name" />
+
+                                <t t-if="team_id.description">
+                                    - <t t-out="team_id.description" />
+                                </t>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="my-3">
+                    <label class="form-label" for="subject">
+                        Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="subject"
+                        name="subject"
+                        placeholder="Subject"
+                        aria-describedby="subjectHelpBlock"
+                        required="required"
+                    />
+
+                    <span class="form-text text-muted" id="subjectHelpBlock">
+                        A brief reference
+                    </span>
+                </div>
+
+                <div class="my-3">
+                    <label class="form-label" for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        id="description"
+                        name="description"
+                        cols="40"
+                        rows="5"
+                        aria-describedby="descriptionHelpBlock"
+                        required="required"
+                    />
+
+                    <span class="form-text text-muted" id="descriptionHelpBlock">
+                        A description of your issue, please include as much as detail as possible
+                    </span>
+                </div>
+
+                <div class="my-3">
+                    <label>
+                        Priority
+                    </label>
+
+                    <t t-foreach="priorities" t-as="priority">
+                        <div class="form-check">
+                            <input
+                                type="radio"
+                                class="form-check-input"
+                                t-attf-id="priority_{{ priority[0] }}"
+                                name="priority"
+                                t-attf-value="{{priority[0]}}"
+                                t-att-checked="'checked' if priority[0] == default_priority else False"
+                                required="required"
+                            />
+
+                            <label
+                                class="form-check-label"
+                                t-out="priority[1]"
+                                t-attf-for="priority_{{ priority[0] }}"
+                            />
+                        </div>
+                    </t>
+                </div>
+
+                <div class="my-3">
+                    <label class="form-label" for="category">
+                        Category
+                    </label>
+
+                    <select
+                        class="form-select"
+                        name="category"
+                        id="category"
+                        required="required"
+                    >
+                        <option
+                            value=""
+                            disabled="disabled"
+                            hidden="hidden"
+                            selected="selected"
+                        >
+                            Select your category
+                        </option>
+
+                        <t t-foreach="ticket_type_ids" t-as="type_id">
+                            <option
+                                t-out="type_id.display_name"
+                                t-att-value="type_id.id"
+                                t-att-selected="'selected' if default_category == type_id.id else False"
+                            />
+                        </t>
+                    </select>
+                </div>
+
+                <div class="my-3">
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        name="submit"
+                    >Submit</button>
+                </div>
+            </form>
+        </t>
+    </template>
+</odoo>

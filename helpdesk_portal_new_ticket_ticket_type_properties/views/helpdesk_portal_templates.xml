@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template id="portal_helpdesk_ticket_create_ticket_type_properties">
+        <div class="row">
+            <t t-foreach="ticket_type_properties" t-as="ticket_type_property">
+                <div
+                    class="col-12 my-3"
+                    t-if="ticket_type_property['type'] in ('char', 'boolean', 'integer', 'float', 'decimal', 'date', 'datetime', 'selection', 'tags')"
+                >
+                    <t t-if="ticket_type_property['type'] == 'char'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-att-value="ticket_type_property.get('default', '')"
+                        />
+                    </t>
+
+                    <t t-elif="ticket_type_property['type'] == 'boolean'">
+                        <div class="form-check">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                                t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                                t-att-checked="ticket_type_property.get('default', False)"
+                            />
+                            <label
+                                class="form-check-label"
+                                t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            >
+                                <t t-out="ticket_type_property['string']" />
+                            </label>
+                        </div>
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'integer'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-att-value="ticket_type_property.get('default', '')"
+                        />
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'float'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-att-value="ticket_type_property.get('default', '')"
+                        />
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'date'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <input
+                            type="date"
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-att-value="ticket_type_property.get('default', '')"
+                        />
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'datetime'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <input
+                            type="datetime-local"
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-att-value="ticket_type_property.get('default', '')"
+                        />
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'selection'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <select
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <option />
+                            <t t-foreach="ticket_type_property['selection']" t-as="sel">
+                                <option t-att-value="sel[0]" t-out="sel[1]" />
+                            </t>
+                        </select>
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'tags'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <select
+                            class="form-control"
+                            multiple="multiple"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-foreach="ticket_type_property['tags']" t-as="sel">
+                                <option t-att-value="sel[0]" t-out="sel[1]" />
+                            </t>
+                        </select>
+                    </t>
+                </div>
+            </t>
+        </div>
+    </template>
+
+    <template
+        id="portal_helpdesk_ticket_create"
+        inherit_id="helpdesk_portal_new_ticket.template_helpdesk_ticket_new"
+        priority="99"
+    >
+        <xpath expr="//select[@name='category']/parent::div" position="after">
+            <div class="ticket_type_id_container my-3">
+                <t
+                    t-call="helpdesk_portal_new_ticket_ticket_type_properties.portal_helpdesk_ticket_create_ticket_type_properties"
+                >
+                    <t
+                        t-set="ticket_type_properties"
+                        t-value="ticket_type_properties_initial"
+                    />
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
