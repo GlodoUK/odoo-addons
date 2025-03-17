@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template
+        id="tickets_followup"
+        inherit_id="helpdesk.tickets_followup"
+        priority="75"
+    >
+        <xpath expr="//div[@name='description']" position="after">
+            <div
+                t-if="ticket.so_ids"
+                class="row mb-4"
+                name="Quotations"
+                id="quotations"
+            >
+                <div class="col-12">
+                    <strong>Linked Quotations</strong>
+                    <p t-foreach="ticket.so_ids" t-as="sale">
+                        <a t-attf-href="/my/orders/#{sale.id}">
+                            <t t-out="sale.name" />
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
