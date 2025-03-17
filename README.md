@@ -16,6 +16,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
+[helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 18.0.1.0.0 |  | Helpdesk Purchase Order Link
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
 [helpdesk_commercial_partner](helpdesk_commercial_partner/) | 18.0.1.0.0 |  | Helpdesk Ticket Commercial Partner
 [helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 18.0.1.0.0 |  | Helpdesk Portal New Ticket
