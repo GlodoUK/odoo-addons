@@ -8,6 +8,6 @@ Partner utility functions to search or create from values
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["base_iso3166"],
     "data": [],
-    "license": "Other proprietary",
+    "license": "AGPL-3",
     "external_dependencies": {"bin": [], "python": []},
 }

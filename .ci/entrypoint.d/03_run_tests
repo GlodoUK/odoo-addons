@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+ADDONS=$(manifestoo --select-addons-dir src/private list --separator=,)
+unbuffer odoo \
+    -d ${PGDATABASE} \
+    -i ${ADDONS} \
+    --test-enable \
+    --stop-after-init

@@ -15,17 +15,16 @@ odoo.define("glodo_helpdesk_live_update.client_poke", function (require) {
             this._super.apply(this, arguments);
         },
         show_application: function () {
-            console.log("Edit Notifications Ready");
             this.call("bus_service", "addChannel", "poke");
             this.call("bus_service", "onNotification", this, this.onNotification);
             return this._super.apply(this, arguments);
         },
         onNotification: function (notifications) {
-            var that = this;
             _.each(
                 notifications,
+                /* eslint no-unused-vars: off*/
                 function (notification, idx) {
-                    if (notification[0] == "poke") {
+                    if (notification[0] === "poke") {
                         this.onPoke(notification[1]);
                     }
                 },
@@ -41,7 +40,7 @@ odoo.define("glodo_helpdesk_live_update.client_poke", function (require) {
 
             // Not 100% happy with this but it seems to be the most
             // "persistent" way of getting the current record ID.
-            const currentId = parseInt(this._current_state.id);
+            const currentId = parseInt(this._current_state.id, 10);
             // Are we looking at the same individual record?
             if (
                 controller.widget.modelName === message.model &&

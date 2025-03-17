@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Apt deps we need
+apt-get install -yq  --no-install-recommends \
+  libldap2-dev \
+  libpq-dev \
+  libsasl2-dev \
+  libxml2-dev \
+  libxslt-dev \
+  nodejs
+
+# Create a venv
+uv venv
+# Install Odoo, ensure we're using editable_mode=compat to avoid import problems
+uv pip install -r src/odoo/requirements.txt
+uv pip install -e src/odoo --config-setting editable_mode=compat
+# Install extra dependencies that Odoo doesn't ship with.
+uv pip install \
+  lxml[html_clean]
+# Extras we need
+uv pip install \
+  checklog-odoo \
+  coverage \
+  manifestoo \
+  pyproject-dependencies \
+  whool
+
+# Workaround for 15.0 and prior where we cannot pull in an updated setuptools because
+# we've pinned to an older version of python
+# - https://github.com/astral-sh/uv/issues/2744
+# - https://github.com/pypa/setuptools/issues/4863
+ln -sf /opt/odoo/src/odoo/odoo-bin /opt/odoo/.venv/bin/odoo
