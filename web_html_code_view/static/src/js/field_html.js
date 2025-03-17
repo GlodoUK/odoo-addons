@@ -9,8 +9,8 @@ odoo.define("web_html_code_view.field_html", function (require) {
 
             var originalGenerateOptions = res.generateOptions;
 
-            res.generateOptions = function (options) {
-                var options = originalGenerateOptions(options);
+            res.generateOptions = function (opts) {
+                var options = originalGenerateOptions(opts);
 
                 var toolbar = options.toolbar || options.airPopover || {};
                 options.codeview = true;

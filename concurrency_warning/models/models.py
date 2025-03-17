@@ -10,7 +10,9 @@ class ServerActions(models.Model):
     )
 
     @api.model
-    def run_action_poke_multi(self, action, eval_context={}):
+    def run_action_poke_multi(self, action, eval_context=None):
+        if eval_context is None:
+            eval_context = {}
         # Use a set rather than a list because it prevents duplicate ids when
         # calling union()
         record_set = set()
