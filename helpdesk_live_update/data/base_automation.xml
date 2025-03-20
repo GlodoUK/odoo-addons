@@ -1,8 +1,0 @@
-<odoo>
-    <record id="poke_helpdesk_ticket_on_write" model="base.automation">
-        <field name="name">Poke on Helpdesk Ticket Change</field>
-        <field name="model_id" ref="helpdesk.model_helpdesk_ticket" />
-        <field name="state">poke</field>
-        <field name="trigger">on_write</field>
-    </record>
-</odoo>
