@@ -47,25 +47,10 @@ addon | version | maintainers | summary
 [delivery_parcelhub_whistl](delivery_parcelhub_whistl/) | 15.0.1.0.0 |  | Connector to integrate with Parcelhub/Whistl courier
 [delivery_spring](delivery_spring/) | 15.0.2.1.0 |  | Connector to integrate with Spring courier
 [delivery_state_events](delivery_state_events/) | 15.0.1.0.1 |  | Provides fields and methods to support tracking a shipment
-[helpdesk_account_move_link](helpdesk_account_move_link/) | 15.0.1.0.1 |  | Links Account Moves to Helpdesk Tickets
 [helpdesk_canned_response](helpdesk_canned_response/) | 15.0.1.0.1 |  | Adds a menu to edit canned responses from within Helpdesk
-[helpdesk_channel](helpdesk_channel/) | 15.0.1.0.1 |  | Adds a Channel to Helpdesk Tickets
-[helpdesk_create_multiple_users](helpdesk_create_multiple_users/) | 15.0.1.0.1 |  | Lets create multiple portal users from company's contact page
-[helpdesk_escalate](helpdesk_escalate/) | 15.0.1.0.1 |  | Allow tickets to be 'escalated' or 'closed' via the portal
-[helpdesk_live_update](helpdesk_live_update/) | 15.0.1.0.1 |  | Updates helpdesk tickets automatically while open
-[helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 15.0.1.0.1 |  | Create a helpdesk ticket directly within the portal
-[helpdesk_portal_reopen](helpdesk_portal_reopen/) | 15.0.1.0.1 |  | Allow tickets to be reopened via the portal
-[helpdesk_privacy](helpdesk_privacy/) | 15.0.1.0.1 |  | Adds private tickets with limited access
 [helpdesk_rules](helpdesk_rules/) | 15.0.1.0.0 |  | Helpdesk - Automatically apply rules
-[helpdesk_sale_order_account_move_link](helpdesk_sale_order_account_move_link/) | 15.0.1.0.1 |  | Bridges helpdesk_sale_order_link and helpdesk_account_move_link
 [helpdesk_sale_order_generator](helpdesk_sale_order_generator/) | 15.0.1.0.1 |  | Generates Quotation from helpdesk
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 15.0.1.0.2 |  | Links Sales Orders to Helpdesk Tickets
-[helpdesk_split_ticket](helpdesk_split_ticket/) | 15.0.1.0.1 |  | Split/Create new tickets from chatter messages
-[helpdesk_team_ticket_sequence](helpdesk_team_ticket_sequence/) | 15.0.1.0.1 |  | Sets up automatically custom number assignment for helpdesk tickets
-[helpdesk_teams_message](helpdesk_teams_message/) | 15.0.0.0.1 |  | Sends messages to teams chat
-[helpdesk_ticket_followup](helpdesk_ticket_followup/) | 15.0.0.0.1 |  | Automates ticket followups for customer update stage with ability to snooze them
-[helpdesk_timesheet_report](helpdesk_timesheet_report/) | 15.0.0.0.1 |  | Creates reports on tickets and logged time
-[helpdesk_timesheet_subscription](helpdesk_timesheet_subscription/) | 15.0.0.0.1 |  | Adds ability for users to buy support/development time, shows users available time balance
 [inventory_adjustment_reason](inventory_adjustment_reason/) | 15.0.0.0.0 |  | Add a note for reason for inventory adjustment
 [mail_res_partner_forward](mail_res_partner_forward/) | 15.0.1.0.0 |  | Rule based forwarding of email to other partners
 [product_commingle](product_commingle/) | 15.0.1.1.0 |  | Product Commingling
