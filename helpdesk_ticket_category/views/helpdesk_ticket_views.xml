@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-    <record id="helpdesk_tickets_view_search_base" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.search.base</field>
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
         <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search_base" />
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search" />
         <field name="arch" type="xml">
             <field name="team_id" position="after">
                 <field name="ticket_categ_id" />

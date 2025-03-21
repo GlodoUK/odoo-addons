@@ -25,4 +25,26 @@
         </field>
     </record>
 
+    <record id="helpdesk_ticket_report_analysis_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.search</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk.helpdesk_ticket_report_analysis_view_search"
+        />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="ticket_categ_id" />
+            </field>
+
+            <xpath expr="//filter[@name='stage']" position="after">
+                <filter
+                    string="Category"
+                    name="ticket_categ_id"
+                    context="{'group_by':'ticket_categ_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
