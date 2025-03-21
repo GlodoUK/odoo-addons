@@ -6,7 +6,6 @@
     "depends": ["helpdesk"],
     "data": [
         "data/helpdesk_data.xml",
-        "report/helpdesk_sla_report_analysis_views.xml",
         "report/helpdesk_ticket_analysis_views.xml",
         "security/ir.model.access.csv",
         "views/helpdesk_sla_views.xml",
