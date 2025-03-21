@@ -22,7 +22,7 @@
 
                 <div
                         class="col-6"
-                        attrs="{'invisible': [('ticket_type_id', '=', False)]}"
+                        attrs="{'invisible': [('ticket_categ_id', '=', False)]}"
                     >
                     <label for="ticket_type_properties" string="Type properties" />
                     <field

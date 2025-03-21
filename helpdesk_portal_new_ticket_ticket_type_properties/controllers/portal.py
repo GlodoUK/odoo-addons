@@ -14,7 +14,7 @@ class CustomerPortal(NewTicketCustomerPortal):
             return res
 
         ticket_type_id = (
-            request.env["helpdesk.ticket.type"]
+            request.env["helpdesk.ticket.category"]
             .sudo()
             .browse(int(kwargs.get("category")))
         )
@@ -34,7 +34,7 @@ class CustomerPortal(NewTicketCustomerPortal):
     )
     def get_ticket_type_info(self, ticket_type_id=None, **kwargs):
         ticket_type_id = (
-            request.env["helpdesk.ticket.type"]
+            request.env["helpdesk.ticket.category"]
             .sudo()
             .search([("id", "=", int(ticket_type_id))])
         )

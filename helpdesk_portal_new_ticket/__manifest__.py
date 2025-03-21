@@ -8,7 +8,7 @@
     "summary": "Create a helpdesk ticket directly within the portal",
     "depends": [
         "portal",
-        "helpdesk",
+        "helpdesk_ticket_category",
     ],
     "data": [
         "views/helpdesk_portal_templates.xml",
