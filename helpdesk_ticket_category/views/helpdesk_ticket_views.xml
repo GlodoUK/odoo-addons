@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search" />
+        <field name="arch" type="xml">
+            <field name="team_id" position="after">
+                <field name="ticket_categ_id" />
+            </field>
+
+            <filter name="ticket_type_id" position="after">
+                <filter
+                    string="Category"
+                    name="ticket_categ_id"
+                    context="{'group_by':'ticket_categ_id'}"
+                />
+            </filter>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <filter name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_search_analysis_closed" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk.helpdesk_ticket_view_search_analysis_closed"
+        />
+        <field name="arch" type="xml">
+            <field name="team_id" position="after">
+                <field name="ticket_categ_id" />
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_tickets_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree" />
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="before">
+                 <field
+                    name="ticket_categ_id"
+                    options="{'no_create_edit': True}"
+                    optional="hide"
+                />
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_kanban" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.kanban</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_kanban" />
+        <field name="arch" type="xml">
+            <field name="commercial_partner_id" position="before">
+                <div>
+                    <field name="ticket_categ_id" />
+                </div>
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="before">
+                 <field name="ticket_categ_id" options="{'no_open': True}" />
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_search_analysis" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_search_analysis" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="ticket_categ_id" />
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <filter name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

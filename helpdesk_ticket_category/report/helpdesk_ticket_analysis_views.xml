@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+
+    <record id="helpdesk_ticket_view_list_analysis" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.list</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_list_analysis" />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="ticket_categ_id" optional="hide" />
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_report_analysis_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.tree</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk.helpdesk_ticket_report_analysis_view_tree"
+        />
+        <field name="arch" type="xml">
+            <field name="priority" position="after">
+                <field name="ticket_categ_id" optional="hide" />
+            </field>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_report_analysis_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.search</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk.helpdesk_ticket_report_analysis_view_search"
+        />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="ticket_categ_id" />
+            </field>
+
+            <xpath expr="//filter[@name='stage']" position="after">
+                <filter
+                    string="Category"
+                    name="ticket_categ_id"
+                    context="{'group_by':'ticket_categ_id'}"
+                />
+            </xpath>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <filter name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

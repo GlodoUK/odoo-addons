@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="helpdesk_ticket_category_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.category.tree</field>
+        <field name="model">helpdesk.ticket.category</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_category_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.category.form</field>
+        <field name="model">helpdesk.ticket.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="sequence" />
+                    <field name="name" placeholder="e.g. Question" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_category_action" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">helpdesk.ticket.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            No categories found. Let's create one!
+          </p>
+            <p>
+            Categories are perfect for categorizing your tickets.
+          </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="helpdesk_ticket_category_menu"
+        parent="helpdesk.helpdesk_menu_config"
+        action="helpdesk_ticket_category_action"
+        sequence="10"
+    />
+</odoo>

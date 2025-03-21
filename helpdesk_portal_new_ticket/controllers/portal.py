@@ -23,12 +23,13 @@ class NewTicketCustomerPortal(CustomerPortal):
                     ("privacy_visibility", "=", "portal"),
                 ]
             ),
-            "ticket_type_ids": request.env["helpdesk.ticket.type"].sudo().search([]),
+            "ticket_type_ids": request.env["helpdesk.ticket.category"]
+            .sudo()
+            .search([]),
             "priorities": TICKET_PRIORITY,
             "default_priority": TICKET_PRIORITY[0][0],
-            "default_category": request.env["helpdesk.ticket.type"]
-            .sudo()
-            .search([("name", "=", "Question")], limit=1)
+            "default_category": request.env.sudo()
+            .ref("helpdesk_ticket_category.type_issue")
             .id,
         }
 
@@ -78,7 +79,7 @@ class NewTicketCustomerPortal(CustomerPortal):
             "name": kw.get("subject"),
             "description": kw.get("description"),
             "priority": kw.get("priority", "0"),
-            "ticket_type_id": int(kw.get("category")),
+            "ticket_categ_id": int(kw.get("category")),
         }
         values.update(self._new_ticket_get_ticket_extra_values(**kw))
 

@@ -35,6 +35,7 @@ addon | version | maintainers | summary
 [helpdesk_rules](helpdesk_rules/) | 16.0.1.0.0 |  | Helpdesk - Automatically apply rules
 [helpdesk_sale_order_account_move_link](helpdesk_sale_order_account_move_link/) | 16.0.1.0.0 |  | Bridges helpdesk_sale_order_link and helpdesk_account_move_link
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 16.0.1.0.0 |  | Links Sales Orders to Helpdesk Tickets
+[helpdesk_ticket_category](helpdesk_ticket_category/) | 16.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 16.0.1.0.0 |  | Allow a user to escalate a helpdesk ticket through the customer portal.
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 16.0.1.0.0 |  | Adds a Properties field ticket_type_properties to helpdesk.ticket
 [sendgrid](sendgrid/) | 16.0.1.0.0 |  | Handle Inbound Email through Sendgrid Webhooks

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+
+    <record id="helpdesk_sla_report_analysis_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.sla.report.analysis.search</field>
+        <field name="model">helpdesk.sla.report.analysis</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk.helpdesk_sla_report_analysis_view_search"
+        />
+        <field name="arch" type="xml">
+            <field name="ticket_stage_id" position="after">
+                <field name="ticket_categ_id" />
+            </field>
+
+            <filter name="stage" position="after">
+                <filter
+                    string="Category"
+                    name="category"
+                    context="{'group_by':'ticket_categ_id'}"
+                />
+            </filter>
+
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <filter name="ticket_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

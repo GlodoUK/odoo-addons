@@ -5,7 +5,7 @@
     "category": "Services/Helpdesk",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
-    "depends": ["helpdesk"],
+    "depends": ["helpdesk_ticket_category"],
     "data": ["views/helpdesk_views.xml", "views/portal_templates.xml"],
     "license": "Other proprietary",
 }
