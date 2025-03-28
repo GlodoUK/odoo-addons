@@ -64,7 +64,7 @@
                         id="description"
                         name="description"
                         cols="40"
-                        rows="5"
+                        rows="10"
                         aria-describedby="descriptionHelpBlock"
                         required="required"
                     />
