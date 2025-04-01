@@ -1,0 +1,23 @@
+<odoo>
+    <record id="helpdes_so_generator_helpdesk_ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdes_so_generator_helpdesk_ticket_view_form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="generate_so_with_prefilled_data"
+                    string="Create SO"
+                    type="object"
+                    class="oe_highlight"
+                    groups="helpdesk.group_helpdesk_user"
+                    data-hotkey="s"
+                />
+<!--                attrs="{'invisible': [('user_id', '!=', False)]}" -->
+            </xpath>
+<!--            <xpath expr="//field[@name='email_cc']" position="after">-->
+<!--                    <field string="Sales" name="so_ids" widget="many2many_tags"/>-->
+<!--            </xpath>-->
+        </field>
+    </record>
+</odoo>
