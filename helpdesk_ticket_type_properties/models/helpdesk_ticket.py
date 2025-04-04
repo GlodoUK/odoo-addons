@@ -21,7 +21,7 @@ class HelpdeskTicket(models.Model):
 
         ticket_type_properties = self.ticket_type_properties
 
-        for prop_map in self.ticket_type_id.ticket_type_properties_definition:
+        for prop_map in self.ticket_categ_id.ticket_type_properties_definition:
             if any(key not in prop_map for key in ("name", "type", "string")):
                 continue
 
