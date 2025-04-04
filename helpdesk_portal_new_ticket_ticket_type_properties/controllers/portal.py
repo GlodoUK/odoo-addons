@@ -55,7 +55,7 @@ class CustomerPortal(CustomerPortal):
 
         ticket_type_properties = ticket_id.ticket_type_properties
 
-        for prop in ticket_id.ticket_type_id.ticket_type_properties_definition:
+        for prop in ticket_id.ticket_categ_id.ticket_type_properties_definition:
             if prop["type"] == "tags":
                 kwargs_property_name = request.httprequest.form.getlist(
                     f"ticket_type_property_{prop['name']}"
