@@ -28,8 +28,8 @@ class NewTicketCustomerPortal(CustomerPortal):
             .search([]),
             "priorities": TICKET_PRIORITY,
             "default_priority": TICKET_PRIORITY[0][0],
-            "default_category": request.env.sudo()
-            .ref("helpdesk_ticket_category.type_issue")
+            "default_category": request.env.ref("helpdesk_ticket_category.type_issue")
+            .sudo()
             .id,
         }
 
