@@ -124,6 +124,7 @@ class RequireLogin(WebsiteSale):
             **kwargs,
         )
 
+    @route()
     def cart_update_json(
         self,
         product_id,
