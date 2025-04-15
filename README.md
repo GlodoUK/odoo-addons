@@ -42,6 +42,7 @@ addon | version | maintainers | summary
 [stock_picking_move_form](stock_picking_move_form/) | 17.0.1.0.0 |  | Adds a button to the stock.picking form view to easily show the stock.move form
 [stock_picking_validation_warning](stock_picking_validation_warning/) | 17.0.1.0.0 |  | Partner warning on stock picking validation
 [stock_pre_reserve](stock_pre_reserve/) | 17.0.1.1.0 |  | Link an existing outbound move to a new inbound move manually, allowing reservations against inbound stock.
+[website_sale_require_login](website_sale_require_login/) | 17.0.1.0.0 |  | Require login on the eCommerce pages
 
 [//]: # (end addons)
 
