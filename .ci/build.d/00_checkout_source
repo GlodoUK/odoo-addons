@@ -3,7 +3,7 @@
 # FIXME: Use Dockerfile RUN --mount=cache
 
 mkdir -p src/odoo
-git clone --depth 1 --branch ${ODOO_VERSION} https://${GITHUB_TOKEN}@github.com/odoo/odoo.git src/odoo
+git clone --depth 1 --branch ${ODOO_VERSION} https://${GITHUB_TOKEN}:@github.com/odoo/odoo.git src/odoo
 
 mkdir -p src/enterprise
-git clone --depth 1 --branch ${ODOO_VERSION} https://${GITHUB_TOKEN}@github.com/GlodoUK/enterprise.git src/enterprise
+git clone --depth 1 --branch ${ODOO_VERSION} https://${GITHUB_TOKEN}:@github.com/GlodoUK/enterprise.git src/enterprise
