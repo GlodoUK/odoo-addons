@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/list/field[@name='qty_delivered']"
+                position="after"
+            >
+                <field name="qty_immediately_usable_today" optional="hide" />
+                <field name="qty_potential_today" optional="hide" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
