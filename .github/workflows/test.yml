@@ -59,4 +59,4 @@ jobs:
 
       - name: Run CI
         run: |
-          docker compose -f .ci/docker-compose.yaml up --exit-code-from odoo
+          docker compose -f .ci/docker-compose.yaml up --quiet-pull --exit-code-from odoo
