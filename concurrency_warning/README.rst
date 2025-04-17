@@ -11,7 +11,7 @@ by design to ensure that we do not effectively spam the user about records they
 do not care about.
 
 Example usage
---------------
+-------------
 
 ::
 
