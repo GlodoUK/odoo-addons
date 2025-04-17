@@ -136,3 +136,7 @@ repos:
       - id: pylint_odoo
         args:
           - --rcfile=.pylintrc-mandatory
+  - repo: https://github.com/rstcheck/rstcheck.git
+    rev: v6.2.4
+    hooks:
+      - id: rstcheck
