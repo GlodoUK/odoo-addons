@@ -17,12 +17,12 @@ class ResPartner(models.Model):
     property_minimum_purchase_order_currency_id = fields.Many2one(
         "res.currency",
         company_dependent=True,
-        string="Currency",
+        string="Min. Value Currency",
     )
 
     # Cannot use fields.Monetary here as
     # company_dependent=True does not accept it
     property_minimum_purchase_order_value = fields.Float(
         company_dependent=True,
-        string="Value",
+        string="Min. Value",
     )
