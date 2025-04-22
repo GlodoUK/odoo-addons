@@ -89,6 +89,7 @@ addon | version | maintainers | summary
 [twilio_sms](twilio_sms/) | 15.0.2.0.0 |  | Twilio SMS Gateway
 [web_list_min_width](web_list_min_width/) | 15.0.1.0.0 |  | Support min-width on a list column
 [web_no_form_quick_edit](web_no_form_quick_edit/) | 15.0.1.0.0 |  | Disable quick edit in form views
+[website_leaflet](website_leaflet/) | 15.0.1.0.1 |  | Adds a leaflet.js powered map (eventually snippet)
 
 [//]: # (end addons)
 
