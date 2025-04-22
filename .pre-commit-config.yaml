@@ -58,6 +58,8 @@ repos:
           - --if-source-changed
           - --keep-source-digest
       - id: oca-gen-external-dependencies
+      - id: oca-gen-addons-table
+        stages: [manual]
   - repo: https://github.com/OCA/odoo-pre-commit-hooks
     rev: v0.0.33
     hooks:
@@ -134,7 +136,3 @@ repos:
       - id: pylint_odoo
         args:
           - --rcfile=.pylintrc-mandatory
-  - repo: https://github.com/OCA/maintainer-tools
-    rev: 4932764926c650bad64bff56e15a7d68dbbf89a9
-    hooks:
-      - id: oca-gen-addons-table
