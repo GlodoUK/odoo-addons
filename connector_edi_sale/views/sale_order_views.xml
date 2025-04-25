@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="priority">75</field>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    type="object"
+                    name="action_view_edi_messages"
+                    invisible="not edi_message_count"
+                    icon="fa-envelope-open-o"
+                    class="oe_stat_button"
+                >
+                    <field
+                        name="edi_message_count"
+                        string="EDI Messages"
+                        widget="statinfo"
+                    />
+                </button>
+            </div>
+
+            <notebook position="inside">
+                <page
+                    string="EDI"
+                    name="edi_sale_order_ids"
+                    invisible="not edi_sale_order_count"
+                >
+                    <group>
+                        <field name="edi_sale_order_ids" nolabel="1">
+                            <list create="false" delete="false">
+                                <field name="edi_message_id" widget="many2one" />
+                                <field name="edi_external_id" />
+                                <field name="backend_id" widget="many2one" />
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </notebook>
+
+            <!-- <xpath
+                expr="//page[@name='order_lines']/field[@name='order_line']/form[1]"
+                position="inside"
+            >
+                <div>
+                    <label for="edi_sale_order_line_ids" />
+                    <field name="edi_sale_order_line_ids" nolabel="1">
+                        <tree>
+                            <field name="edi_line_ref" />
+                            <field name="backend_id" />
+                        </tree>
+                    </field>
+                </div>
+            </xpath> -->
+        </field>
+    </record>
+</odoo>
