@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="edi_upload_file_wizard" model="ir.ui.view">
+        <field name="name">edi.upload.file.form</field>
+        <field name="model">edi.upload.file</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <div>
+                    <p>Please select the file to upload</p>
+                    <!-- <field name="file" type="binary" widget="file" required="1" /> -->
+                </div>
+
+                <group>
+                    <field name="backend_id" readonly="1" />
+                    <field name="route_type" required="1" />
+                    <field
+                        name="envelope_route_id"
+                        domain="[('backend_id', '=', backend_id)]"
+                        invisible="route_type != 'envelope'"
+                        required="route_type == 'envelope'"
+                    />
+                    <field
+                        name="message_route_id"
+                        domain="[('backend_id', '=', backend_id)]"
+                        invisible="route_type != 'message'"
+                        required="route_type == 'message'"
+                    />
+                </group>
+
+                <footer>
+                    <button
+                        string="Upload"
+                        name="action_upload"
+                        type="object"
+                        class="btn btn-primary"
+                        data-hotkey="q"
+                    />
+                    <button
+                        string="Cancel"
+                        class="btn-secondary"
+                        special="cancel"
+                        data-hotkey="x"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
