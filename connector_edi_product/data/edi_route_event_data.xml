@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="route_event_product_create" model="edi.route.event">
+        <field name="name">on_record_create_edi</field>
+        <field name="res_model_id" ref="model_product_product" />
+    </record>
+
+    <record id="route_event_product_write" model="edi.route.event">
+        <field name="name">on_record_write_edi</field>
+        <field name="res_model_id" ref="model_product_product" />
+    </record>
+
+    <record id="route_event_product_template_create" model="edi.route.event">
+        <field name="name">on_record_create_edi</field>
+        <field name="res_model_id" ref="model_product_template" />
+    </record>
+
+    <record id="route_event_product_template_write" model="edi.route.event">
+        <field name="name">on_record_write_edi</field>
+        <field name="res_model_id" ref="model_product_template" />
+    </record>
+</odoo>
