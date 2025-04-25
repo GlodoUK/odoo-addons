@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+
+
+
+
+
+
+<template id="external_layout_bold" inherit_id="web.external_layout_bold" priority="99">
+        <xpath expr="//img[@t-if='company.logo']" position="replace">
+            <t t-set="header_logo" t-value="o and 'brand_id' in o and o.brand_id and o.brand_id.logo or company.logo" />
+            <t t-if="header_logo">
+                <img t-att-src="image_data_uri(logo)" alt="Logo" />
+            </t>
+        </xpath>
+
+        <!-- forced_vat -->
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <t t-set="company_address_partner" t-value="o.brand_id.partner_id if o and 'brand_id' in o and o.brand_id else company" />
+            <div class="col-5 offset-1" name="company_address">
+                 <ul class="list-unstyled">
+                    <li t-if="partner.name">
+                        <strong>
+                            <span t-field="partner.name" />
+                        </strong>
+                    </li>
+
+                    <li t-if="partner.vat">
+                        <t t-out="partner.country_id.vat_label or 'Tax ID'" />:
+                        <span t-field="partner.vat" />
+                    </li>
+
+                    <li t-if="partner.phone">
+                        Tel: <span class="o_force_ltr" t-field="partner.phone" />
+                    </li>
+
+                    <li t-if="partner.email">
+                        <span t-field="partner.email" />
+                    </li>
+
+                    <li t-if="partner.website">
+                        <span t-field="partner.website" />
+                    </li>
+                </ul>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@t-attf-class='footer o_clean_footer o_company_#{company.id}_layout']" position="replace">
+            <div t-attf-class="footer o_clean_footer o_company_#{company.id}_layout">
+                <div class="row">
+                    <div class="col-4">
+                        <div t-field="company.report_footer"/>
+                    </div>
+                    <div class="col-4">
+                        <t t-set="partner" t-value="o.brand_id.partner_id if o and o.brand_id else None"/>
+                        <t t-if="partner">
+                            <span
+                                class="company_address"
+                                t-field="partner"
+                                t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'
+                            />
+                        </t>
+                        <t t-elif="company.company_details">
+                            <span t-field="company.company_details"/>
+                        </t>
+                    </div>
+                    <div class="col-3">
+                        <h5 class="mt0 mb0" t-field="company.report_header"/>
+                    </div>
+                    <div class="col-1">
+                        <ul t-if="report_type == 'pdf'" class="list-inline pagenumber float-right text-center">
+                            <li class="list-inline-item">
+                                <strong><span class="page"/></strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
