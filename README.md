@@ -33,6 +33,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 18.0.1.0.0 |  | Helpdesk Ticket Type Properties
 [purchase_minimum_value](purchase_minimum_value/) | 18.0.1.0.0 |  | Restrict minimum purchase order value
 [sale_order_hold](sale_order_hold/) | 18.0.1.0.0 |  | Adds the ability to put sale orders on hold
+[sale_order_hold_stock_picking_hold](sale_order_hold_stock_picking_hold/) | 18.0.1.0.0 |  | Integrate sale_order_hold with stock_picking_hold
 [sale_stock_force_pdf_download](sale_stock_force_pdf_download/) | 18.0.1.0.0 |  | Sale Stock Force PDF Download
 [stock_picking_hold](stock_picking_hold/) | 18.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [web_cmd_search](web_cmd_search/) | 18.0.1.0.0 |  | Adds a global command search to quick access records
