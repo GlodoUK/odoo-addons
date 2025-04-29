@@ -58,7 +58,7 @@ class CustomerPortal(CustomerPortal):
         for partner_id in request.httprequest.form.getlist("partner_ids"):
             try:
                 if int(partner_id) in allowed_partner_ids:
-                    partner_ids.append(id)
+                    partner_ids.append(partner_id)
             except ValueError:  # pylint: disable=except-pass
                 pass
 
