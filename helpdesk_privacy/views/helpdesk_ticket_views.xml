@@ -8,6 +8,15 @@
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="is_private" widget="boolean_toggle" />
             </xpath>
+
+            <xpath expr="//widget[@name='web_ribbon']" position="before">
+                <widget
+                    name="web_ribbon"
+                    title="Private"
+                    bg_color="text-bg-warning"
+                    invisible="not is_private"
+                />
+            </xpath>
         </field>
     </record>
 </odoo>
