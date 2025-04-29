@@ -2,30 +2,29 @@
 <odoo>
     <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
         <xpath expr="//t[@t-set='entries']/div" position="inside">
-            <div class="flex-grow-1 my-2">
-                <div class="d-flex flex-sm-nowrap align-items-center">
-                    <strong class="me-2">Privacy</strong>
-
-                    <a
-                        role="button"
-                        t-if="ticket.is_private"
-                        t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
-                        class="btn btn-light"
-                        title="This ticket is currently private and only followers can view it."
-                    >
+            <div class="col-12 col-md-12 py-2">
+                <h6>
+                    <small class="text-muted">Privacy</small>
+                </h6>
+                <a
+                    role="button"
+                    t-if="ticket.is_private"
+                    t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
+                    class="btn btn-light"
+                    title="This ticket is currently private and only followers can view it."
+                >
                         <i class="fa fa-lock me-1" /> Private
                     </a>
 
-                    <a
-                        role="button"
-                        t-else=""
-                        t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
-                        class="btn btn-light"
-                        title="This ticket is currently public and all members of your company can view it."
-                    >
+                <a
+                    role="button"
+                    t-else=""
+                    t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
+                    class="btn btn-light"
+                    title="This ticket is currently public and all members of your company can view it."
+                >
                         <i class="fa fa-unlock me-1" /> Public
                     </a>
-                </div>
 
                 <span t-if="ticket.is_private" class="d-block text-muted">
                     Only followers can view this ticket
@@ -34,10 +33,11 @@
                 <span t-else="" class="d-block text-muted">
                     All members of your company can view this ticket
                 </span>
-
-                <strong>
-                    Followers
-                </strong>
+            </div>
+            <div class="col-12 col-md-12 py-2">
+                <h6>
+                    <small class="text-muted">Followers</small>
+                </h6>
 
                 <ul class="list-unstyled">
                     <li t-foreach="ticket.message_partner_ids" t-as="partner">
@@ -93,11 +93,14 @@
 
                 <div
                     class="modal"
+                    id="helpdesk_ticket_followers_modal"
                     tabindex="-1"
                     role="dialog"
-                    id="helpdesk_ticket_followers_modal"
                 >
-                    <div class="modal-dialog mt-5" role="document">
+                    <div
+                        class="modal-dialog modal-dialog-scrollable mt-5"
+                        role="document"
+                    >
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Add new followers</h5>
@@ -108,17 +111,17 @@
                                     aria-label="Close"
                                 />
                             </div>
-                            <form
-                                t-attf-action="/helpdesk/ticket/follow/#{ticket.id}"
-                                method="post"
-                                role="form"
-                            >
-                                <input
-                                    t-att-value="request.csrf_token()"
-                                    type="hidden"
-                                    name="csrf_token"
-                                />
-                                <div class="modal-body helpdesk_privacy_followers">
+                            <div class="modal-body helpdesk_privacy_followers">
+                                <form
+                                    t-attf-action="/helpdesk/ticket/follow/#{ticket.id}"
+                                    method="post"
+                                    role="form"
+                                >
+                                    <input
+                                        type="hidden"
+                                        t-att-value="request.csrf_token()"
+                                        name="csrf_token"
+                                    />
                                     <div class="flex-column">
                                         <t
                                             t-foreach="ticket._privacy_possible_followers()"
@@ -140,20 +143,20 @@
                                             </div>
                                         </t>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-danger">
-                                        Add
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-light"
-                                        data-bs-dismiss="modal"
-                                    >
-                                        Discard
-                                    </button>
-                                </div>
-                            </form>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">
+                                            Add
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-light"
+                                            data-bs-dismiss="modal"
+                                        >
+                                            Discard
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
