@@ -11,25 +11,25 @@
 
     <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
         <xpath expr="//t[@t-set='entries']/div" position="inside">
-            <div class="flex-grow-1 my-2">
-                <div class="d-grid flex-sm-nowrap">
-                    <strong>Priority</strong>
-                    <div
-                        t-out="dict(ticket._fields['priority'].selection).get(ticket.priority)"
-                    />
-                    <p
-                        t-if="ticket.is_escalated"
-                        class="fw-bold text-warning"
-                    >Marked for escalation</p>
-                    <button
-                        t-if="not ticket.is_escalated"
-                        class="btn btn-light"
-                        data-bs-target="#helpdesk_ticket_escalate_modal"
-                        data-bs-toggle="modal"
-                    >
-                        <i class="fa fa-warning me-1" /> Escalate Ticket
-                    </button>
-                </div>
+            <div class="col-12 col-md-12 py-2">
+                <h6>
+                    <small class="text-muted">Priority</small>
+                </h6>
+                <div
+                    t-out="dict(ticket._fields['priority'].selection).get(ticket.priority)"
+                />
+                <p
+                    t-if="ticket.is_escalated"
+                    class="fw-bold text-warning"
+                >Marked for escalation</p>
+                <button
+                    t-if="not ticket.is_escalated"
+                    class="ms-auto btn btn-light"
+                    data-bs-target="#helpdesk_ticket_escalate_modal"
+                    data-bs-toggle="modal"
+                >
+                    <i class="fa fa-warning me-1" /> Escalate Ticket
+                </button>
 
                 <div
                     class="modal"
