@@ -64,15 +64,13 @@ class ProductProduct(models.Model):
         return res
 
     def _edi_message_ids_domain(self):
-        extra_domain = [
-            ("model", "=", "edi.product.product"),
-            ("res_id", "in", self.edi_product_ids.ids),
-        ]
-
         return expression.OR(
             [
                 super()._edi_message_ids_domain(),
-                extra_domain,
+                [
+                    ("model", "=", "edi.product.product"),
+                    ("res_id", "in", self.edi_product_ids.ids),
+                ],
             ]
         )
 

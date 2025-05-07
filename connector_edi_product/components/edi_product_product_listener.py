@@ -9,42 +9,31 @@ class ProductProductListener(Component):
     _inherit = "base.event.listener"
     _apply_on = ["product.product"]
 
-    def on_record_create_edi(self, records):
-        routes = self.env["edi.route"].search(
+    def on_record_create_edi(self, product_ids):
+        event_id = self.env.ref("connector_edi_product.route_event_product_write")
+
+        route_ids = self.env["edi.route"].search(
             [
                 ("action_trigger", "=", "model_event"),
-                (
-                    "model_event_id",
-                    "=",
-                    self.env.ref("connector_edi_product.route_event_product_write").id,
-                ),
                 ("direction", "=", "out"),
+                ("model_event_id", "=", event_id.id),
             ]
         )
-        if not routes:
-            return
-        for route in routes:
-            for record in records:
+
+        for route in route_ids:
+            for product in product_ids:
                 route.sudo().send_messages_using_first_match(
                     route.backend_id,
-                    record,
+                    product,
                     [
                         ("action_trigger", "=", "model_event"),
-                        (
-                            "model_event_id",
-                            "=",
-                            self.env.ref(
-                                "connector_edi_product.route_event_product_write"
-                            ).id,
-                        ),
                         ("direction", "=", "out"),
+                        ("model_event_id", "=", event_id.id),
                     ],
                 )
 
     def on_record_write_edi(self, product_ids, fields=None):
-        edi_route_event_id = self.env.ref(
-            "connector_edi_product.route_event_product_write"
-        )
+        event_id = self.env.ref("connector_edi_product.route_event_product_write")
 
         for product in product_ids:
             if not product.edi_product_ids:
@@ -52,9 +41,7 @@ class ProductProductListener(Component):
                 return
 
             if len(product.edi_product_ids) > 1:
-                msg = _(
-                    f"Multiple EDI records found for product.product record {product.name}"
-                )
+                msg = _(f"Multiple EDI records found for {product.name}")
                 raise UserError(msg)
 
             self.env["edi.route"].sudo().send_messages_using_first_match(
@@ -63,6 +50,6 @@ class ProductProductListener(Component):
                 [
                     ("action_trigger", "=", "model_event"),
                     ("direction", "=", "out"),
-                    ("model_event_id", "=", edi_route_event_id.id),
+                    ("model_event_id", "=", event_id.id),
                 ],
             )

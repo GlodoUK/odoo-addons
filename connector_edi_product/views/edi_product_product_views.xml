@@ -10,7 +10,7 @@
                         <group>
                             <field name="edi_external_id" />
                             <field name="edi_message_id" />
-                            <!-- <field name="edi_metadata_string" /> -->
+                            <field name="edi_metadata_string" />
                         </group>
 
                         <group>

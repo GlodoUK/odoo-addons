@@ -7,11 +7,9 @@ class EdiMessage(models.Model):
     edi_product_tmpl_ids = fields.One2many(
         "edi.product.template",
         "edi_message_id",
-        string="EDI Product Templates",
     )
 
     edi_product_variant_ids = fields.One2many(
         "edi.product.product",
         "edi_message_id",
-        string="EDI Product Variants",
     )

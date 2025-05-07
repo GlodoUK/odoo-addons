@@ -10,7 +10,7 @@ class ProductTemplateListener(Component):
     _apply_on = ["product.template"]
 
     def on_record_create_edi(self, recordset):
-        edi_route_event_id = self.env.ref(
+        event_id = self.env.ref(
             "connector_edi_product.route_event_product_template_write"
         )
 
@@ -18,7 +18,7 @@ class ProductTemplateListener(Component):
             [
                 ("action_trigger", "=", "model_event"),
                 ("direction", "=", "out"),
-                ("model_event_id", "=", edi_route_event_id.id),
+                ("model_event_id", "=", event_id.id),
             ]
         )
 
@@ -30,7 +30,7 @@ class ProductTemplateListener(Component):
                     [
                         ("action_trigger", "=", "model_event"),
                         ("direction", "=", "out"),
-                        ("model_event_id", "=", edi_route_event_id.id),
+                        ("model_event_id", "=", event_id.id),
                     ],
                 )
 
@@ -47,9 +47,7 @@ class ProductTemplateListener(Component):
                 return
 
             if len(edi_product_id) > 1:
-                msg = _(
-                    f"Multiple EDI records found for product.template record {record.id}"
-                )
+                msg = _(f"Multiple EDI records found for {record.id}")
                 raise UserError(msg)
 
             self.env["edi.route"].sudo().send_messages_using_first_match(
