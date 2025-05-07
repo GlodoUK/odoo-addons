@@ -30,7 +30,7 @@ class CustomerPortal(CustomerPortal):
         return request.env["helpdesk.ticket.category"].sudo().search(domain)
 
     def _prepare_default_category(self):
-        return request.env.sudo().ref("helpdesk_ticket_category.type_issue").id
+        return request.env.ref("helpdesk_ticket_category.type_issue").sudo().id
 
     def _new_ticket_get_page_view_values(self, **kw):
         return {

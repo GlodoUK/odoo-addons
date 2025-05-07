@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_hold_reason_user,access.sale.order.hold.reason.user,model_sale_order_hold_reason,sales_team.group_sale_salesman,1,0,1,0
+access_sale_order_hold_reason_manager,access.sale.order.hold.reason.manager,model_sale_order_hold_reason,sales_team.group_sale_manager,1,1,1,1
+access_sale_order_hold_reason_portal,access.sale.order.hold.reason.portal,model_sale_order_hold_reason,base.group_portal,1,0,0,0
+access_wizard_sale_order_hold,access.wizard.sale.order.hold,model_wizard_sale_order_hold,sales_team.group_sale_salesman,1,1,1,0
+access_wizard_sale_order_unhold,access.wizard.sale.order.unhold,model_wizard_sale_order_unhold,sales_team.group_sale_salesman,1,1,1,0
