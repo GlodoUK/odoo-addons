@@ -15,6 +15,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [auth_oauth_restrict_website](auth_oauth_restrict_website/) | 18.0.1.0.0 |  | Restrict certain OAuth providers from display
+[brands](brands/) | 18.0.1.0.0 |  | Brands
 [concurrency_warning](concurrency_warning/) | 18.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
