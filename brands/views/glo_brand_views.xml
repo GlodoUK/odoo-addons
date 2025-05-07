@@ -16,19 +16,30 @@
                     </div>
 
                     <group>
-                        <field name="is_default" />
-                        <field name="active" />
-                        <field name="partner_id" />
-                        <field name="street" />
-                        <field name="street2" />
-                        <field name="city" />
-                        <field name="state_id" />
-                        <field name="zip" />
-                        <field name="country_id" />
-                        <field name="phone" />
-                        <field name="email" />
-                        <field name="website" />
-                        <field name="vat" />
+                        <group colspan="2">
+                            <field name="is_default" />
+                            <field name="active" />
+                            <field name="partner_id" />
+                        </group>
+                        <group string="Partner Details" col="2">
+                            <label for="street" string="Address" />
+                            <div>
+                                <field name="street" />
+                                <field name="street2" invisible="not street2" />
+                                <field name="city" invisible="not city" />
+                                <field name="state_id" invisible="not state_id" />
+                                <field name="zip" invisible="not zip" />
+                                <field name="country_id" invisible="not country_id" />
+                            </div>
+                            <field name="phone" />
+                            <field name="email" />
+                            <field name="website" />
+                            <field name="vat" />
+                        </group>
+                        <group string="Report Details" col="2">
+                            <field name="report_header" />
+                            <field name="report_footer" />
+                        </group>
                     </group>
                 </sheet>
             </form>

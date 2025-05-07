@@ -78,6 +78,16 @@ class GloBrand(models.Model):
         store=True,
     )
 
+    report_header = fields.Html(
+        string="Tagline",
+        help="Printed in the header of reports.",
+    )
+
+    report_footer = fields.Html(
+        string="Document Footer",
+        help="Printed in the footer of reports.",
+    )
+
     @api.constrains("is_default")
     def _constrains_is_default(self):
         count = self.search_count([("is_default", "=", True)])

@@ -5,83 +5,81 @@
         inherit_id="web.external_layout_boxed"
         priority="99"
     >
-        <xpath expr="//div[hasclass('o_boxed_header')]//img" position="replace">
-            <t t-if="o and 'brand_id' in o and o.brand_id and o.brand_id.logo">
-                <img t-att-src="image_data_uri(o.brand_id.logo)" alt="Logo" />
-            </t>
-            <t t-else="">
+        <xpath expr="//img[@t-if='company.logo']" position="replace">
+            <t
+                t-set="header_logo"
+                t-value="o and 'brand_id' in o and o.brand_id and o.brand_id.logo or company.logo"
+            />
+            <t t-if="header_logo">
                 <img
-                    t-if="company.logo"
-                    t-att-src="image_data_uri(company.logo)"
+                    class="o_company_logo_big"
+                    t-att-src="image_data_uri(header_logo)"
                     alt="Logo"
                 />
             </t>
         </xpath>
+        <xpath expr="//strong[@t-if='company.report_header']" position="replace">
+            <t
+                t-set="header_tagline"
+                t-value="o and 'brand_id' in o and o.brand_id and o.brand_id.report_header or company.report_header"
+            />
+            <t t-if="header_tagline">
+                <strong
+                    t-if="header_tagline"
+                    t-out="header_tagline"
+                    class="o_company_tagline"
+                >Company tagline</strong>
+            </t>
+        </xpath>
 
         <xpath expr="//div[@name='company_address']" position="replace">
-            <div name="company_address" class="float-right mb4">
-                <t t-if="o and 'brand_id' in o and o.brand_id">
+            <ul class="list-unstyled" name="company_address_list">
+                <li t-if="o and 'brand_id' in o and o.brand_id">
                     <span
                         t-field="o.brand_id.partner_id"
                         t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"
-                    />
-                </t>
-                <t t-else="">
-                    <span
-                        t-if="company.company_details"
-                        t-field="company.company_details"
-                    />
-                </t>
-            </div>
+                    >
+                        <div
+                            class="bg-light border-1 rounded h-100 d-flex flex-column align-items-center justify-content-center p-4 w-100 opacity-75 text-muted text-center"
+                        >
+                            <strong>Company address block</strong>
+                            <div>Contains the company address.</div>
+                        </div>
+                    </span>
+                </li>
+                <li t-else="">
+                    <span t-field="company.company_details" class="text-nowrap">
+                        <div
+                            class="bg-light border-1 rounded h-100 d-flex flex-column align-items-center justify-content-center p-4 w-100 opacity-75 text-muted text-center"
+                        >
+                            <strong>Company details block</strong>
+                            <div>Contains the company details.</div>
+                        </div>
+                    </span>
+                </li>
+                <li t-if="forced_vat">
+                    <t t-if="o and 'brand_id' in o and o.brand_id">
+                        <t
+                        t-out="o.brand_id.partner_id.country_id.vat_label or 'Tax ID'"
+                    >Tax ID</t>: <span
+                        t-out="o.brand_id.partner_id.vat"
+                    >US12345671</span>
+                    </t>
+                    <t t-else="">
+                        <t
+                        t-out="company.country_id.vat_label or 'Tax ID'"
+                    >Tax ID</t>: <span t-out="company.vat">US12345671</span>
+                    </t>
+                </li>
+            </ul>
         </xpath>
 
-        <xpath
-            expr="//div[@t-attf-class='footer o_boxed_footer o_company_#{company.id}_layout']"
-            position="replace"
-        >
-            <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
-                <div class="text-center">
-                    <ul class="list-inline">
-                        <t t-if="o and 'brand_id' in o and o.brand_id">
-                            <li
-                                t-if="o.brand_id.phone"
-                                class="list-inline-item"
-                            >Tel: <span t-field="o.brand_id.phone" /></li>
-                            <li
-                                t-if="o.brand_id.email"
-                                class="list-inline-item"
-                            >Mail: <span t-field="o.brand_id.email" /></li>
-                            <li
-                                t-if="o.brand_id.website"
-                                class="list-inline-item"
-                            >Web: <span t-field="o.brand_id.website" /></li>
-                            <li t-if="o.brand_id.vat" class="list-inline-item"><t
-                                t-esc="o.brand_id.country_id.vat_label or 'Tax ID'"
-                            />: <span t-field="o.brand_id.vat" /></li>
-                        </t>
-                        <t t-else="">
-                            <li t-if="company.phone" class="list-inline-item">Tel: <span
-                                t-field="company.phone"
-                            /></li>
-                            <li
-                                t-if="company.email"
-                                class="list-inline-item"
-                            >Mail: <span t-field="company.email" /></li>
-                            <li
-                                t-if="company.website"
-                                class="list-inline-item"
-                            >Web: <span t-field="company.website" /></li>
-                            <li t-if="company.vat" class="list-inline-item"><t
-                                t-esc="company.country_id.vat_label or 'Tax ID'"
-                            />: <span t-field="company.vat" /></li>
-                        </t>
-                    </ul>
-                    <div t-field="company.report_footer" />
-                    <div t-if="report_type == 'pdf'">
-                        Page: <span class="page" /> / <span class="topage" />
-                    </div>
-                </div>
-            </div>
+        <xpath expr="//span[@t-field='company.report_footer']" position="replace">
+            <t
+                t-set="report_footer"
+                t-value="o and 'brand_id' in o and o.brand_id and o.brand_id.report_footer or company.report_footer"
+            />
+            <span class="flex-grow-1 text-start me-2" t-out="report_footer" />
         </xpath>
     </template>
 </odoo>

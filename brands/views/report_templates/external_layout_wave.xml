@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template
-        id="external_layout_striped"
-        inherit_id="web.external_layout_striped"
+        id="external_layout_wave"
+        inherit_id="web.external_layout_wave"
         priority="99"
     >
         <xpath expr="//img[@t-if='company.logo']" position="replace">
@@ -27,13 +27,13 @@
                 <div
                     t-if="header_tagline"
                     t-out="header_tagline"
-                    class="o_company_tagline mw-50 fw-bold mt-2"
+                    class="o_company_tagline fw-bold"
                 >Company tagline</div>
             </t>
         </xpath>
 
         <xpath expr="//div[@name='company_address']" position="replace">
-            <div class="ms-3" name="company_address">
+            <div class="text-end" name="company_address">
                 <ul class="list-unstyled" name="company_address_list">
                     <li t-if="o and 'brand_id' in o and o.brand_id">
                         <span
@@ -69,7 +69,7 @@
                         <t t-else="">
                             <t
                             t-out="company.country_id.vat_label or 'Tax ID'"
-                        >Tax ID</t>: <span t-out="forced_vat">US12345671</span>
+                        >Tax ID</t>: <span t-out="company.vat">US12345671</span>
                         </t>
                     </li>
                 </ul>
