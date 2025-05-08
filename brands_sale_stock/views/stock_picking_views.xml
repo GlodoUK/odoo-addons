@@ -7,7 +7,7 @@
         <field name="priority">75</field>
         <field name="arch" type="xml">
             <group name="other_infos" position="inside">
-                 <field name="brand_id" />
+                <field name="brand_id" />
             </group>
         </field>
     </record>
