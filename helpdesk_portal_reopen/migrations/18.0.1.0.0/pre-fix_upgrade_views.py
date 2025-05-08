@@ -16,6 +16,6 @@ def migrate(cr, version):
     )
 
     if view_id:
-        view_id.unlink()
+        view_id.active = False
 
     _logger.info("Finishing helpdesk_portal_reopen pre-fix_upgrade_views.py")
