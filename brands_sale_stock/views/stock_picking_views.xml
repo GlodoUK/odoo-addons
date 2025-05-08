@@ -6,9 +6,9 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="priority">75</field>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='other_infos']" position="inside">
-                <field name="brand_id" />
-            </xpath>
+            <group name="other_infos" position="inside">
+                 <field name="brand_id" />
+            </group>
         </field>
     </record>
 </odoo>

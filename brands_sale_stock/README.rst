@@ -1,5 +1,5 @@
 Brands Sale Stock
-================
+=================
 
 Glue module between `brands` and `sale_stock`
 
