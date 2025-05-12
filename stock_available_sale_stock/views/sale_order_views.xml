@@ -9,8 +9,8 @@
                 expr="//field[@name='order_line']/list/field[@name='qty_delivered']"
                 position="after"
             >
-                <field name="qty_immediately_usable_today" optional="hide" />
-                <field name="qty_potential_today" optional="hide" />
+                <field name="qty_immediately_usable_today" column_invisible="1" />
+                <field name="qty_potential_today" column_invisible="1" />
             </xpath>
         </field>
     </record>
