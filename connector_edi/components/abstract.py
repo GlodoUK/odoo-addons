@@ -183,7 +183,7 @@ class AbstractEdiComponent(AbstractComponent):
             # We want to behave slightly differently in some circumstances,
             # so we'll look at the inner exception and re-throw that
             # thus allowing the job queue to requeue jobs
-            if isinstance(e.__context__, (EdiException, RetryableJobError)):
+            if isinstance(e.__context__, EdiException | RetryableJobError):
                 # we want to erase the ValueError in this particular
                 # circumstance, so not using raise from syntax is OK
                 raise e.__context__  # noqa: B904

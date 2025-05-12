@@ -191,8 +191,8 @@ class EdiEnvelope(models.Model):
         self.action_done()
 
     def _send_envelopes(self):
-        for route in self.mapped("route_id"):
-            route.send_envelopes(
+        for route_id in self.mapped("route_id"):
+            route_id.send_envelopes(
                 envelope_ids=self.filtered(
                     lambda e, route_id=route_id: e.route_id == route_id
                 )
