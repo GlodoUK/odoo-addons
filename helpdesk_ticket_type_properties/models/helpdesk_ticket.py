@@ -16,13 +16,14 @@ class HelpdeskTicket(models.Model):
 
     def _display_ticket_type_properties(self):
         self.ensure_one()
-
+        ticket_type_properties = self.ticket_type_properties
         res = []
 
-        ticket_type_properties = self.ticket_type_properties
+        if not ticket_type_properties:
+            return res
 
         for prop_map in self.ticket_categ_id.ticket_type_properties_definition:
-            if any(key not in prop_map for key in ("name", "type", "string")):
+            if any(not prop_map.get(key) for key in ("name", "type", "string")):
                 continue
 
             if prop_map["type"] in (
