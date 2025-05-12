@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="main_brand" model="glo.brand">
+        <field name="name">Your Company Brand</field>
+        <field name="partner_id" ref="base.main_partner" />
+        <field name="is_default">True</field>
+    </record>
+
+    <record id="other_brand" model="glo.brand">
+        <field name="name">Other Partner Brand</field>
+        <field name="partner_id" ref="other_brand_partner" />
+    </record>
+</odoo>
