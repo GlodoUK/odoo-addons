@@ -72,15 +72,38 @@ class TestAccountMoveComponentEvents(AccountTestInvoicingCommon, ComponentRegist
         self.assertListEqual(
             self.out_invoice_cancel,
             [move_id.id],
-            "The event on_out_invoice_cancel shouldn't have fired once!",
+            "The event on_out_invoice_cancel should have fired once!",
         )
         self.assertListEqual(
             self.out_invoice_open,
             [move_id.id],
-            "The event on_out_invoice_cancel shouldn't have fired once!",
+            "The event on_out_invoice_open should have fired once!",
         )
         self.assertListEqual(
             self.out_invoice_paid,
             [],
             "The event on_out_invoice_paid shouldn't have fired yet!",
+        )
+
+        # Mark the invoice as paid
+        self.env["account.payment.register"].with_context(
+            active_model="account.move",
+            active_ids=[move_id.id],
+            default_amount=move_id.amount_residual,
+        ).create({})._create_payments()
+
+        self.assertListEqual(
+            self.out_invoice_cancel,
+            [move_id.id],
+            "The event on_out_invoice_cancel should have fired once!",
+        )
+        self.assertListEqual(
+            self.out_invoice_open,
+            [move_id.id],
+            "The event on_out_invoice_open should have fired once!",
+        )
+        self.assertListEqual(
+            self.out_invoice_paid,
+            [move_id.id],
+            "The event on_out_invoice_paid should have fired once!",
         )
