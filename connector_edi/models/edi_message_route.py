@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, api, fields, models, registry
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval, test_python_expr
 
@@ -131,20 +131,19 @@ class EdiMessageRoute(models.Model):
                 days=route_id.vacuum_content_after_days
             )
             while True:
-                with api.Environment.manage():
-                    with registry(self.env.cr.dbname).cursor() as cr:
-                        env = api.Environment(cr, self.env.uid, self.env.context)
-                        edi_message_ids = env["edi.message"].search(
-                            [
-                                ("message_route_id", "=", route_id.id),
-                                ("state", "=", "done"),
-                                ("done_date", "<=", cut_off),
-                            ],
-                            limit=10,
-                        )
-                        if not edi_message_ids:
-                            break
-                        edi_message_ids.unlink()
+                with self.pool.cursor() as new_cr:
+                    env = api.Environment(new_cr, self.env.uid, self.env.context)
+                    edi_message_ids = env["edi.message"].search(
+                        [
+                            ("message_route_id", "=", route_id.id),
+                            ("state", "=", "done"),
+                            ("done_date", "<=", cut_off),
+                        ],
+                        limit=10,
+                    )
+                    if not edi_message_ids:
+                        break
+                    edi_message_ids.unlink()
 
     @api.depends("action")
     def _compute_show_action_code(self):
@@ -184,7 +183,7 @@ class EdiMessageRoute(models.Model):
         ]
 
         for suffix in field_suffix:
-            value = getattr(self, "queue_%s" % (suffix))
+            value = getattr(self, f"queue_{suffix}")
             if value:
                 opts.update({suffix: value})
 

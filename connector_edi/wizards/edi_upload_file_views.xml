@@ -8,7 +8,12 @@
             <form>
                 <div>
                     <p>Please select the file to upload</p>
-                    <!-- <field name="file" type="binary" widget="file" required="1" /> -->
+                    <field
+                        name="file"
+                        widget="binary"
+                        filename="edi_upload"
+                        required="1"
+                    />
                 </div>
 
                 <group>

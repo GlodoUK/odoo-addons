@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, api, fields, models, registry
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import test_python_expr
 
@@ -312,20 +312,19 @@ class EdiEnvelopeRoute(models.Model):
                 days=route_id.vacuum_content_after_days
             )
             while True:
-                with api.Environment.manage():
-                    with registry(self.env.cr.dbname).cursor() as cr:
-                        env = api.Environment(cr, self.env.uid, self.env.context)
-                        envelope_ids = env["edi.envelope"].search(
-                            [
-                                ("route_id", "=", route_id.id),
-                                ("state", "=", "done"),
-                                ("date_done", "<=", cut_off),
-                            ],
-                            limit=10,
-                        )
-                        if not envelope_ids:
-                            break
-                        envelope_ids.unlink()
+                with self.pool.cursor() as new_cr:
+                    env = api.Environment(new_cr, self.env.uid, self.env.context)
+                    envelope_ids = env["edi.envelope"].search(
+                        [
+                            ("route_id", "=", route_id.id),
+                            ("state", "=", "done"),
+                            ("date_done", "<=", cut_off),
+                        ],
+                        limit=10,
+                    )
+                    if not envelope_ids:
+                        break
+                    envelope_ids.unlink()
 
     def _with_delay_options(self, usage=None):
         self.ensure_one()
