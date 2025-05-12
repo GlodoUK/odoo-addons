@@ -4,7 +4,10 @@
         <field name="name">edi.backend.kanban</field>
         <field name="model">edi.backend</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban">
+            <kanban
+                highlight_color="colour"
+                class="oe_background_grey o_kanban_dashboard o_account_kanban"
+            >
                 <field name="id" />
                 <field name="name" />
                 <field name="partner_id" />
@@ -20,32 +23,67 @@
                 <field name="message_with_legacy_body_count" />
 
                 <templates>
-                    <t t-name="kanban-box">
-                        <div t-attf-class="#{kanban_color(record.colour.raw_value)}">
-                            <div t-attf-class="o_kanban_card_header">
-                                <div class="o_kanban_card_header_title">
-                                    <div class="o_primary">
-                                        <a type="open">
-                                            <field name="name" />
-                                        </a>
+                    <t t-name="menu" groups="base.group_user">
+                        <div class="container">
+                            <div class="row">
+                                <div name="card_menu_view" class="col-6">
+                                    <h5
+                                        role="menuitem"
+                                        class="o_kanban_card_manage_title"
+                                    >
+                                        <span>View</span>
+                                    </h5>
+                                    <div role="menuitem">
+                                        <a
+                                            name="action_view_envelopes"
+                                            type="object"
+                                        >Envelopes</a>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a
+                                            name="action_view_messages"
+                                            type="object"
+                                        >Messages</a>
                                     </div>
                                 </div>
-                                <div class="o_secondary" invisible="not partner_id">
-                                    <field name="partner_id" />
+                            </div>
+                            <div class="o_kanban_card_manage_settings row">
+                                <div
+                                    role="menuitem"
+                                    aria-haspopup="true"
+                                    class="col-6"
+                                    groups="connector.group_connector_manager"
+                                >
+                                    <field name="colour" widget="kanban_color_picker" />
                                 </div>
-
-                                <div class="o_kanban_manage_button_section">
-                                    <a class="o_kanban_manage_toggle_button" href="#">
-                                        <i
-                                            class="fa fa-ellipsis-v"
-                                            aria-label="Selection"
-                                            role="img"
-                                            title="Selection"
-                                        />
-                                    </a>
+                                <div
+                                    role="menuitem"
+                                    class="col-6"
+                                    groups="connector.group_connector_manager"
+                                >
+                                    <a
+                                        class="dropdown-item"
+                                        role="menuitem"
+                                        name="copy"
+                                        type="object"
+                                    >Duplicate</a>
+                                    <a
+                                        class="dropdown-item"
+                                        role="menuitem"
+                                        type="open"
+                                    >Settings</a>
                                 </div>
                             </div>
-                            <div class="container o_kanban_card_content">
+                        </div>
+                    </t>
+                    <t t-name="card">
+                        <div>
+                            <div class="o_kanban_card_content">
+                                <div class="row">
+                                    <span class="text-truncate d-block fs-4 fw-bold">
+                                        <field name="name" />
+                                    </span>
+                                </div>
                                 <div class="row">
                                     <div class="col-6 o_kanban_primary_left">
                                         <div class="row">
@@ -95,9 +133,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        class="col-6 o_kanban_primary_right text-right"
-                                    >
+                                    <div class="col-6 o_kanban_primary_right text-end">
                                         <div class="row">
                                             <div class="col-12">
                                                 <a
@@ -154,53 +190,6 @@
                                         graph_type="line"
                                     />
                                 </t>
-                            </div>
-                            <div
-                                class="container o_kanban_card_manage_pane dropdown-menu"
-                                role="menu"
-                            >
-                                <t t-call="BackendManage" />
-                            </div>
-                        </div>
-                    </t>
-
-                    <t t-name="BackendManage">
-                        <div class="row">
-                            <div
-                                class="col-4 o_kanban_card_manage_section o_kanban_manage_view"
-                            >
-                                <div class="o_kanban_card_manage_title">
-                                    <span role="separator">View</span>
-                                </div>
-                                <div>
-                                    <a
-                                        role="menuitem"
-                                        type="object"
-                                        name="action_view_envelopes"
-                                    >Envelopes</a>
-                                </div>
-                                <div>
-                                    <a
-                                        role="menuitem"
-                                        type="object"
-                                        name="action_view_messages"
-                                    >Messages</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            t-if="widget.editable"
-                            class="o_kanban_card_manage_settings row"
-                        >
-                            <div class="col-8">
-                                <ul class="oe_kanban_colorpicker" data-field="colour" />
-                            </div>
-                        </div>
-
-                        <div class="row o_kanban_card_settings">
-                            <div class="col-12 text-right">
-                                <a t-if="widget.editable" type="edit">Settings</a>
                             </div>
                         </div>
                     </t>
