@@ -14,7 +14,7 @@ class StockMove(models.Model):
         pickings = None
         states = None
         for record in self:
-            moves_qties[record.id] = {"previous": record.reserved_availability}
+            moves_qties[record.id] = {"previous": record.quantity}
 
         if fire_picking_event:
             pickings = self.mapped("picking_id")
@@ -42,12 +42,12 @@ class StockMove(models.Model):
             if not entry:
                 continue
 
-            change = record.reserved_availability - entry.get("previous", 0)
+            change = record.quantity - entry.get("previous", 0)
 
             if change == 0:
                 continue
 
-            entry.update({"current": record.reserved_availability, "change": change})
+            entry.update({"current": record.quantity, "change": change})
 
             record._event("on_move_reserved_changed").notify(record, entry)
 

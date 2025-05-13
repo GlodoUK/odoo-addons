@@ -10,6 +10,25 @@ class StockPicking(models.Model):
         string="Related backorders",
     )
 
+    def action_confirm(self):
+        fire_picking_event = not self.env.context.get("__no_on_event_picking_confirm")
+
+        states = {}
+
+        for record in self:
+            states[record.id] = record.state
+
+        ret = super(
+            StockPicking, self.with_context(__no_on_event_picking_confirm=True)
+        ).action_confirm()
+
+        if not fire_picking_event:
+            return ret
+
+        for record in self:
+            if states.get(record.id) != "assigned" and record.state == "assigned":
+                record._event("on_picking_assigned").notify(record)
+
     def action_assign(self):
         fire_picking_event = not self.env.context.get("__no_on_event_picking_assigned")
 

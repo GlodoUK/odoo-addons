@@ -6,7 +6,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Tools",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "depends": [
         "stock",
         "component_event",
