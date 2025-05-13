@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates>
+    <t
+        t-name="stock_available_sale_stock.QtyAtDatePopover"
+        t-inherit="sale_stock.QtyAtDatePopover"
+        t-inherit-mode="extension"
+    >
+        <xpath expr="//table/tbody/t" position="before">
+            <tr>
+                <td>
+                    <strong>Immediately Usable Today</strong>
+                </td>
+                <td style="min-width: 50px; text-align: right;">
+                    <b
+                        t-out="props.record.data.qty_immediately_usable_today"
+                        t-att-class="!props.calcData.will_be_fulfilled ? 'text-danger': ''"
+                    />
+                    <t t-out="props.record.data.product_uom[1]" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Potential Today</strong>
+                </td>
+                <td style="min-width: 50px; text-align: right;">
+                    <t t-log="props.record.data" />
+                    <b
+                        t-out="props.record.data.qty_potential_today"
+                        t-att-class="!props.calcData.will_be_fulfilled ? 'text-danger': ''"
+                    />
+                    <t t-out="props.record.data.product_uom[1]" />
+                </td>
+            </tr>
+        </xpath>
+    </t>
+</templates>
