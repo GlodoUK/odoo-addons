@@ -20,6 +20,7 @@ addon | version | maintainers | summary
 [brands_sale_stock](brands_sale_stock/) | 18.0.1.0.0 |  | Brands Sale Stock
 [concurrency_warning](concurrency_warning/) | 18.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [connector_edi](connector_edi/) | 18.0.1.0.0 |  | Base EDI module
+[connector_edi_excel](connector_edi_excel/) | 18.0.1.0.0 |  | connector_edi_excel
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
