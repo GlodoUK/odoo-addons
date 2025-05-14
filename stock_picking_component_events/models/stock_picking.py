@@ -12,6 +12,9 @@ class StockPicking(models.Model):
 
     def action_confirm(self):
         fire_picking_event = not self.env.context.get("__no_on_event_picking_confirm")
+        fire_picking_event_assigned = not self.env.context.get(
+            "__no_on_event_picking_assigned"
+        )
 
         states = {}
 
@@ -19,15 +22,24 @@ class StockPicking(models.Model):
             states[record.id] = record.state
 
         ret = super(
-            StockPicking, self.with_context(__no_on_event_picking_confirm=True)
+            StockPicking,
+            self.with_context(
+                __no_on_event_picking_confirm=True, __no_on_event_picking_assigned=True
+            ),
         ).action_confirm()
 
-        if not fire_picking_event:
+        if not fire_picking_event and not fire_picking_event_assigned:
             return ret
 
         for record in self:
-            if states.get(record.id) != "assigned" and record.state == "assigned":
+            if (
+                fire_picking_event_assigned
+                and states.get(record.id) != "assigned"
+                and record.state == "assigned"
+            ):
                 record._event("on_picking_assigned").notify(record)
+
+        return ret
 
     def action_assign(self):
         fire_picking_event = not self.env.context.get("__no_on_event_picking_assigned")
