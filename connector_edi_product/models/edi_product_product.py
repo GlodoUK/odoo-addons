@@ -11,6 +11,7 @@ class EdiProductProduct(models.Model):
 
     edi_message_id = fields.Many2one(
         "edi.message",
+        string="Linked EDI Message",
         auto_join=True,
         index=True,
     )

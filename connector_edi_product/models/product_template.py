@@ -29,15 +29,18 @@ class ProductTemplate(models.Model):
                 product_tmpl.edi_product_tmpl_ids
             )
 
-    @api.model
-    def create(self, vals):
-        res = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
 
-        if any(monitor_field in vals for monitor_field in self._get_monitor_fields()):
-            if self.env.context.get("skip_edi_push", False):
-                return res
+        if self.env.context.get("skip_edi_push", False):
+            return res
 
-            for product_tmpl in res:
+        for index, vals in enumerate(vals_list):
+            if any(
+                monitor_field in vals for monitor_field in self._get_monitor_fields()
+            ):
+                product_tmpl = res[index]
                 product_tmpl._event("on_record_create_edi").notify(product_tmpl)
 
         return res

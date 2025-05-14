@@ -38,15 +38,18 @@ class ProductProduct(models.Model):
         for product in self:
             product.edi_product_count = len(product.edi_product_ids)
 
-    @api.model
-    def create(self, vals):
-        res = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
 
-        if any(monitor_field in vals for monitor_field in self._get_monitor_fields()):
-            if self.env.context.get("skip_edi_push", False):
-                return res
+        if self.env.context.get("skip_edi_push", False):
+            return res
 
-            for product in res:
+        for index, vals in enumerate(vals_list):
+            if any(
+                monitor_field in vals for monitor_field in self._get_monitor_fields()
+            ):
+                product = res[index]
                 product._event("on_record_create_edi").notify(product)
 
         return res
