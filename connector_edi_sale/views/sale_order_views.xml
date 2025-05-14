@@ -40,20 +40,20 @@
                 </page>
             </notebook>
 
-            <!-- <xpath
+            <xpath
                 expr="//page[@name='order_lines']/field[@name='order_line']/form[1]"
                 position="inside"
             >
                 <div>
                     <label for="edi_sale_order_line_ids" />
                     <field name="edi_sale_order_line_ids" nolabel="1">
-                        <tree>
+                        <list>
                             <field name="edi_line_ref" />
                             <field name="backend_id" />
-                        </tree>
+                        </list>
                     </field>
                 </div>
-            </xpath> -->
+            </xpath>
         </field>
     </record>
 </odoo>

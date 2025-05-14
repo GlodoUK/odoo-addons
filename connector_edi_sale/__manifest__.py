@@ -9,6 +9,7 @@
         "sale_stock",
         "account_invoice_component_events",
         "stock_picking_component_events",
+        "base_sparse_field",
     ],
     "data": [
         "data/edi_route_event_data.xml",

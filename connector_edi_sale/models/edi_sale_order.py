@@ -1,3 +1,5 @@
+import json
+
 from odoo import _, api, fields, models
 
 from odoo.addons.connector_edi.exceptions import EdiException
@@ -32,38 +34,39 @@ class EdiSaleOrder(models.Model):
         "edi_order_id",
     )
 
-    # edi_metadata = fields.Serialized()
-    # # XXX: Temporary workaround to display serialized field on frontend
-    # edi_metadata_string = fields.Char(
-    #     compute="_compute_edi_metadata_string",
-    #     string="Metadata",
-    # )
+    edi_metadata = fields.Serialized()
+    # XXX: Temporary workaround to display serialized field on frontend
+    edi_metadata_string = fields.Char(
+        compute="_compute_edi_metadata_string",
+        string="Metadata",
+    )
 
-    # def _compute_edi_metadata_string(self):
-    #     for record in self:
-    #         record.edi_metadata_string = json.dumps(record.edi_metadata)
+    def _compute_edi_metadata_string(self):
+        for record in self:
+            record.edi_metadata_string = json.dumps(record.edi_metadata)
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         # Makes sure partner_invoice_id', 'partner_shipping_id' and
         # 'pricelist_id' are defined
-        if not vals.get("odoo_id") and any(
-            f not in vals
-            for f in ["partner_invoice_id", "partner_shipping_id", "pricelist_id"]
-        ):
-            partner = self.env["res.partner"].browse(vals.get("partner_id"))
-            addr = partner.address_get(["delivery", "invoice"])
-            vals["partner_invoice_id"] = vals.setdefault(
-                "partner_invoice_id", addr["invoice"]
-            )
-            vals["partner_shipping_id"] = vals.setdefault(
-                "partner_shipping_id", addr["delivery"]
-            )
-            vals["pricelist_id"] = vals.setdefault(
-                "pricelist_id",
-                partner.property_product_pricelist
-                and partner.property_product_pricelist.id,
-            )
+        for vals in vals_list:
+            if not vals.get("odoo_id") and any(
+                f not in vals
+                for f in ["partner_invoice_id", "partner_shipping_id", "pricelist_id"]
+            ):
+                partner = self.env["res.partner"].browse(vals.get("partner_id"))
+                addr = partner.address_get(["delivery", "invoice"])
+                vals["partner_invoice_id"] = vals.setdefault(
+                    "partner_invoice_id", addr["invoice"]
+                )
+                vals["partner_shipping_id"] = vals.setdefault(
+                    "partner_shipping_id", addr["delivery"]
+                )
+                vals["pricelist_id"] = vals.setdefault(
+                    "pricelist_id",
+                    partner.property_product_pricelist
+                    and partner.property_product_pricelist.id,
+                )
 
         return super().create(vals)
 
@@ -100,8 +103,8 @@ class EdiSaleOrder(models.Model):
     def action_confirm(self):
         self.mapped("odoo_id").action_confirm()
 
-    # def action_update_prices(self):
-    #     self.ensure_one()
-    #     self.invalidate_cache()
-    #     self.odoo_id.show_update_pricelist = True
-    #     self.odoo_id.update_prices()
+    def action_update_prices(self):
+        self.ensure_one()
+        self.invalidate_cache()
+        self.odoo_id.show_update_pricelist = True
+        self.odoo_id.update_prices()

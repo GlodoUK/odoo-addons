@@ -14,7 +14,7 @@
                         <group>
                             <field name="edi_external_id" />
                             <field name="edi_message_id" />
-                            <!-- <field name="edi_metadata_string" /> -->
+                            <field name="edi_metadata_string" />
                         </group>
 
                         <group>
@@ -29,7 +29,7 @@
                                 <list>
                                     <field name="odoo_id" />
                                     <field name="edi_line_ref" />
-                                    <!-- <field name="edi_metadata_string" /> -->
+                                    <field name="edi_metadata_string" />
                                 </list>
                             </field>
                         </page>
