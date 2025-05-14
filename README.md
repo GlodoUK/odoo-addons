@@ -41,6 +41,7 @@ addon | version | maintainers | summary
 [sale_order_hold_stock_picking_hold](sale_order_hold_stock_picking_hold/) | 18.0.1.0.0 |  | Integrate sale_order_hold with stock_picking_hold
 [sale_stock_force_pdf_download](sale_stock_force_pdf_download/) | 18.0.1.0.0 |  | Sale Stock Force PDF Download
 [stock_available_sale_stock](stock_available_sale_stock/) | 18.0.1.0.0 |  | Stock Available Sale Stock
+[stock_picking_component_events](stock_picking_component_events/) | 18.0.1.0.0 |  | Stock Picking Component Events
 [stock_picking_hold](stock_picking_hold/) | 18.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [web_cmd_search](web_cmd_search/) | 18.0.1.0.0 |  | Adds a global command search to quick access records
 
