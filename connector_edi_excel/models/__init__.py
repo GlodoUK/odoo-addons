@@ -1,1 +1,1 @@
-from . import EdiEnvelopeRoute
+from . import edi_envelope_route
