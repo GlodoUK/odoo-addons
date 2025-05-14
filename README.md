@@ -15,6 +15,13 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [connector_edi_stock](connector_edi_stock/) | 18.0.1.0.0 |  | Connector EDI Stock
+[account_invoice_component_events](account_invoice_component_events/) | 18.0.1.0.0 |  | Account Invoice Component Events
+[auth_oauth_restrict_website](auth_oauth_restrict_website/) | 18.0.1.0.0 |  | Restrict certain OAuth providers from display
+[brands](brands/) | 18.0.1.0.0 |  | Brands
+[brands_sale_stock](brands_sale_stock/) | 18.0.1.0.0 |  | Brands Sale Stock
+[concurrency_warning](concurrency_warning/) | 18.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
+[connector_edi](connector_edi/) | 18.0.1.0.0 |  | Base EDI module
+[connector_edi_excel](connector_edi_excel/) | 18.0.1.0.0 |  | connector_edi_excel
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
@@ -30,6 +37,13 @@ addon | version | maintainers | summary
 [helpdesk_ticket_category](helpdesk_ticket_category/) | 18.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 18.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 18.0.1.0.0 |  | Helpdesk Ticket Type Properties
+[purchase_minimum_value](purchase_minimum_value/) | 18.0.1.0.0 |  | Restrict minimum purchase order value
+[sale_order_hold](sale_order_hold/) | 18.0.1.0.0 |  | Adds the ability to put sale orders on hold
+[sale_order_hold_stock_picking_hold](sale_order_hold_stock_picking_hold/) | 18.0.1.0.0 |  | Integrate sale_order_hold with stock_picking_hold
+[sale_stock_force_pdf_download](sale_stock_force_pdf_download/) | 18.0.1.0.0 |  | Sale Stock Force PDF Download
+[stock_available_sale_stock](stock_available_sale_stock/) | 18.0.1.0.0 |  | Stock Available Sale Stock
+[stock_picking_component_events](stock_picking_component_events/) | 18.0.1.0.0 |  | Stock Picking Component Events
+[stock_picking_hold](stock_picking_hold/) | 18.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [web_cmd_search](web_cmd_search/) | 18.0.1.0.0 |  | Adds a global command search to quick access records
 
 [//]: # (end addons)
@@ -41,3 +55,5 @@ addon | version | maintainers | summary
 Each module can have a totally different license, as long as they adhere to Glo Networks
 policy. Consult each module's `__manifest__.py` file, which contains a `license` key
 that explains its license.
+
+asd
