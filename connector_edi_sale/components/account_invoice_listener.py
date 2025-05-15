@@ -14,14 +14,16 @@ class AccountInvoiceListener(Component):
             "invoice_line_ids.sale_line_ids.order_id.edi_sale_order_ids"
         )
 
-        event_id = self.env.ref("connector_edi_sale.route_event_invoice_out_open")
-
         if not edi_sale_ids:
             return
 
         if len(edi_sale_ids) > 1:
-            msg = _("The connector does not support consolidated invoices")
+            msg = _("The connector does not support consolidated invoices.")
             raise UserError(msg)
+
+        event_id = self.env.ref(
+            "connector_edi_sale.route_event_invoice_out_open",
+        )
 
         self.env["edi.route"].sudo().send_messages_using_first_match(
             edi_sale_ids.backend_id,

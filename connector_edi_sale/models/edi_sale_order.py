@@ -13,14 +13,13 @@ class EdiSaleOrder(models.Model):
 
     odoo_id = fields.Many2one(
         "sale.order",
+        "Sale Order",
         ondelete="cascade",
         required=True,
-        string="Sale Order",
     )
 
     edi_message_id = fields.Many2one(
         "edi.message",
-        string="Linked EDI Message",
         index=True,
         required=False,
         auto_join=True,
@@ -36,6 +35,7 @@ class EdiSaleOrder(models.Model):
     )
 
     edi_metadata = fields.Serialized()
+
     # XXX: Temporary workaround to display serialized field on frontend
     edi_metadata_string = fields.Char(
         compute="_compute_edi_metadata_string",
@@ -43,58 +43,65 @@ class EdiSaleOrder(models.Model):
     )
 
     def _compute_edi_metadata_string(self):
-        for record in self:
-            record.edi_metadata_string = json.dumps(record.edi_metadata)
+        for order in self:
+            order.edi_metadata_string = json.dumps(order.edi_metadata)
 
     @api.model_create_multi
     def create(self, vals_list):
-        # Makes sure partner_invoice_id', 'partner_shipping_id' and
-        # 'pricelist_id' are defined
+        # Ensure partner_invoice_id, partner_shipping_id, pricelist_id defined
+
         for vals in vals_list:
             if not vals.get("odoo_id") and any(
                 f not in vals
                 for f in ["partner_invoice_id", "partner_shipping_id", "pricelist_id"]
             ):
-                partner = self.env["res.partner"].browse(vals.get("partner_id"))
-                addr = partner.address_get(["delivery", "invoice"])
+                partner_id = self.env["res.partner"].browse(vals.get("partner_id"))
+
+                addr = partner_id.address_get(["delivery", "invoice"])
+
                 vals["partner_invoice_id"] = vals.setdefault(
                     "partner_invoice_id", addr["invoice"]
                 )
+
                 vals["partner_shipping_id"] = vals.setdefault(
                     "partner_shipping_id", addr["delivery"]
                 )
+
                 vals["pricelist_id"] = vals.setdefault(
                     "pricelist_id",
-                    partner.property_product_pricelist
-                    and partner.property_product_pricelist.id,
+                    partner_id.property_product_pricelist
+                    and partner_id.property_product_pricelist.id,
                 )
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     def action_apply_carrier(self, carrier_id, rate=True):
         self.ensure_one()
 
-        price = 0.0
         msg = False
+        price = 0.0
 
         if carrier_id and rate:
             vals = carrier_id.rate_shipment(self.odoo_id)
+
             if not vals.get("success"):
                 raise EdiException(
-                    _("Could not rate carrier '{carrier}': {msg}")
+                    _("Could not rate carrier {carrier}: {msg}")
                     % {
                         "carrier": carrier_id,
                         "msg": vals.get("error_message") or vals.get("warning_message"),
                     }
                 )
+
             msg = vals.get("warning_message", False)
             price = vals.get("price")
 
         self.odoo_id.set_delivery_line(carrier_id, price)
+
         self.odoo_id.write(
             {
-                "recompute_delivery_price": False,
                 "delivery_message": msg,
+                "recompute_delivery_price": False,
             }
         )
 
@@ -106,6 +113,4 @@ class EdiSaleOrder(models.Model):
 
     def action_update_prices(self):
         self.ensure_one()
-        self.invalidate_cache()
-        self.odoo_id.show_update_pricelist = True
-        self.odoo_id.update_prices()
+        self.odoo_id.action_update_prices()

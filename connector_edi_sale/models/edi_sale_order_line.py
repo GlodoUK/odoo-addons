@@ -17,14 +17,15 @@ class EdiSaleOrderLine(models.Model):
 
     odoo_id = fields.Many2one(
         "sale.order.line",
+        "Sale Order Line",
         ondelete="cascade",
         required=True,
-        string="Sale Order Line",
     )
 
     edi_line_ref = fields.Char()
 
     edi_metadata = fields.Serialized()
+
     # XXX: Temporary workaround to display serialized field on frontend
     edi_metadata_string = fields.Char(
         compute="_compute_edi_metadata_string",
@@ -32,8 +33,8 @@ class EdiSaleOrderLine(models.Model):
     )
 
     def _compute_edi_metadata_string(self):
-        for record in self:
-            record.edi_metadata_string = json.dumps(record.edi_metadata)
+        for line in self:
+            line.edi_metadata_string = json.dumps(line.edi_metadata)
 
     @api.model_create_multi
     def create(self, vals_list):

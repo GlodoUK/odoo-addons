@@ -6,6 +6,6 @@ class EdiBackend(models.Model):
 
     hint_sale_carrier = fields.Many2one(
         "delivery.carrier",
+        "Preferred Sale Carrier",
         help="Leave blank for default",
-        string="Preferred Sale Carrier",
     )

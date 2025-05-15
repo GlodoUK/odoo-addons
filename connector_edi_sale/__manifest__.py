@@ -4,12 +4,12 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": [
+        "base_sparse_field",
         "connector_edi",
-        "delivery",
-        "sale_stock",
         "account_invoice_component_events",
         "stock_picking_component_events",
-        "base_sparse_field",
+        "delivery",
+        "sale_stock",
     ],
     "data": [
         "data/edi_route_event_data.xml",

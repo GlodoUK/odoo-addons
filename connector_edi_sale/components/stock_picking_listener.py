@@ -8,9 +8,13 @@ class StockPickingListener(Component):
 
     # XXX : Can the completed parameter be removed?
     def on_picking_out_done(self, picking_id, completed):
-        backend_ids = picking_id.sudo().sale_id.mapped("edi_sale_order_ids.backend_id")
+        backend_ids = picking_id.sudo().sale_id.mapped(
+            "edi_sale_order_ids.backend_id",
+        )
 
-        event_id = self.env.ref("connector_edi_sale.route_event_stock_picking_done")
+        event_id = self.env.ref(
+            "connector_edi_sale.route_event_stock_picking_done",
+        )
 
         for backend in backend_ids:
             self.env["edi.route"].sudo().send_messages_using_first_match(

@@ -9,8 +9,8 @@ class SaleOrder(models.Model):
     edi_sale_order_ids = fields.One2many(
         "edi.sale.order",
         "odoo_id",
+        "EDI Sale Orders",
         copy=False,
-        string="EDI Sale Orders",
     )
 
     edi_sale_order_count = fields.Integer(
@@ -24,14 +24,12 @@ class SaleOrder(models.Model):
             order.edi_sale_order_count = len(order.edi_sale_order_ids)
 
     def _edi_message_ids_domain(self):
-        extra_domain = [
-            ("model", "=", "edi.sale.order"),
-            ("res_id", "in", self.edi_sale_order_ids.ids),
-        ]
-
         return expression.OR(
             [
                 super()._edi_message_ids_domain(),
-                extra_domain,
+                [
+                    ("model", "=", "edi.sale.order"),
+                    ("res_id", "in", self.edi_sale_order_ids.ids),
+                ],
             ]
         )
