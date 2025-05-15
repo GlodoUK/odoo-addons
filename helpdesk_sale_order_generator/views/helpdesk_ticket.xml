@@ -13,11 +13,7 @@
                     groups="helpdesk.group_helpdesk_user"
                     data-hotkey="s"
                 />
-<!--                attrs="{'invisible': [('user_id', '!=', False)]}" -->
             </xpath>
-<!--            <xpath expr="//field[@name='email_cc']" position="after">-->
-<!--                    <field string="Sales" name="so_ids" widget="many2many_tags"/>-->
-<!--            </xpath>-->
         </field>
     </record>
 </odoo>
