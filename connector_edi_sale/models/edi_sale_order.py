@@ -20,6 +20,7 @@ class EdiSaleOrder(models.Model):
 
     edi_message_id = fields.Many2one(
         "edi.message",
+        "EDI Message",
         index=True,
         required=False,
         auto_join=True,
