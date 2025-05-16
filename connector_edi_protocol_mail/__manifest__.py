@@ -8,6 +8,6 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["connector_edi", "mail"],
     "data": ["views/edi_route.xml"],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
     "external_dependencies": {"bin": [], "python": []},
 }
