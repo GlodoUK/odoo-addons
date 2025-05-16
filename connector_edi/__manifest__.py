@@ -27,5 +27,5 @@
         "wizards/edi_upload_file_views.xml",
     ],
     "external_dependencies": {"python": ["lxml", "requests"]},
-    "license": "Other proprietary",
+    "license": "LGPL-3",
 }
