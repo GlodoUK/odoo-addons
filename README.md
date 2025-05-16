@@ -21,6 +21,7 @@ addon | version | maintainers | summary
 [concurrency_warning](concurrency_warning/) | 18.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [connector_edi](connector_edi/) | 18.0.1.0.0 |  | Base EDI module
 [connector_edi_excel](connector_edi_excel/) | 18.0.1.0.0 |  | connector_edi_excel
+[connector_edi_product](connector_edi_product/) | 18.0.1.0.0 |  | Connector EDI Product
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
@@ -32,6 +33,7 @@ addon | version | maintainers | summary
 [helpdesk_privacy](helpdesk_privacy/) | 18.0.1.0.0 |  | Helpdesk Privacy
 [helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 18.0.1.0.0 |  | Helpdesk Purchase Order Link
 [helpdesk_sale_order_account_move_link](helpdesk_sale_order_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Sale Order Account Move Link
+[helpdesk_sale_order_generator](helpdesk_sale_order_generator/) | 18.0.1.0.0 |  | Generates Quotation from helpdesk
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 18.0.1.0.0 |  | Helpdesk Sale Order Link
 [helpdesk_ticket_category](helpdesk_ticket_category/) | 18.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 18.0.1.0.0 |  | Helpdesk Ticket Escalate
