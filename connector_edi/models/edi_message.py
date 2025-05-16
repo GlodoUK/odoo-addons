@@ -36,10 +36,9 @@ class EdiMessageMixin(models.AbstractModel):
     def _compute_edi_message_ids(self):
         for record in self:
             record.edi_message_ids = (
-                self.env["edi.message"]
-                .sudo()
-                .search_count(self._edi_message_ids_domain())
+                self.env["edi.message"].sudo().search(self._edi_message_ids_domain())
             )
+            record.edi_message_count = len(record.edi_message_ids)
 
     def action_view_edi_messages(self):
         self.ensure_one()

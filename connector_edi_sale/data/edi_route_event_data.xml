@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo noupdate="1">
+    <record id="route_event_invoice_out_open" model="edi.route.event">
+        <field name="name">on_out_invoice_open</field>
+        <field name="res_model_id" ref="account.model_account_move" />
+    </record>
+
+    <record id="route_event_stock_picking_done" model="edi.route.event">
+        <field name="name">on_picking_done</field>
+        <field name="res_model_id" ref="stock.model_stock_picking" />
+    </record>
+</odoo>
