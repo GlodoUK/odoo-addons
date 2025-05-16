@@ -14,6 +14,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[connector_edi_stock](connector_edi_stock/) | 18.0.1.0.0 |  | Connector EDI Stock
 [account_invoice_component_events](account_invoice_component_events/) | 18.0.1.0.0 |  | Account Invoice Component Events
 [auth_oauth_restrict_website](auth_oauth_restrict_website/) | 18.0.1.0.0 |  | Restrict certain OAuth providers from display
 [brands](brands/) | 18.0.1.0.0 |  | Brands
