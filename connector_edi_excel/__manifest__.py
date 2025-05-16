@@ -5,5 +5,5 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["connector_edi"],
     "external_dependencies": {"python": ["pandas"]},
-    "license": "Other proprietary",
+    "license": "LGPL-3",
 }

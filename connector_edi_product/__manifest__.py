@@ -12,5 +12,5 @@
         "views/edi_product_template_views.xml",
         "views/product_template_views.xml",
     ],
-    "license": "Other proprietary",
+    "license": "LGPL-3",
 }
