@@ -22,6 +22,7 @@ addon | version | maintainers | summary
 [connector_edi](connector_edi/) | 18.0.1.0.0 |  | Base EDI module
 [connector_edi_excel](connector_edi_excel/) | 18.0.1.0.0 |  | connector_edi_excel
 [connector_edi_product](connector_edi_product/) | 18.0.1.0.0 |  | Connector EDI Product
+[connector_edi_protocol_mail](connector_edi_protocol_mail/) | 18.0.1.0.0 |  | EDI Mail Protocol Support
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
