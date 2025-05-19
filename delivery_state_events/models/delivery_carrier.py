@@ -8,10 +8,6 @@ class DeliveryCarrier(models.Model):
     _inherit = "delivery.carrier"
 
     ref = fields.Char(string="Internal Reference")
-    tracking_smart_button = fields.Boolean(
-        string="Display Carrier Tracking Smart Button on Pickings",
-        default=True,
-    )
 
     def tracking_state_update_scheduled_picking_domain(self):
         self.ensure_one()
@@ -60,7 +56,7 @@ class DeliveryCarrier(models.Model):
         """
 
         for record in self:
-            method_name = "%s_tracking_state_update_scheduled" % (record.delivery_type)
+            method_name = f"{record.delivery_type}_tracking_state_update_scheduled"
 
             if not hasattr(record, method_name):
                 continue
@@ -77,7 +73,7 @@ class DeliveryCarrier(models.Model):
         self.ensure_one()
         picking.ensure_one()
 
-        method_name = "%s_tracking_state_calc_next_update" % (self.delivery_type)
+        method_name = f"{self.delivery_type}_tracking_state_calc_next_update"
 
         if not hasattr(self, method_name):
             return False
@@ -94,7 +90,7 @@ class DeliveryCarrier(models.Model):
             return
 
         picking.ensure_one()
-        method_name = "%s_tracking_state_update" % (self.delivery_type)
+        method_name = f"{self.delivery_type}_tracking_state_update"
 
         if not hasattr(self, method_name):
             return

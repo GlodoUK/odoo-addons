@@ -4,8 +4,8 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Delivery",
-    "version": "15.0.1.0.1",
-    "depends": ["delivery", "queue_job"],
+    "version": "18.0.1.0.0",
+    "depends": ["stock_delivery"],
     "data": [
         "security/ir.model.access.csv",
         "views/stock_picking.xml",

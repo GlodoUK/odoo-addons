@@ -32,26 +32,25 @@ class StockPickingTrackingSignature(models.Model):
 
     @api.depends("attachment")
     def _compute_attachment_name(self):
-        if not self.ids:
-            return
+        res_dict = {}
+        if self.ids:
+            self.env.cr.execute(
+                """
+                SELECT
+                    mimetype, res_id
+                FROM ir_attachment
+                WHERE
+                    res_id in %s
+                    AND
+                    res_model = %s
+                """,
+                [
+                    tuple(self.ids),
+                    self._name,
+                ],
+            )
 
-        self.env.cr.execute(
-            """
-            SELECT
-                mimetype, res_id
-            FROM ir_attachment
-            WHERE
-                res_id in %s
-                AND
-                res_model = %s
-            """,
-            [
-                tuple(self.ids),
-                self._name,
-            ],
-        )
-
-        res_dict = {row[1]: row[0] for row in self.env.cr.fetchall()}
+            res_dict = {row[1]: row[0] for row in self.env.cr.fetchall()}
 
         for rec in self:
             if not res_dict.get(rec.id):

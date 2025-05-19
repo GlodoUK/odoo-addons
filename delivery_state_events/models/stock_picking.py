@@ -53,24 +53,6 @@ class StockPicking(models.Model):
         readonly=True,
     )
     date_next_tracking_update = fields.Datetime()
-    show_open_website_url = fields.Boolean(compute="_compute_show_open_website_url")
-
-    @api.depends("carrier_id", "carrier_tracking_ref")
-    def _compute_show_open_website_url(self):
-        for picking in self:
-            if not picking.carrier_id.tracking_smart_button:
-                picking.show_open_website_url = False
-                continue
-
-            if picking.carrier_id.delivery_type == "grid":
-                picking.show_open_website_url = False
-                continue
-
-            if not picking.carrier_tracking_url:
-                picking.show_open_website_url = False
-                continue
-
-            picking.show_open_website_url = True
 
     @api.depends("tracking_history_ids")
     def _compute_tracking_history_count(self):
