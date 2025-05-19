@@ -62,10 +62,8 @@ class StockPickingTrackingSignature(models.Model):
             if not ext:
                 ext = ".bin"
 
-            rec.attachment_name = "{}_{}{}".format(
-                slugify(rec.picking_id.display_name),
-                rec.id,
-                ext,
+            rec.attachment_name = (
+                f"{slugify(rec.picking_id.display_name)}_{rec.id}{ext}"
             )
 
 

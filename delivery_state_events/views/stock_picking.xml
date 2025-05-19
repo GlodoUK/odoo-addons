@@ -28,51 +28,51 @@
                 >
                     <group>
                         <group>
-                    <field name="carrier_id" readonly="1" force_save="1" />
-                    <field name="date_shipped" />
-                    <field name="date_delivered" />
-                    <field name="delivery_state" />
-                    <field name="tracking_state" class="oe_inline" />
-                    <field
+                            <field name="carrier_id" readonly="1" force_save="1" />
+                            <field name="date_shipped" />
+                            <field name="date_delivered" />
+                            <field name="delivery_state" />
+                            <field name="tracking_state" class="oe_inline" />
+                            <field
                                 name="date_next_tracking_update"
                                 groups="base.group_no_one"
                             />
-                    <button
+                            <button
                                 name="tracking_state_update"
                                 string="Update tracking state"
                                 type="object"
                                 class="oe_inline"
                                 attrs="{'invisible': ['|', ('delivery_state', 'in', ['customer_delivered', 'canceled_shipment']), ('delivery_type', 'in', ['base_one_rule', 'fixed'])]}"
                             />
-                </group>
-                <group>
-                    <field
+                        </group>
+                        <group>
+                            <field
                                 name="tracking_signature_ids"
                                 options="{'no_open': True}"
                                 string="Signatures"
                             >
-                        <tree>
-                            <field name="date_signed" />
-                            <field name="signee" />
-                            <field
+                                <tree>
+                                    <field name="date_signed" />
+                                    <field name="signee" />
+                                    <field
                                         name="attachment"
                                         widget="binary"
                                         filename="attachment_name"
                                     />
-                            <field name="attachment_name" invisible="1" />
-                        </tree>
-                    </field>
-                    <field
+                                    <field name="attachment_name" invisible="1" />
+                                </tree>
+                            </field>
+                            <field
                                 name="tracking_history_ids"
                                 options="{'no_open': True}"
                                 string="History"
                             >
-                        <tree>
-                            <field name="date_event" />
-                            <field name="description" />
-                        </tree>
-                    </field>
-                </group>
+                                <tree>
+                                    <field name="date_event" />
+                                    <field name="description" />
+                                </tree>
+                            </field>
+                        </group>
                     </group>
                 </page>
             </xpath>
