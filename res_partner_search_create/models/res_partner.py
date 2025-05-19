@@ -28,7 +28,7 @@ class ResPartner(models.Model):
             )
 
         if not country:
-            country = self.env["res.company"]._company_default_get().country_id
+            country = self.env.company.country_id
 
         vals.update({"country_id": country.id})
 
