@@ -1,20 +1,19 @@
 {
     "name": "delivery_spring",
-    "summary": """Connector to integrate with Spring courier""",
+    "summary": "Connector to integrate with Spring courier",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
-    "version": "15.0.2.1.0",
+    "version": "18.0.1.0.0",
     "depends": [
-        "delivery",
         "delivery_state_events",
         "sale_stock",
     ],
     "data": [
-        "views/views.xml",
-        "data/data.xml",
         "security/ir.model.access.csv",
+        "data/data.xml",
+        "views/delivery_carrier.xml",
     ],
     "demo": [],
-    "license": "AGPL-3",
+    "license": "LGPL-3",
 }

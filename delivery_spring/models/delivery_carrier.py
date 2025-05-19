@@ -6,6 +6,7 @@ import requests
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+SPRING_REQUESTS_TIMEOUT = 30
 SPRING_DELIVERY_CODE_MAP = {
     0: "in_transit",
     20: "in_transit",
@@ -39,7 +40,6 @@ class DeliveryCarrier(models.Model):
     delivery_type = fields.Selection(
         selection_add=[("spring", "Spring")], ondelete={"spring": "cascade"}
     )
-
     spring_api_key = fields.Char(string="Spring API Key")
     spring_base_url = fields.Char(default="https://mtapi.net/")
     spring_url = fields.Char(compute="_compute_spring_url", store=True)
@@ -60,6 +60,7 @@ class DeliveryCarrier(models.Model):
     def _compute_spring_url(self):
         for record in self:
             if record.delivery_type != "spring":
+                record.spring_url = False
                 continue
             record.spring_url = record.spring_base_url
             if not record.prod_environment:
@@ -86,6 +87,7 @@ class DeliveryCarrier(models.Model):
                 "Apikey": self.spring_api_key,
                 "Command": "GetServices",
             },
+            timeout=SPRING_REQUESTS_TIMEOUT,
         )
         services = response.json().get("Services", {})
         service_list = services.get("List", {})
@@ -198,6 +200,7 @@ class DeliveryCarrier(models.Model):
                         "Products": product_list,
                     },
                 },
+                timeout=SPRING_REQUESTS_TIMEOUT,
             )
             if not response:
                 raise ValidationError(_("Unknown Spring API Error"))
@@ -205,7 +208,9 @@ class DeliveryCarrier(models.Model):
             json = response.json()
 
             if json.get("ErrorLevel") != 0:
-                raise ValidationError(_("Spring API Error: %s") % json.get("Error"))
+                raise ValidationError(
+                    _("Spring API Error: %(raw)s", raw=json.get("Error"))
+                )
 
             shipment = json.get("Shipment")
             tracking = shipment.get("TrackingNumber")
@@ -228,13 +233,11 @@ class DeliveryCarrier(models.Model):
                     "Shipment sent to Spring<br/>"
                     "Carrier: %(carrier_name)s<br/>"
                     "Tracking Number: %(tracking_ref)s<br/>"
-                    "Tracking URL: %(url)s"
-                )
-                % {
-                    "carrier_name": shipment.get("Carrier"),
-                    "tracking_ref": tracking,
-                    "url": tracking_url,
-                },
+                    "Tracking URL: %(url)s",
+                    carrier_name=shipment.get("Carrier"),
+                    tracking_ref=tracking,
+                    url=tracking_url,
+                ),
                 attachments=attachments_list,
             )
 
@@ -272,6 +275,7 @@ class DeliveryCarrier(models.Model):
                         "ShipperReference": picking.name,
                     },
                 },
+                timeout=SPRING_REQUESTS_TIMEOUT,
             )
             if not response:
                 raise ValidationError(_("Unknown Spring API Error"))
@@ -279,7 +283,9 @@ class DeliveryCarrier(models.Model):
             json = response.json()
 
             if json.get("ErrorLevel") != 0:
-                raise ValidationError(_("Spring API Error: %s") % json.get("Error"))
+                raise ValidationError(
+                    _("Spring API Error: %(raw)s", raw=json.get("Error"))
+                )
             picking.carrier_tracking_url = False
 
     def spring_tracking_state_update_scheduled(self):
@@ -316,6 +322,7 @@ class DeliveryCarrier(models.Model):
                     "ShipperReference": picking.name,
                 },
             },
+            timeout=SPRING_REQUESTS_TIMEOUT,
         )
         if not response:
             raise ValidationError(_("Unknown Spring API Error"))
@@ -323,7 +330,7 @@ class DeliveryCarrier(models.Model):
         json = response.json()
 
         if json.get("ErrorLevel") != 0:
-            picking.message_post(body=_("Spring API Error: %s") % json.get("Error"))
+            picking.message_post(body=_("Spring API Error: %(raw)s", json.get("Error")))
 
         shipment = json.get("Shipment", {})
         events = sorted(shipment.get("Events", []), key=lambda e: e.get("DateTime"))
@@ -368,12 +375,3 @@ class DeliveryCarrier(models.Model):
 
     def spring_get_tracking_link(self, picking):
         return picking.spring_tracking_url
-
-
-class SpringService(models.Model):
-    _name = "delivery.spring.service"
-    _description = "Spring Service"
-
-    active = fields.Boolean(default=True)
-    name = fields.Char()
-    ref = fields.Char()

@@ -6,24 +6,24 @@
         <field name="model">delivery.carrier</field>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page
-                    string="Spring Credentials"
-                    attrs="{'invisible': [('delivery_type', '!=', 'spring')]}"
-                >
+                <page string="Spring" invisible="delivery_type != 'spring'">
                     <group>
                         <group>
                             <field
                                 name="spring_api_key"
-                                attrs="{'required': [('delivery_type', '=', 'spring')]}"
+                                required="delivery_type == 'spring'"
                             />
-                            <field name="spring_url" />
+                            <field
+                                name="spring_url"
+                                required="delivery_type == 'spring'"
+                            />
                             <field name="spring_service" />
                             <button
                                 name="action_spring_get_services"
                                 type="object"
                                 string="Update Available Services"
                             />
-                            <field name="spring_label_format" />
+                            <field name="spring_label_format" widget="radio" />
                         </group>
                     </group>
                 </page>
