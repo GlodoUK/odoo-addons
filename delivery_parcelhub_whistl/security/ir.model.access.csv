@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_whistl_access_stock_user,access_whistl_access_stock_user,model_whistl_access,stock.group_stock_user,1,1,1,1
+access_whistl_access_sales_team_salesman,access_whistl_access_sales_team_salesman,model_whistl_access,sales_team.group_sale_salesman,1,1,1,1
+access_whistl_access_sales_team_sales_manager,access_whistl_access_sales_team_sales_manager,model_whistl_access,sales_team.group_sale_manager,1,1,1,1
+access_whistl_access_base_group_system,access_whistl_access_base_group_system,model_whistl_access,base.group_system,1,1,1,1

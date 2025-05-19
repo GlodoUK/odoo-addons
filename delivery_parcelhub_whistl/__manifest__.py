@@ -4,17 +4,17 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
-    "version": "15.0.1.0.0",
+    "version": "18.0.1.0.0",
     "depends": [
-        "delivery",
         "delivery_state_events",
         "sale_stock",
     ],
     "data": [
-        "views/views.xml",
+        "security/ir.model.access.csv",
         "data/data.xml",
-        # "security/ir.model.access.csv",
+        "views/delivery_carrier.xml",
+        "views/stock_picking.xml",
     ],
     "demo": [],
-    "license": "AGPL-3",
+    "license": "LGPL-3",
 }

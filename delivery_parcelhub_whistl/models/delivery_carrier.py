@@ -7,8 +7,9 @@ import lxml.objectify as objectify
 import requests
 
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
+WHISTL_REQUESTS_TIMEOUT = 30
 WHISLT_XMLNS = "http://api.parcelhub.net/schemas/api/parcelhub-api-v0.4.xsd"
 WHISTL_DELIVERY_CODE_MAP = {
     "1": "customer_delivered",
@@ -21,8 +22,10 @@ WHISTL_DELIVERY_CODE_MAP = {
 }
 
 
+# FIXME: We're not actually securing this properly. So why does this exist?
 class WhistlAccess(models.Model):
     _name = "whistl.access"
+    _description = "Whistl Delivery Carrier Tokens"
 
     whistl_token = fields.Text(string="Whistl/Parcelhub Token")
     whistl_refresh_token = fields.Char(string="Whistl/Parcelhub Refresh Token")
@@ -42,9 +45,8 @@ class WhistlAccess(models.Model):
                 raise ValidationError(
                     _("Cannot get Whistl Headers without request details")
                 )
-            headers["Authorization"] = "Bearer %s" % self.whistl_get_auth_token(
-                base_url, username, password
-            )
+            token = self.whistl_get_auth_token(base_url, username, password)
+            headers["Authorization"] = f"Bearer {token}"
         return headers
 
     def whistl_get_auth_token(self, base_url=False, username=False, password=False):
@@ -80,7 +82,7 @@ class WhistlAccess(models.Model):
             request_url,
             headers=self._get_whistl_headers(False),
             data=ET.tostring(request),
-            timeout=20,
+            timeout=WHISTL_REQUESTS_TIMEOUT,
         )
         if not response.status_code == 200:
             message = ET.fromstring(response.content).find("Message").text
@@ -90,8 +92,10 @@ class WhistlAccess(models.Model):
             raise ValidationError(
                 _(
                     "Whistl API Error Requesting Token. Please try again:"
-                    " {status_code}\n{message}"
-                ).format(status_code=response.status_code, message=message)
+                    " %(status_code)s\n%(message)s",
+                    status_code=response.status_code,
+                    message=message,
+                )
             )
 
         response_xml = ET.fromstring(response.content)
@@ -226,7 +230,7 @@ class DeliveryCarrier(models.Model):
     def whistl_send_shipping(self, pickings):  # noqa: C901
         res = []
         for record in self:
-            if not record.whistl_access:
+            if not record.sudo().whistl_access:
                 record._search_create_access()
         for picking in pickings:
             order = picking.sale_id
@@ -283,12 +287,14 @@ class DeliveryCarrier(models.Model):
                                 picking.location_id.company_id.country_id.code or "GB"
                             ),
                             "Quantity": str(int(line.quantity)),
-                            "Value": str(line.product_id.lst_price),
+                            "Value": str(line.product_id._get_contextual_price()),
                             "Weight": str(line.product_id.weight),
                             "HsCode": line.product_id.hs_code or "",
                         }
                     )
-                    package_total_value += line.product_id.lst_price * line.quantity
+                    package_total_value += (
+                        line.product_id._get_contextual_price() * line.quantity
+                    )
                     package_total_weight += line.product_id.weight * line.quantity
 
                 package_element = ET.SubElement(packages, "Package")
@@ -368,7 +374,10 @@ class DeliveryCarrier(models.Model):
             preference_list_id = self.whistl_service_preference_list
             if not preference_list_id:
                 raise ValidationError(
-                    _("No Whistl Service Preference List ID has been configured")
+                    _(
+                        "No Whistl Service Preference List ID has been configured."
+                        " Please set this on the shipping method"
+                    )
                 )
             request_url = self._get_whistl_url(
                 "Service/ServiceUsingServicePreference",
@@ -378,24 +387,23 @@ class DeliveryCarrier(models.Model):
             data = ET.tostring(shipment, xml_declaration=True, encoding="utf-8")
             response = requests.post(
                 request_url,
-                headers=self.whistl_access._get_whistl_headers(
+                headers=self.sudo().whistl_access._get_whistl_headers(
                     True,
                     self.whistl_base_url,
                     self.whistl_username,
                     self.whistl_password,
                 ),
                 data=data,
-                timeout=20,
+                timeout=WHISTL_REQUESTS_TIMEOUT,
             )
 
             if not response.status_code == 200:
                 message = ET.fromstring(response.content).find("Message").text
-                if self.user_has_groups("base.group_no_one"):
+                if self.env.user.has_group("base.group_no_one"):
                     raise ValidationError(
                         _(
                             "Whistl API Error Requesting Service Preference: "
-                            "{status_code}\n{message}\n\n{shipment}"
-                        ).format(
+                            "%(status_code)s\n%(message)s\n\n%(shipment)s",
                             status_code=response.status_code,
                             message=message,
                             shipment=data,
@@ -405,8 +413,10 @@ class DeliveryCarrier(models.Model):
                     raise ValidationError(
                         _(
                             "Whistl API Error Requesting Service Preference :"
-                            "{status_code}\n{message}"
-                        ).format(status_code=response.status_code, message=message)
+                            "%(status_code)s\n%(message)s",
+                            status_code=response.status_code,
+                            message=message,
+                        )
                     )
 
             service_xml = ET.fromstring(response.content)
@@ -434,23 +444,22 @@ class DeliveryCarrier(models.Model):
             data = ET.tostring(shipment, xml_declaration=True, encoding="utf-8")
             response = requests.post(
                 request_url,
-                headers=self.whistl_access._get_whistl_headers(
+                headers=self.sudo().whistl_access._get_whistl_headers(
                     True,
                     self.whistl_base_url,
                     self.whistl_username,
                     self.whistl_password,
                 ),
                 data=data,
-                timeout=20,
+                timeout=WHISTL_REQUESTS_TIMEOUT,
             )
             if not response.status_code == 200:
                 message = ET.fromstring(response.content).find("Message").text
-                if self.user_has_groups("base.group_no_one"):
+                if self.env.user.has_group("base.group_no_one"):
                     raise ValidationError(
                         _(
                             "Whistl API Error Sending Shipment: "
-                            "{status_code}\n{message}\n\n{shipment}"
-                        ).format(
+                            "%(status_code)s\n%(message)s\n\n%(shipment)s",
                             status_code=response.status_code,
                             message=message,
                             shipment=data,
@@ -460,8 +469,10 @@ class DeliveryCarrier(models.Model):
                     raise ValidationError(
                         _(
                             "Whistl API Error Sending Shipment: "
-                            "{status_code}\n{message}"
-                        ).format(status_code=response.status_code, message=message)
+                            "%(status_code)s\n%(message)s",
+                            status_code=response.status_code,
+                            message=message,
+                        )
                     )
 
             shipment_xml = objectify.fromstring(response.content)
@@ -491,13 +502,11 @@ class DeliveryCarrier(models.Model):
                     "Shipment sent to Whistl<br/>"
                     "Carrier: %(carrier_name)s<br/>"
                     "Service Name: %(service_name)s<br/>"
-                    "Tracking Number: %(tracking_ref)s<br/>"
-                )
-                % {
-                    "carrier_name": carrier_name,
-                    "service_name": service_name,
-                    "tracking_ref": tracking,
-                },
+                    "Tracking Number: %(tracking_ref)s<br/>",
+                    carrier_name=carrier_name,
+                    service_name=service_name,
+                    tracking_ref=tracking,
+                ),
                 attachments=attachments_list,
             )
 
@@ -523,29 +532,37 @@ class DeliveryCarrier(models.Model):
 
     def whistl_cancel_shipment(self, pickings):
         self.ensure_one()
-        if not self.whistl_access:
+        if not self.sudo().whistl_access:
             self._search_create_access()
         for picking in pickings:
+            if not picking.whistl_shipment_id:
+                raise UserError(
+                    _("No whistl_shipment_id present on %(picking)s", picking=picking)
+                )
+
             # Get the Shipping ID first
             request_url = self.with_context(whistl_skip_account=True)._get_whistl_url(
-                "Shipment/%s" % picking.whistl_shipment_id,
+                f"Shipment/{picking.whistl_shipment_id}",
             )
             response = requests.delete(
                 request_url,
-                headers=self.whistl_access.sudo()._get_whistl_headers(
+                headers=self.sudo().whistl_access._get_whistl_headers(
                     True,
                     self.whistl_base_url,
                     self.whistl_username,
                     self.whistl_password,
                 ),
-                timeout=20,
+                timeout=WHISTL_REQUESTS_TIMEOUT,
             )
             if response.status_code not in [200, 204]:
                 message = ET.fromstring(response.content).find("Message").text
                 raise ValidationError(
                     _(
-                        "Whistl API Error Cancelling Shipment: {status_code}\n{message}"
-                    ).format(status_code=response.status_code, message=message)
+                        "Whistl API Error Cancelling Shipment:"
+                        " %(status_code)s\n%(message)s",
+                        status_code=response.status_code,
+                        message=message,
+                    )
                 )
             picking.state = "cancel"
 
@@ -590,13 +607,16 @@ class DeliveryCarrier(models.Model):
                 "Content-Type": "application/xml",
             },
             data=ET.tostring(request, xml_declaration=True, encoding="utf-8"),
+            timeout=WHISTL_REQUESTS_TIMEOUT,
         )
         if not response.status_code == 200:
             message = ET.fromstring(response.content).find("Message").text
             raise ValidationError(
                 _(
-                    "Failed to get tracking information: {status_code}\n{message}"
-                ).format(status_code=response.status_code, message=message)
+                    "Failed to get tracking information: %(status_code)s\n%(message)s",
+                    status_code=response.status_code,
+                    message=message,
+                )
             )
 
         try:
@@ -607,12 +627,10 @@ class DeliveryCarrier(models.Model):
                 _(
                     "Failed to get tracking information for "
                     "picking %(picking_name)s\n\n"
-                    "Response:\n%(response_content)s"
+                    "Response:\n%(response_content)s",
+                    picking_name=picking.name,
+                    response_content=response.content,
                 )
-                % {
-                    "picking_name": picking.name,
-                    "response_content": response.content,
-                }
             ) from e
         events = tracking_response.findall(".//TrackingEvent")
 

@@ -13,5 +13,5 @@
         "data/cron.xml",
     ],
     "demo": [],
-    "license": "AGPL-3",
+    "license": "LGPL-3",
 }

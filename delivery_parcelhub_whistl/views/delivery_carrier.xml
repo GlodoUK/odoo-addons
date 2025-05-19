@@ -6,32 +6,29 @@
         <field name="model">delivery.carrier</field>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page
-                    string="Whistl"
-                    attrs="{'invisible': [('delivery_type', '!=', 'whistl')]}"
-                >
+                <page string="Whistl" invisible="delivery_type != 'whistl'">
                     <group>
-                        <group>
+                        <group name="whistl_general" string="Credentials">
                             <field name="whistl_base_url" />
                             <field
                                 name="whistl_username"
-                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                                required="delivery_type == 'whistl'"
                             />
                             <field
                                 name="whistl_password"
-                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                                required="delivery_type == 'whistl'"
                                 password="True"
                             />
                             <field
                                 name="whistl_account"
-                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                                required="delivery_type == 'whistl'"
                             />
                             <field
                                 name="whistl_tracking_api_key"
-                                attrs="{'required': [('delivery_type', '=', 'whistl')]}"
+                                required="delivery_type == 'whistl'"
                             />
                         </group>
-                        <group string="Services">
+                        <group name="whistl_services" string="Services">
                             <p
                             >Before Continuing, visit your Whistl/Parcelhub account to configure a service preference list:</p>
                             <a
@@ -46,48 +43,28 @@
                             <field
                                 name="whistl_service_preference_list"
                                 options="{'format': 0}"
+                                required="delivery_type == 'whistl'"
                             />
                             <field name="whistl_label_format" />
                             <field name="whistl_label_size" />
                         </group>
+                        <group
+                            groups="base.group_no_one"
+                            name="whistl_tokens"
+                            string="Tokens"
+                        >
+                            <field name="whistl_token" />
+                            <field name="whistl_refresh_token" />
+                            <field name="whistl_token_expiry" />
+                            <button
+                                name="action_reset_tokens"
+                                string="Reset Tokens"
+                                type="object"
+                                class="oe_highlight"
+                            />
+                        </group>
                     </group>
                 </page>
-                <page
-                    name="whistl_debug"
-                    string="Whistl Debug"
-                    attrs="{'invisible': [('delivery_type', '!=', 'whistl')]}"
-                    groups="base.group_no_one"
-                >
-                    <group>
-                        <field name="whistl_token" />
-                        <field name="whistl_refresh_token" />
-                        <field name="whistl_token_expiry" />
-                        <button
-                            name="action_reset_tokens"
-                            string="Reset Tokens"
-                            type="object"
-                            class="oe_highlight"
-                        />
-                    </group>
-                </page>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="view_picking_withcarrier_out_form" model="ir.ui.view">
-        <field name="name">view_picking_withcarrier_out_form</field>
-        <field name="model">stock.picking</field>
-        <field
-            name="inherit_id"
-            ref="delivery_state_events.view_picking_withcarrier_out_form"
-        />
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='tracking_state']" position="after">
-                <field
-                    name="whistl_shipment_id"
-                    readonly="1"
-                    attrs="{'invisible': [('delivery_type', '!=', 'whistl')]}"
-                />
             </xpath>
         </field>
     </record>
