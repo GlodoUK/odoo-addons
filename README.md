@@ -27,6 +27,7 @@ addon | version | maintainers | summary
 [connector_edi_protocol_ssh](connector_edi_protocol_ssh/) | 18.0.1.0.0 |  | EDI SFTP and SCP Protocol Support
 [connector_edi_sale](connector_edi_sale/) | 18.0.1.0.0 |  | Connector EDI Sale
 [connector_edi_stock](connector_edi_stock/) | 18.0.1.0.0 |  | Connector EDI Stock
+[delivery_state_events](delivery_state_events/) | 18.0.1.0.0 |  | Provides fields and methods to support tracking a shipment
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
@@ -44,6 +45,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 18.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 18.0.1.0.0 |  | Helpdesk Ticket Type Properties
 [purchase_minimum_value](purchase_minimum_value/) | 18.0.1.0.0 |  | Restrict minimum purchase order value
+[res_partner_search_create](res_partner_search_create/) | 18.0.1.0.0 |  | Partner utility functions to search or create from values
 [sale_order_hold](sale_order_hold/) | 18.0.1.0.0 |  | Adds the ability to put sale orders on hold
 [sale_order_hold_stock_picking_hold](sale_order_hold_stock_picking_hold/) | 18.0.1.0.0 |  | Integrate sale_order_hold with stock_picking_hold
 [sale_stock_force_pdf_download](sale_stock_force_pdf_download/) | 18.0.1.0.0 |  | Sale Stock Force PDF Download
