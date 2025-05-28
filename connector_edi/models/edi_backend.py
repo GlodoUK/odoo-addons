@@ -455,6 +455,9 @@ class EdiBackend(models.Model):
     @api.constrains("common_code")
     def _check_python_code(self):
         for backend in self.sudo().filtered("common_code"):
-            msg = test_python_expr(expr=backend.common_code.strip() or "", mode="exec")
+            msg = test_python_expr(
+                expr=(backend.common_code or "").strip(),
+                mode="exec",
+            )
             if msg:
                 raise ValidationError(msg)

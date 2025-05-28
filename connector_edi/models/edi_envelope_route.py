@@ -488,14 +488,14 @@ record.with_delay(**record._with_delay_options())._run_out()
     def _check_codec_python_code(self):
         for route in self.sudo().filtered(lambda r: r.codec == "code"):
             msg = test_python_expr(
-                expr=route.codec_code_open.strip() or "",
+                expr=(route.codec_code_open or "").strip(),
                 mode="exec",
             )
             if msg:
                 raise ValidationError(msg)
 
             msg = test_python_expr(
-                expr=route.codec_code_enclose.strip() or "",
+                expr=(route.codec_code_enclose or "").strip(),
                 mode="exec",
             )
             if msg:
@@ -506,7 +506,7 @@ record.with_delay(**record._with_delay_options())._run_out()
         for route in self.sudo().filtered(lambda r: r.protocol == "code"):
             if route.direction in ("in", "both"):
                 msg = test_python_expr(
-                    expr=route.code_in.strip() or "",
+                    expr=(route.code_in or "").strip(),
                     mode="exec",
                 )
                 if msg:
@@ -514,7 +514,7 @@ record.with_delay(**record._with_delay_options())._run_out()
 
             if route.direction in ("out", "both"):
                 msg = test_python_expr(
-                    expr=route.code_out.strip() or "",
+                    expr=(route.code_out or "").strip(),
                     mode="exec",
                 )
                 if msg:

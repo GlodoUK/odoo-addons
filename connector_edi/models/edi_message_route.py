@@ -121,7 +121,10 @@ class EdiMessageRoute(models.Model):
     @api.constrains("action", "action_code")
     def _check_python_code(self):
         for route in self.sudo().filtered(lambda r: r.action == "code"):
-            msg = test_python_expr(expr=route.code.strip() or "", mode="exec")
+            msg = test_python_expr(
+                expr=(route.action_code or "").strip(),
+                mode="exec",
+            )
             if msg:
                 raise ValidationError(msg)
 
