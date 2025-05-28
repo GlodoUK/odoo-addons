@@ -27,6 +27,7 @@ addon | version | maintainers | summary
 [connector_edi_protocol_ssh](connector_edi_protocol_ssh/) | 18.0.1.0.0 |  | EDI SFTP and SCP Protocol Support
 [connector_edi_sale](connector_edi_sale/) | 18.0.1.0.0 |  | Connector EDI Sale
 [connector_edi_stock](connector_edi_stock/) | 18.0.1.0.0 |  | Connector EDI Stock
+[delivery_spring](delivery_spring/) | 18.0.1.0.0 |  | Connector to integrate with Spring courier
 [delivery_state_events](delivery_state_events/) | 18.0.1.0.0 |  | Provides fields and methods to support tracking a shipment
 [glo_checklists](glo_checklists/) | 18.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_checklists_account_accountant](glo_checklists_account_accountant/) | 18.0.1.0.0 |  | Glue module to fix a compatibility issue between Checklist Anything and account_accountant
