@@ -6,7 +6,7 @@ class PurchaseOrderLine(models.Model):
 
     def _compute_tax_id(self):
         has_variant_supplier_taxes_id = self.filtered(
-            lambda line: line.variant_supplier_taxes_id
+            lambda line: line.product_id.variant_supplier_taxes_id
         )
 
         for line in has_variant_supplier_taxes_id:
@@ -36,4 +36,3 @@ class PurchaseOrderLine(models.Model):
             res["taxes_id"] = taxes
 
         return res
-
