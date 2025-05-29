@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import api, models
 
 
 class PurchaseOrderLine(models.Model):
@@ -25,3 +25,15 @@ class PurchaseOrderLine(models.Model):
         return super(
             PurchaseOrderLine, self - has_variant_supplier_taxes_id
         )._compute_tax_id()
+
+    @api.model
+    def _prepare_purchase_order_line(self, product_id, product_qty, product_uom, company_id, supplier, po):
+        res = super()._prepare_purchase_order_line(product_id, product_qty, product_uom, company_id, supplier, po)
+
+        if product_id.variant_supplier_taxes_id:
+            product_taxes = product_id.variant_supplier_taxes_id.filtered(lambda x: x.company_id in company_id.parent_ids)
+            taxes = po.fiscal_position_id.map_tax(product_taxes)
+            res["taxes_id"] = taxes
+
+        return res
+
