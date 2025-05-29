@@ -7,6 +7,6 @@ class Product(models.Model):
     variant_supplier_taxes_id = fields.Many2many(
         "account.tax",
         domain=[("type_tax_use", "=", "purchase")],
-        help="Additional purchase taxes specific to this variant",
+        help="These are used instead of purchase taxes set on the template.",
         string="Variant Purchase Taxes",
     )

@@ -24,4 +24,4 @@ class PurchaseOrderLine(models.Model):
 
         return super(
             PurchaseOrderLine, self - has_variant_supplier_taxes_id
-        )._compute_purchase_price()
+        )._compute_tax_id()
