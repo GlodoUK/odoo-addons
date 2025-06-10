@@ -18,7 +18,7 @@
                 />
             </t>
         </xpath>
-        <xpath expr="//strong[@t-if='company.report_header']" position="replace">
+        <xpath expr="//strong[@t-field='company.report_header']" position="replace">
             <t
                 t-set="header_tagline"
                 t-value="o and 'brand_id' in o and o.brand_id and o.brand_id.report_header or company.report_header"
