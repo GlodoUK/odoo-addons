@@ -46,6 +46,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_category](helpdesk_ticket_category/) | 18.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 18.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 18.0.1.0.0 |  | Helpdesk Ticket Type Properties
+[product_variant_specific_tax_purchase](product_variant_specific_tax_purchase/) | 18.0.1.0.0 |  | product_variant_specific_tax_purchase
 [purchase_minimum_value](purchase_minimum_value/) | 18.0.1.0.0 |  | Restrict minimum purchase order value
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 18.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_search_create](res_partner_search_create/) | 18.0.1.0.0 |  | Partner utility functions to search or create from values
