@@ -12,26 +12,27 @@
                 />
 
                 <div class="my-3">
-                    <label class="form-label" for="team">
+                    <label class="form-label">
                         Team
                     </label>
 
-                    <select
-                        class="form-select"
-                        id="team"
-                        name="team"
-                        required="required"
-                    >
-                        <t t-foreach="team_ids" t-as="team_id">
-                            <option t-att-value="team_id.id">
-                                <t t-out="team_id.display_name" />
-
-                                <t t-if="team_id.description">
-                                    - <t t-out="team_id.description" />
-                                </t>
-                            </option>
-                        </t>
-                    </select>
+                    <t t-foreach="team_ids" t-as="team_id">
+                        <div class="form-check">
+                            <input
+                                name="team"
+                                t-attf-id="team_id_{{ team_id.id }}"
+                                t-attf-value="{{team_id.id}}"
+                                type="radio"
+                                class="form-check-input"
+                                required="required"
+                            />
+                            <label
+                                t-attf-for="team_id_{{ team_id.id }}"
+                                class="form-check-label"
+                                t-esc="team_id.display_name"
+                            />
+                        </div>
+                    </t>
                 </div>
 
                 <div class="my-3">
