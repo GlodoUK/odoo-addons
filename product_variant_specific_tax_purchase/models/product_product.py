@@ -27,7 +27,10 @@ class Product(models.Model):
     @api.depends("product_tmpl_id.supplier_taxes_id", "variant_supplier_taxes_id")
     def _compute_supplier_taxes_id(self):
         for product in self:
-            product.supplier_taxes_id = product.variant_supplier_taxes_id or product.product_tmpl_id.supplier_taxes_id
+            product.supplier_taxes_id = (
+                product.variant_supplier_taxes_id
+                or product.product_tmpl_id.supplier_taxes_id
+            )
 
     def _inverse_supplier_taxes_id(self):
         for product in self:

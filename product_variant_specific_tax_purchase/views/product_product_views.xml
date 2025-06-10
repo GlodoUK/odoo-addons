@@ -1,18 +1,20 @@
 <?xml version="1.0" ?>
 <odoo>
-
     <record id="product_variant_easy_edit_view" model="ir.ui.view">
         <field name="name">product.product.view.form.easy</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
         <field name="arch" type="xml">
             <group name="sales" position="after">
                 <group string="Purchase">
-                    <field name="supplier_taxes_id" readonly="1" widget="many2many_tags" />
+                    <field
+                        name="supplier_taxes_id"
+                        readonly="variant_supplier_taxes_id"
+                        widget="many2many_tags"
+                    />
                     <field name="variant_supplier_taxes_id" widget="many2many_tags" />
                 </group>
             </group>
         </field>
     </record>
-
 </odoo>
