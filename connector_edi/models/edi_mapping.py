@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EdiMapping(models.Model):
@@ -29,16 +29,11 @@ class EdiMapping(models.Model):
 
     comment = fields.Char()
 
-    # FIXME
-    # def name_get(self):
-    #     result = []
-    #     for record in self:
-    #         name = "{}: {}".format(
-    #             record.backend_id.name or repr(record.backend_id),
-    #             record.comment or repr(record),
-    #         )
-    #         result.append((record.id, name))
-    #     return result
+    @api.depends("backend_id", "comment")
+    def _compute_display_name(self):
+        for mapping in self:
+            name = f"{mapping.backend_id.name or repr(mapping.backend_id)}: {mapping.comment or repr(mapping)}"
+            mapping.display_name = name
 
     def record(self):
         self.ensure_one()

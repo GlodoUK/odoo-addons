@@ -268,38 +268,24 @@ class EdiMessage(models.Model):
                 message,
             )
 
-    # FIXME
+    def _associate_with(self, record):
+        self.ensure_one()
 
-    # def _associate_with(self, record):
-    #     self.ensure_one()
+        self.write({
+            "model": record._name,
+            "res_id": record.id
+        })
 
-    #     self.write({
-    #         "model": record._name,
-    #         "res_id": record.id
-    #     })
+        message_post = getattr(record, "message_post", None)
 
-    #     message_post = getattr(record, "message_post", None)
+        if message_post and callable(message_post):
+            message_post(
+                body=_("Created from %s", self._get_html_link())
+            )
 
-    #     if message_post and callable(message_post):
-    #         message_post(
-    #             body=_(
-    #                 "Created from <a href=# data-oe-model=edi.message"
-    #                 " data-oe-id=%(id)d>%(name)s</a>"
-    #             )
-    #             % {"id": self.id, "name": self.display_name}
-    #         )
-
-    #     self.message_post(
-    #         body=_(
-    #             "Associated with <a href=# data-oe-model=%(model)s"
-    #             " data-oe-id=%(id)d>%(name)s</a>"
-    #         )
-    #         % {
-    #             "model": record._name,
-    #             "id": record.id,
-    #             "name": record.display_name,
-    #         }
-    #     )
+        self.message_post(
+            body=_("Associated with %s", record._get_html_link())
+        )
 
     def _assign_message_route_domain(self):
         self.ensure_one()

@@ -62,8 +62,9 @@
                                 <field
                                     name="content_filename"
                                     groups="base.group_no_one"
+                                    readonly="1"
                                 />
-                                <field name="content" filename="content_filename" />
+                                <field name="content" filename="content_filename" widget="binary"/>
                             </group>
                             <field name="legacy_body" invisible="not use_legacy_body" />
                         </page>
