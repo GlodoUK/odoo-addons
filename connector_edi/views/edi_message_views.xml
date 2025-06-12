@@ -67,10 +67,18 @@
 
                     <notebook>
                         <page string="Content">
-                            <!-- <group invisible="use_legacy_body">
-                                <field name="content_filename" groups="base.group_no_one" />
-                                <field name="content" filename="content_filename" />
-                            </group> -->
+                            <group invisible="use_legacy_body">
+                                <field
+                                    name="content_filename"
+                                    groups="base.group_no_one"
+                                    readonly="1"
+                                />
+                                <field
+                                    name="content"
+                                    filename="content_filename"
+                                    widget="binary"
+                                />
+                            </group>
                             <field name="legacy_body" invisible="not use_legacy_body" />
                         </page>
 
@@ -78,7 +86,7 @@
                             <group>
                                 <field name="res_id" />
                                 <field name="model" />
-                                <!-- <field name="related" widget="reference" /> -->
+                                <field name="related" widget="reference" />
                             </group>
 
                             <group>
@@ -93,9 +101,9 @@
                         </page>
 
                         <page string="Other Info" name="other">
-                            <!-- <group>
+                            <group>
                                 <field name="metadata_string" />
-                            </group> -->
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
