@@ -271,21 +271,14 @@ class EdiMessage(models.Model):
     def _associate_with(self, record):
         self.ensure_one()
 
-        self.write({
-            "model": record._name,
-            "res_id": record.id
-        })
+        self.write({"model": record._name, "res_id": record.id})
 
         message_post = getattr(record, "message_post", None)
 
         if message_post and callable(message_post):
-            message_post(
-                body=_("Created from %s", self._get_html_link())
-            )
+            message_post(body=_("Created from %s", self._get_html_link()))
 
-        self.message_post(
-            body=_("Associated with %s", record._get_html_link())
-        )
+        self.message_post(body=_("Associated with %s", record._get_html_link()))
 
     def _assign_message_route_domain(self):
         self.ensure_one()

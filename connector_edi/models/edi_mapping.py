@@ -32,7 +32,7 @@ class EdiMapping(models.Model):
     @api.depends("backend_id", "comment")
     def _compute_display_name(self):
         for mapping in self:
-            name = f"{mapping.backend_id.name or repr(mapping.backend_id)}: {mapping.comment or repr(mapping)}"
+            name = f"{mapping.backend_id.name or repr(mapping.backend_id)}: {mapping.comment or repr(mapping)}"  # noqa: E501
             mapping.display_name = name
 
     def record(self):
