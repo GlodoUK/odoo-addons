@@ -32,6 +32,7 @@ addon | version | maintainers | summary
 [credit_control](credit_control/) | 17.0.0.0.0 |  | Credit Control Policies
 [glo_checklists](glo_checklists/) | 17.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_commercial_invoice](glo_commercial_invoice/) | 17.0.1.0.0 |  | Glo Commercial Invoice
+[mail_bounce_catchall_custom_message](mail_bounce_catchall_custom_message/) | 17.0.1.0.0 |  | Customise the catchall bounce message
 [product_simple_variant_builder](product_simple_variant_builder/) | 17.0.1.0.0 |  | Simple wizard to build dynamic variants from a product template
 [product_supplier_info_apply_on_variants](product_supplier_info_apply_on_variants/) | 17.0.1.0.0 |  | Apply on Variants for product.supplierinfo records
 [purchase_order_line_sequence_simple](purchase_order_line_sequence_simple/) | 17.0.1.0.0 |  | Purchase Order Line Sequence Simple
