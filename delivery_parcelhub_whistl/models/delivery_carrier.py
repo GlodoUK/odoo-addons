@@ -274,7 +274,7 @@ class DeliveryCarrier(models.Model):
             ).text = "Clothing/Protective Clothing"
 
             packages = ET.SubElement(shipment, "Packages")
-            for package in picking.package_ids:
+            for package in picking.move_line_ids.result_package_id:
                 product_list = []
                 package_total_value = 0
                 package_total_weight = 0
