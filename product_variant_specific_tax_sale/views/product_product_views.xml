@@ -5,7 +5,7 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
         <field name="arch" type="xml">
-            <field name="lst_price" position="after">
+            <field name="additional_product_tag_ids" position="after">
                 <field
                     name="taxes_id"
                     readonly="variant_taxes_id"
