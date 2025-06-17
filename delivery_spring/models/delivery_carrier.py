@@ -143,7 +143,7 @@ class DeliveryCarrier(models.Model):
         for picking in pickings:
             order = picking.sale_id
             product_list = []
-            for line in picking.move_lines:
+            for line in picking.move_ids:
                 product_list.append(
                     {
                         "Description": line.name,
