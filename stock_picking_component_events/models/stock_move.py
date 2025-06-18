@@ -60,7 +60,7 @@ class StockMove(models.Model):
             fire_picking_event
         )
 
-        result = super()._action_assign()
+        result = super()._action_assign(force_qty)
 
         self._on_event_changes_after_dict(changes)
 
