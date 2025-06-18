@@ -53,7 +53,7 @@ class StockMove(models.Model):
 
         return changes
 
-    def _action_assign(self):
+    def _action_assign(self, force_qty=False):
         fire_picking_event = not self.env.context.get("__no_on_event_picking_assigned")
 
         changes, pickings, states = self._on_event_changes_before_dict(
