@@ -13,9 +13,12 @@ class MailMessage(models.Model):
                 if ticket.merged_into:
                     # If the ticket was merged, we need to update the res_id
                     # to point to the target ticket instead of the original one.
+                    target_ticket = ticket.merged_into
+                    while ticket.merged_into:
+                        target_ticket = ticket.merged_into
                     record.write(
                         {
-                            "res_id": ticket.merged_into.id,
+                            "res_id": target_ticket.id,
                             "subject": f"Reply posted to {ticket.name}",
                         }
                     )
