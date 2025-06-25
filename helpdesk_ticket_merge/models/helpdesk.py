@@ -71,6 +71,8 @@ class HelpdeskTicket(models.Model):
 
         # Merge activities
         if merge_activities:
+            for activity in self.activity_ids:
+                activity.write({'res_id': target_ticket.id})
             target_ticket.activity_ids |= self.activity_ids
 
         # Merge Followers
