@@ -15,7 +15,7 @@ class MailMessage(models.Model):
                     # to point to the target ticket instead of the original one.
                     target_ticket = ticket.merged_into
                     while target_ticket.merged_into:
-                        target_ticket = ticket.merged_into
+                        target_ticket = target_ticket.merged_into
                     record.write(
                         {
                             "res_id": target_ticket.id,
