@@ -74,12 +74,14 @@ class HelpdeskTicket(models.Model):
             target_ticket.activity_ids |= self.activity_ids
 
         # Merge Followers
+
         if merge_followers:
             for follower in self.message_follower_ids:
                 if follower.partner_id not in target_ticket.message_follower_ids.mapped(
                     "partner_id"
                 ):
-                    target_ticket.message_follower_ids += follower
+                    target_ticket.message_subscribe(partner_ids=[follower.partner_id.id])
+
 
         # Merge Tags
         if merge_tags:
