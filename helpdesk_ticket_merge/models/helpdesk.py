@@ -1,10 +1,16 @@
 from markupsafe import Markup
 
-from odoo import _, models
+from odoo import _, fields, models
 
 
 class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
+
+    merged_into = fields.Many2one(
+        "helpdesk.ticket",
+        help="The ticket into which this ticket was merged.",
+        readonly=True,
+    )
 
     def merge_into(
         self,
@@ -41,7 +47,7 @@ class HelpdeskTicket(models.Model):
             if description and description.strip() != "":
                 target_ticket.write(
                     {
-                        "description": f"{target_ticket.description}\n\n======\n\nMerged from ticket {self.id} ({self.name})\n\n\\/\\/\\/\\/\\/\n\n{description}"  # noqa: E501
+                        "description": f"{target_ticket.description}\n\n=== Merged from ticket {self.id} ({self.name}) ===\n\n{description}"  # noqa: E501
                     }
                 )
 
@@ -69,7 +75,11 @@ class HelpdeskTicket(models.Model):
 
         # Merge Followers
         if merge_followers:
-            target_ticket.message_follower_ids |= self.message_follower_ids
+            for follower in self.message_follower_ids:
+                if follower.partner_id not in target_ticket.message_follower_ids.mapped(
+                    "partner_id"
+                ):
+                    target_ticket.message_follower_ids += follower
 
         # Merge Tags
         if merge_tags:
@@ -91,5 +101,10 @@ class HelpdeskTicket(models.Model):
                 )
             )
         )
-        self.write({"active": False})
+        self.write(
+            {
+                "active": False,
+                "merged_into": target_ticket.id,
+            }
+        )
         return True

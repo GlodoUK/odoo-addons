@@ -74,7 +74,7 @@ class TestTicketMerge(TransactionCase):
 
         # Check that ticket 2 has the correct description
         expected_description = Markup(
-            f"<p>Description of ticket 2</p>\n\n======\n\nMerged from ticket {self.ticket1.id} (Ticket 1)\n\n\\/\\/\\/\\/\\/\n\n<p>Description of ticket 1</p>"  # noqa: E501
+            f"<p>Description of ticket 2</p>\n\n=== Merged from ticket {self.ticket1.id} (Ticket 1) ===\n\n<p>Description of ticket 1</p>"  # noqa: E501
         )  # noqa: E501
         self.assertEqual(self.ticket2.description, expected_description)
 
@@ -111,6 +111,15 @@ class TestTicketMerge(TransactionCase):
         # Check that activities were merged correctly
         activities = self.ticket2.activity_ids
         self.assertEqual(len(activities), 1)
+
+        # Check mail message forwarding
+        self.ticket1.message_post(
+            body="This is posted after the merge to ticket 2",
+        )
+        self.assertIn(
+            "This is posted after the merge to ticket 2",
+            self.ticket2.message_ids[0].body,
+        )
 
     def test_merge_error(self):
         ticket3 = self.env["helpdesk.ticket"].create(

@@ -19,14 +19,18 @@
                         readonly="1"
                     />
                 </group>
-                <group>
-                    <field name="merge_description" widget="boolean_toggle" />
-                    <field name="merge_chatter" widget="boolean_toggle" />
-                    <field name="merge_attachments" widget="boolean_toggle" />
-                    <field name="merge_activities" widget="boolean_toggle" />
-                    <field name="merge_followers" widget="boolean_toggle" />
-                    <field name="merge_tags" widget="boolean_toggle" />
-                    <field name="merge_priority" widget="boolean_toggle" />
+                <group string="Items to merge">
+                    <group>
+                        <field name="merge_description" widget="boolean_toggle" />
+                        <field name="merge_chatter" widget="boolean_toggle" />
+                        <field name="merge_attachments" widget="boolean_toggle" />
+                        <field name="merge_activities" widget="boolean_toggle" />
+                    </group>
+                    <group>
+                        <field name="merge_followers" widget="boolean_toggle" />
+                        <field name="merge_tags" widget="boolean_toggle" />
+                        <field name="merge_priority" widget="boolean_toggle" />
+                    </group>
                 </group>
                 <footer>
                     <button

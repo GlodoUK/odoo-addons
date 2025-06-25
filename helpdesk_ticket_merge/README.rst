@@ -9,3 +9,6 @@ the tickets, including:
 - Activities
 - Followers
 - Tags
+
+After tickets are merged, any replies posted to the original ticket will be redirected
+to the merged ticket.

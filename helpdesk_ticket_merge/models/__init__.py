@@ -1,1 +1,1 @@
-from . import helpdesk
+from . import helpdesk, mail_message

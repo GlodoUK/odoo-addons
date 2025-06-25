@@ -18,30 +18,37 @@ class MergeTicketWizard(models.TransientModel):
     )
 
     merge_description = fields.Boolean(
+        string="Description",
         help="If checked, merge ticket descriptions into the destination ticket.",
         default=True,
     )
     merge_chatter = fields.Boolean(
+        string="Chatter",
         help="If checked, merged ticket chatter into the destination ticket.",
         default=True,
     )
     merge_attachments = fields.Boolean(
+        string="Attachments",
         help="If checked, merge ticket attachments into the destination ticket.",
         default=True,
     )
     merge_activities = fields.Boolean(
+        string="Activities",
         help="If checked, merge ticket activities into the destination ticket.",
         default=True,
     )
     merge_followers = fields.Boolean(
+        string="Followers",
         help="If checked, merge ticket followers into the destination ticket.",
         default=True,
     )
     merge_tags = fields.Boolean(
+        string="Tags",
         help="If checked, merge ticket tags into the destination ticket.",
         default=True,
     )
     merge_priority = fields.Boolean(
+        string="Priority",
         help=(
             "If checked, destination ticket is set to the highest priority of the"
             " merged tickets."
