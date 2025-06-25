@@ -54,6 +54,7 @@ class TestTicketMerge(TransactionCase):
                 "note": "Follow up on ticket 2",
                 "res_id": self.ticket2.id,
                 "res_model": "helpdesk.ticket",
+                "res_model_id": self.env.ref("helpdesk.model_helpdesk_ticket").id,
             }
         )
         self.env["ir.attachment"].create(
