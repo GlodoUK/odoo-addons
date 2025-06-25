@@ -48,12 +48,12 @@ class TestTicketMerge(TransactionCase):
         self.ticket1.message_post(
             body="Extra message for ticket 1",
         )
-        self.ticket2.activity_ids.create(
+        self.env['mail.activity'].create(
             {
                 "activity_type_id": self.env.ref("mail.mail_activity_data_todo").id,
                 "note": "Follow up on ticket 2",
                 "res_id": self.ticket2.id,
-                "res_model_id": self.env.ref("helpdesk.model_helpdesk_ticket").id,
+                "res_model": "helpdesk.ticket",
             }
         )
         self.env["ir.attachment"].create(
