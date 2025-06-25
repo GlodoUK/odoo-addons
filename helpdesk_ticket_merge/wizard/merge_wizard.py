@@ -24,7 +24,7 @@ class MergeTicketWizard(models.TransientModel):
     )
     merge_chatter = fields.Boolean(
         string="Chatter",
-        help="If checked, merged ticket chatter into the destination ticket.",
+        help="If checked, merge ticket chatter into the destination ticket.",
         default=True,
     )
     merge_attachments = fields.Boolean(
