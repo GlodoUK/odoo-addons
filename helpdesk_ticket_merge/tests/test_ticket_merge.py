@@ -48,7 +48,7 @@ class TestTicketMerge(TransactionCase):
         self.ticket1.message_post(
             body="Extra message for ticket 1",
         )
-        self.env['mail.activity'].create(
+        self.env["mail.activity"].create(
             {
                 "activity_type_id": self.env.ref("mail.mail_activity_data_todo").id,
                 "note": "Follow up on ticket 2",

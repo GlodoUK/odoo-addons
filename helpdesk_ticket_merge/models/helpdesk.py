@@ -72,7 +72,7 @@ class HelpdeskTicket(models.Model):
         # Merge activities
         if merge_activities:
             for activity in self.activity_ids:
-                activity.write({'res_id': target_ticket.id})
+                activity.write({"res_id": target_ticket.id})
             target_ticket.activity_ids |= self.activity_ids
 
         # Merge Followers
@@ -82,8 +82,9 @@ class HelpdeskTicket(models.Model):
                 if follower.partner_id not in target_ticket.message_follower_ids.mapped(
                     "partner_id"
                 ):
-                    target_ticket.message_subscribe(partner_ids=[follower.partner_id.id])
-
+                    target_ticket.message_subscribe(
+                        partner_ids=[follower.partner_id.id]
+                    )
 
         # Merge Tags
         if merge_tags:
