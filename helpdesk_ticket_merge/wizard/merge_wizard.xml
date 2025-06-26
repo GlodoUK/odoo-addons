@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="helpdesk_ticket_merge_wizard_form" model="ir.ui.view">
+        <field name="name">merge_ticket_wizard_form</field>
+        <field name="model">helpdesk.ticket.merge.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field
+                        name="target_ticket_id"
+                        required="1"
+                        domain="[('id', 'in', ticket_ids or False)]"
+                    />
+                    <field
+                        name="ticket_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        required="1"
+                        readonly="1"
+                    />
+                </group>
+                <group string="Items to merge">
+                    <group>
+                        <field name="merge_description" widget="boolean_toggle" />
+                        <field name="merge_chatter" widget="boolean_toggle" />
+                        <field name="merge_attachments" widget="boolean_toggle" />
+                        <field name="merge_activities" widget="boolean_toggle" />
+                    </group>
+                    <group>
+                        <field name="merge_followers" widget="boolean_toggle" />
+                        <field name="merge_tags" widget="boolean_toggle" />
+                        <field name="merge_priority" widget="boolean_toggle" />
+                    </group>
+                </group>
+                <footer>
+                    <button
+                        string="Merge"
+                        type="object"
+                        name="action_merge_tickets"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_helpdesk_ticket_merge_wizard" model="ir.actions.act_window">
+        <field name="name">Merge Tickets</field>
+        <field name="res_model">helpdesk.ticket.merge.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>
