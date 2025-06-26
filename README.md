@@ -45,6 +45,7 @@ addon | version | maintainers | summary
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 18.0.1.0.0 |  | Helpdesk Sale Order Link
 [helpdesk_ticket_category](helpdesk_ticket_category/) | 18.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 18.0.1.0.0 |  | Helpdesk Ticket Escalate
+[helpdesk_ticket_merge](helpdesk_ticket_merge/) | 18.0.1.0.0 |  | Merge helpdesk tickets including all ticktet history and attachments.
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 18.0.1.0.0 |  | Helpdesk Ticket Type Properties
 [product_variant_specific_tax_purchase](product_variant_specific_tax_purchase/) | 18.0.1.0.0 |  | product_variant_specific_tax_purchase
 [product_variant_specific_tax_sale](product_variant_specific_tax_sale/) | 18.0.1.0.0 |  | product_variant_specific_tax_sale
