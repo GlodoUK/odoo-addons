@@ -214,8 +214,9 @@ class DeliveryCarrier(models.Model):
                 "warning_message": False,
             }
 
-        price = order.pricelist_id.get_product_price(
-            self.product_id, 1.0, order.partner_id
+        price = order.pricelist_id._get_product_price(
+            self.product_id,
+            1.0,
         )
 
         return {
