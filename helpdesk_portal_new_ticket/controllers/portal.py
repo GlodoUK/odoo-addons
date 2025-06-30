@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+from odoo.tools import plaintext2html
 
 from odoo.addons.portal.controllers.portal import CustomerPortal
 
@@ -84,7 +85,7 @@ class CustomerPortal(CustomerPortal):
             "partner_id": request.env.user.partner_id.id,
             "team_id": team_id.id,
             "name": kw.get("subject"),
-            "description": kw.get("description"),
+            "description": plaintext2html(kw.get("description")),
             "priority": kw.get("priority", "0"),
             "ticket_categ_id": int(kw.get("category")),
         }
