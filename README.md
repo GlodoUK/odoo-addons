@@ -28,6 +28,7 @@ addon | version | maintainers | summary
 [connector_edi_sale](connector_edi_sale/) | 18.0.1.0.0 |  | Connector EDI Sale
 [connector_edi_stock](connector_edi_stock/) | 18.0.1.0.0 |  | Connector EDI Stock
 [delivery_carrier_match_sale_order_value](delivery_carrier_match_sale_order_value/) | 18.0.1.0.0 |  | Ensure that a carrier can only be used when sale order total is less than a given amount
+[delivery_carrier_validation](delivery_carrier_validation/) | 18.0.1.0.0 |  | Utility module to add a validation step before send_to_shipper
 [delivery_parcelhub_whistl](delivery_parcelhub_whistl/) | 18.0.1.0.0 |  | Connector to integrate with Parcelhub/Whistl courier
 [delivery_spring](delivery_spring/) | 18.0.1.0.0 |  | Connector to integrate with Spring courier
 [delivery_state_events](delivery_state_events/) | 18.0.1.0.0 |  | Provides fields and methods to support tracking a shipment
