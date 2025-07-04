@@ -27,10 +27,6 @@ class DeliveryCarrier(models.Model):
             return True
         if not self.max_sale_order_value_amount:
             return True
-
-        if self.max_sale_order_value_mode == "no":
-            return True
-
         if not order:
             return True
 
