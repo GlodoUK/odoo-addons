@@ -43,6 +43,7 @@ class DeliveryCarrier(models.Model):
                 self, f"_match_max_sale_order_value_{self.max_sale_order_value_mode}"
             )(order),
             self.currency_id,
+            order.company_id,
             date=order.date_order,
         )
 
