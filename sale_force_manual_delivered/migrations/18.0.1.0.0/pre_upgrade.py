@@ -9,5 +9,6 @@ def migrate(cr, version):
     ]
 
     for view in views_to_uninstall:
-        if env.ref(view, raise_if_not_found=False):
-            view.unlink()
+        view_id = env.ref(view, raise_if_not_found=False)
+        if view_id:
+            view_id.unlink()

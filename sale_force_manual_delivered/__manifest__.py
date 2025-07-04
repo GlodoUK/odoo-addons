@@ -1,5 +1,5 @@
 {
-    "name": "sale_forced_manual_delivered",
+    "name": "sale_force_manual_delivered",
     "version": "18.0.1.0.0",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
