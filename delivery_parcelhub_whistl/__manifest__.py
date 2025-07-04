@@ -6,6 +6,7 @@
     "category": "Sales",
     "version": "18.0.1.0.0",
     "depends": [
+        "delivery_carrier_validation",
         "delivery_state_events",
         "sale_stock",
     ],
