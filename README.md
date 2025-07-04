@@ -53,6 +53,7 @@ addon | version | maintainers | summary
 [purchase_minimum_value](purchase_minimum_value/) | 18.0.1.0.0 |  | Restrict minimum purchase order value
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 18.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_search_create](res_partner_search_create/) | 18.0.1.0.0 |  | Partner utility functions to search or create from values
+[sale_force_manual_delivered](sale_force_manual_delivered/) | 18.0.1.0.0 |  | sale_force_manual_delivered
 [sale_order_hold](sale_order_hold/) | 18.0.1.0.0 |  | Adds the ability to put sale orders on hold
 [sale_order_hold_stock_picking_hold](sale_order_hold_stock_picking_hold/) | 18.0.1.0.0 |  | Integrate sale_order_hold with stock_picking_hold
 [sale_stock_force_pdf_download](sale_stock_force_pdf_download/) | 18.0.1.0.0 |  | Sale Stock Force PDF Download
