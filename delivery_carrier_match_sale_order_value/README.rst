@@ -13,4 +13,4 @@ Usage
 - For each Delivery Method change the max_sale_order_value_mode field from "Any" to
   either option
 - Observe delivery method no longer offered either via website, or via add shipping form
-  it value exceeds quantity
+  if order value exceeds the configured maximum
