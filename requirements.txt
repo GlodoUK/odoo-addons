@@ -3,6 +3,7 @@ cryptography
 ftpparser
 lxml
 mock
+odoo-test-helper
 pandas
 paramiko
 pycurl

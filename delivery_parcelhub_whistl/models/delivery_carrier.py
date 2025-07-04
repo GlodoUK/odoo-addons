@@ -163,6 +163,34 @@ class DeliveryCarrier(models.Model):
         default="6",
     )  # TODO: Flesh this out, or pull from API
 
+    def _whistl_ensure_valid_shipping(self, pickings):
+        MAX_LEN = 32
+
+        for picking_id in pickings.filtered(lambda x: x.partner_id):
+            to_check = {
+                "Company Name": picking_id.partner_id.parent_id.name,
+                "Name": picking_id.partner_id.name,
+                "Street": picking_id.partner_id.street,
+                "Street 2": picking_id.partner_id.street2,
+            }
+
+            errs = []
+
+            for name, value in to_check.items():
+                if not value:
+                    continue
+                if len(value) > MAX_LEN:
+                    errs.append(
+                        _(
+                            "%(field_to_check)s exceeds %(max_len)s characters",
+                            field_to_check=name,
+                            max_len=MAX_LEN,
+                        )
+                    )
+
+            if errs:
+                raise UserError("\n".join(errs))
+
     def _search_create_access(self):
         self.ensure_one()
         if self.whistl_access:
