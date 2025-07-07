@@ -85,7 +85,6 @@ class WhistlAccess(models.Model):
             timeout=WHISTL_REQUESTS_TIMEOUT,
         )
         if not response.status_code == 200:
-            message = ET.fromstring(response.content).find("Message").text
             self.whistle_token = False
             self.whistl_refresh_token = False
             self.whistl_token_expiry = False
@@ -94,7 +93,7 @@ class WhistlAccess(models.Model):
                     "Whistl API Error Requesting Token. Please try again:"
                     " %(status_code)s\n%(message)s",
                     status_code=response.status_code,
-                    message=message,
+                    message=response.content.decode("utf-8"),
                 )
             )
 
@@ -426,27 +425,39 @@ class DeliveryCarrier(models.Model):
                 timeout=WHISTL_REQUESTS_TIMEOUT,
             )
 
+            self.log_xml(
+                "%s %s\n%s\n\n%s"  # noqa: UP031
+                % (
+                    response.request.method,
+                    response.request.url,
+                    "\n".join(
+                        [f"{k}: {v}" for k, v in response.request.headers.items()]
+                    ),
+                    response.request.body.decode("utf-8"),
+                ),
+                "whistl_send_shipping_service_using_preference_request",
+            )
+            self.log_xml(
+                "%s %s\n%s\n\n%s"  # noqa: UP031
+                % (
+                    response.status_code,
+                    response.reason,
+                    "\n".join([f"{k}: {v}" for k, v in response.headers.items()]),
+                    response.text,
+                ),
+                "whistl_send_shipping_service_using_preference_response",
+            )
+
             if not response.status_code == 200:
-                message = ET.fromstring(response.content).find("Message").text
-                if self.env.user.has_group("base.group_no_one"):
-                    raise ValidationError(
-                        _(
-                            "Whistl API Error Requesting Service Preference: "
-                            "%(status_code)s\n%(message)s\n\n%(shipment)s",
-                            status_code=response.status_code,
-                            message=message,
-                            shipment=data,
-                        )
+                raise ValidationError(
+                    _(
+                        "Whistl API Error Requesting Service Preference: "
+                        "%(status_code)s\n%(message)s\n\n%(shipment)s",
+                        status_code=response.status_code,
+                        message=response.content.decode("utf-8"),
+                        shipment=data,
                     )
-                else:
-                    raise ValidationError(
-                        _(
-                            "Whistl API Error Requesting Service Preference :"
-                            "%(status_code)s\n%(message)s",
-                            status_code=response.status_code,
-                            message=message,
-                        )
-                    )
+                )
 
             service_xml = ET.fromstring(response.content)
             ns = {"ns0": WHISLT_XMLNS}
@@ -482,27 +493,39 @@ class DeliveryCarrier(models.Model):
                 data=data,
                 timeout=WHISTL_REQUESTS_TIMEOUT,
             )
+            self.log_xml(
+                "%s %s\n%s\n\n%s"  # noqa: UP031
+                % (
+                    response.request.method,
+                    response.request.url,
+                    "\n".join(
+                        [f"{k}: {v}" for k, v in response.request.headers.items()]
+                    ),
+                    response.request.body.decode("utf-8"),
+                ),
+                "whistl_send_shipping_shipment_label_request",
+            )
+            self.log_xml(
+                "%s %s\n%s\n\n%s"  # noqa: UP031
+                % (
+                    response.status_code,
+                    response.reason,
+                    "\n".join([f"{k}: {v}" for k, v in response.headers.items()]),
+                    response.text,
+                ),
+                "whistl_send_shipping_service_shipment_label_response",
+            )
+
             if not response.status_code == 200:
-                message = ET.fromstring(response.content).find("Message").text
-                if self.env.user.has_group("base.group_no_one"):
-                    raise ValidationError(
-                        _(
-                            "Whistl API Error Sending Shipment: "
-                            "%(status_code)s\n%(message)s\n\n%(shipment)s",
-                            status_code=response.status_code,
-                            message=message,
-                            shipment=data,
-                        )
+                raise ValidationError(
+                    _(
+                        "Whistl API Error Sending Shipment: "
+                        "%(status_code)s\n%(message)s\n\n%(shipment)s",
+                        status_code=response.status_code,
+                        message=response.content.decode("utf-8"),
+                        shipment=data,
                     )
-                else:
-                    raise ValidationError(
-                        _(
-                            "Whistl API Error Sending Shipment: "
-                            "%(status_code)s\n%(message)s",
-                            status_code=response.status_code,
-                            message=message,
-                        )
-                    )
+                )
 
             shipment_xml = objectify.fromstring(response.content)
             tracking = shipment_xml.ShippingInfo.CourierTrackingNumber.text
@@ -584,13 +607,12 @@ class DeliveryCarrier(models.Model):
                 timeout=WHISTL_REQUESTS_TIMEOUT,
             )
             if response.status_code not in [200, 204]:
-                message = ET.fromstring(response.content).find("Message").text
                 raise ValidationError(
                     _(
                         "Whistl API Error Cancelling Shipment:"
                         " %(status_code)s\n%(message)s",
                         status_code=response.status_code,
-                        message=message,
+                        message=response.content.decode("utf-8"),
                     )
                 )
             picking.state = "cancel"
@@ -639,12 +661,11 @@ class DeliveryCarrier(models.Model):
             timeout=WHISTL_REQUESTS_TIMEOUT,
         )
         if not response.status_code == 200:
-            message = ET.fromstring(response.content).find("Message").text
             raise ValidationError(
                 _(
                     "Failed to get tracking information: %(status_code)s\n%(message)s",
                     status_code=response.status_code,
-                    message=message,
+                    message=response.content.decode("utf-8"),
                 )
             )
 
