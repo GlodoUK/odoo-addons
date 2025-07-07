@@ -56,7 +56,7 @@ class EdiUploadFile(models.TransientModel):
             "utf-8"
         )
 
-        res = self.env[f"edi.{self.route_type}" % self.route_type].create(
+        res = self.env[f"edi.{self.route_type}"].create(
             {
                 "body": body,
                 "direction": "in",
