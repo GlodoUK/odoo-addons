@@ -327,21 +327,23 @@ class DeliveryCarrier(models.Model):
 
                 package_element = ET.SubElement(packages, "Package")
                 shipping_weight = package.shipping_weight
-                length = package.package_type_id.packaging_length
-                width = package.package_type_id.width
-                height = package.package_type_id.height
+                length = package.package_type_id.packaging_length or 10
+                width = package.package_type_id.width or 10
+                height = package.package_type_id.height or 10
                 dimensions = ET.SubElement(package_element, "Dimensions")
-                ET.SubElement(dimensions, "Length").text = str(length or 10)
-                ET.SubElement(dimensions, "Width").text = str(width or 10)
-                ET.SubElement(dimensions, "Height").text = str(height or 10)
+                ET.SubElement(dimensions, "Length").text = f"{length:0.0f}"
+                ET.SubElement(dimensions, "Width").text = f"{width:0.0f}"
+                ET.SubElement(dimensions, "Height").text = f"{height:0.0f}"
                 if shipping_weight:
-                    ET.SubElement(package_element, "Weight").text = str(
-                        package.shipping_weight
-                    )
+                    ET.SubElement(
+                        package_element, "Weight"
+                    ).text = f"{shipping_weight:0.3f}"
+                elif package_total_weight:
+                    ET.SubElement(
+                        package_element, "Weight"
+                    ).text = f"{package_total_weight:0.3f}"
                 else:
-                    ET.SubElement(package_element, "Weight").text = str(
-                        package_total_weight or 0.01
-                    )
+                    ET.SubElement(package_element, "Weight").text = f"{0.01:0.3f}"
                 package_value = ET.SubElement(package_element, "Value")
                 package_value.text = str(package_total_value)
                 package_value.attrib["Currency"] = order.currency_id.name
@@ -351,9 +353,15 @@ class DeliveryCarrier(models.Model):
                 package_customs_declaration = ET.SubElement(
                     package_element, "PackageCustomsDeclaration"
                 )
-                ET.SubElement(package_customs_declaration, "Weight").text = str(
-                    package_total_weight or 0.01
-                )
+
+                if package_total_weight:
+                    ET.SubElement(
+                        package_customs_declaration, "Weight"
+                    ).text = f"{package_total_weight:0.3f}"
+                else:
+                    ET.SubElement(
+                        package_customs_declaration, "Weight"
+                    ).text = f"{0.01:0.3f}"
                 package_customs_value = ET.SubElement(
                     package_customs_declaration, "Value"
                 )
