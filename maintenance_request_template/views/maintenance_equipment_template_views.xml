@@ -84,6 +84,7 @@
         <field name="model">maintenance.equipment.template</field>
         <field name="arch" type="xml">
             <list>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>
         </field>
