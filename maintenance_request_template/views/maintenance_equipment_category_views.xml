@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="hr_equipment_category_view_form" model="ir.ui.view">
+        <field name="name">equipment.category.form</field>
+        <field name="model">maintenance.equipment.category</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_category_view_form" />
+        <field name="arch" type="xml">
+            <field name="technician_user_id" position="after">
+                <field name="template_id" />
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_equipment_category_view_search" model="ir.ui.view">
+        <field name="name">equipment.category.search</field>
+        <field name="model">maintenance.equipment.category</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_category_view_search" />
+        <field name="arch" type="xml">
+            <filter name="responsible" position="after">
+                <filter
+                    string="Template"
+                    name="template_id"
+                    domain="[]"
+                    context="{'group_by' : 'template_id'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>
