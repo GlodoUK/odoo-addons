@@ -89,6 +89,8 @@ class DeliveryCarrier(models.Model):
             },
             timeout=SPRING_REQUESTS_TIMEOUT,
         )
+        self._spring_log_xml(response, "spring_get_services")
+        response.raise_for_status()
         services = response.json().get("Services", {})
         service_list = services.get("List", {})
         allowed_services = services.get("AllowedServices", [])
@@ -203,15 +205,12 @@ class DeliveryCarrier(models.Model):
                 },
                 timeout=SPRING_REQUESTS_TIMEOUT,
             )
-            if not response:
-                raise ValidationError(_("Unknown Spring API Error"))
+            self._spring_log_xml(response, "spring_send_shipping")
 
+            response.raise_for_status()
             json = response.json()
-
             if json.get("ErrorLevel") != 0:
-                raise ValidationError(
-                    _("Spring API Error: %(raw)s", raw=json.get("Error"))
-                )
+                raise ValidationError(_("Spring API Error: %(raw)s", raw=json))
 
             shipment = json.get("Shipment")
             tracking = shipment.get("TrackingNumber")
@@ -278,15 +277,13 @@ class DeliveryCarrier(models.Model):
                 },
                 timeout=SPRING_REQUESTS_TIMEOUT,
             )
-            if not response:
-                raise ValidationError(_("Unknown Spring API Error"))
+            self._spring_log_xml(response, "spring_cancel_shipment")
+
+            response.raise_for_status()
 
             json = response.json()
-
             if json.get("ErrorLevel") != 0:
-                raise ValidationError(
-                    _("Spring API Error: %(raw)s", raw=json.get("Error"))
-                )
+                raise ValidationError(_("Spring API Error: %(raw)s", raw=json))
             picking.carrier_tracking_url = False
 
     def spring_tracking_state_update_scheduled(self):
@@ -325,13 +322,13 @@ class DeliveryCarrier(models.Model):
             },
             timeout=SPRING_REQUESTS_TIMEOUT,
         )
-        if not response:
-            raise ValidationError(_("Unknown Spring API Error"))
+        self._spring_log_xml(response, "spring_tracking_state_update")
 
+        response.raise_for_status()
         json = response.json()
 
         if json.get("ErrorLevel") != 0:
-            picking.message_post(body=_("Spring API Error: %(raw)s", json.get("Error")))
+            picking.message_post(body=_("Spring API Error: %(raw)s", raw=json))
 
         shipment = json.get("Shipment", {})
         events = sorted(shipment.get("Events", []), key=lambda e: e.get("DateTime"))
@@ -376,3 +373,25 @@ class DeliveryCarrier(models.Model):
 
     def spring_get_tracking_link(self, picking):
         return picking.spring_tracking_url
+
+    def _spring_log_xml(self, response, prefix):
+        self.log_xml(
+            "%s %s\n%s\n\n%s"  # noqa: UP031
+            % (
+                response.request.method,
+                response.request.url,
+                "\n".join([f"{k}: {v}" for k, v in response.request.headers.items()]),
+                response.request.body.decode("utf-8"),
+            ),
+            f"{prefix}_request",
+        )
+        self.log_xml(
+            "%s %s\n%s\n\n%s"  # noqa: UP031
+            % (
+                response.status_code,
+                response.reason,
+                "\n".join([f"{k}: {v}" for k, v in response.headers.items()]),
+                response.text,
+            ),
+            f"{prefix}_response",
+        )
