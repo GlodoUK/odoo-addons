@@ -22,7 +22,8 @@ class MaintenanceRequest(models.Model):
     def _onchange_equipment_id_template_id(self):
         self.ensure_one()
         description = (
-            self.equipment_id.note or self.equipment_id._get_template_id().description
+            self.equipment_id.note
+            or self.equipment_id._get_template_id().description
         )
         if description:
             self.description = description
