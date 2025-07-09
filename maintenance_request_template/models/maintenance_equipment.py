@@ -8,8 +8,10 @@ class MaintenanceEquipment(models.Model):
         "maintenance.equipment.template",
     )
 
+    def _get_description(self):
+        self.ensure_one()
+        return self._get_template_id().description or self.note
+
     def _get_template_id(self):
-        if not self:
-            return self
         self.ensure_one()
         return self.template_id or self.category_id.template_id
