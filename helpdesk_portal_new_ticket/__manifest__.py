@@ -3,7 +3,7 @@
     "version": "18.0.1.0.0",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
-    "depends": ["helpdesk_ticket"],
+    "depends": ["helpdesk"],
     "data": [
         "views/portal_breadcrumbs.xml",
         "views/portal_searchbar.xml",
