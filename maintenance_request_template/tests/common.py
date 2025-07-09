@@ -2,7 +2,6 @@ from odoo.tests import TransactionCase
 
 
 class MaintenanceRequestTemplateCommon(TransactionCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
