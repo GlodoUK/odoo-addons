@@ -7,7 +7,7 @@ from odoo.addons.helpdesk_portal_new_ticket.controllers.portal import CustomerPo
 
 class CustomerPortal(CustomerPortal):
     def _get_default_ticket_categ_id(self):
-        return request.env.ref("helpdesk_ticket_category.type_issue").sudo().id
+        return request.env.ref("helpdesk_ticket_category.type_issue").sudo()
 
     def _get_ticket_categ_ids(self):
         domain = self._get_ticket_categ_ids_domain()
