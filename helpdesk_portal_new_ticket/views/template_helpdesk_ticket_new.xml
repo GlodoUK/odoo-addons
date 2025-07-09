@@ -75,7 +75,7 @@
                     </span>
                 </div>
 
-                <div class="my-3">
+                <div class="my-3" id="div_priority">
                     <label>
                         Priority
                     </label>
@@ -99,36 +99,6 @@
                             />
                         </div>
                     </t>
-                </div>
-
-                <div class="my-3">
-                    <label class="form-label" for="category">
-                        Category
-                    </label>
-
-                    <select
-                        class="form-select"
-                        name="category"
-                        id="category"
-                        required="required"
-                    >
-                        <option
-                            value=""
-                            disabled="disabled"
-                            hidden="hidden"
-                            selected="selected"
-                        >
-                            Select your category
-                        </option>
-
-                        <t t-foreach="ticket_type_ids" t-as="type_id">
-                            <option
-                                t-out="type_id.display_name"
-                                t-att-value="type_id.id"
-                                t-att-selected="'selected' if default_category == type_id.id else False"
-                            />
-                        </t>
-                    </select>
                 </div>
 
                 <div class="my-3">
