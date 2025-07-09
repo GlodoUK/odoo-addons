@@ -33,7 +33,7 @@ class CustomerPortal(CustomerPortal):
 
         res.update(
             {
-                "ticket_categ_id": int(kwargs.get("category"))
+                "ticket_categ_id": int(kwargs.get("ticket_categ_id"))
             }
         )
 
