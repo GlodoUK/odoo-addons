@@ -101,6 +101,8 @@
                     </t>
                 </div>
 
+                <div id="div_ticket_categ_id"/>
+
                 <div class="my-3">
                     <button
                         type="submit"
@@ -112,3 +114,4 @@
         </t>
     </template>
 </odoo>
+
