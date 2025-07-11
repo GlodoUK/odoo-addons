@@ -35,8 +35,9 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
                 "name": "Request",
                 "equipment_id": self.equipmentB.id,
                 "stage_id": self.env.ref("maintenance.stage_0").id,
+                "description": "ABC",
             }
-        )
+        ).copy()
 
         self.assertEqual(
             request_id.description,
@@ -49,8 +50,9 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
                 "name": "Request",
                 "equipment_id": self.equipmentA.id,
                 "stage_id": self.env.ref("maintenance.stage_0").id,
+                "description": "ABC",
             }
-        )
+        ).copy()
 
         self.assertEqual(
             request_id.description,
@@ -67,8 +69,9 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
                 "name": "Request",
                 "equipment_id": self.equipmentA.id,
                 "stage_id": self.env.ref("maintenance.stage_0").id,
+                "description": "ABC",
             }
-        )
+        ).copy()
 
         self.assertEqual(
             request_id.description,
