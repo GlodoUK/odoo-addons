@@ -19,27 +19,15 @@ class CustomerPortal(CustomerPortal):
             ("privacy_visibility", "=", "portal"),
         ]
 
-    def _prepare_ticket_type_ids_domain(self):
-        return []
-
     def _prepare_team_ids(self):
         domain = self._prepare_team_ids_domain()
         return request.env["helpdesk.team"].sudo().search(domain)
 
-    def _prepare_ticket_type_ids(self):
-        domain = self._prepare_ticket_type_ids_domain()
-        return request.env["helpdesk.ticket.category"].sudo().search(domain)
-
-    def _prepare_default_category(self):
-        return request.env.ref("helpdesk_ticket_category.type_issue").sudo().id
-
     def _new_ticket_get_page_view_values(self, **kw):
         return {
             "page_name": "ticket_new",
-            "default_category": self._prepare_default_category(),
             "default_priority": TICKET_PRIORITY[0][0],
             "team_ids": self._prepare_team_ids(),
-            "ticket_type_ids": self._prepare_ticket_type_ids(),
             "priorities": TICKET_PRIORITY,
         }
 
@@ -69,9 +57,7 @@ class CustomerPortal(CustomerPortal):
         methods=["POST"],
     )
     def new_helpdesk_ticket_post(self, **kw):
-        REQUIRED_FIELDS = ["category", "description", "subject", "team"]
-
-        if any(not kw.get(f) for f in REQUIRED_FIELDS):
+        if any(not kw.get(f) for f in self._get_required_fields):
             return request.render(
                 "helpdesk_portal_new_ticket.template_helpdesk_ticket_new",
                 self._new_ticket_get_page_view_values(**kw),
@@ -87,7 +73,6 @@ class CustomerPortal(CustomerPortal):
             "name": kw.get("subject"),
             "description": plaintext2html(kw.get("description")),
             "priority": kw.get("priority", "0"),
-            "ticket_categ_id": int(kw.get("category")),
         }
         values.update(self._new_ticket_get_ticket_extra_values(**kw))
 
@@ -104,3 +89,6 @@ class CustomerPortal(CustomerPortal):
 
     def _new_helpdesk_ticket_post_hook(self, ticket_id, **kwargs):
         ticket_id.message_subscribe(partner_ids=request.env.user.partner_id.ids)
+
+    def _get_required_fields(self):
+        return ["description", "subject", "team"]

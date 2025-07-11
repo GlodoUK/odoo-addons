@@ -153,7 +153,7 @@
         inherit_id="helpdesk_portal_new_ticket.template_helpdesk_ticket_new"
         priority="99"
     >
-        <xpath expr="//select[@name='category']/parent::div" position="after">
+        <div id="div_ticket_categ_id" position="after">
             <div class="ticket_type_id_container my-3">
                 <t
                     t-call="helpdesk_portal_new_ticket_ticket_type_properties.portal_helpdesk_ticket_create_ticket_type_properties"
@@ -164,6 +164,6 @@
                     />
                 </t>
             </div>
-        </xpath>
+        </div>
     </template>
 </odoo>
