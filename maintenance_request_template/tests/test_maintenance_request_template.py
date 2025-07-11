@@ -41,7 +41,7 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
 
         self.assertEqual(
             request_id.description,
-            self.equipmentA.category_id.template_id.description,
+            self.equipmentB.category_id.template_id.description,
         )
 
     def test_template_equipment(self):
