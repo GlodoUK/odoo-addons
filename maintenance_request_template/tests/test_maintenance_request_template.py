@@ -30,6 +30,12 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
             )
 
     def test_template_category(self):
+        """
+        equipment_id.category_id.description is not set
+        equipment_id.category_id.template_id.description is set
+
+        equipment_id.category_id.template_id.description is used
+        """
         request_id = self.Request.create(
             {
                 "name": "Request",
@@ -45,6 +51,12 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
         )
 
     def test_template_equipment(self):
+        """
+        equipment_id.category_id.description is set
+        equipment_id.category_id.template_id.description is set
+
+        equipment_id.category_id.template_id is used
+        """
         request_id = self.Request.create(
             {
                 "name": "Request",
@@ -59,7 +71,13 @@ class TestMaintenanceRequestTemplate(MaintenanceRequestTemplateCommon):
             self.equipmentA.template_id.description,
         )
 
-    def test_template_none(self):
+    def test_note(self):
+        """
+        category_id.description is not set
+        category_id.template_id.description is not set
+
+        equipment_id.note is used as a fallback
+        """
         self.equipmentA.template_id.description = False
         self.equipmentA.category_id.template_id.description = False
         self.equipmentA.note = "equipmentA Note"
