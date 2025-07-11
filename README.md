@@ -37,6 +37,7 @@ addon | version | maintainers | summary
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 18.0.1.0.0 |  | Helpdesk Account Move Link
 [helpdesk_commercial_partner](helpdesk_commercial_partner/) | 18.0.1.0.0 |  | Helpdesk Ticket Commercial Partner
 [helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 18.0.1.0.0 |  | Helpdesk Portal New Ticket
+[helpdesk_portal_new_ticket_category](helpdesk_portal_new_ticket_category/) | 18.0.1.0.0 |  | helpdesk_portal_new_ticket_category
 [helpdesk_portal_new_ticket_privacy](helpdesk_portal_new_ticket_privacy/) | 18.0.1.0.0 |  | Helpdesk Portal New Ticket
 [helpdesk_portal_new_ticket_ticket_type_properties](helpdesk_portal_new_ticket_ticket_type_properties/) | 18.0.1.0.0 |  | Website Helpdesk Ticket Create Ticket Type Properties
 [helpdesk_portal_reopen](helpdesk_portal_reopen/) | 18.0.1.0.0 |  | Helpdesk Portal Reopen
