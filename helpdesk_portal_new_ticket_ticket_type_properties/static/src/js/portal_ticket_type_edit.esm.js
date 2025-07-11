@@ -5,10 +5,10 @@ publicWidget.registry.PortalTicketTypeEdit = publicWidget.Widget.extend({
     selector: "#helpdesk_ticket_new",
 
     events: {
-        "change select[name='category']": "_onTicketTypeChange",
+        "change select[name='ticket_categ_id']": "_onTicketCategChange",
     },
 
-    _onTicketTypeChange: function () {
+    _onTicketCategChange: function () {
         const target = $(this.$el.find(".ticket_type_id_container"));
 
         if (!target) {
@@ -21,7 +21,7 @@ publicWidget.registry.PortalTicketTypeEdit = publicWidget.Widget.extend({
             buttonSubmit.prop("disabled", true);
         }
 
-        const $ticketTypeField = $(this.$el).find("select[name='category']");
+        const $ticketTypeField = $(this.$el).find("select[name='ticket_categ_id']");
 
         let ticketTypeId = $ticketTypeField.find(":selected").val();
         ticketTypeId = parseInt(ticketTypeId, 10);
