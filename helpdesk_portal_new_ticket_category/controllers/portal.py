@@ -1,6 +1,4 @@
-from odoo import http
 from odoo.http import request
-
 
 from odoo.addons.helpdesk_portal_new_ticket.controllers.portal import CustomerPortal
 
@@ -31,11 +29,7 @@ class CustomerPortal(CustomerPortal):
     def _new_ticket_get_ticket_extra_values(self, **kwargs):
         res = super()._new_ticket_get_ticket_extra_values(**kwargs)
 
-        res.update(
-            {
-                "ticket_categ_id": int(kwargs.get("ticket_categ_id"))
-            }
-        )
+        res.update({"ticket_categ_id": int(kwargs.get("ticket_categ_id"))})
 
         return res
 

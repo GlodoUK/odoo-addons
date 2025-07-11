@@ -8,8 +8,6 @@
         "helpdesk_portal_new_ticket",
         "helpdesk_ticket_category",
     ],
-    "data": [
-        "views/helpdesk_portal_templates.xml"
-    ],
+    "data": ["views/helpdesk_portal_templates.xml"],
     "license": "Other proprietary",
 }
