@@ -8,7 +8,7 @@ class MaintenanceRequest(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         for request, vals in zip(self, vals_list):
-            if request.equipment_id:
+            if request.equipment_id._get_description():
                 vals["description"] = request.equipment_id._get_description()
         return vals_list
 
