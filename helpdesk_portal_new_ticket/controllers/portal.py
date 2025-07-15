@@ -57,7 +57,7 @@ class CustomerPortal(CustomerPortal):
         methods=["POST"],
     )
     def new_helpdesk_ticket_post(self, **kw):
-        if any(not kw.get(f) for f in self._get_required_fields):
+        if any(not kw.get(f) for f in self._get_required_fields()):
             return request.render(
                 "helpdesk_portal_new_ticket.template_helpdesk_ticket_new",
                 self._new_ticket_get_page_view_values(**kw),
