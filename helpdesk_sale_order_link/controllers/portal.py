@@ -6,7 +6,6 @@ from odoo.addons.sale.controllers.portal import CustomerPortal
 
 
 class CustomerPortal(CustomerPortal):
-
     @http.route()
     def portal_quote_accept(
         self,
@@ -27,19 +26,26 @@ class CustomerPortal(CustomerPortal):
 
         try:
             order_sudo = self._document_check_access(
-                "sale.order",
-                order_id,
-                access_token=access_token
+                "sale.order", order_id, access_token=access_token
             )
         except (AccessError, MissingError):
             return {"error": _("Invalid order.")}
 
-        author_id = order_sudo.partner_id.id if request.env.user._is_public() else request.env.user.partner_id.id
+        author_id = (
+            order_sudo.partner_id.id
+            if request.env.user._is_public()
+            else request.env.user.partner_id.id
+        )
+
+        body = (
+            _("Order %(order)s signed by %(name)s")
+            % {"order": order_sudo.name, "name": name},
+        )
 
         for ticket in order_sudo.helpdesk_tickets_ids:
             ticket.message_post(
                 author_id=author_id,
-                body=_("Order %s signed by %s") % (order_sudo.name, name),
+                body=body,
                 message_type="comment",
                 subtype_xmlid="mail.mt_comment",
             )
