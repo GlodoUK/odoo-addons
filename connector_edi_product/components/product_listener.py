@@ -9,8 +9,18 @@ class ProductTemplateListener(Component):
     _inherit = "base.event.listener"
     _apply_on = ["product.template"]
 
+    def no_connector_export(self, record):
+        # FIXME: duplicated because we've inherited off base.event.listener rather than
+        # base.connector.listener.
+        return record.env.context.get("no_connector_export") or record.env.context.get(
+            "connector_no_export"
+        )
+
     def on_record_write_edi(self, records, fields=None):
         for record in records:
+            if self.no_connector_export(record):
+                continue
+
             edi_product_id = record.edi_product_tmpl_ids
 
             if not edi_product_id:
@@ -57,6 +67,9 @@ class ProductTemplateListener(Component):
             return
         for route in routes:
             for record in records:
+                if self.no_connector_export(record):
+                    continue
+
                 route.sudo().send_messages_using_first_match(
                     route.backend_id,
                     record,
@@ -79,8 +92,17 @@ class ProductProductListener(Component):
     _inherit = "base.event.listener"
     _apply_on = ["product.product"]
 
+    def no_connector_export(self, record):
+        # FIXME: duplicated because we've inherited off base.event.listener rather than
+        # base.connector.listener.
+        return record.env.context.get("no_connector_export") or record.env.context.get(
+            "connector_no_export"
+        )
+
     def on_record_write_edi(self, records, fields=None):
         for record in records:
+            if self.no_connector_export(record):
+                continue
             edi_product_id = record.edi_product_ids
 
             if not edi_product_id:
@@ -125,6 +147,8 @@ class ProductProductListener(Component):
             return
         for route in routes:
             for record in records:
+                if self.no_connector_export(record):
+                    continue
                 route.sudo().send_messages_using_first_match(
                     route.backend_id,
                     record,

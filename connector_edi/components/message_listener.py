@@ -6,7 +6,17 @@ class EdiMessageListener(Component):
     _inherit = "base.event.listener"
     _apply_on = ["edi.message"]
 
+    def no_connector_export(self, record):
+        # FIXME: duplicated because we've inherited off base.event.listener rather than
+        # base.connector.listener.
+        return record.env.context.get("no_connector_export") or record.env.context.get(
+            "connector_no_export"
+        )
+
     def on_pending(self, record):
+        if self.no_connector_export(record):
+            return
+
         if record.direction == "in" and record.state == "pending":
             opts = {}
             if record.message_route_id:
