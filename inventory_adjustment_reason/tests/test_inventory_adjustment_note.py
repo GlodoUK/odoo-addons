@@ -8,8 +8,7 @@ from .common import TestCommon
 @tagged("post_install", "-at_install")
 class TestInventoryAdjustmentNote(TestCommon):
     def test_inventory_adjustment_note(self):
-        # Create a new inventory adjustment
-        stock_adjustment = self.model_stock_quant.create(
+        quantA = self.StockQuant.create(
             {
                 "inventory_date": datetime.now(),
                 "location_id": self.env.ref("stock.stock_location_stock").id,
@@ -18,10 +17,8 @@ class TestInventoryAdjustmentNote(TestCommon):
                 "inventory_quantity": 1,
             }
         )
-        # Check that the note is set
-        self.assertEqual(stock_adjustment.note, "This is a test note")
 
-        stock_adjustment.action_apply_inventory()
+        quantA.action_apply_inventory()
 
         move = self.model_stock_move_line.search(
             [

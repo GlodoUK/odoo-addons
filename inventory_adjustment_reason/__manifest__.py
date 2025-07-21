@@ -1,14 +1,9 @@
 {
-    "name": "Inventory Adjustment Note",
-    "summary": """
-       Add a note for  reason for inventory adjustment
-    """,
+    "name": "inventory_adjustment_reason",
+    "version": "18.0.1.0.0",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
-    "category": "Sales",
-    "version": "15.0.0.0.0",
     "depends": ["stock"],
-    "data": ["views/stock_quant.xml", "views/stock_move.xml"],
-    "demo": [],
+    "data": ["views/stock_quant_views.xml", "views/stock_move_line_views.xml"],
     "license": "AGPL-3",
 }
