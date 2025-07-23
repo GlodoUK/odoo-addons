@@ -9,6 +9,7 @@ import lxml.builder as builder
 import lxml.etree
 import lxml.objectify
 import requests
+from markupsafe import Markup
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -140,6 +141,7 @@ class AbstractEdiComponent(AbstractComponent):
             "ValidationError": ValidationError,
             "OSError": OSError,
             "RetryableJobError": RetryableJobError,
+            "Markup": Markup,
             # Debuggers
             "wdb": wrapped_wdb,
         }
