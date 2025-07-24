@@ -62,3 +62,15 @@ class TestStockPickingHold(TransactionCase):
         self.assertFalse(
             sale_id.picking_ids.hold, "The linked picking should not be on hold!"
         )
+
+    def test_hold_before_confirm(self):
+        order = self.env["sale.order"].create({"partner_id": self.partner_id.id})
+        self.env["sale.order.line"].create(
+            {"product_id": self.product_id.id, "order_id": order.id}
+        )
+
+        order.action_hold()
+        order.action_confirm()
+
+        self.assertEqual(len(order.picking_ids), 1)
+        self.assertTrue(False not in order.picking_ids.mapped("hold"))

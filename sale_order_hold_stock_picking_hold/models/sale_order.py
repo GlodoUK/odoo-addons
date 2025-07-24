@@ -4,6 +4,11 @@ from odoo import models
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
+    def _action_confirm(self):
+        res = super()._action_confirm()
+        self.filtered(lambda order: order.hold).picking_ids.write({"hold": True})
+        return res
+
     def action_hold(self, reason_id=None, msg=None):
         res = super().action_hold(reason_id=reason_id, msg=msg)
 
