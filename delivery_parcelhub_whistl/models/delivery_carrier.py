@@ -577,6 +577,7 @@ class DeliveryCarrier(models.Model):
             picking.write(
                 {
                     "carrier_consignment_ref": picking.name,
+                    "carrier_tracking_ref": tracking,
                     "whistl_carrier": f"{carrier_name}: {service_name}",
                     "delivery_state": "in_transit",
                 }
