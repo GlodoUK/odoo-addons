@@ -162,6 +162,10 @@ class DeliveryCarrier(models.Model):
         default="6",
     )  # TODO: Flesh this out, or pull from API
 
+    def whistl_get_tracking_link(self, picking):
+        formatted_zip = picking.partner_id.zip.replace(" ", "").upper()
+        return f"https://web.parcelhub.net/Tracking/reference/{picking.carrier_tracking_ref}/postcode/{formatted_zip}"
+
     def _whistl_ensure_valid_shipping(self, pickings):
         MAX_LEN = 32
 
@@ -573,6 +577,7 @@ class DeliveryCarrier(models.Model):
             picking.write(
                 {
                     "carrier_consignment_ref": picking.name,
+                    "carrier_tracking_ref": tracking,
                     "whistl_carrier": f"{carrier_name}: {service_name}",
                     "delivery_state": "in_transit",
                 }
