@@ -1,0 +1,42 @@
+<odoo>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field
+            name="name"
+        >product.template.product.form.inherit.product_data_feed</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='variants']" position="inside">
+                <group string="Exclusions">
+                    <group>
+                        <field
+                            name="product_variant_exclusion_ids"
+                            colspan="2"
+                            nolabel="1"
+                        >
+                            <list editable="bottom">
+                                <field name="ptav_ids" widget="many2many_tags" />
+                            </list>
+                        </field>
+                    </group>
+                    <group>
+                        <p class="oe_grey" colspan="2">
+                        <strong
+                        >Warning</strong>: Add a combination of attribute values to each line. Any product variant which contains ALL variant attributes will be archived or erased as an invalid combination.
+                        </p>
+                        <p class="oe_grey" colspan="2">
+                        <strong
+                        >Example</strong>: The product has the colour attribute, red, green and blue, and sizes 1, 2, 3 and 4.
+                        <br />
+                        Adding only red to an exclusion line will remove all red products.
+                        <br />
+                        Adding red and size 1 to an exclusion line removes only red and size 1.
+                        <br />
+                        Adding 2 lines (red, size 1 and red, size 2) removes both red size 1 and size 2.
+                        </p>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
