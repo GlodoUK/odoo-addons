@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_variant_exclusion,access_product_variant_exclusion,model_product_variant_exclusion,base.group_user,1,1,1,1
 access_product_variant_exclusion_public,access_product_variant_exclusion_public,model_product_variant_exclusion,base.group_public,1,0,0,0
+access_product_variant_exclusion_portal,access_product_variant_exclusion_portal,model_product_variant_exclusion,base.group_portal,1,0,0,0
