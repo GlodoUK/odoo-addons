@@ -1,5 +1,34 @@
 <?xml version="1.0" ?>
 <odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <div name="list_price_uom" position="after">
+                <label for="variant_taxes_id" invisible="type == 'combo'" />
+                <div name="variant_taxes_div" class="o_row" invisible="type == 'combo'">
+                    <field
+                        name="variant_taxes_id"
+                        widget="many2many_tags"
+                        class="oe_inline"
+                        context="{
+                            'default_type_tax_use': 'sale',
+                            'search_default_sale': 1,
+                            'search_default_service': type == 'service',
+                            'search_default_goods': type == 'consu',
+                        }"
+                    />
+                </div>
+            </div>
+
+            <xpath expr="//field[@name='taxes_id']" position="attributes">
+                <attribute name="readonly">variant_taxes_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="product_variant_easy_edit_view" model="ir.ui.view">
         <field name="name">product.product.view.form.easy</field>
         <field name="model">product.product</field>
