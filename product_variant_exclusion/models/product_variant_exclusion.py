@@ -29,7 +29,9 @@ class ProductVariantExclusion(models.Model):
     _name = "product.variant.exclusion"
     _description = "Product Variant Exclusion"
 
-    tmpl_id = fields.Many2one("product.template", required=True, index=True)
+    tmpl_id = fields.Many2one(
+        "product.template", required=True, index=True, ondelete="cascade"
+    )
     ptav_ids = fields.Many2many(
         "product.template.attribute.value",
         "product_variant_exclusion_ptav_rel",
