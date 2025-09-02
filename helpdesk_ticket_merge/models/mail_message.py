@@ -16,7 +16,7 @@ class MailMessage(models.Model):
                     target_ticket = ticket.merged_into
                     while target_ticket.merged_into:
                         target_ticket = target_ticket.merged_into
-                    record.write(
+                    record.sudo().write(
                         {
                             "res_id": target_ticket.id,
                             "subject": f"Reply posted to {ticket.name}",
