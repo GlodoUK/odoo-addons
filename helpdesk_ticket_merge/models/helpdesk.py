@@ -54,7 +54,7 @@ class HelpdeskTicket(models.Model):
         # Merge chatter
         if merge_chatter:
             for message in self.message_ids:
-                message.write(
+                message.sudo().write(
                     {
                         "res_id": target_ticket.id,
                         "subject": f"Merged from Ticket {self.id}: {self.name}",
