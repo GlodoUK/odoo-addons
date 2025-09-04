@@ -174,9 +174,9 @@ class CreditControlRule(models.Model):
             proforma_count = self.env["account.payment.term.line"].search_count(
                 [
                     ("payment_id", "=", sale_id.payment_term_id.id),
-                    ("value", "=", "balance"),
-                    ("option", "=", "day_after_invoice_date"),
-                    ("days", "=", 0),
+                    ("delay_type", "=", "day_after"),
+                    ("nb_days", "=", 0),
+                    ("value", "=", "percent"),
                 ]
             )
 
