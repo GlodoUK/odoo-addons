@@ -32,13 +32,16 @@ class SaleOrder(models.Model):
         if not events:
             events = ["confirm_edit", "confirm"]
 
-        if self.skip_credit_control_rules:
-            return
-
         if self._context.get("skip_check_credit_control", False):
             return
 
         if self._context.get("website_order_tx", False):
+            return
+
+        if self.skip_credit_control_rules:
+            return
+
+        if "website_id" in self._fields and self.website_id:
             return
 
         partner_id = self.partner_id.sudo().commercial_partner_id
