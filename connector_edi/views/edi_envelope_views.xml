@@ -91,7 +91,6 @@
         <field name="model">edi.envelope</field>
         <field name="arch" type="xml">
             <list
-                default_order="create_date desc"
                 decoration-danger="state == 'error'"
                 decoration-success="state == 'done'"
             >
