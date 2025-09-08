@@ -118,7 +118,7 @@
         <field name="model">edi.message</field>
         <field name="arch" type="xml">
             <list
-                default_order="create_date desc"
+                default_order="id desc"
                 decoration-danger="state == 'error'"
                 decoration-success="state == 'done'"
             >
