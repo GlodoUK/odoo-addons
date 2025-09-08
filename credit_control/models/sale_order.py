@@ -71,8 +71,8 @@ class SaleOrder(models.Model):
 
         for order in self.filtered(
             lambda r: r.state in ("sale", "done", "reserved")
-            and before[r][0] < r.amount_total
-            or len(r.order_line) != before[r][1]
+            and (before[r][0] < r.amount_total
+            or len(r.order_line) != before[r][1])
         ):
             # total_increase = order.amount_total - before[order][1]
             order._check_credit_control(events=["confirm_edit", "edit"])
