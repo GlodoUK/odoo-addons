@@ -1,8 +1,12 @@
+import logging
+
 import phonenumbers
 from twilio.base.exceptions import TwilioRestException
 from twilio.rest import Client
 
 from odoo import _, api, models
+
+_logger = logging.getLogger(__name__)
 
 
 class SmsApi(models.AbstractModel):
@@ -47,20 +51,21 @@ class SmsApi(models.AbstractModel):
                 res.append(
                     {
                         "res": req,
+                        "state": "success",
                     }
                 )
             except phonenumbers.NumberParseException as e:
+                _logger.critical(e, stack_info=True, exc_info=True)
                 res.append(
                     {
-                        "error_code": e.error_type,
-                        "error_message": e._msg,
+                        "state": "wrong_number_format",
                     }
                 )
             except TwilioRestException as e:
+                _logger.critical(e, stack_info=True, exc_info=True)
                 res.append(
                     {
-                        "error_code": e.code,
-                        "error_message": e.msg,
+                        "state": "server_error",
                     }
                 )
 
@@ -106,13 +111,9 @@ class SmsApi(models.AbstractModel):
             # maintain an upstream compatible _send_sms_batch response
             res.append(
                 {
-                    "res_id": message.get("res_id"),
-                    # TODO add some better mappings!
-                    # These need to be translated to IAP states https://www.twilio.com/docs/api/errors
-                    # which can be found at https://github.com/odoo/odoo/blob/cd9c071c9357cef14635ef094a9f14fc5431956c/addons/sms/models/sms_sms.py#L18
-                    "state": ("error" if message_res.get("error_code") else "success"),
-                    "twilio_err": message_res.get("error_message"),
-                    "credit": 0,  # we used 0 odoo partner credits
+                    "res_id": message_res.get("res_id"),
+                    "state": message_res.get("state", "success"),
+                    "credit": 0,
                 }
             )
 
