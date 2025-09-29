@@ -22,7 +22,7 @@ class PurchaseOrder(models.Model):
     def action_view_helpdesk_ticket_ids(self):
         self.ensure_one()
 
-        helpdesk_ticket_ids = self.mapped("helpdesk_tickets_ids").ids
+        helpdesk_ticket_ids = self.mapped("helpdesk_ticket_ids").ids
 
         action = {
             "res_model": "helpdesk.ticket",
