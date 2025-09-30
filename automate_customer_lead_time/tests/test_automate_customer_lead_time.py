@@ -17,7 +17,7 @@ class TestAutomateLeadTime(TransactionCase):
                         0,
                         0,
                         {
-                            "name": self.seller.id,
+                            "partner_id": self.seller.id,
                             "delay": 10,  # 10 Day Vendor Lead Time
                             "min_qty": 1,
                             "price": 100.0,
