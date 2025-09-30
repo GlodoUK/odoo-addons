@@ -113,7 +113,13 @@ class TestAutomateLeadTime(TransactionCase):
 
     def test_product_in_stock_lead_time(self):
         self.product_id.sale_delay_method = "add"
-        self.product_id.qty_available = 10  # Simulate stock available
+        self.env["stock.quant"].create(
+            {
+                "product_id": self.product_id.product_variant_id.id,
+                "location_id": self.env.ref("stock.stock_location_stock").id,
+                "quantity": 100,  # Sufficient stock available
+            }
+        )
         sale_order = self.env["sale.order"].create(
             {
                 "partner_id": self.partner_id.id,
