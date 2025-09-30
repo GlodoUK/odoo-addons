@@ -11,7 +11,7 @@ class TestAutomateLeadTime(TransactionCase):
                 "name": "Test Product",
                 "sale_delay": 5,  # 5 Day Customer Lead Time
                 "type": "consu",
-                "is_stockable": True,
+                "is_storable": True,
                 "seller_ids": [
                     (
                         0,
