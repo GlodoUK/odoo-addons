@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res_config_settings_view_form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block name="quotation_order_setting_container" position="inside">
+                <setting
+                    id="sale_lead_time_configuration"
+                    string="Customer Lead Time Method"
+                >
+                    <field name="sale_lead_time_method" />
+                    <div class="text-muted">
+                        <p>
+                            Method to calculate the customer lead time based on vendor lead time. Can be overridden per product.
+                        </p>
+                        <ul>
+                            <li><strong
+                            >Standard Method</strong>: Default Odoo Behaviour. Uses only the customer lead time.</li>
+                            <li><strong
+                            >Use Vendor Only</strong>: Replaces the customer lead time with the vendor lead time.</li>
+                            <li><strong
+                            >Customer + Vendor</strong>: Adds the vendor lead time to the customer lead time.</li>
+                            <li><strong
+                            >Max Customer v Vendor</strong>: Use whichever is greater, customer or vendor lead time.</li>
+                            <li><strong
+                            >Min Customer v Vendor</strong>: Use whichever is least, customer or vendor lead time.</li>
+                        </ul>
+                    </div>
+                </setting>
+            </block>
+        </field>
+    </record>
+</odoo>

@@ -8,6 +8,7 @@
     "depends": ["sale_stock", "purchase_stock"],
     "data": [
         "views/product_template.xml",
+        "views/res_config_settings.xml",
     ],
     "demo": [],
     "license": "Other proprietary",
