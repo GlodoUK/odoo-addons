@@ -7,11 +7,14 @@ Odoo Standard Method:
 * Regardless of stock or vendor lead time, the customer lead time is used as the expected delivery date
 
 This Module:
-* Adds a field to each product to choose how to handle vendor lead time
+* Allows you to set a Customer Lead Time Method globally in Sales > Configuration
+- Standard Method: Use Default Odoo Behaviour. Only uses Customer lead time
+- Use Vendor Only: Use Vendor lead time only
 - Add: Customer lead time + Vendor lead time (Default)
-- Replace: Use Vendor lead time only
 - Max: Use the maximum of Customer lead time or Vendor lead time
 - Min: Use the minimum of Customer lead time or Vendor lead time
+* This can be overridden per product
+* Adds a field to each product to choose how to handle vendor lead time
 * When placing a sales order, the customer lead time is adjusted based on the selected method and the vendor lead time from the product's supplier info
 * The expected delivery date on the sales order line is updated accordingly, along with all related pickings
 

@@ -10,14 +10,20 @@ class SaleOrderLine(models.Model):
         # Adjust lead time to account for vendor time
         for line in self:
             product = line.product_id
+            delay_method = product.sale_delay_method if product else "default"
+            if delay_method == "default":
+                # Use the default method from sales settings
+                delay_method = self.env.company.sale_lead_time_method
+            if delay_method == "customer":
+                continue
             vendor_lead_time = line._get_vendor_lead_time()
-            if product.sale_delay_method == "add":
+            if delay_method == "add":
                 line.customer_lead += vendor_lead_time
-            elif product.sale_delay_method == "replace":
+            elif delay_method == "replace":
                 line.customer_lead = vendor_lead_time
-            elif product.sale_delay_method == "max":
+            elif delay_method == "max":
                 line.customer_lead = max(line.customer_lead, vendor_lead_time)
-            elif product.sale_delay_method == "min":
+            elif delay_method == "min":
                 line.customer_lead = min(line.customer_lead, vendor_lead_time)
         return res
 
