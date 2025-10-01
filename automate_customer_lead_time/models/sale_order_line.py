@@ -30,10 +30,15 @@ class SaleOrderLine(models.Model):
     def _get_vendor_lead_time(self):
         self.ensure_one()
         product = self.product_id
-        if not product or product.qty_available >= self.product_uom_qty:
+        if not product:
+            return 0.0
+        current_qty = product.with_context(
+            to_date=self.order_id.date_order
+        ).virtual_available
+        if current_qty >= self.product_uom_qty:
             return 0.0
         seller = product._select_seller(
-            quantity=self.product_uom_qty,
+            quantity=self.product_uom_qty - current_qty,
             date=self.order_id.date_order and self.order_id.date_order.date(),
             uom_id=self.product_uom,
         )
