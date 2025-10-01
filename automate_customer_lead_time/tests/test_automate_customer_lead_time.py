@@ -27,6 +27,49 @@ class TestAutomateLeadTime(TransactionCase):
             }
         )
 
+    def test_lead_time_default_method(self):
+        self.product_id.sale_delay_method = "default"
+        sale_order = self.env["sale.order"].create(
+            {
+                "partner_id": self.partner_id.id,
+                "order_line": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": self.product_id.product_variant_id.id,
+                            "product_uom_qty": 1,
+                            "price_unit": 100.0,
+                        },
+                    )
+                ],
+            }
+        )
+        sale_line = sale_order.order_line[0]
+        self.assertEqual(sale_line.customer_lead, 5)
+
+    def test_lead_time_default_add_method(self):
+        self.env.company.sale_lead_time_method = "add"
+        self.product_id.sale_delay_method = "default"
+        sale_order = self.env["sale.order"].create(
+            {
+                "partner_id": self.partner_id.id,
+                "order_line": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": self.product_id.product_variant_id.id,
+                            "product_uom_qty": 1,
+                            "price_unit": 100.0,
+                        },
+                    )
+                ],
+            }
+        )
+        sale_line = sale_order.order_line[0]
+        self.assertEqual(sale_line.customer_lead, 15)  # 5 + 10
+
     def test_lead_time_add_method(self):
         self.product_id.sale_delay_method = "add"
         sale_order = self.env["sale.order"].create(
