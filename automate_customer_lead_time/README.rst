@@ -22,3 +22,6 @@ Vendor lead time is determined at the point of adding the product to the sales o
 when product quantity is changed on the sale order line. If the product is in stock,
 only the customer lead time is used, but if the product is out of stock, the vendor lead
 time is included based on the selected method.
+
+CAVEAT: There are some cases where manufacturable stock and its lead time will not be
+taken into consideration. We plan to address this in a future update/glue module.
