@@ -1,3 +1,5 @@
+import datetime
+
 from odoo.tests.common import TransactionCase
 
 
@@ -228,3 +230,24 @@ class TestAutomateLeadTime(TransactionCase):
         )
         sale_line = sale_order_2.order_line[0]
         self.assertEqual(sale_line.customer_lead, 15)  # 5 + 10
+
+        # Add incoming stock that arrives before the supplier lead time
+        self.env["purchase.order"].create(
+            {
+                "partner_id": self.seller.id,
+                "date_order": datetime.datetime.now(),
+                "order_line": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": self.product_id.product_variant_id.id,
+                            "product_qty": 20,  # Ample stock
+                            "price_unit": 100.0,
+                        },
+                    )
+                ],
+            }
+        ).button_confirm()
+        sale_line._compute_customer_lead()
+        self.assertEqual(sale_line.customer_lead, 15)  # Incoming stock ignored

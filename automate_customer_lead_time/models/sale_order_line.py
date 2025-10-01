@@ -32,11 +32,11 @@ class SaleOrderLine(models.Model):
         product = self.product_id
         if not product:
             return 0.0
-        current_qty = product.with_context(
-            to_date=self.order_id.date_order
-        ).virtual_available
+        current_qty = product.virtual_available - product.incoming_qty
         if current_qty >= self.product_uom_qty:
+            # We can ship it 'today'
             return 0.0
+        # We will most likely need to order it
         seller = product._select_seller(
             quantity=self.product_uom_qty - current_qty,
             date=self.order_id.date_order and self.order_id.date_order.date(),

@@ -23,5 +23,10 @@ when product quantity is changed on the sale order line. If the product is in st
 only the customer lead time is used, but if the product is out of stock, the vendor lead
 time is included based on the selected method.
 
-CAVEAT: There are some cases where manufacturable stock and its lead time will not be
+CAVEATS:
+* There are some cases where manufacturable stock and its lead time will not be
 taken into consideration. We plan to address this in a future update/glue module.
+* When calculating stock availability, we look at the virtual available stock as of the
+date of the sales order, EXCLUDING any incoming stock. This means that if you have
+incoming stock that will arrive before the shipping date, it will not be considered 
+when calculating the customer lead time.
