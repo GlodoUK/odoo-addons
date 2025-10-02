@@ -66,7 +66,13 @@ class ProductTemplate(models.Model):
         args = args or []
         domain = []
         if name:
-            domain = ["|", ("cpq_ref", operator, name), ("name", operator, name)]
+            domain = [
+                "|",
+                "|",
+                ("cpq_ref", operator, name),
+                ("default_code", operator, name),
+                ("name", operator, name),
+            ]
             if operator in expression.NEGATIVE_TERM_OPERATORS:
                 domain = ["&", "!"] + domain[1:]
         return super()._name_search(
