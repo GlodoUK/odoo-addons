@@ -2,7 +2,6 @@ import copy
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.osv import expression
 from odoo.tools import (
     format_amount,
     format_date,
