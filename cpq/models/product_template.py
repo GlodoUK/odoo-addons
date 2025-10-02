@@ -2,7 +2,6 @@ import copy
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.osv import expression
 from odoo.tools import (
     format_amount,
     format_date,
@@ -58,20 +57,6 @@ class ProductTemplate(models.Model):
         help="Code for generating dynamic variant internal reference",
     )
     cpq_tooltip = fields.Html(compute="_compute_cpq_tooltip")
-
-    @api.model
-    def _name_search(
-        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
-    ):
-        args = args or []
-        domain = []
-        if name:
-            domain = ["|", ("cpq_ref", operator, name), ("name", operator, name)]
-            if operator in expression.NEGATIVE_TERM_OPERATORS:
-                domain = ["&", "!"] + domain[1:]
-        return super()._name_search(
-            name, expression.AND([domain, args]), operator, limit, name_get_uid
-        )
 
     def _cpq_tooltip_items(self):
         self.ensure_one()
