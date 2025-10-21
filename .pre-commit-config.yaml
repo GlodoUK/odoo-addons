@@ -48,17 +48,19 @@ repos:
       # update the NOT INSTALLABLE ADDONS section above
       - id: oca-update-pre-commit-excluded-addons
       - id: oca-fix-manifest-website
-        args: ["https://github.com/OCA/account-invoicing"]
+        args: ["https://github.com/GlodoUK/odoo-addons"]
       - id: oca-gen-addon-readme
         args:
           - --addons-dir=.
           - --branch=19.0
-          - --org-name=OCA
-          - --repo-name=account-invoicing
+          - --org-name=GlodoUK
+          - --repo-name=odoo-addons
           - --if-source-changed
           - --keep-source-digest
           - --convert-fragments-to-markdown
       - id: oca-gen-external-dependencies
+      - id: oca-gen-addons-table
+        stages: [manual]
   - repo: https://github.com/OCA/odoo-pre-commit-hooks
     rev: v0.1.6
     hooks:
@@ -134,3 +136,7 @@ repos:
       - id: pylint_odoo
         args:
           - --rcfile=.pylintrc-mandatory
+  - repo: https://github.com/rstcheck/rstcheck.git
+    rev: v6.2.4
+    hooks:
+      - id: rstcheck
