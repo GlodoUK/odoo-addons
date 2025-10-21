@@ -6,7 +6,7 @@ services:
       dockerfile: .ci/Dockerfile
       context: ../
       args:
-        ODOO_VERSION: "18.0"
+        ODOO_VERSION: "19.0"
     depends_on:
       - db
     environment:
@@ -19,7 +19,7 @@ services:
       - filestore:/var/lib/odoo:z
 
   db:
-    image: postgres:15
+    image: postgres:17
     environment:
       - POSTGRES_DB=odoo
       - POSTGRES_USER=odoo
