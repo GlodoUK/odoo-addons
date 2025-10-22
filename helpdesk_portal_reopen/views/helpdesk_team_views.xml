@@ -1,28 +1,21 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <record id="helpdesk_team_view_form" model="ir.ui.view">
         <field name="name">helpdesk.team.form</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
+        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='self-Service']" position="inside">
                 <setting help="Allow your customers to reopen their own tickets">
-                    <field name="allow_portal_ticket_reopen" />
-                    <div
-                        class="content-group"
-                        invisible="not allow_portal_ticket_reopen"
-                    >
+                    <field name="allow_portal_ticket_reopen"/>
+                    <div class="content-group" invisible="not allow_portal_ticket_reopen">
                         <div class="mt8">
-                            <label for="reopen_ticket_stage" />
-                            <field
-                                name="reopen_ticket_stage"
-                                domain="[('team_ids', 'in', id)]"
-                                required="allow_portal_ticket_reopen"
-                            />
+                            <label for="reopen_ticket_stage"/>
+                            <field name="reopen_ticket_stage" domain="[('team_ids', 'in', id)]" required="allow_portal_ticket_reopen"/>
                         </div>
                         <div class="mt8">
-                            <label for="clear_assigned_on_reopen" class="me-2" />
-                            <field name="clear_assigned_on_reopen" />
+                            <label for="clear_assigned_on_reopen" class="me-2"/>
+                            <field name="clear_assigned_on_reopen"/>
                         </div>
                     </div>
                 </setting>

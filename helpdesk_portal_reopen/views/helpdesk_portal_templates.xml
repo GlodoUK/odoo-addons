@@ -1,58 +1,28 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
-        <xpath expr="//t[@t-set='entries']/div" position="inside">
-            <div class="col-12 col-md-12 py-2">
-                <h6>
-                    <small class="text-muted">Status</small>
-                </h6>
-                <t t-out="ticket.stage_id.display_name" />
-                <p t-if="ticket.stage_id.description" class="w-100 text-muted m-0">
-                    This means... <t t-out="ticket.stage_id.description" />
-                </p>
-                <button
-                    t-if="ticket.team_id.allow_portal_ticket_reopen and ticket.stage_id.fold"
-                    class="btn btn-light"
-                    data-bs-target="#helpdesk_ticket_reopen_modal"
-                    data-bs-toggle="modal"
-                >
-                    Reopen Ticket
-                </button>
+        <xpath expr="//div[@id='ticket-nav']" position="before">
+            <div t-if="ticket.team_id.allow_portal_ticket_reopen and ticket.stage_id.fold" class="flex-grow-1">
+                <div class="d-grid flex-sm-nowrap pt-2">
+                    <button class="btn btn-light pt-1" data-bs-target="#helpdesk_ticket_reopen_modal" data-bs-toggle="modal">
+                        Reopen Ticket
+                    </button>
+                </div>
+            </div>
 
-                <div
-                    class="modal"
-                    tabindex="-1"
-                    role="dialog"
-                    id="helpdesk_ticket_reopen_modal"
-                >
-                    <div class="modal-dialog mt-5" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Reopen Ticket</h5>
-                                <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                />
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you wish to proceed?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a
-                                    role="button"
-                                    t-att-href="'/my/ticket/reopen/%s/%s' % (ticket.id, ticket.access_token)"
-                                    class="btn btn-primary"
-                                >
-                                    Reopen the ticket
-                                </a>
-                                <button
-                                    type="button"
-                                    class="btn btn-light"
-                                    data-bs-dismiss="modal"
-                                >Discard</button>
-                            </div>
+            <div class="modal" tabindex="-1" role="dialog" id="helpdesk_ticket_reopen_modal">
+                <div class="modal-dialog mt-5" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reopen Ticket</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you wish to proceed?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a role="button" class="btn btn-primary" t-att-href="'/my/ticket/reopen/%s/%s' % (ticket.id, ticket.access_token)">Reopen Ticket</a>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
