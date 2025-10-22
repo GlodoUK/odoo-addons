@@ -23,7 +23,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[field[@name='name']]" position="before">
                 <div
-                    class="bg-danger text-center text-white mx-3"
+                    class="text-bg-danger text-center mx-3"
                     invisible="not is_escalated"
                 >
                     <small>Escalated</small>
@@ -66,7 +66,7 @@
         <field name="name">Toggle Escalated</field>
         <field name="model_id" ref="helpdesk.model_helpdesk_ticket" />
         <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
-        <field name="binding_view_types">form,list</field>
+        <field name="binding_view_types">form,list,kanban</field>
         <field name="state">code</field>
         <field name="code">records.action_toggle_escalated()</field>
     </record>

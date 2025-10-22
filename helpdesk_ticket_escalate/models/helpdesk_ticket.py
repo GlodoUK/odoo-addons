@@ -5,7 +5,7 @@ class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
     is_escalated = fields.Boolean(
-        string="Escalated",
+        "Escalated",
         tracking=True,
     )
 

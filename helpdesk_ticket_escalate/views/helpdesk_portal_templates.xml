@@ -4,67 +4,82 @@
         <xpath expr="//t[@t-foreach='tickets']/tr/td[1]" position="inside">
             <span
                 t-if="ticket.is_escalated"
-                class="badge text-bg-warning"
+                class="badge rounded-pill o_tag text-bg-warning"
             >Escalated</span>
         </xpath>
     </template>
 
     <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
-        <xpath expr="//t[@t-set='entries']/div" position="inside">
-            <div class="col-12 col-md-12 py-2">
-                <h6>
-                    <small class="text-muted">Priority</small>
-                </h6>
-                <div
-                    t-out="dict(ticket._fields['priority'].selection).get(ticket.priority)"
-                />
-                <p
-                    t-if="ticket.is_escalated"
-                    class="fw-bold text-warning"
-                >Marked for escalation</p>
-                <button
-                    t-if="not ticket.is_escalated"
-                    class="ms-auto btn btn-light"
-                    data-bs-target="#helpdesk_ticket_escalate_modal"
-                    data-bs-toggle="modal"
-                >
-                    <i class="fa fa-warning me-1" /> Escalate Ticket
-                </button>
+        <xpath expr="//div[@id='card']" position="before">
+            <div
+                t-if="ticket.is_escalated"
+                class="alert alert-warning d-print-none"
+                role="status"
+            >
+                <i class="fa fa-warning me-1" />
+                <span>Your ticket has been escalated.</span>
+            </div>
+        </xpath>
 
-                <div
-                    class="modal"
-                    tabindex="-1"
-                    role="dialog"
-                    id="helpdesk_ticket_escalate_modal"
-                >
-                    <div class="modal-dialog mt-5" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Ticket Escalation</h5>
-                                <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                />
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you wish to proceed?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a
-                                    role="button"
-                                    class="btn btn-primary"
-                                    t-att-href="'/helpdesk/ticket/escalate/%s/%s' % (ticket.id, ticket.access_token)"
-                                >Toggle Escalation</a>
-                                <button
-                                    type="button"
-                                    class="btn btn-light"
-                                    data-bs-dismiss="modal"
-                                >Close</button>
-                            </div>
+        <xpath expr="//div[@id='ticket-nav']" position="before">
+            <div t-if="not ticket.is_escalated" class="flex-grow-1">
+                <div class="d-grid flex-sm-nowrap pt-2">
+                    <button
+                        class="btn btn-light pt-1"
+                        data-bs-target="#helpdesk_ticket_escalate_modal"
+                        data-bs-toggle="modal"
+                    >
+                        <i class="fa fa-warning me-1" /> Escalate Ticket
+                    </button>
+                </div>
+            </div>
+
+            <div
+                class="modal"
+                tabindex="-1"
+                role="dialog"
+                id="helpdesk_ticket_escalate_modal"
+            >
+                <div class="modal-dialog mt-5" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Toggle Escalation</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            />
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you wish to proceed?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a
+                                role="button"
+                                class="btn btn-primary"
+                                t-att-href="'/helpdesk/ticket/escalate/%s/%s' % (ticket.id, ticket.access_token)"
+                            >Toggle Escalation</a>
+                            <button
+                                type="button"
+                                class="btn btn-light"
+                                data-bs-dismiss="modal"
+                            >Close</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-set='entries']" position="inside">
+            <div class="mt-4">
+                <div t-attf-class="col-12 col-md-12">
+                    <h6>
+                        <small class="text-muted">Priority</small>
+                    </h6>
+                    <div
+                        t-out="dict(ticket._fields['priority'].selection).get(ticket.priority)"
+                    />
                 </div>
             </div>
         </xpath>
