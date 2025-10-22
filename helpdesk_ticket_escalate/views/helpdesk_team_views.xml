@@ -12,7 +12,9 @@
                         Receive notifications whenever tickets are escalated in this team
                     </div>
                     <div class="mt16">
-                        <span>Followers</span>
+                        <span>
+                            <b>Followers </b>
+                        </span>
                         <field
                             name="escalate_message_partner_ids"
                             string="Follow All Team's Escalated Tickets"

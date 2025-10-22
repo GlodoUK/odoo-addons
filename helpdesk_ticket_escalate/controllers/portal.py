@@ -15,7 +15,7 @@ class CustomerPortal(CustomerPortal):
         auth="user",
         website=True,
     )
-    def ticket_escalate(self, ticket_id, access_token=None, **kwargs):
+    def ticket_escalate(self, ticket_id=None, access_token=None, **kwargs):
         try:
             ticket_sudo = self._document_check_access(
                 "helpdesk.ticket", ticket_id, access_token
