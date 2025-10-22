@@ -5,7 +5,7 @@ class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
     is_private = fields.Boolean(
-        string="Private",
+        "Private",
         help="Aside from internal staff, only the ticket creator, "
         "listed Customer and anyone added as a follower who is "
         "in the Customers organisation will be able "
@@ -26,13 +26,13 @@ class HelpdeskTicket(models.Model):
             ("id", "not in", self.message_partner_ids.ids),
         ]
 
-    def message_update(self, msg, update_vals=None):
+    def message_update(self, msg_dict, update_vals=None):
         return super(
             HelpdeskTicket,
             self.with_context(
                 helpdesk_privacy_only_subscribe_existing_partners=self.is_private
             ),
-        ).message_update(msg, update_vals=update_vals)
+        ).message_update(msg_dict, update_vals=update_vals)
 
     def _message_subscribe(self, partner_ids=None, subtype_ids=None, customer_ids=None):
         """
@@ -57,7 +57,7 @@ class HelpdeskTicket(models.Model):
         This has the side effect of allowing parties without access the ability to
         potentially post message, but not be auto-subscribed.
         """
-        if partner_ids and self._context.get(
+        if partner_ids and self.env.context.get(
             "helpdesk_privacy_only_subscribe_existing_partners"
         ):
             partner_ids = [i for i in partner_ids if i in self.message_partner_ids.ids]
