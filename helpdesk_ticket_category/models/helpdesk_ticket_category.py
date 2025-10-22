@@ -6,6 +6,11 @@ class HelpdeskTicketCategory(models.Model):
     _description = "Helpdesk Ticket Category"
     _order = "sequence, name"
 
+    _name_uniq = models.Constraint(
+        "unique (name)",
+        "A category with the same name already exists.",
+    )
+
     active = fields.Boolean(
         default=True,
     )
@@ -18,7 +23,3 @@ class HelpdeskTicketCategory(models.Model):
         required=True,
         translate=True,
     )
-
-    _sql_constraints = [
-        ("name_uniq", "unique (name)", "A category with the same name already exists."),
-    ]

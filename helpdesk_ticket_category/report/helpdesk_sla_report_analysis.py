@@ -6,7 +6,7 @@ class HelpdeskSLAReport(models.Model):
 
     ticket_categ_id = fields.Many2one(
         "helpdesk.ticket.category",
-        string="Category",
+        "Category",
         readonly=True,
     )
 
