@@ -34,7 +34,7 @@
     </record>
 
     <record id="helpdesk_tickets_view_tree" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.tree</field>
+        <field name="name">helpdesk.ticket.list</field>
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree" />
         <field name="arch" type="xml">
