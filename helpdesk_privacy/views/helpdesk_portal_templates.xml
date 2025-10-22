@@ -1,45 +1,5 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-    <!-- <xpath expr="//div[@id='ticket-nav']" position="before">
-            <div t-if="not ticket.is_escalated" class="flex-grow-1">
-                <div class="d-grid flex-sm-nowrap pt-2">
-                    <button class="btn btn-light pt-1" data-bs-target="#helpdesk_ticket_escalate_modal" data-bs-toggle="modal">
-                        <i class="fa fa-warning me-1"/> Escalate Ticket
-                    </button>
-                </div>
-            </div>
-
-            <div class="modal" tabindex="-1" role="dialog" id="helpdesk_ticket_escalate_modal">
-                <div class="modal-dialog mt-5" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Toggle Escalation</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you wish to proceed?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <a role="button" class="btn btn-primary" t-att-href="'/helpdesk/ticket/escalate/%s/%s' % (ticket.id, ticket.access_token)">Toggle Escalation</a>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </xpath>
-
-        <xpath expr="//t[@t-set='entries']" position="inside"> -->
-
-    <!-- <div t-attf-class="col-12 col-md-12" t-if="ticket.user_id">
-                                    <h6>
-                                        <small class="text-muted">Assigned to</small>
-                                    </h6>
-                                    <t t-call="portal.portal_my_contact">
-                                        <t t-set="_contactAvatar" t-value="image_data_uri(ticket.user_id.avatar_128)"/>
-                                        <t t-set="_contactName" t-value="ticket.user_id.name"/>
-                                    </t>
-                                </div> -->
-
     <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
         <xpath expr="//t[@t-set='entries']/div" position="inside">
             <div t-if="ticket.is_private" class="flex-grow-1">
