@@ -3,6 +3,7 @@
 ADDONS=$(manifestoo --select-addons-dir src/private list --separator=, --sort=topological)
 unbuffer odoo \
     -d ${PGDATABASE} \
-    -i ${ADDONS} \
+    --reinit ${ADDONS} \
     --test-enable \
+    --http-interface=0.0.0.0 \
     --stop-after-init | checklog-odoo -c src/private/.checklog-odoo
