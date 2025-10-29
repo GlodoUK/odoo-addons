@@ -1,4 +1,4 @@
-from odoo import _, models
+from odoo import models
 
 
 class HelpdeskTicket(models.Model):
@@ -22,7 +22,7 @@ class HelpdeskTicket(models.Model):
             if team_id.clear_assigned_on_reopen:
                 ticket.write({"user_id": False})
 
-            body = _("Ticket reopened by the customer")
+            body = self.env._("Ticket reopened by the customer")
 
             ticket.with_context(mail_create_nosubscribe=True).message_post(
                 body=body, message_type="comment", subtype_xmlid="mail.mt_note"

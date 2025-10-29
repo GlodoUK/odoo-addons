@@ -1,4 +1,4 @@
-from odoo import _, http
+from odoo import http
 from odoo.exceptions import AccessError, MissingError, UserError
 from odoo.http import request
 
@@ -24,7 +24,7 @@ class CustomerPortalReopen(CustomerPortal):
             return request.redirect("/my")
 
         if not ticket_sudo.team_id.allow_portal_ticket_reopen:
-            msg = _("The team does not allow ticket reopening through portal")
+            msg = self.env._("The team does not allow ticket reopening through portal")
             raise UserError(msg)
 
         if ticket_sudo.stage_id.fold:
