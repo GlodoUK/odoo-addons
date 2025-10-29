@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_server_action_form" model="ir.ui.view">
+        <field name="name">view_server_action_form</field>
+        <field name="model">ir.actions.server</field>
+        <field name="inherit_id" ref="base.view_server_action_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//t[@name='action_content']" position="after">
+                <group invisible="state != 'poke'">
+                    <field name="poke_msg" />
+                    <field name="poke_refresh" />
+                    <field name="poke_type" />
+                    <field name="poke_sticky" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
