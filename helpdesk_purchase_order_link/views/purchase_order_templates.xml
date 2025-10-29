@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template
+        id="report_purchaseorder_document"
+        inherit_id="purchase.report_purchaseorder_document"
+        priority="99"
+    >
+        <xpath expr="//div[@t-if='o.user_id']" position="replace">
+            <div t-if="o.helpdesk_ticket_ids" class="col">
+                <strong>Helpdesk Ticket(s):</strong>
+                <p
+                    t-out="', '.join(o.helpdesk_ticket_ids.mapped('ticket_ref'))"
+                    class="m-0"
+                />
+            </div>
+        </xpath>
+    </template>
+</odoo>
