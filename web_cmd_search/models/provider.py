@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -17,7 +17,7 @@ class WebCmdSearchProvider(models.Model):
         for record in self:
             if self.search_count([("model_id", "=", record.model_id.id)]) > 1:
                 raise ValidationError(
-                    _(
+                    self.env._(
                         "Only one provider per model is allowed."
                         " Please update the existing provider."
                     )
@@ -27,7 +27,7 @@ class WebCmdSearchProvider(models.Model):
     def cmd_search(self, value):
         results = []
 
-        for provider in self.search([]):
+        for provider in self.search([]):  # pylint: disable=W8163
             results.extend(
                 [
                     {
