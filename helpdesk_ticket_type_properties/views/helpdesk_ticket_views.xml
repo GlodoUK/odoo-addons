@@ -22,7 +22,7 @@
                     <div class="col-6" invisible="not ticket_categ_id">
                         <label
                             for="ticket_type_properties"
-                            string="Ticket Type Properties"
+                            string="Ticket Category Properties"
                             class="mb-3"
                         />
                         <field
@@ -70,8 +70,8 @@
 
             <xpath expr="//filter[@name='group_by_properties']" position="after">
                 <filter
-                    string="Ticket Type Properties"
-                    name="group_by_ticket_type_properties"
+                    string="Ticket Category Properties"
+                    name="group_by_ticket_categ_properties"
                     context="{'group_by': 'ticket_type_properties'}"
                 />
             </xpath>

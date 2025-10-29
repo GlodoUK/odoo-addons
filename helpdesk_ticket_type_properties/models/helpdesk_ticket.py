@@ -1,10 +1,13 @@
 from odoo import fields, models
+from odoo.tools import plaintext2html
 
 
-class HelpdeskTicketType(models.Model):
+class HelpdeskTicketCategory(models.Model):
     _inherit = "helpdesk.ticket.category"
 
-    ticket_type_properties_definition = fields.PropertiesDefinition("Ticket Properties")
+    ticket_type_properties_definition = fields.PropertiesDefinition(
+        "Ticket Properties",
+    )
 
 
 class HelpdeskTicket(models.Model):
@@ -16,8 +19,10 @@ class HelpdeskTicket(models.Model):
 
     def _display_ticket_type_properties(self):
         self.ensure_one()
-        ticket_type_properties = self.ticket_type_properties
+
         res = []
+
+        ticket_type_properties = self.ticket_type_properties
 
         if not ticket_type_properties:
             return res
@@ -26,18 +31,56 @@ class HelpdeskTicket(models.Model):
             if any(not prop_map.get(key) for key in ("name", "type", "string")):
                 continue
 
+            prop_map_dict = {
+                "display_title": prop_map["string"],
+                "display_value": False,
+                "display_suffix": prop_map.get("suffix", False),
+            }
+
             if prop_map["type"] in (
-                "bool",
                 "char",
                 "date",
                 "datetime",
+                "selection",
+                "tags",
+            ):
+                prop_map_dict.update(
+                    {
+                        "display_value": ticket_type_properties[prop_map["name"]],
+                    }
+                )
+
+            if prop_map["type"] in (
+                "boolean",
                 "float",
                 "integer",
             ):
-                res.append(
+                prop_map_dict.update(
                     {
-                        "display_title": prop_map["string"],
-                        "display_value": ticket_type_properties[prop_map["name"]],
+                        "display_value": str(ticket_type_properties[prop_map["name"]]),
+                    }
+                )
+
+            if prop_map["type"] in (
+                "float",
+                "integer",
+            ):
+                prop_map_dict.update(
+                    {
+                        "display_value": ticket_type_properties[prop_map["name"]]
+                        or "0",
+                    }
+                )
+
+            if prop_map["type"] in ("text",):
+                prop_map_dict.update(
+                    {
+                        "display_value": plaintext2html(
+                            ticket_type_properties[prop_map["name"]]
+                        )
+                        if ticket_type_properties[prop_map["name"]]
+                        else False,
+                        "display_suffix": False,
                     }
                 )
 
@@ -46,54 +89,16 @@ class HelpdeskTicket(models.Model):
                 and "comodel" in prop_map
                 and prop_map["comodel"]
             ):
-                recordset = self.env[prop_map["comodel"]].browse(
-                    ticket_type_properties[prop_map["name"]]
-                )
-
-                res.append(
+                prop_map_dict.update(
                     {
-                        "display_title": prop_map["string"],
-                        "display_value": ", ".join(recordset.mapped("display_name")),
+                        "display_value": ", ".join(
+                            ticket_type_properties[prop_map["name"]].mapped(
+                                "display_name"
+                            )
+                        ),
                     }
                 )
 
-            if (
-                prop_map["type"] in ("selection")
-                and "selection" in prop_map
-                and prop_map["selection"]
-            ):
-                display_value = False
-                selected_value = ticket_type_properties[prop_map["name"]]
-
-                for option in prop_map["selection"]:
-                    if option[0] == selected_value:
-                        display_value = option[1]
-                        continue
-
-                res.append(
-                    {
-                        "display_title": prop_map["string"],
-                        "display_value": display_value,
-                    }
-                )
-
-            if prop_map["type"] in ("tags") and "tags" in prop_map and prop_map["tags"]:
-                selected_value = ticket_type_properties.get(prop_map["name"], [])
-
-                if not isinstance(selected_value, list):
-                    selected_value = [selected_value] if selected_value else []
-
-                selected_tags = [
-                    label
-                    for tag_id, label, _ in prop_map["tags"]
-                    if tag_id in selected_value
-                ]
-
-                res.append(
-                    {
-                        "display_title": prop_map["string"],
-                        "display_value": ", ".join(selected_tags),
-                    }
-                )
+            res.append(prop_map_dict)
 
         return res
