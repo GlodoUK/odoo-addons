@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
     <record id="purchase_order_form" model="ir.ui.view">
         <field name="name">purchase.order.form</field>
@@ -8,13 +8,14 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button
-                    class="oe_stat_button"
                     type="object"
                     name="action_view_helpdesk_ticket_ids"
-                    groups="helpdesk.group_helpdesk_user"
+                    invisible="not helpdesk_ticket_ids"
                     icon="fa-pencil"
+                    groups="helpdesk.group_helpdesk_user"
+                    class="oe_stat_button"
                 >
-                    <field string="Ticket" name="ticket_count" widget="statinfo" />
+                    <field string="Tickets" name="ticket_count" widget="statinfo" />
                 </button>
             </xpath>
 
