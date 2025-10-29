@@ -16,7 +16,7 @@
                     <strong>Linked Helpdesk Tickets</strong>
                     <p t-foreach="sale_order.helpdesk_tickets_ids" t-as="ticket">
                         <a t-attf-href="/helpdesk/ticket/#{ticket.id}">
-                            <t t-out="ticket.name" />
+                            <t t-out="ticket.ticket_ref" />
                         </a>
                     </p>
                 </div>
