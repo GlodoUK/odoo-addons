@@ -34,6 +34,8 @@ registry.category("command_provider").add("model", {
                         res_model: result.model,
                         res_id: result.id,
                         views: [[false, "form"]],
+                        view_mode: "form",
+                        target: "current",
                     });
                 },
             });
