@@ -8,10 +8,11 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button
-                    class="oe_stat_button"
                     type="object"
                     name="action_view_account_move_ids"
+                    invisible="not account_move_count"
                     icon="fa-pencil-square-o"
+                    class="oe_stat_button"
                 >
                     <field
                         string="Invoices"
