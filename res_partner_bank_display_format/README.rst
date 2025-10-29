@@ -9,4 +9,3 @@ Useful to help reformat a bank account to regional standards, on a per-bank acco
 basis.
 
 Very useful for UK markets to reformat accounts in invoices.
-

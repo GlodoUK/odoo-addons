@@ -1,6 +1,7 @@
-from odoo.tests import TransactionCase
+from odoo.tests import TransactionCase, tagged
 
 
+@tagged("post_install", "-at_install")
 class TestCustomDisplayNameFormat(TransactionCase):
     def setUp(self):
         super().setUp()

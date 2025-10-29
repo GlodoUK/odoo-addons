@@ -1,7 +1,7 @@
 import logging
 import re
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__file__)
 
@@ -10,7 +10,7 @@ class ResPartnerBank(models.Model):
     _inherit = "res.partner.bank"
 
     custom_display_name_format = fields.Text(
-        string="Custom Display Name",
+        "Custom Display Name",
         help="Custom Display format to use for this address. Useful to reformat a bank"
         "account for a specific region without making lots of manual changes to invoice"
         "documents.\n\n"
@@ -18,8 +18,6 @@ class ResPartnerBank(models.Model):
         "(for example, use '%(acc_number)s' to display the field 'account number') plus"
         "\n%(bank_name)s: the name of the bank"
         "\n%(bank_bic)s: the bank identifier code",
-        default=False,
-        required=False,
     )
 
     custom_display_name_format_warning = fields.Char(
@@ -64,7 +62,11 @@ class ResPartnerBank(models.Model):
             % self._get_custom_display_name_format_values()
         )
         if self.env.context.get("display_account_trust"):
-            trusted_label = _("trusted") if self.allow_out_payment else _("untrusted")
+            trusted_label = (
+                self.env._("trusted")
+                if self.allow_out_payment
+                else self.env._("untrusted")
+            )
             name = f"{name} {trusted_label}"
         name = re.sub(r"\s\s+", " ", name)
         return name
