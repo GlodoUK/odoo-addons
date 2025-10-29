@@ -1,6 +1,6 @@
 {
     "name": "Website Helpdesk Ticket Create Ticket Type Properties",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "category": "Services/Helpdesk",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
@@ -8,7 +8,7 @@
     "data": ["views/helpdesk_portal_templates.xml"],
     "assets": {
         "web.assets_frontend": [
-            "helpdesk_portal_new_ticket_ticket_type_properties/static/src/js/portal_ticket_type_edit.esm.js",
+            "helpdesk_portal_new_ticket_ticket_type_properties/static/src/js/*.esm.js",
         ]
     },
     "auto_install": True,

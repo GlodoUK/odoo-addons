@@ -4,8 +4,8 @@
         <div class="row">
             <t t-foreach="ticket_type_properties" t-as="ticket_type_property">
                 <div
-                    class="col-12 my-3"
-                    t-if="ticket_type_property['type'] in ('char', 'boolean', 'integer', 'float', 'decimal', 'date', 'datetime', 'selection', 'tags')"
+                    class="col-lg-6 my-3"
+                    t-if="ticket_type_property['type'] in ('char', 'boolean', 'integer', 'float', 'decimal', 'date', 'datetime', 'selection', 'tags', 'text')"
                 >
                     <t t-if="ticket_type_property['type'] == 'char'">
                         <label
@@ -27,7 +27,7 @@
                         <div class="form-check">
                             <input
                                 type="checkbox"
-                                class="form-check-input"
+                                class="form-check-input my-auto"
                                 t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
                                 t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                                 t-att-checked="ticket_type_property.get('default', False)"
@@ -66,7 +66,7 @@
                         </label>
                         <input
                             type="number"
-                            step="0.01"
+                            step="0.1"
                             class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
@@ -106,7 +106,9 @@
                         />
                     </t>
 
-                    <t t-if="ticket_type_property['type'] == 'selection'">
+                    <t
+                        t-if="ticket_type_property['type'] == 'selection' and ticket_type_property.get('selection')"
+                    >
                         <label
                             class="form-label"
                             t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
@@ -125,7 +127,9 @@
                         </select>
                     </t>
 
-                    <t t-if="ticket_type_property['type'] == 'tags'">
+                    <t
+                        t-if="ticket_type_property['type'] == 'tags' and ticket_type_property.get('tags')"
+                    >
                         <label
                             class="form-label"
                             t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
@@ -142,6 +146,21 @@
                                 <option t-att-value="sel[0]" t-out="sel[1]" />
                             </t>
                         </select>
+                    </t>
+
+                    <t t-if="ticket_type_property['type'] == 'text'">
+                        <label
+                            class="form-label"
+                            t-attf-for="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        >
+                            <t t-out="ticket_type_property['string']" />
+                        </label>
+                        <textarea
+                            type="text"
+                            class="form-control"
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
+                        />
                     </t>
                 </div>
             </t>
