@@ -5,12 +5,8 @@
         inherit_id="sale.report_saleorder_document"
     >
         <xpath expr="//div[@id='informations']" position="inside">
-            <div
-                t-if="doc.helpdesk_tickets_ids"
-                class="col-auto col-3 mw-100 mb-2"
-                name="ticket_ids"
-            >
-                <strong>Helpdesk Ticket(s):</strong>
+            <div t-if="doc.helpdesk_tickets_ids" class="col" name="ticket_ids">
+                <strong>Helpdesk Ticket(s)</strong>
                 <p
                     t-out="', '.join(doc.helpdesk_tickets_ids.mapped('ticket_ref'))"
                     class="m-0"

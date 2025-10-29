@@ -1,4 +1,4 @@
-from odoo import _, http
+from odoo import http
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
 
@@ -29,7 +29,7 @@ class CustomerPortal(CustomerPortal):
                 "sale.order", order_id, access_token=access_token
             )
         except (AccessError, MissingError):
-            return {"error": _("Invalid order.")}
+            return {"error": self.env._("Invalid order.")}
 
         author_id = (
             order_sudo.partner_id.id
@@ -37,9 +37,10 @@ class CustomerPortal(CustomerPortal):
             else request.env.user.partner_id.id
         )
 
-        body = (
-            _("Order %(order)s signed by %(name)s")
-            % {"order": order_sudo.name, "name": name},
+        body = self.env._(
+            "Order %(order)s signed by %(name)s",
+            order=order_sudo.name,
+            name=name,
         )
 
         for ticket in order_sudo.helpdesk_tickets_ids:

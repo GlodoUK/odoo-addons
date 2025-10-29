@@ -1,4 +1,4 @@
 Helpdesk Sale Order Link
 ========================
 
-Adds a link between `helpdesk.ticket` records and `sale.order` records
+Adds a M2M link between `helpdesk.ticket` records and `sale.order` records

@@ -12,8 +12,8 @@
                 name="Quotations"
                 id="quotations"
             >
-                <div class="col-12">
-                    <strong>Linked Quotations</strong>
+                <div class="col-12 mt-3">
+                    <strong>Linked Quotations/Orders</strong>
                     <p t-foreach="ticket.so_ids" t-as="sale">
                         <a t-attf-href="/my/orders/#{sale.id}">
                             <t t-out="sale.name" />
