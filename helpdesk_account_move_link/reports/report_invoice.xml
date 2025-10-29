@@ -2,11 +2,7 @@
 <odoo>
     <template id="report_invoice_document" inherit_id="account.report_invoice_document">
         <xpath expr="//div[@id='informations']" position="inside">
-            <div
-                t-if="o.helpdesk_ticket_ids"
-                class="col-auto col-3 mw-100 mb-2"
-                name="ticket_ids"
-            >
+            <div t-if="o.helpdesk_ticket_ids" class="col">
                 <strong>Helpdesk Ticket(s):</strong>
                 <p
                     t-out="', '.join(o.helpdesk_ticket_ids.mapped('ticket_ref'))"

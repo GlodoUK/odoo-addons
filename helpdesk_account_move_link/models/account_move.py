@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class AccountMoveHelpdeskLink(models.Model):
+class AccountMove(models.Model):
     _inherit = "account.move"
 
     helpdesk_ticket_ids = fields.Many2many(
