@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
+        <xpath expr="//div[@name='description']" position="before">
+            <div t-if="ticket_type_properties" class="row">
+                <t t-foreach="ticket_type_properties" t-as="prop_map">
+                    <div t-if="prop_map['display_value']" class="col-lg-6">
+                        <strong t-out="prop_map['display_title']" />
+                        <t t-out="prop_map['display_value']" />
+                        <span t-if="prop_map['display_suffix']" class="ms-2">
+                            <t t-out="prop_map['display_suffix']" />
+                        </span>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
