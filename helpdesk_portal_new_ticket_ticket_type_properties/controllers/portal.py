@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+from odoo.tools import html2plaintext
 
 from odoo.addons.helpdesk_portal_new_ticket.controllers.portal import CustomerPortal
 
@@ -8,13 +9,13 @@ class CustomerPortal(CustomerPortal):
     def _new_ticket_get_page_view_values(self, **kwargs):
         res = super()._new_ticket_get_page_view_values(**kwargs)
 
-        if not res.get("default_category"):
+        if not res.get("default_categ_id"):
             return res
 
         ticket_type_id = (
             request.env["helpdesk.ticket.category"]
             .sudo()
-            .browse(int(res.get("default_category")))
+            .browse(int(res.get("default_categ_id")))
         )
 
         if ticket_type_id.ticket_type_properties_definition:
@@ -28,7 +29,7 @@ class CustomerPortal(CustomerPortal):
 
     @http.route(
         ["/my/tickets/get_ticket_type_info"],
-        type="json",
+        type="jsonrpc",
         auth="user",
         methods=["POST"],
     )
@@ -53,7 +54,7 @@ class CustomerPortal(CustomerPortal):
     def _new_helpdesk_ticket_post_hook(self, ticket_id, **kwargs):
         res = super()._new_helpdesk_ticket_post_hook(ticket_id, **kwargs)
 
-        ticket_type_properties = ticket_id.ticket_type_properties
+        values = dict(ticket_id.ticket_type_properties)
 
         for prop in ticket_id.ticket_categ_id.ticket_type_properties_definition:
             if prop["type"] == "tags":
@@ -68,31 +69,33 @@ class CustomerPortal(CustomerPortal):
                 continue
 
             if prop["type"] in ("char", "date", "datetime"):
-                ticket_type_properties[prop["name"]] = kwargs_property_name
+                values[prop["name"]] = kwargs_property_name
 
             if prop["type"] == "boolean":
-                ticket_type_properties[prop["name"]] = bool(kwargs_property_name)
+                values[prop["name"]] = bool(kwargs_property_name)
 
             if prop["type"] == "integer":
-                ticket_type_properties[prop["name"]] = int(kwargs_property_name)
+                values[prop["name"]] = int(kwargs_property_name)
 
             if prop["type"] == "float":
-                ticket_type_properties[prop["name"]] = float(kwargs_property_name)
+                values[prop["name"]] = float(kwargs_property_name)
 
             if prop["type"] == "selection":
-                for option in prop["selection"]:
+                for option in prop.get("selection", []):
                     if option[0] == kwargs_property_name:
-                        ticket_type_properties[prop["name"]] = option[0]
+                        values[prop["name"]] = option[0]
                         continue
 
             if prop["type"] == "tags":
                 options = []
-                for option in prop["tags"]:
-                    if option[0] == kwargs_property_name:
+                for option in prop.get("tags", []):
+                    if option[0] in kwargs_property_name:
                         options.append(option[0])
+                values[prop["name"]] = options
 
-                ticket_type_properties[prop["name"]] = options
+            if prop["type"] == "text":
+                values[prop["name"]] = html2plaintext(kwargs_property_name)
 
-        ticket_id.write({"ticket_type_properties": ticket_type_properties})
+        ticket_id.write({"ticket_type_properties": values})
 
         return res
