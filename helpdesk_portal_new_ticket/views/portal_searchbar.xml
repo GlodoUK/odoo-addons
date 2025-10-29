@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <template id="portal_searchbar" inherit_id="portal.portal_searchbar">
+        <xpath expr="//div[@t-if='searchbar_sortings']" position="before">
+            <div t-if="page_name == 'ticket'" class="me-lg-2">
+                <a href="/my/tickets/new" class="btn btn-primary">
+                    Create a new ticket
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>
