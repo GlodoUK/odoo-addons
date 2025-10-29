@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class IrActionsServer(models.Model):
@@ -9,7 +9,7 @@ class IrActionsServer(models.Model):
         ondelete={"poke": "cascade"},
     )
     poke_msg = fields.Text(
-        default="This record has been changed by another user since you opened" " it.",
+        default="This record has been changed by another user since you opened it.",
         string="Message",
     )
     poke_refresh = fields.Boolean(default=True, string="Automatically refresh")
@@ -32,7 +32,7 @@ class IrActionsServer(models.Model):
         if not records:
             return False
 
-        records = records.filtered(lambda r: not isinstance(r.id, models.NewId))
+        records = records.filtered(lambda r: not isinstance(r.id, api.NewId))
         if not records:
             return False
 
