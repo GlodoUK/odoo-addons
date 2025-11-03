@@ -1,14 +1,5 @@
-import contextlib
-
-from odoo import SUPERUSER_ID, api, http, registry
-
-
-@contextlib.contextmanager
-def _with_environment(db):
-    with api.Environment.manage():
-        with registry(db).cursor() as new_cr:
-            env = api.Environment(new_cr, SUPERUSER_ID, {})
-            yield env
+from odoo import SUPERUSER_ID, api, http
+from odoo.modules.registry import Registry
 
 
 class Sendgrid(http.Controller):
@@ -22,7 +13,8 @@ class Sendgrid(http.Controller):
             response.status_code = 200  # prevent sendgrid fom retrying.
             return response
 
-        with _with_environment(db) as env:
+        with Registry(db).cursor() as cr:
+            env = api.Environment(cr, SUPERUSER_ID, {})
             mime = kwargs.get("email", "")
             if not mime:
                 return "OK"

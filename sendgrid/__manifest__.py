@@ -2,7 +2,7 @@
     "name": "Sendgrid",
     "summary": "Handle Inbound Email through Sendgrid Webhooks",
     "category": "Discuss",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "application": False,
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",

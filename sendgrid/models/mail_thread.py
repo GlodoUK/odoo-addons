@@ -11,6 +11,9 @@ class MailThread(models.AbstractModel):
         if message.get("X-Auto-Response-Suppress", "") == "All":
             return
 
+        if "AutoReply" in message.get("X-Auto-Response-Suppress", ""):
+            return
+
         return super()._routing_create_bounce_email(
             email_from, body_html, message, **mail_values
         )
