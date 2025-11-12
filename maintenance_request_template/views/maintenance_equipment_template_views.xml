@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="hr_equipment_action_from_template_form" model="ir.actions.act_window">
+        <field name="name">Equipment</field>
+        <field name="res_model">maintenance.equipment</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="maintenance.hr_equipment_view_search" />
+        <field name="view_id" ref="maintenance.hr_equipment_view_kanban" />
+        <field
+            name="context"
+        >{'search_default_template_id': [active_id], 'default_template_id': active_id}</field>
+    </record>
+
+    <record id="hr_category_action_from_template_form" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">maintenance.equipment.category</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field
+            name="search_view_id"
+            ref="maintenance.hr_equipment_category_view_search"
+        />
+        <field
+            name="view_id"
+            ref="maintenance.view_maintenance_equipment_category_kanban"
+        />
+        <field
+            name="context"
+        >{'search_default_template_id': [active_id], 'default_template_id': active_id}</field>
+    </record>
+
+    <record id="hr_equipment_template_view_form" model="ir.ui.view">
+        <field name="name">equipment.template.form</field>
+        <field name="model">maintenance.equipment.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="%(hr_equipment_action_from_template_form)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-cubes"
+                        >
+                            <field
+                                string="Equipment"
+                                name="equipment_count"
+                                widget="statinfo"
+                            />
+                        </button>
+
+                        <button
+                            name="%(hr_category_action_from_template_form)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-gear"
+                        >
+                            <field
+                                string="Categories"
+                                name="categ_count"
+                                widget="statinfo"
+                            />
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name" string="Template Name" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Monitors" />
+                        </h1>
+                    </div>
+
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_equipment_template_view_tree" model="ir.ui.view">
+        <field name="name">equipment.template.list</field>
+        <field name="model">maintenance.equipment.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_equipment_template_view_search" model="ir.ui.view">
+        <field name="name">equipment.template.search</field>
+        <field name="model">maintenance.equipment.template</field>
+        <field name="arch" type="xml">
+            <search string="Equipment Template Search">
+                <filter
+                    string="Active"
+                    name="active"
+                    domain="[('active', '=', True)]"
+                />
+                <filter
+                    string="Inactive"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_equipment_template_action" model="ir.actions.act_window">
+        <field name="name">Equipment Templates</field>
+        <field name="res_model">maintenance.equipment.template</field>
+        <field name="view_id" ref="hr_equipment_template_view_tree" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new equipment template!
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="maintenance_menu_config_template"
+        action="hr_equipment_template_action"
+        parent="maintenance.menu_maintenance_configuration"
+        sequence="15"
+    />
+</odoo>
