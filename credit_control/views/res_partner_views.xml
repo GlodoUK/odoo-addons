@@ -10,12 +10,12 @@
                 <attribute name="groups" />
             </xpath>
 
-            <!-- <xpath
+            <xpath
                 expr="//group[@name='credit_limits']//div[hasclass('o_row')]"
                 position="after"
             >
-                <field name="credit_control_policy_id"/>
-            </xpath> -->
+                <field name="credit_control_policy_id" />
+            </xpath>
         </field>
     </record>
 </odoo>

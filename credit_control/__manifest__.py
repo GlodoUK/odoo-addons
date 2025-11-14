@@ -3,7 +3,7 @@
     "summary": """
     Credit Control Policies
     """,
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Invoicing &amp; Payments",
