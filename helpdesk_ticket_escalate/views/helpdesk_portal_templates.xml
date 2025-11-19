@@ -70,18 +70,5 @@
                 </div>
             </div>
         </xpath>
-
-        <xpath expr="//t[@t-set='entries']" position="inside">
-            <div class="mt-4">
-                <div t-attf-class="col-12 col-md-12">
-                    <h6>
-                        <small class="text-muted">Priority</small>
-                    </h6>
-                    <div
-                        t-out="dict(ticket._fields['priority'].selection).get(ticket.priority)"
-                    />
-                </div>
-            </div>
-        </xpath>
     </template>
 </odoo>
