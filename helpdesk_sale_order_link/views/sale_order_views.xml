@@ -24,7 +24,11 @@
 
             <xpath expr="//group[@name='sale_reporting']" position="after">
                 <group string="Helpdesk">
-                    <field name="helpdesk_tickets_ids" widget="many2many_tags" />
+                    <field
+                        name="helpdesk_tickets_ids"
+                        widget="many2many_tags"
+                        groups="helpdesk.group_helpdesk_user"
+                    />
                 </group>
             </xpath>
         </field>

@@ -19,7 +19,12 @@
             </xpath>
 
             <xpath expr="//field[@name='email_cc']" position="after">
-                <field string="Sales" name="so_ids" widget="many2many_tags" />
+                <field
+                    string="Sales"
+                    name="so_ids"
+                    widget="many2many_tags"
+                    groups="sales_team.group_sale_salesman"
+                />
             </xpath>
         </field>
     </record>
