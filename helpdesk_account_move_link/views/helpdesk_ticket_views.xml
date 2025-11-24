@@ -12,6 +12,7 @@
                     name="action_view_account_move_ids"
                     invisible="not account_move_count"
                     icon="fa-pencil-square-o"
+                    groups="account.group_account_user"
                     class="oe_stat_button"
                 >
                     <field

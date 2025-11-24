@@ -7,7 +7,7 @@
         <field name="priority">75</field>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='other_info']" position="inside">
-                <group>
+                <group groups="helpdesk.group_helpdesk_user">
                     <group string="Helpdesk">
                         <field name="helpdesk_ticket_ids" widget="many2many_tags" />
                     </group>
