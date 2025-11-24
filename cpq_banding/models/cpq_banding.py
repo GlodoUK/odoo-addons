@@ -12,7 +12,7 @@ class ProductBanding(models.Model):
     _order = "display_name asc"
 
     name = fields.Char(required=True)
-
+    ref = fields.Char()
     display_name = fields.Char(
         compute="_compute_display_name",
         store=True,
