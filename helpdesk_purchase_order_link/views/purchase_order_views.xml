@@ -20,7 +20,11 @@
             </xpath>
 
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="helpdesk_ticket_ids" widget="many2many_tags" />
+                <field
+                    name="helpdesk_ticket_ids"
+                    widget="many2many_tags"
+                    groups="helpdesk.group_helpdesk_user"
+                />
             </xpath>
         </field>
     </record>
