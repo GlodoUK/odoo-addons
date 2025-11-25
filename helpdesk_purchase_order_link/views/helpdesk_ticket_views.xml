@@ -28,6 +28,7 @@
                     name="purchase_ids"
                     string="Purchase Orders"
                     widget="many2many_tags"
+                    groups="purchase.group_purchase_user"
                 />
             </xpath>
         </field>
