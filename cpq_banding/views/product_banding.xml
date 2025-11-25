@@ -37,6 +37,7 @@
 
                     <group name="first" colspan="2">
                         <field name="parent_id" class="oe_inline" />
+                        <field name="ref" />
                     </group>
 
                     <notebook>
