@@ -111,7 +111,7 @@ class SmsApi(models.AbstractModel):
             # maintain an upstream compatible _send_sms_batch response
             res.append(
                 {
-                    "res_id": message_res.get("res_id"),
+                    "res_id": message.get("res_id"),
                     "state": message_res.get("state", "success"),
                     "credit": 0,
                 }
