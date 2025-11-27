@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 ADDONS=$(manifestoo --select-addons-dir src/private list --separator=, --sort=topological)
-odoo -d ${PGDATABASE} -i ${ADDONS} --stop-after-init --max-cron-threads=0
+odoo -d ${PGDATABASE} -i ${ADDONS} --stop-after-init --max-cron-threads=0 --unaccent

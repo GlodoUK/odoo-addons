@@ -1,5 +1,5 @@
-import {patch} from "@web/core/utils/patch";
 import {QtyAtDateWidget} from "@sale_stock/widgets/qty_at_date_widget";
+import {patch} from "@web/core/utils/patch";
 import {roundDecimals} from "@web/core/utils/numbers";
 
 patch(QtyAtDateWidget.prototype, {
