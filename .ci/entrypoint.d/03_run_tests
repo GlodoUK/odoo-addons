@@ -5,4 +5,5 @@ unbuffer odoo \
     -d ${PGDATABASE} \
     -i ${ADDONS} \
     --test-enable \
+    --unaccent \
     --stop-after-init | checklog-odoo -c src/private/.checklog-odoo
