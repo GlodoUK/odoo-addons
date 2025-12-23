@@ -25,7 +25,7 @@
                 <div class="mr-3">
                     <span
                         class="o_tag position-relative d-inline-flex align-items-center user-select-none mw-100 o_badge badge rounded-pill o_tag_color_1 focus"
-                        invisible="not last_responder_is_external"
+                        invisible="not is_escalated"
                     >
                         Escalated
                     </span>
