@@ -18,6 +18,7 @@ class HelpdeskTicket(models.Model):
                     "stage_id": stage_id.id,
                 }
             )
+            ticket._sla_apply()  # Reset SLA timers
 
             if team_id.clear_assigned_on_reopen:
                 ticket.write({"user_id": False})
