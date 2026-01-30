@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="sale_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="company_currency_id" column_invisible="1" />
+
+                <field
+                    name="amount_untaxed_company"
+                    sum="Total Tax Excluded (Company Currency)"
+                    widget="monetary"
+                    optional="hide"
+                    options="{'currency_field': 'company_currency_id'}"
+                />
+
+                <field
+                    name="amount_tax_company"
+                    sum="Tax Total (Company Currency)"
+                    widget="monetary"
+                    optional="hide"
+                    options="{'currency_field': 'company_currency_id'}"
+                />
+
+                <field
+                    name="amount_total_company"
+                    sum="Total Tax Included (Company Currency)"
+                    widget="monetary"
+                    decoration-bf="1"
+                    optional="show"
+                    options="{'currency_field': 'company_currency_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
