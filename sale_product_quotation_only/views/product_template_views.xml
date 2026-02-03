@@ -6,8 +6,11 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='sale_ok']" position="after">
-                <field name="quotation_only" invisible="not sale_ok" />
+            <xpath expr="//span[field[@name='sale_ok']]" position="after">
+                <span class="d-inline-flex">
+                    <field name="quotation_only" invisible="not sale_ok" />
+                    <label for="quotation_only" invisible="not sale_ok" />
+                </span>
             </xpath>
         </field>
     </record>
