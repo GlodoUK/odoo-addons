@@ -48,11 +48,12 @@ class EdiRouteFileImporterComponent(
             job = self._job_from_ctx()
             if job:
                 msg = _(
-                    "Job <a href=# data-oe-model=queue.job"
-                    " data-oe-id=%(job_id)d>%(job_uuid)s</a> read %(file)s"
-                ) % {"job_id": job.id, "job_uuid": job.uuid, "file": file}
+                    "Job %(job)s read %(file)s",
+                    job=job._get_html_link(title=job.uuid),
+                    file=file,
+                )
             else:
-                msg = _("Read file %s") % (file,)
+                msg = _("Read file %s", file)
 
             envelope_id.message_post(body=msg)
             return envelope_id
