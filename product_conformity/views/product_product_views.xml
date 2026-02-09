@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <field name="open_conformity_alert_count" invisible="1" />
+                <div
+                    class="alert alert-danger text-center"
+                    role="alert"
+                    invisible="not open_conformity_alert_count"
+                >
+                    This product has an open conformity alert!
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='bom_count']/.." position="after">
+                <button
+                    class="oe_stat_button"
+                    name="action_view_conformity_alerts"
+                    type="object"
+                    invisible="not open_conformity_alert_count"
+                    icon="fa-exclamation-triangle"
+                >
+                    <field
+                        string="Conformity Alerts"
+                        name="open_conformity_alert_count"
+                        widget="statinfo"
+                    />
+                </button>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Conformity" name="conformity">
+                    <group>
+                        <group>
+                            <field name="conformity_enabled" />
+                            <field name="conformity_start_date" />
+                            <field name="conformity_end_date" />
+
+                            <label for="conformity_interval" string="Interval" />
+                            <div class="o_row">
+                                <field name="conformity_interval" class="oe_inline" />
+                                <field
+                                    name="conformity_interval_type"
+                                    class="oe_inline"
+                                />
+                            </div>
+
+                            <label for="conformity_quantity" string="Quantity" />
+                            <div class="o_row">
+                                <field name="conformity_quantity" class="oe_inline" />
+                                <field
+                                    name="uom_id"
+                                    class="oe_inline"
+                                    groups="uom.group_uom"
+                                    readonly="1"
+                                />
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_variant_easy_edit_view" model="ir.ui.view">
+        <field name="name">product.product.view.form.easy.conformity</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <field name="open_conformity_alert_count" invisible="1" />
+                <div
+                    class="alert alert-danger text-center"
+                    role="alert"
+                    invisible="not open_conformity_alert_count"
+                >
+                    This product has an open conformity alert!
+                </div>
+            </xpath>
+
+            <xpath expr="//group[@name='tags']" position="after">
+                <group name="conformity" string="Conformity">
+                    <field name="conformity_enabled" />
+                    <field name="conformity_start_date" />
+                    <field name="conformity_end_date" />
+
+                    <label for="conformity_interval" string="Interval" />
+                    <div class="o_row">
+                        <field name="conformity_interval" class="oe_inline" />
+                        <field name="conformity_interval_type" class="oe_inline" />
+                    </div>
+
+                    <label for="conformity_quantity" string="Quantity" />
+                    <div class="o_row">
+                        <field name="conformity_quantity" class="oe_inline" />
+                        <field
+                            name="uom_id"
+                            class="oe_inline"
+                            groups="uom.group_uom"
+                            readonly="1"
+                        />
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

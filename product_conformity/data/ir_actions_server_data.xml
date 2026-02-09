@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_pass_alerts" model="ir.actions.server">
+        <field name="name">Pass</field>
+        <field name="model_id" ref="model_product_conformity_alert" />
+        <field name="binding_model_id" ref="model_product_conformity_alert" />
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_pass()</field>
+    </record>
+
+    <record id="action_fail_alerts" model="ir.actions.server">
+        <field name="name">Fail</field>
+        <field name="model_id" ref="model_product_conformity_alert" />
+        <field name="binding_model_id" ref="model_product_conformity_alert" />
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_fail()</field>
+    </record>
+
+    <record id="action_suppress_alerts" model="ir.actions.server">
+        <field name="name">Suppress</field>
+        <field name="model_id" ref="model_product_conformity_alert" />
+        <field name="binding_model_id" ref="model_product_conformity_alert" />
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_suppress()</field>
+    </record>
+</odoo>

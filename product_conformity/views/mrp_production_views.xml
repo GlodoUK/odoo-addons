@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.form.</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <field name="open_conformity_alert_count" invisible="1" />
+                <div
+                    class="alert alert-danger text-center"
+                    role="alert"
+                    invisible="not open_conformity_alert_count"
+                >
+                    This product has an active conformity alert.
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_conformity_alerts"
+                    invisible="not open_conformity_alert_count"
+                    icon="fa-exclamation-triangle"
+                >
+                    <field
+                        name="open_conformity_alert_count"
+                        widget="statinfo"
+                        string="Conformity Alerts"
+                    />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
