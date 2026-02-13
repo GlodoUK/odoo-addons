@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+    <t t-inherit="cpq.ProductTmplAttrib" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('mb-2')]//input[@t-if]" position="attributes">
+            <attribute
+                name="t-if"
+            >ptav.cpq_custom_type !== 'many2one' and ptav.cpq_custom_type !== 'banding'</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('mb-2')]//input[@t-if]" position="after">
+            <select
+                t-elif="ptav.cpq_custom_type === 'banding'"
+                class="form-select"
+                t-att-data-ptav-id="ptav.id"
+                t-on-change="onCustomInput"
+            >
+                <option value="" />
+                <option
+                    t-foreach="ptav.cpq_selection_values"
+                    t-as="i"
+                    t-key="i[0]"
+                    t-att-value="i[0]"
+                    t-att-selected="props.selected[ptav.id] == i[0]"
+                    t-esc="i[1]"
+                />
+            </select>
+        </xpath>
+    </t>
+</templates>

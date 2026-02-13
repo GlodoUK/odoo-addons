@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_attribute_view_form" model="ir.ui.view">
+        <field name="name">product.attribute.form</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form" />
+        <field name="model">product.attribute</field>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='value_ids']/list/field[@name='cpq_custom_type']"
+                position="after"
+            >
+                <field
+                    name="cpq_banding_id"
+                    invisible="not is_custom or cpq_custom_type != 'banding'"
+                />
+                <field
+                    name="cpq_banding_relaxed_validation"
+                    invisible="not is_custom or cpq_custom_type != 'banding'"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
