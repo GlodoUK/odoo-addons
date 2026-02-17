@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="cpq_ok" />
+                    <label for="cpq_ok" />
+                </span>
+            </xpath>
+
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button
+                        string="Configure Product"
+                        type="object"
+                        name="configure_cpq_dialog"
+                        invisible="not cpq_ok"
+                        icon="fa-wrench"
+                        class="btn btn-secondary"
+                    />
+                </header>
+            </xpath>
+
+            <xpath expr="//page[@name='variants']" position="after">
+                <page
+                    string="CPQ"
+                    name="cpq_options"
+                    invisible="not cpq_ok"
+                >
+                    <group>
+                        <field
+                            name="cpq_tooltip"
+                            string=""
+                            class="font-italic text-muted"
+                            colspan="2"
+                            nolabel="1"
+                        />
+                        <field name="cpq_ref" />
+                        <p colspan="2" class="text-muted">
+                            The reference for this configurable template. This is shared by all variants.
+                        </p>
+
+                        <field name="cpq_ref_mode" />
+                        <p colspan="2" class="text-muted">
+                            When enabled, dynamically generate variant internal references.
+                        </p>
+
+                        <field
+                            name="cpq_ref_tmpl"
+                            invisible="cpq_ref_mode != 'inline'"
+                        />
+
+                        <field
+                            name="cpq_ref_code"
+                            options="{'mode': 'python'}"
+                            widget="ace"
+                            invisible="cpq_ref_mode != 'code'"
+                        />
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute name="invisible">product_variant_count &gt; 1 or cpq_ok</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='variants']" position="inside">
+                <p
+                    class="text-muted"
+                    invisible="not cpq_ok"
+                >
+                <strong
+                    >Warning</strong>: Removing attributes or attribute values from a configurable product should be carefully carried out, especially if there are BoMs involved as these will not automatically change.
+                    Removing an attribute will automatically archive any products which are now invalid.
+                </p>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_template_kanban_view_inherited" model="ir.ui.view">
+        <field name="name">Product.template.product.kanban</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="cpq_ok" />
+            </xpath>
+            <!-- <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
+                <a
+                    name="configure_cpq_dialog"
+                    type="object"
+                    invisible="not cpq_ok"
+                    style="margin-right: 8px"
+                >
+                    <i class="fa fa-wrench fa-lg" title="Configure Product" />
+                </a>
+            </xpath> -->
+        </field>
+    </record>
+
+    <!-- <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product_template_search_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='consumable']" position="after">
+                <separator />
+                <filter
+                    string="Configurable Products"
+                    name="cpq_products"
+                    domain="[('cpq_ok', '=', True)]"
+                />
+            </xpath>
+        </field>
+        </record> -->
+
+</odoo>

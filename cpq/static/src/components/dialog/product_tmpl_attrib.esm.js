@@ -1,101 +1,107 @@
-/** @odoo-module */
+/** @odoo-module **/
 
-const {Component} = owl;
+import { Component } from "@odoo/owl";
 
-class ProductTmplAttrib extends Component {
-    // --------------------------------------------------------------------------
-    // Handlers
-    // --------------------------------------------------------------------------
-    //
-
-    stringify() {
-        return JSON.stringify(this.props.attribute);
-    }
-
-    // --------------------------------------------------------------------------
-    // Private
-    // --------------------------------------------------------------------------
-
-    /**
-     * Return template name to use by checking the display type in the props.
-     *
-     * Each attribute line can have one of this four display types:
-     *      - 'Color'  : Display each attribute as a circle filled with said color.
-     *      - 'Pills'  : Display each attribute as a rectangle-shaped element.
-     *      - 'Radio'  : Display each attribute as a radio element.
-     *      - 'Select' : Display each attribute in a selection tag.
-     *
-     * @returns {String} - The template name to use.
-     */
-    getPTAVTemplate() {
-        switch (this.props.attribute.display_type) {
-            case "color":
-                return "cpq.ProductTmplAttrib-color";
-            case "pills":
-            case "radio":
-                return "cpq.ProductTmplAttrib-radio";
-            case "select":
-                return "cpq.ProductTmplAttrib-select";
-        }
-    }
-
-    isSelectedPTAVCustom() {
-        if (!this.props.attribute || !this.props.selected) {
-            return false;
-        }
-
-        if (!this.props.attribute.ptav_ids) {
-            return false;
-        }
-
-        return false;
-    }
-}
-
-ProductTmplAttrib.template = "cpq.ProductTmplAttrib";
-ProductTmplAttrib.props = {
-    id: Number,
-    attribute: {
-        type: Object,
-        shape: {
-            id: Number,
-            name: String,
-            display_type: {
-                type: String,
-                validate: (type) =>
-                    ["color", "pills", "radio", "select"].includes(type),
-            },
-            ptav_ids: {
-                type: Array,
-                element: {
-                    type: Object,
-                    shape: {
-                        id: Number,
-                        name: String,
-                        // Backend sends 'false' when there is no color
-                        html_color: [Boolean, String],
-                        is_custom: Boolean,
-                        price_extra: Number,
-                        excluded: {type: Boolean, optional: true},
-                        cpq_custom_type: [Boolean, String],
-                        cpq_selection_values: {
-                            optional: true,
-                            type: Array,
-                            element: {
+export default class ProductTmplAttrib extends Component {
+    static template = "cpq.ProductTmplAttrib";
+    static props = {
+        id: Number,
+        attribute: {
+            type: Object,
+            shape: {
+                id: Number,
+                name: String,
+                display_type: {
+                    type: String,
+                    validate: (type) => ["color", "pills", "radio", "select"].includes(type),
+                },
+                ptav_ids: {
+                    type: Array,
+                    element: {
+                        type: Object,
+                        shape: {
+                            id: Number,
+                            name: String,
+                            html_color: [Boolean, String],
+                            is_custom: Boolean,
+                            price_extra: Number,
+                            excluded: { type: Boolean, optional: true },
+                            cpq_custom_type: [Boolean, String],
+                            cpq_selection_values: {
+                                optional: true,
                                 type: Array,
+                                element: {
+                                    type: Array,
+                                },
                             },
                         },
                     },
                 },
             },
         },
-    },
-    selected: {
-        type: Object,
-        optional: true,
-    },
-    onSelect: {type: "function"},
-    onCustom: {type: "function"},
-};
+        selected: { type: Object },
+        onSelect: Function,
+        onCustom: Function,
+    };
 
-export default ProductTmplAttrib;
+    getPTAVTemplate() {
+        switch (this.props.attribute.display_type) {
+            case "color":
+                return "cpq.ProductTmplAttribColor";
+            case "pills":
+            case "radio":
+                return "cpq.ProductTmplAttribRadio";
+            case "select":
+                return "cpq.ProductTmplAttribSelect";
+            default:
+                return "cpq.ProductTmplAttribSelect";
+        }
+    }
+
+    isSelected(ptavId) {
+        return Object.prototype.hasOwnProperty.call(this.props.selected, ptavId);
+    }
+
+    get hasCustomPTAV() {
+        return this.props.attribute.ptav_ids.some((ptav) => ptav.is_custom);
+    }
+
+    get selectedCustomPTAVs() {
+        return this.props.attribute.ptav_ids.filter(
+            (ptav) => ptav.is_custom && this.isSelected(ptav.id)
+        );
+    }
+
+    onSelect(ev) {
+        this.props.onSelect(this.props.id, ev.target.value);
+    }
+
+    onCustom(ptavId, ev) {
+        this.props.onCustom(ptavId, ev.target.value);
+    }
+
+    onCustomInput(ev) {
+        const ptavId = parseInt(ev.target.dataset.ptavId, 10);
+        this.props.onCustom(ptavId, ev.target.value);
+    }
+
+    getCustomInputType(ptav) {
+        if ([false, "char"].includes(ptav.cpq_custom_type)) {
+            return "text";
+        }
+        if (["float", "integer"].includes(ptav.cpq_custom_type)) {
+            return "number";
+        }
+        return "text";
+    }
+
+    getCustomStep(ptav) {
+        if (ptav.cpq_custom_type === "float") {
+            return "0.01";
+        }
+        if (ptav.cpq_custom_type === "integer") {
+            return "1";
+        }
+        return undefined;
+    }
+}

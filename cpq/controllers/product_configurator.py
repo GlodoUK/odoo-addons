@@ -1,4 +1,3 @@
-from odoo import _
 from odoo.exceptions import UserError
 from odoo.http import Controller, request, route
 
@@ -27,7 +26,7 @@ class ProductConfiguratorController(Controller):
 
         return (ptav_ids, custom_dict)
 
-    @route("/cpq/<int:product_tmpl_id>/data", type="json", auth="user")
+    @route("/cpq/<int:product_tmpl_id>/data", type="jsonrpc", auth="user")
     def cpq_tmpl_data(
         self,
         product_tmpl_id,
@@ -37,11 +36,11 @@ class ProductConfiguratorController(Controller):
     ):
         product_tmpl_id = request.env["product.template"].browse(product_tmpl_id)
         if not product_tmpl_id.cpq_ok:
-            raise UserError(_("Not a CPQ enabled product!"))
+            raise UserError(request.env._("Not a CPQ enabled product!"))
 
         return product_tmpl_id._cpq_get_combination_info()
 
-    @route("/cpq/<int:product_tmpl_id>/validate", type="json", auth="user")
+    @route("/cpq/<int:product_tmpl_id>/validate", type="jsonrpc", auth="user")
     def cpq_validate(
         self,
         product_tmpl_id,
@@ -51,7 +50,7 @@ class ProductConfiguratorController(Controller):
         if not product_tmpl_id.cpq_ok:
             return {
                 "valid": False,
-                "msg": _("Not CPQ Enabled!"),
+                "msg": request.env._("Not CPQ Enabled!"),
             }
 
         (ptav_ids, custom_dict) = self._cpq_extract_from_combination(
@@ -70,7 +69,7 @@ class ProductConfiguratorController(Controller):
             "errors": msg,
         }
 
-    @route("/cpq/<int:product_tmpl_id>/configure", type="json", auth="user")
+    @route("/cpq/<int:product_tmpl_id>/configure", type="jsonrpc", auth="user")
     def cpq_configure(
         self,
         product_tmpl_id,
@@ -78,7 +77,7 @@ class ProductConfiguratorController(Controller):
     ):
         product_tmpl_id = request.env["product.template"].sudo().browse(product_tmpl_id)
         if not product_tmpl_id.cpq_ok:
-            raise UserError(_("Not a CPQ enabled product!"))
+            raise UserError(request.env._("Not a CPQ enabled product!"))
 
         (ptav_ids, custom_dict) = self._cpq_extract_from_combination(
             product_tmpl_id, combination

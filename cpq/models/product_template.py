@@ -1,6 +1,6 @@
 import copy
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import (
     format_amount,
@@ -31,109 +31,37 @@ ref = ""
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    cpq_ok = fields.Boolean(string="Configurable Product?")
-    cpq_ref = fields.Char(
-        string="Configurable Internal Reference",
-        index=True,
-        help="Reference for this configurable template",
+    cpq_ok = fields.Boolean(
+        "CPQ",
     )
+
+    cpq_ref = fields.Char(
+        "CPQ Internal Reference",
+        help="Reference for this configurable template",
+        index=True,
+    )
+
     cpq_ref_mode = fields.Selection(
-        [
-            ("none", "No"),
-            ("inline", "Using Inline QWeb"),
-            ("code", "Using Python Code"),
-        ],
+        [("none", "No"), ("inline", "Using Inline QWeb"), ("code", "Using Python Code")],
+        "Dynamic Configurable Variant Internal Reference",
         default="inline",
         required=True,
-        string="Dynamic Configurable Variant Internal Reference",
     )
-    cpq_ref_tmpl = fields.Text(
-        string="Configurable Internal Reference Inline QWeb Template",
-        help="Inline QWeb Template for generating dynamic variant internal reference",
-    )
+
     cpq_ref_code = fields.Text(
+        "CPQ Internal Reference Using Python Code",
         default=DEFAULT_CPQ_REF_CODE,
-        string="Configurable Internal Reference using Python Code",
         help="Code for generating dynamic variant internal reference",
     )
-    cpq_tooltip = fields.Html(compute="_compute_cpq_tooltip")
 
-    def _cpq_tooltip_items(self):
-        self.ensure_one()
-        return [
-            _("Configurable Products will generate their product variants on demand."),
-            _(
-                "Configurable Products allow for custom "
-                "inputs to be propagated through the system."
-            ),
-        ]
+    cpq_ref_tmpl = fields.Text(
+        "CPQ Internal Reference Inline QWeb Template",
+        help="Inline QWeb Template for generating dynamic variant internal reference",
+    )
 
-    @api.depends("cpq_ok")
-    def _compute_cpq_tooltip(self):
-        for record in self:
-            if not record.cpq_ok:
-                record.cpq_tooltip = False
-                continue
-            record.cpq_tooltip = "".join(
-                [f"<p>{i}</p>" for i in self._cpq_tooltip_items()]
-            )
-
-    @api.depends("product_variant_ids.product_tmpl_id")
-    def _compute_product_variant_count(self):
-        """
-        For cpq products return the number of variants configured or at least 1.
-
-        Many views and methods trigger only when a template has at least
-        one variant attached, and need them to function appropriately.
-        """
-        res = super()._compute_product_variant_count()
-        for record in self.filtered(lambda p: p.cpq_ok and not p.product_variant_ids):
-            record.product_variant_count = 1
-        return res
-
-    @api.depends("cpq_ok", "product_variant_ids", "product_variant_ids.default_code")
-    def _compute_default_code(self):
-        todo = self
-        for record in self.filtered(lambda r: r.cpq_ok):
-            record.default_code = False
-            todo -= record
-        return super(ProductTemplate, todo)._compute_default_code()
-
-    def _set_default_code(self):
-        return super(
-            ProductTemplate, self.filtered(lambda r: not r.cpq_ok)
-        )._set_default_code()
-
-    def _onchange_cpq_ok_warning_msg(self):
-        self.ensure_one()
-
-        return [
-            "Switching a product to/from configurable when there are"
-            " pre-existing variants will almost certainly have an unexpected"
-            " outcome. ",
-            "It is suggested either to archive the existing"
-            " product and create a new one, or archive/delete all"
-            " existing variants, unless you are 100%"
-            " sure that you are not introducing incompatibilities"
-            " into the system.",
-        ]
-
-    @api.onchange("cpq_ok")
-    def _onchange_cpq_ok(self):
-        if not self._origin:
-            return
-
-        if self._origin.cpq_ok != self.cpq_ok and self.product_variant_ids:
-            return {
-                "warning": {
-                    "title": _("Changing Configurable is Dangerous"),
-                    "message": _("\n\n".join(self._onchange_cpq_ok_warning_msg())),
-                }
-            }
-
-    def toggle_cpq(self):
-        for record in self:
-            record.cpq_ok = not record.cpq_ok
+    cpq_tooltip = fields.Html(
+        compute="_compute_cpq_tooltip",
+    )
 
     def configure_cpq_dialog(self):
         self.ensure_one()
@@ -145,17 +73,81 @@ class ProductTemplate(models.Model):
             "target": "self",
         }
 
+    def write(self, vals):
+        res = super().write(vals)
+        if "attribute_line_ids" in vals:
+            self._cpq_archive_impossible_configurations()
+        return res
+
+    # ruff: noqa: E501
+    @api.model
+    def _cpq_tooltip_items(self):
+        return [
+            self.env._("Configurable Products will generate their product variants on demand."),
+            self.env._("Configurable Products allow for custom inputs to be propagated through the system."),
+        ]
+
+    @api.depends("cpq_ok")
+    def _compute_cpq_tooltip(self):
+        for template in self:
+            if not template.cpq_ok:
+                template.cpq_tooltip = False
+                continue
+            template.cpq_tooltip = "".join(
+                [f"<p>{i}</p>" for i in self._cpq_tooltip_items()]
+            )
+
+    @api.depends("cpq_ok", "product_variant_ids.default_code")
+    def _compute_default_code(self):
+        todo = self
+        for record in self.filtered(lambda r: r.cpq_ok):
+            record.default_code = False
+            todo -= record
+        return super(ProductTemplate, todo)._compute_default_code()
+
+    def _set_default_code(self):
+        return super(
+            ProductTemplate,
+            self.filtered(lambda t: not t.cpq_ok)
+        )._set_default_code()
+
+    @api.depends("product_variant_ids.product_tmpl_id")
+    def _compute_product_variant_count(self):
+        """Ensure CPQ products always report at least one variant."""
+        res = super()._compute_product_variant_count()
+        for template in self.filtered(lambda p: p.cpq_ok and not p.product_variant_ids):
+            template.product_variant_count = 1
+        return res
+
+    # noqa: ruff: E501
+    @api.model
+    def _onchange_cpq_ok_warning_msg(self):
+        return [
+            "Changing CPQ when there are existing variants will almost certainly have an unexpected outcome.",
+            "Archive this product and create a new one, or archive all existing variants first."
+        ]
+
+    @api.onchange("cpq_ok")
+    def _onchange_cpq_ok(self):
+        if self._origin and self._origin.cpq_ok != self.cpq_ok and self.product_variant_ids:
+            return {
+                "warning": {
+                    "title": self.env._("Changing CPQ Products Is Dangerous!"),
+                    "message": self.env._("\n".join(self._onchange_cpq_ok_warning_msg())),
+                }
+            }
+
     def _create_variant_ids(self):
         """
-        Prevent cpq products from creating variants as these serve
+        Prevent CPQ products from creating variants as these serve
         only as a template for the product configurator
         """
         templates = self.filtered(lambda t: not t.cpq_ok)
         if not templates:
-            return None
+            return
         return super(ProductTemplate, templates)._create_variant_ids()
 
-    def _cpq_get_create_variant_vals(self, pta_value_ids, custom_dict=None):
+    def _cpq_get_create_variant_vals(self, ptav_ids, custom_dict=None):
         self.ensure_one()
 
         cpq_custom_values = []
@@ -177,7 +169,7 @@ class ProductTemplate(models.Model):
 
         vals = {
             "product_tmpl_id": self.id,
-            "product_template_attribute_value_ids": [(6, 0, pta_value_ids.ids)],
+            "product_template_attribute_value_ids": [(6, 0, ptav_ids.ids)],
             "cpq_custom_value_ids": cpq_custom_values or False,
         }
 
@@ -199,13 +191,13 @@ class ProductTemplate(models.Model):
         errors = []
 
         if not self.cpq_ok:
-            msg = _("%s is not a CPQ Enabled Product!") % (self.display_name)
+            msg = self.env._("%s is not a CPQ Enabled Product!") % (self.display_name)
             if raise_on_invalidity:
                 raise UserError(msg)
             return (False, msg)
 
         if not ptav_ids:
-            msg = _(
+            msg = self.env._(
                 "%s could not be configured - did not receive any product"
                 "template attribute values!"
             ) % (self.display_name)
@@ -236,7 +228,7 @@ class ProductTemplate(models.Model):
             if not self.env.context.get("skip_cpq_validate_ptav_ids"):
                 # we allow this to be disabled for CoGs explosions
                 if ptav_id not in valid_product_tmpl_ptav_ids:
-                    msg = _(
+                    msg = self.env._(
                         "Unknown product template attribute value %(key)s for %(tmpl)s"
                     ) % {
                         "key": ptav_id,
@@ -258,7 +250,7 @@ class ProductTemplate(models.Model):
 
             if ptav_id in matched_ptav_ids:
                 # have we seen this more than once when we should not have?
-                msg = _("%s - product template attribute value seen multiple times") % (
+                msg = self.env._("%s - product template attribute value seen multiple times") % (
                     self
                 )
                 if raise_on_invalidity:
@@ -274,7 +266,7 @@ class ProductTemplate(models.Model):
                 ) and not ptav_id.product_attribute_value_id._cpq_validate_custom(
                     custom_dict.get(ptav_id)
                 ):
-                    msg = _("Custom value '%(name)s' invalid: '%(value)s'") % {
+                    msg = self.env._("Custom value '%(name)s' invalid: '%(value)s'") % {
                         "name": ptav_id.display_name,
                         "value": custom_dict.get(ptav_id),
                     }
@@ -298,10 +290,10 @@ class ProductTemplate(models.Model):
         if not is_possible and not self.env.context.get("skip_cpq_validate_ptav_ids"):
             is_possible_ptals = self.valid_product_template_attribute_line_ids._without_no_variant_attributes()  # noqa: E501
 
-            extra_info = _("Likely exclusion is configured. Please check.")
+            extra_info = self.env._("Likely exclusion is configured. Please check.")
 
             if len(combination_ptav_ids) != len(is_possible_ptals):
-                extra_info = _(
+                extra_info = self.env._(
                     "Missing configuration options. Found %(found)s,"
                     " expected %(expected)s. "
                 ) % {
@@ -313,13 +305,13 @@ class ProductTemplate(models.Model):
                     is_possible_ptals - combination_ptav_ids.attribute_line_id
                 )
                 if is_possible_ptals_missing_ids:
-                    extra_info += _("Suspected missing options: %(suspected)s ") % {
+                    extra_info += self.env._("Suspected missing options: %(suspected)s ") % {
                         "suspected": ", ".join(
                             is_possible_ptals_missing_ids.mapped("display_name")
                         )
                     }
 
-            msg = _(
+            msg = self.env._(
                 "%(tmpl_name)s configuration is not possible by configuration.\n"
                 "Using configuration: %(configuration)s\n"
                 "%(extra_info)s\n"
@@ -368,6 +360,7 @@ class ProductTemplate(models.Model):
 
     def _cpq_get_create_variant(self, ptav_ids, custom_dict):
         self.ensure_one()
+
         (
             search_domain,
             matched_custom_dict,
@@ -379,7 +372,7 @@ class ProductTemplate(models.Model):
         variant_ids = self.env["product.product"].search(search_domain)
 
         if variant_ids:
-            variant_id = fields.first(variant_ids)
+            variant_id = next(iter(variant_ids), variant_ids)
             return self._cpq_get_create_variant_post_find_hook(variant_id)
 
         variant_id = (
@@ -392,12 +385,12 @@ class ProductTemplate(models.Model):
         )
         variant_id = self._cpq_get_create_variant_post_create_hook(variant_id)
         variant_id.message_post(
-            body=_("Product created via CPQ wizard"),
+            body=self.env._("Product created via CPQ wizard"),
             author_id=self.env.user.partner_id.id,
         )
         if variant_id.cpq_combination_indices != cpq_combination_indices:
             raise ValidationError(
-                _(
+                self.env._(
                     "Possible programming error, cpq_combination_indices"
                     " mismatch. Found %(found)s, expected %(expected)s"
                 )
@@ -409,7 +402,7 @@ class ProductTemplate(models.Model):
 
         if variant_id.cpq_custom_combination_indices != cpq_custom_combination_indices:
             raise ValidationError(
-                _(
+                self.env._(
                     "Possible programming error, cpq_custom_combination_indices"
                     " mismatch. Found %(found)s, expected %(expected)s"
                 )
@@ -421,18 +414,21 @@ class ProductTemplate(models.Model):
 
         return variant_id
 
+    @api.model
     def _cpq_get_create_variant_post_find_hook(self, variant_id):
         return variant_id
 
     def _cpq_get_variant_ref(self, variant_id):
         self.ensure_one()
+        variant_id.ensure_one()
+
         if self.cpq_ref_mode == "none":
             return False
 
         if self.cpq_ref_mode == "inline":
             return self._cpq_render_inline_template(
                 self.cpq_ref_tmpl,
-                extras={
+                render_values={
                     "record": variant_id,
                     "tmpl": self,
                 },
@@ -444,8 +440,11 @@ class ProductTemplate(models.Model):
                 "tmpl": self,
             }
             safe_eval(
-                self.cpq_ref_code, eval_context, mode="exec", nocopy=True
-            )  # nocopy allows to return 'ref'
+                self.cpq_ref_code,
+                eval_context,
+                mode="exec",
+                nocopy=True, # nocopy allows to return 'ref'
+            )
             return eval_context.get("ref")
 
     def _cpq_get_create_variant_post_create_hook(self, variant_id):
@@ -474,16 +473,16 @@ class ProductTemplate(models.Model):
             ],
         }
 
-    def _cpq_render_inline_template(self, template, extras=None):
+    def _cpq_render_inline_template(self, template, render_values=None):
         template_instructions = parse_inline_template(str(template))
         is_dynamic = len(template_instructions) > 1 or template_instructions[0][1]
         if is_dynamic:
-            render_env = self._cpq_render_inline_template_context(extras)
+            render_env = self._cpq_render_inline_template_context(render_values)
             return render_inline_template(template_instructions, render_env)
         return template
 
     @api.model
-    def _cpq_render_inline_template_context(self, extras=None):
+    def _cpq_render_inline_template_context(self, render_values=None):
         """
         Evaluation context used in all rendering engines.
         Contains
@@ -510,36 +509,31 @@ class ProductTemplate(models.Model):
             ),
             "format_duration": lambda value: format_duration(value),
             "user": self.env.user,
-            "ctx": self._context,
+            "ctx": self.env.context,
             "is_html_empty": is_html_empty,
         }
         render_context.update(copy.copy(template_env_globals))
 
-        if extras and isinstance(extras, dict):
-            render_context.update(extras)
+        if render_values and isinstance(render_values, dict):
+            render_context.update(render_values)
 
         return render_context
-
-    def write(self, vals):
-        res = super().write(vals)
-        if "attribute_line_ids" in vals:
-            self._cpq_archive_impossible_configurations()
-        return res
 
     def _cpq_archive_impossible_configurations(self):
         archived = self.env["product.product"].with_context(active_test=False)
 
-        for record in self.filtered(lambda p: p.cpq_ok):
-            for variant in record.product_variant_ids:
+        for template in self.filtered(lambda t: t.cpq_ok):
+            for variant in template.product_variant_ids:
                 is_combination_possible = self._is_combination_possible_by_config(
                     combination=variant.product_template_attribute_value_ids,
                     ignore_no_variant=True,
                 )
+
                 if not is_combination_possible:
                     archived |= variant
                     variant.active = False
                     variant.message_post(
-                        body=_(
+                        body=self.env._(
                             "Auto-archived as no longer possible by configuration"
                             " (CPQ) through attribute change."
                         )

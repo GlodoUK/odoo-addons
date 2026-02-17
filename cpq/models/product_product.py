@@ -1,105 +1,48 @@
-import hashlib
-
-from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
-
-
-class ProductAttributeCustomValue(models.Model):
-    _name = "product.product.cpq.custom.value"
-    _description = "Product Variant CPQ Custom Value"
-    _order = "ptav_id, id"
-
-    name = fields.Char(compute="_compute_name", store=True)
-    product_id = fields.Many2one(
-        "product.product",
-        index=True,
-        required=True,
-        ondelete="cascade",
-    )
-    ptav_id = fields.Many2one(
-        "product.template.attribute.value",
-        string="Attribute Value",
-        required=True,
-        ondelete="restrict",
-        index=True,
-    )
-    custom_value = fields.Char()
-    hash = fields.Char(compute="_compute_hash", store=True, index=True)
-
-    @api.depends("ptav_id.display_name", "custom_value")
-    def _compute_name(self):
-        for record in self:
-            record.name = f"{record.ptav_id.display_name}: {record.custom_value}"
-
-    @api.depends("ptav_id", "custom_value")
-    def _compute_hash(self):
-        for record in self:
-            record.hash = self._generate_hash(record.ptav_id, record.custom_value)
-
-    @api.model
-    def _generate_hash(self, ptav_id, custom_value):
-        return "{}/{}".format(
-            ptav_id.id, hashlib.sha1(str(custom_value).encode("utf-8")).hexdigest()
-        )
-
-    def _ids2str(self):
-        return ",".join(sorted(self.mapped("hash")))
-
-    @api.constrains("ptav_id")
-    def _ensure_ptav_propagate_to_variant(self):
-        if self.filtered(lambda v: not v.ptav_id.cpq_propagate_to_variant):
-            raise ValidationError(
-                _(
-                    "Attempting to propagate variant to custom values, however"
-                    " it is marked as no propagate"
-                )
-            )
-
-    _sql_constraints = [
-        (
-            "product_ptav_uniq",
-            "unique (product_id, ptav_id)",
-            "Duplicate CPQ custom value",
-        ),
-    ]
+from odoo import api, fields, models
 
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
     cpq_preset = fields.Boolean()
+
+    cpq_combination_indices = fields.Char(
+        "Configurable Combination Indices",
+        compute="_compute_cpq_combination_indices",
+        index=True,
+        store=True,
+    )
+
+    cpq_custom_combination_indices = fields.Char(
+        "Configurable Custom Value Indices",
+        compute="_compute_cpq_combination_indices",
+        index=True,
+        store=True,
+    )
+
     cpq_custom_value_ids = fields.One2many(
         "product.product.cpq.custom.value",
         "product_id",
+        "Configurable Custom Values",
         readonly=True,
-        string="Configurable Custom Values",
-    )
-    cpq_combination_indices = fields.Char(
-        compute="_compute_cpq_combination_indices",
-        store=True,
-        index=True,
-        string="Configurable Combination Indices",
-    )
-    cpq_custom_combination_indices = fields.Char(
-        compute="_compute_cpq_combination_indices",
-        store=True,
-        index=True,
-        string="Configurable Custom Value Indices",
     )
 
-    @api.depends("cpq_custom_value_ids.hash", "product_template_attribute_value_ids")
+    @api.depends(
+        "cpq_custom_value_ids.hash",
+        "product_template_attribute_value_ids"
+    )
     def _compute_cpq_combination_indices(self):
-        for record in self:
-            if not record.cpq_ok:
-                record.cpq_combination_indices = False
-                record.cpq_custom_combination_indices = False
+        for product in self:
+            if not product.cpq_ok:
+                product.cpq_combination_indices = False
+                product.cpq_custom_combination_indices = False
                 continue
 
-            record.cpq_combination_indices = (
-                record.product_template_attribute_value_ids._ids2str()
+            product.cpq_combination_indices = (
+                product.product_template_attribute_value_ids._ids2str()
             )
-            record.cpq_custom_combination_indices = (
-                record.cpq_custom_value_ids._ids2str()
+            product.cpq_custom_combination_indices = (
+                product.cpq_custom_value_ids._ids2str()
             )
 
     @api.depends(
@@ -115,15 +58,12 @@ class ProductProduct(models.Model):
             product.combination_indices = False
         return res
 
-    def name_get(self):
-        res = dict(super().name_get())
+    def _compute_display_name(self):
+        super()._compute_display_name()
 
         for record in self.sudo().filtered(lambda p: p.cpq_ok):
-            # This was the least duplicate inducing version of this that I could
-            # think of.
-
             # Find the original calculated variant name, and then string replace
-            # it
+            # it with custom value info
             original_variant_name = (
                 record.product_template_attribute_value_ids._get_combination_name()
             )
@@ -140,15 +80,16 @@ class ProductProduct(models.Model):
 
                 variant_combination.append(custom_info_dict.get(ptav_id))
 
-            res[record.id] = res[record.id].replace(
-                original_variant_name, ", ".join(variant_combination)
-            )
-
-        return list(res.items())
+            if original_variant_name:
+                record.display_name = record.display_name.replace(
+                    original_variant_name, ", ".join(variant_combination)
+                )
 
     def _cpq_combination_tuples(self):
         self.ensure_one()
+
         data = []
+
         custom_info_dict = {i.ptav_id.id: i for i in self.cpq_custom_value_ids}
 
         for ptav_id in self.product_template_attribute_value_ids:

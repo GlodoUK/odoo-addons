@@ -1,3 +1,4 @@
+from odoo.fields import Command
 from odoo.tests.common import TransactionCase
 
 
@@ -7,6 +8,8 @@ class TestCpqCommon(TransactionCase):
         super().setUpClass()
 
         cls.prod_attrib_colour = cls.env["product.attribute"].create({"name": "Colour"})
+
+
         cls.prod_attrib_colour_red = cls.env["product.attribute.value"].create(
             {"name": "red", "attribute_id": cls.prod_attrib_colour.id, "sequence": 1}
         )
@@ -45,5 +48,41 @@ class TestCpqCommon(TransactionCase):
                 "is_custom": True,
                 "cpq_custom_type": "integer",
                 "sequence": 4,
+            }
+        )
+
+        cls.prod_attrib_weight = cls.env["product.attribute"].create({"name": "Weight"})
+        cls.prod_attrib_weight_custom = cls.env["product.attribute.value"].create(
+            {
+                "name": "custom",
+                "attribute_id": cls.prod_attrib_weight.id,
+                "is_custom": True,
+                "cpq_custom_type": "float",
+                "sequence": 1,
+            }
+        )
+
+        cls.product_tmpl = cls.env["product.template"].create(
+            {
+                "name": "CPQ Test Product",
+                "cpq_ok": True,
+                "type": "consu",
+                "attribute_line_ids": [
+                    Command.create(
+                        {
+                            "attribute_id": cls.prod_attrib_colour.id,
+                            "value_ids": [
+                                Command.set(
+                                    [
+                                        cls.prod_attrib_colour_red.id,
+                                        cls.prod_attrib_colour_blue.id,
+                                        cls.prod_attrib_colour_green.id,
+                                        cls.prod_attrib_colour_custom.id,
+                                    ]
+                                ),
+                            ],
+                        }
+                    ),
+                ],
             }
         )

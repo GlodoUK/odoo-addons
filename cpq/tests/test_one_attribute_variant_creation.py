@@ -6,8 +6,9 @@ COW_PRINT = "Cow Print"
 
 
 class TestOneAttributeVariantCreation(TestCpqCommon):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(self):
+        super().setUpClass()
 
         self.variant_creation_vals = {
             "name": "Chair",
