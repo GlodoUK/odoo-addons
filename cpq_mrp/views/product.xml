@@ -8,15 +8,15 @@
             ref="stock.product_template_form_view_procurement_button"
         />
         <field name="priority">99</field>
-        <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]" />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_open_product_lot']" position="after">
                 <button
                     class="oe_stat_button"
                     name="action_view_cpq_dynamic_bom"
                     type="object"
-                    attrs="{'invisible':['|', ('cpq_ok', '=', False), ('cpq_dynamic_bom_count', '=', 0)]}"
+                    invisible="not cpq_ok or cpq_dynamic_bom_count == 0"
                     icon="fa-flask"
+                    groups="mrp.group_mrp_user"
                 >
                     <field
                         string="Dynamic Bill of Materials"

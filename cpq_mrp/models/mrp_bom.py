@@ -1,4 +1,4 @@
-from odoo import _, api, models
+from odoo import api, models
 
 
 class MrpBom(models.Model):
@@ -17,12 +17,12 @@ class MrpBom(models.Model):
             )
             if cpq_dynamic_bom_count > 0:
                 res["warning"] = {
-                    "title": _("Configurable BoMs Exist"),
-                    "message": _(
-                        "There are already %d configurable BoMs for this product!"
-                        " Attempting to use both standard BoMs and configurable"
-                        " BoMs will result in inconsistent BoM handling!"
-                    )
-                    % cpq_dynamic_bom_count,
+                    "title": self.env._("Configurable BoMs Exist"),
+                    "message": self.env._(
+                        "There are already %(bom_count)d configurable BoMs for this product!"  # noqa: E501
+                        " Attempting to use both standard BoMs and configurable"  # noqa: E501
+                        " BoMs will result in inconsistent BoM handling!",
+                        bom_count=cpq_dynamic_bom_count,
+                    ),
                 }
         return res

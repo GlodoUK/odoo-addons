@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class ProductAttribute(models.Model):
@@ -39,7 +39,7 @@ class ProductTemplate(models.Model):
         res = super()._cpq_tooltip_items()
         res.extend(
             [
-                _(
+                self.env._(
                     "Configurable Products can be used in conjunction with"
                     " Configurable Dynamic BoMs to generate kits and manufacturing"
                     " orders dynamically, on-demand."
@@ -51,7 +51,7 @@ class ProductTemplate(models.Model):
             res.extend(
                 [
                     "<b class='text-danger'>{}</b>".format(
-                        _(
+                        self.env._(
                             "You have both Standard and Configurable BoMs"
                             " configured! This will result in inconsistent BoM"
                             " handling!"
@@ -77,7 +77,7 @@ class ProductTemplate(models.Model):
     def action_view_cpq_dynamic_bom(self):
         return {
             "type": "ir.actions.act_window",
-            "name": _("Configurable Products Bill of Materials"),
+            "name": self.env._("Configurable Products Bill of Materials"),
             "res_model": "cpq.dynamic.bom",
             "view_mode": "form",
             "res_id": self.cpq_dynamic_bom_ids.id,
@@ -90,7 +90,7 @@ class ProductTemplate(models.Model):
                     lambda p: p.cpq_ok and p.cpq_dynamic_bom_ids
                 ):
                     record.cpq_dynamic_bom_ids.message_post(
-                        body=_(
+                        body=self.env._(
                             "Archived due product template not "
                             "longer being configurable"
                         )
@@ -102,7 +102,9 @@ class ProductTemplate(models.Model):
                     lambda p: p.active and p.cpq_dynamic_bom_ids
                 ):
                     record.cpq_dynamic_bom_ids.message_post(
-                        body=_("Archived due to product template being archived")
+                        body=self.env._(
+                            "Archived due to product template being archived"
+                        )
                     )
                     record.cpq_dynamic_bom_ids.write({"active": False})
 

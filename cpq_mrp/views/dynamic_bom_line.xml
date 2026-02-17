@@ -11,29 +11,30 @@
                         <field name="component_type" string="Type" widget="radio" />
                         <field
                             name="component_product_tmpl_id"
-                            attrs="{'invisible': [('component_type', '!=', 'template')], 'required': [('component_type', '=', 'template')]}"
+                            invisible="component_type != 'template'"
+                            required="component_type == 'template'"
                             string="Product Template"
                         />
                         <field
                             name="component_product_tmpl_id_cpq_ok"
-                            attrs="{'invisible': [('component_type', '!=', 'template')]}"
+                            invisible="component_type != 'template'"
                         />
                         <field
                             name="component_product_tmpl_ptav_passthru_ids"
                             widget="many2many_tags"
-                            attrs="{'invisible': [('component_type', '!=', 'template')]}"
+                            invisible="component_type != 'template'"
                             string="Passthru Attributes"
                         />
                         <p
-                            colspan="2"
                             class="oe_grey oe_edit_only"
-                            attrs="{'invisible': [('component_type','!=','template')]}"
+                            invisible="component_type != 'template'"
                         >
                             The attributes above are able to be passed through from the parent to this component.
                         </p>
                         <field
                             name="component_product_id"
-                            attrs="{'invisible': [('component_type', '!=', 'variant')], 'required': [('component_type', '=', 'variant')]}"
+                            invisible="component_type != 'variant'"
+                            required="component_type == 'variant'"
                             string="Product Variant"
                         />
                     </group>
@@ -41,18 +42,21 @@
                         <field name="quantity_type" widget="radio" string="Type" />
                         <field
                             name="quantity_fixed"
-                            attrs="{'invisible': [('quantity_type', '!=', 'fixed')], 'required': [('quantity_type', '=', 'fixed')]}"
+                            invisible="quantity_type != 'fixed'"
+                            required="quantity_type == 'fixed'"
                             string="Fixed"
                         />
                         <field
                             name="quantity_ptav_custom_id"
-                            attrs="{'invisible': [('quantity_type', '!=', 'ptav_custom_id')], 'required': [('quantity_type', '=', 'ptav_custom_id')]}"
+                            invisible="quantity_type != 'ptav_custom_id'"
+                            required="quantity_type == 'ptav_custom_id'"
                             string="From Custom Value"
                         />
                         <field
                             name="uom_id"
-                            options="{'no_open':True,'no_create':True}"
+                            options="{'no_open':True,'no_create':True,'product_field':'component_product_tmpl_id','quantity_field':'quantity_fixed'}"
                             groups="uom.group_uom"
+                            widget="many2one_uom"
                         />
                     </group>
                 </group>
@@ -60,7 +64,7 @@
                     <field name="condition_type" string="Type" widget="radio" />
                     <field
                         name="condition_domain"
-                        attrs="{'invisible': [('condition_type', '!=', 'domain')]}"
+                        invisible="condition_type != 'domain'"
                         widget="domain"
                         options="{'model': 'product.product'}"
                         string="Domain"
@@ -68,7 +72,8 @@
                     <field name="condition_possible_ptav_ids" invisible="1" />
                     <field
                         name="condition_ptav_ids"
-                        attrs="{'invisible': [('condition_type', '!=', 'ptav')], 'required': [('condition_type', '=', 'ptav')]}"
+                        invisible="condition_type != 'ptav'"
+                        required="condition_type == 'ptav'"
                         widget="many2many_tags"
                         string="Apply on Variant Attributes"
                     />
@@ -80,5 +85,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

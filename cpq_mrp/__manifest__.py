@@ -4,7 +4,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Manufacturing/Manufacturing",
-    "version": "15.0.1.0.0",
+    "version": "19.0.1.0.0",
     "depends": ["cpq", "mrp"],
     "auto_install": True,
     "data": [

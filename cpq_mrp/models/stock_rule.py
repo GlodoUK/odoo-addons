@@ -1,15 +1,14 @@
-from odoo import SUPERUSER_ID, _, api, fields, models
+from collections import defaultdict
+
+from odoo import SUPERUSER_ID, api, models
 
 
-class ProcurementGroup(models.Model):
-    _inherit = "procurement.group"
-
-    mrp_production_ids = fields.One2many("mrp.production", "procurement_group_id")
+class StockRule(models.Model):
+    _inherit = "stock.rule"
 
     @api.model
     def run(self, procurements, raise_user_error=True):
-        """
-        If 'run' is called on a kit which is a cpq_ok item we need to
+        """If 'run' is called on a kit which is a cpq_ok item we need to
         ensure that any BoM already exists, or is created before anything else
         in the procurement system runs. This is most critical for kits.
 
@@ -21,44 +20,31 @@ class ProcurementGroup(models.Model):
 
         for procurement in procurements:
             product_id = procurement.product_id.with_company(procurement.company_id)
-            should_explode = (
-                product_id.cpq_ok and product_id.cpq_dynamic_bom_ids.type == "phantom"
+            bom_kit = product_id.cpq_ok and product_id.cpq_dynamic_bom_ids.filtered(
+                lambda b: b.type == "phantom"
             )
-            if should_explode:
-                bom_kit = product_id.cpq_dynamic_bom_ids
+            if bom_kit:
+                bom_kit = bom_kit[:1]
                 order_qty = procurement.product_uom._compute_quantity(
                     procurement.product_qty, bom_kit.product_uom_id, round=False
                 )
                 qty_to_produce = order_qty / bom_kit.product_qty
+                bom_lines = bom_kit.explode(product_id, qty_to_produce)
 
-                bom_lines = product_id.cpq_dynamic_bom_ids.explode(
-                    product_id, qty_to_produce
-                )
-
-                for (
-                    idx,
-                    (
-                        dyn_bom_product_id,
-                        dyn_bom_product_qty,
-                        dyn_uom_id,
-                        cpq_bom_line_id,
-                    ),
-                ) in enumerate(bom_lines):
-                    values = dict(**procurement.values)
-                    values.update(
-                        {
-                            "cpq_bom_id": bom_kit.id,
-                            "cpq_bom_line_id": cpq_bom_line_id.id,
-                            "cpq_description": "{} - {}/{}".format(
-                                product_id.display_name, idx + 1, len(bom_lines)
-                            ),
-                        }
+                for idx, (comp_product, comp_qty, comp_uom, cpq_bom_line) in enumerate(
+                    bom_lines
+                ):
+                    values = dict(
+                        procurement.values,
+                        cpq_bom_id=bom_kit.id,
+                        cpq_bom_line_id=cpq_bom_line.id,
+                        cpq_description=f"{product_id.display_name} - {idx + 1}/{len(bom_lines)}",  # noqa: E501
                     )
                     procurements_without_dynamic_kit.append(
-                        self.env["procurement.group"].Procurement(
-                            dyn_bom_product_id,
-                            dyn_bom_product_qty,
-                            dyn_uom_id,
+                        self.env["stock.rule"].Procurement(
+                            comp_product,
+                            comp_qty,
+                            comp_uom,
                             procurement.location_id,
                             procurement.name,
                             procurement.origin,
@@ -72,10 +58,6 @@ class ProcurementGroup(models.Model):
         return super().run(
             procurements_without_dynamic_kit, raise_user_error=raise_user_error
         )
-
-
-class StockRule(models.Model):
-    _inherit = "stock.rule"
 
     def _get_stock_move_values(
         self,
@@ -106,109 +88,83 @@ class StockRule(models.Model):
             move_values["cpq_description"] = values["cpq_description"]
         return move_values
 
+    # fmt: off
     @api.model
     def _run_manufacture(self, procurements):
         procurements_without_dynamic_bom = []
+        cpq_productions_by_company = defaultdict(lambda: defaultdict(list))
 
         for procurement, rule in procurements:
             product_id = procurement.product_id.with_company(procurement.company_id)
-            if product_id.cpq_ok and product_id.cpq_dynamic_bom_ids.type == "normal":
-                dyn_bom_id = product_id.cpq_dynamic_bom_ids
-                company_id = procurement.company_id
-
-                # create the MO as SUPERUSER because the current user may not
-                # have the rights to do it (mto product launched by a sale for
-                # example)
-
-                production_values = rule._prepare_mo_vals(
-                    *procurement, self.env["mrp.bom"]
-                )
-                production_values.update(
-                    {
-                        "consumption": dyn_bom_id.consumption,
-                        "picking_type_id": dyn_bom_id.picking_type_id.id,
-                    }
-                )
-
-                production = (
-                    self.env["mrp.production"]
-                    .with_user(SUPERUSER_ID)
-                    .sudo()
-                    .with_company(company_id)
-                    .create(production_values)
-                )
-                bom_lines = dyn_bom_id.explode(product_id, procurement.product_qty)
-
-                production_raw_move_values = []
-                for (
-                    idx,
-                    (
-                        component_product_id,
-                        component_qty,
-                        component_uom_id,
-                        cpq_bom_line_id,
-                    ),
-                ) in enumerate(bom_lines):
-                    raw_move_values = production._get_move_raw_values(
-                        component_product_id,
-                        component_qty,
-                        component_uom_id,
-                        operation_id=False,
-                        bom_line=False,
-                    )
-                    raw_move_values.update(
-                        {
-                            "cpq_description": "{} - {}/{}".format(
-                                product_id.display_name, idx + 1, len(bom_lines)
-                            ),
-                            "cpq_bom_id": dyn_bom_id.id,
-                            "cpq_bom_line_id": cpq_bom_line_id.id,
-                        }
-                    )
-                    production_raw_move_values.append(raw_move_values)
-
-                # we need to create the raw moves by hand
-                self.env["stock.move"].sudo().create(production_raw_move_values)
-                self.env["stock.move"].sudo().create(
-                    production._get_moves_finished_values()
-                )
-                production._create_workorder()
-                production.filtered(
-                    self._should_auto_confirm_procurement_mo
-                ).action_confirm()
-
-                origin_production = (
-                    production.move_dest_ids
-                    and production.move_dest_ids[0].raw_material_production_id
-                    or False
-                )
-                orderpoint = production.orderpoint_id
-                if (
-                    orderpoint
-                    and orderpoint.create_uid.id == SUPERUSER_ID
-                    and orderpoint.trigger == "manual"
-                ):
-                    production.message_post(
-                        body=_(
-                            "This production order has been created "
-                            "from Replenishment Report."
-                        ),
-                        message_type="comment",
-                        subtype_xmlid="mail.mt_note",
-                    )
-                elif orderpoint:
-                    production.message_post_with_view(
-                        "mail.message_origin_link",
-                        values={"self": production, "origin": orderpoint},
-                        subtype_id=self.env.ref("mail.mt_note").id,
-                    )
-                elif origin_production:
-                    production.message_post_with_view(
-                        "mail.message_origin_link",
-                        values={"self": production, "origin": origin_production},
-                        subtype_id=self.env.ref("mail.mt_note").id,
-                    )
-            else:
+            if not (product_id.cpq_ok and product_id.cpq_dynamic_bom_ids.type == "normal"):  # noqa: E501
                 procurements_without_dynamic_bom.append((procurement, rule))
+                continue
+
+            if procurement.product_uom.compare(procurement.product_qty, 0) <= 0:
+                continue
+
+            dyn_bom_id = product_id.cpq_dynamic_bom_ids[:1]
+
+            production_values = rule._prepare_mo_vals(
+                *procurement, self.env["mrp.bom"]
+            )
+            picking_type = dyn_bom_id.picking_type_id or rule.picking_type_id
+            production_values.update({
+                "consumption": dyn_bom_id.consumption,
+                "picking_type_id": picking_type.id,
+                "location_src_id": picking_type.default_location_src_id.id,
+                "cpq_dynamic_bom_id": dyn_bom_id.id,
+            })
+
+            cpq_productions_by_company[procurement.company_id.id]["values"].append(production_values)
+            cpq_productions_by_company[procurement.company_id.id]["procurements"].append(procurement)
+
+        for company_id, data in cpq_productions_by_company.items():
+            # Raw moves are created by _compute_move_raw_ids which
+            # detects cpq_dynamic_bom_id and explodes the dynamic BOM.
+            # Finished moves are handled by _compute_move_finished_ids.
+            productions = (
+                self.env["mrp.production"]
+                .with_user(SUPERUSER_ID)
+                .sudo()
+                .with_company(company_id)
+                .create(data["values"])
+            )
+
+            for mo in productions:
+                if self._should_auto_confirm_procurement_mo(mo):
+                    mo.action_confirm()
+
+            productions._cpq_post_run_manufacture(data["procurements"])
 
         return super()._run_manufacture(procurements_without_dynamic_bom)
+    # fmt: on
+
+    def _filter_warehouse_routes(self, product, warehouses, route):
+        if any(rule.action == "manufacture" for rule in route.rule_ids):
+            has_dynamic_bom = (
+                product.cpq_ok
+                and product.product_tmpl_id.cpq_dynamic_bom_ids.filtered(
+                    lambda b: b.type == "normal"
+                )
+            )
+            if has_dynamic_bom:
+                # Bypass MRP's standard-BoM gate: CPQ products use dynamic BoMs.
+                return route
+        return super()._filter_warehouse_routes(product, warehouses, route)
+
+
+class StockRoute(models.Model):
+    _inherit = "stock.route"
+
+    def _is_valid_resupply_route_for_product(self, product):
+        if any(rule.action == "manufacture" for rule in self.rule_ids):
+            has_dynamic_bom = (
+                product.cpq_ok
+                and product.product_tmpl_id.cpq_dynamic_bom_ids.filtered(
+                    lambda b: b.type == "normal"
+                )
+            )
+            if has_dynamic_bom:
+                return True
+        return super()._is_valid_resupply_route_for_product(product)

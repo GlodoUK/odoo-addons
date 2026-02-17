@@ -1,6 +1,6 @@
 import ast
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import float_is_zero, float_repr
 
@@ -33,9 +33,6 @@ class DynamicBom(models.Model):
         index=True,
         domain="[('cpq_ok', '=', True)]",
         string="Product",
-    )
-    product_tmpl_uom_category_id = fields.Many2one(
-        related="product_tmpl_id.uom_id.category_id"
     )
     bom_line_ids = fields.One2many(
         "cpq.dynamic.bom.line", "bom_id", context={"active_test": False}
@@ -76,51 +73,43 @@ class DynamicBom(models.Model):
         compute="_compute_possible_product_template_attribute_value_ids",
     )
 
-    _sql_constraints = [
-        (
-            "qty_positive",
-            "check (product_qty > 0)",
-            "The quantity to produce must be positive!",
-        ),
-    ]
+    _qty_positive = models.Constraint(
+        "check (product_qty > 0)",
+        "The quantity to produce must be positive!",
+    )
 
     def init(self):
         # we want a unique constraint only if the bom is active
         self.env.cr.execute(
-            """
+            f"""
             CREATE UNIQUE INDEX IF NOT EXISTS
-            cpq_dynamic_bom_unique ON %s
+            cpq_dynamic_bom_unique ON {self._table}
             (product_tmpl_id)
             WHERE active is true
             """
-            % (self._table)
         )
 
-    def name_get(self):
-        return [
-            (
-                bom.id,
-                "{bom_code}{display_name}".format(
-                    bom_code=bom.code and "[%s] " % bom.code or "",
-                    display_name=bom.product_tmpl_id.display_name,
-                ),
-            )
-            for bom in self
-        ]
+    @api.depends("code", "product_tmpl_id")
+    def _compute_display_name(self):
+        for bom in self:
+            prefix = f"[{bom.code}] " if bom.code else ""
+            bom.display_name = f"{prefix}{bom.product_tmpl_id.display_name}"
 
     @api.constrains("product_tmpl_id")
-    def _ensure_product_tmpl_id_cpq_ok(self):
+    def _ensure_product_tmpl_cpq_ok(self):
         if not all(self.mapped("product_tmpl_id.cpq_ok")):
-            raise ValidationError(_("Product Template must be enabled as configurable"))
+            raise ValidationError(
+                self.env._("Product Template must be enabled as configurable")
+            )
 
     @api.constrains("type", "picking_type_id")
     def _ensure_manufacture_has_picking_type_id(self):
-        if not self.user_has_groups("stock.group_adv_location"):
+        if not self.env.user.has_group("stock.group_adv_location"):
             return
 
         if self.filtered(lambda b: b.type == "normal" and not b.picking_type_id):
             raise ValidationError(
-                _("Manufactured dynamic BoMs must have an operation type set")
+                self.env._("Manufactured dynamic BoMs must have an operation type set")
             )
 
     @api.onchange("product_tmpl_id")
@@ -138,13 +127,13 @@ class DynamicBom(models.Model):
             )
             if existing_standard_boms > 0:
                 res["warning"] = {
-                    "title": _("Standard BoMs Exist"),
-                    "message": _(
-                        "There are already %d standard BoMs for this product!"
+                    "title": self.env._("Standard BoMs Exist"),
+                    "message": self.env._(
+                        "There are already %(bom_count)d standard BoMs for this product!"  # noqa: E501
                         " These should be archived, or you will experience"
-                        " inconsistent BoM handling!"
-                    )
-                    % (existing_standard_boms),
+                        " inconsistent BoM handling!",
+                        bom_count=existing_standard_boms,
+                    ),
                 }
         return res
 
@@ -153,13 +142,13 @@ class DynamicBom(models.Model):
         res = {}
         if not self.product_uom_id or not self.product_tmpl_id:
             return
-        if self.product_uom_id.category_id != self.product_tmpl_id.uom_id.category_id:
+        if not self.product_uom_id._has_common_reference(self.product_tmpl_id.uom_id):
             self.product_uom_id = self.product_tmpl_id.uom_id
             res["warning"] = {
-                "title": _("Warning"),
-                "message": _(
-                    "The Product Unit of Measure you chose has a different"
-                    " category than in the product form."
+                "title": self.env._("Warning"),
+                "message": self.env._(
+                    "The Product Unit of Measure you chose is not compatible"
+                    " with the one set on the product."
                 ),
             }
         return res
@@ -169,7 +158,7 @@ class DynamicBom(models.Model):
 
         if product_id.product_tmpl_id != self.product_tmpl_id:
             raise ValidationError(
-                _("The product variant is not related to this bom template")
+                self.env._("The product variant is not related to this bom template")
             )
 
         bom_lines = []
@@ -302,31 +291,37 @@ class DynamicBomLine(models.Model):
         string="Unit of Measure",
     )
 
-    @api.depends("product_tmpl_id", "product_tmpl_id.cpq_ok")
-    def _ensure_product_tmpl_id_cpq_ok(self):
-        for record in self:
-            if not record.product_tmpl_id.cpq_ok:
-                raise ValidationError(_("Product must be configurable"))
-
     @api.constrains("uom_id", "component_type")
     def _ensure_valid_uom(self):
         for record in self:
             if not record.uom_id:
-                raise ValidationError(_("UoM not present"))
+                raise ValidationError(self.env._("UoM not present"))
 
             if (
                 record.component_type == "variant"
-                and record.component_product_id.uom_id.category_id
-                != record.uom_id.category_id
+                and record.component_product_id
+                and not record.component_product_id.uom_id._has_common_reference(
+                    record.uom_id
+                )
             ):
-                raise ValidationError(_("UoM not of the same category"))
+                raise ValidationError(
+                    self.env._(
+                        "UoM is not compatible with the selected product variant"
+                    )
+                )
 
             if (
                 record.component_type == "template"
-                and record.component_product_tmpl_id.uom_id.category_id
-                != record.uom_id.category_id
+                and record.component_product_tmpl_id
+                and not record.component_product_tmpl_id.uom_id._has_common_reference(
+                    record.uom_id
+                )
             ):
-                raise ValidationError(_("UoM not of the same category"))
+                raise ValidationError(
+                    self.env._(
+                        "UoM is not compatible with the selected product template"
+                    )
+                )
 
     @api.onchange("component_type", "uom_id")
     def onchange_uom_id(self):
@@ -335,27 +330,26 @@ class DynamicBomLine(models.Model):
             return
 
         if self.component_type == "variant" and self.component_product_id:
-            if self.uom_id.category_id != self.component_product_id.uom_id.category_id:
+            if not self.uom_id._has_common_reference(self.component_product_id.uom_id):
                 self.uom_id = self.component_product_id.uom_id.id
                 res["warning"] = {
-                    "title": _("Warning"),
-                    "message": _(
-                        "The Product Unit of Measure you chose has a different"
-                        " category than in the product form."
+                    "title": self.env._("Warning"),
+                    "message": self.env._(
+                        "The Product Unit of Measure you chose is not compatible"
+                        " with the one set on the product."
                     ),
                 }
 
         if self.component_type == "template" and self.component_product_tmpl_id:
-            if (
-                self.uom_id.category_id
-                != self.component_product_tmpl_id.uom_id.category_id
+            if not self.uom_id._has_common_reference(
+                self.component_product_tmpl_id.uom_id
             ):
                 self.uom_id = self.component_product_tmpl_id.uom_id.id
                 res["warning"] = {
-                    "title": _("Warning"),
-                    "message": _(
-                        "The Product Unit of Measure you chose has a different"
-                        " category than in the product form."
+                    "title": self.env._("Warning"),
+                    "message": self.env._(
+                        "The Product Unit of Measure you chose is not compatible"
+                        " with the one set on the product."
                     ),
                 }
 
@@ -439,9 +433,10 @@ class DynamicBomLine(models.Model):
                 continue
 
             if record.quantity_type == "ptav_custom_id":
-                record.display_quantity = _("Dynamic from %(attribute_name)s") % {
-                    "attribute_name": record.quantity_ptav_custom_id.display_name,
-                }
+                record.display_quantity = self.env._(
+                    "Dynamic from %(attribute_name)s",
+                    attribute_name=record.quantity_ptav_custom_id.display_name,
+                )
 
     def _skip_bom_line(self, parent_product_id):
         if self.condition_type == "always":
@@ -581,7 +576,7 @@ class DynamicBomLine(models.Model):
         )
         if not custom_id:
             raise ValidationError(
-                _("Could not find custom value to propagate as quantity!")
+                self.env._("Could not find custom value to propagate as quantity!")
             )
 
         return parent_quantity * float(custom_id.custom_value)

@@ -11,21 +11,19 @@
                         name="web_ribbon"
                         title="Archived"
                         bg_color="bg-danger"
-                        attrs="{'invisible': [('active', '=', True)]}"
+                        invisible="active"
                     />
                     <group>
                         <group>
-                            <field name="active" invisible="1" />
                             <field name="product_tmpl_id" />
-                            <field name="product_tmpl_uom_category_id" invisible="1" />
                             <label for="product_qty" string="Quantity" />
                             <div class="o_row">
                                 <field name="product_qty" />
                                 <field
                                     name="product_uom_id"
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_open':True,'no_create':True,'product_field':'product_tmpl_id','quantity_field':'product_qty'}"
                                     groups="uom.group_uom"
-                                    domain="[('category_id', '=', product_tmpl_uom_category_id)]"
+                                    widget="many2one_uom"
                                 />
                             </div>
                         </group>
@@ -33,9 +31,8 @@
                             <field name="code" />
                             <field name="type" widget="radio" />
                             <p
-                                colspan="2"
                                 class="oe_grey oe_edit_only"
-                                attrs="{'invisible': [('type','!=','phantom')]}"
+                                invisible="type != 'phantom'"
                             >
                                 <ul>
                                     A BoM of type kit is used to split the product into its components.
@@ -61,21 +58,30 @@
                                 widget="one2many"
                                 context="{'default_parent_product_tmpl_id': product_tmpl_id, 'default_company_id': company_id, 'default_bom_id': id}"
                             >
-                                <tree>
-                                    <field name="company_id" invisible="1" />
+                                <list>
+                                    <field name="company_id" column_invisible="1" />
                                     <field name="sequence" widget="handle" />
                                     <field name="name" string="Product" />
                                     <field name="condition_type" />
                                     <field name="component_type" />
+                                    <field
+                                        name="component_product_tmpl_id"
+                                        invisible="1"
+                                    />
                                     <field name="display_quantity" string="Quantity" />
-                                    <field name="uom_id" groups="uom.group_uom" />
-                                </tree>
+                                    <field
+                                        name="uom_id"
+                                        options="{'product_field':'component_product_tmpl_id','quantity_field':'quantity_fixed'}"
+                                        groups="uom.group_uom"
+                                        widget="many2one_uom"
+                                    />
+                                </list>
                             </field>
                         </page>
                         <page
                             string="Operations"
                             name="operations"
-                            attrs="{'invisible': [('type', 'not in',('normal','phantom'))]}"
+                            invisible="type not in ('normal', 'phantom')"
                             groups="mrp.group_mrp_routings"
                         >
                             <p
@@ -84,7 +90,7 @@
                         <page
                             string="By-products"
                             name="by_products"
-                            attrs="{'invisible': [('type','!=','normal')]}"
+                            invisible="type != 'normal'"
                             groups="mrp.group_mrp_byproducts"
                         >
                             <p
@@ -95,27 +101,24 @@
                                 <group>
                                     <field
                                         name="consumption"
-                                        attrs="{'invisible': [('type','=','phantom')]}"
+                                        invisible="type == 'phantom'"
                                         widget="radio"
                                     />
                                 </group>
                                 <group>
                                     <field
                                         name="picking_type_id"
-                                        attrs="{'invisible': [('type','=','phantom')], 'required': [('type', '=', 'normal')]}"
+                                        invisible="type == 'phantom'"
+                                        required="type == 'normal'"
                                         string="Operation"
                                         groups="stock.group_adv_location"
                                     />
                                 </group>
                             </group>
                         </page>
-
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" />
-                    <field name="message_ids" colspan="4" nolabel="1" />
-                </div>
+                <chatter />
             </form>
         </field>
     </record>
@@ -124,8 +127,7 @@
         <field name="name">view_cpq_dynamic_bom_form</field>
         <field name="model">cpq.dynamic.bom</field>
         <field name="arch" type="xml">
-            <tree sample="1">
-                <field name="active" invisible="1" />
+            <list sample="1">
                 <field name="product_tmpl_id" />
                 <field name="code" optional="show" />
                 <field name="type" />
@@ -138,10 +140,12 @@
                 <field
                     name="product_uom_id"
                     groups="uom.group_uom"
+                    options="{'product_field':'product_tmpl_id','quantity_field':'product_qty'}"
+                    widget="many2one_uom"
                     optional="hide"
                     string="Unit of Measure"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -173,7 +177,7 @@
                     name="inactive"
                     domain="[('active', '=', False)]"
                 />
-                <group expand="0" string="Group By...">
+                <group>
                     <filter
                         string="Product"
                         name="product"
@@ -192,7 +196,7 @@
                         domain="[]"
                         context="{'group_by' : 'product_uom_id'}"
                     />
-               </group>
+                </group>
             </search>
         </field>
     </record>
@@ -201,10 +205,9 @@
         <field name="name">Configurable Products Bill of Materials</field>
         <field name="res_model">cpq.dynamic.bom</field>
         <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">
+            <p class="o_view_nocontent_smiling_face">
             Add a new dynamic bill of materials for a configurable product
           </p>
         </field>
     </record>
-
 </odoo>

@@ -6,7 +6,7 @@ class StockPicking(models.Model):
 
     has_cpq_phantom = fields.Boolean(compute="_compute_has_cpq_phantom", store=True)
 
-    @api.depends("move_lines")
+    @api.depends("move_ids")
     def _compute_has_cpq_phantom(self):
         for picking_id in self:
-            picking_id.has_cpq_phantom = any(picking_id.move_lines.mapped("cpq_bom_id"))
+            picking_id.has_cpq_phantom = any(picking_id.move_ids.mapped("cpq_bom_id"))

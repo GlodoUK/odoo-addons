@@ -1,24 +1,27 @@
 from random import randint
 
+from odoo.tests import tagged
+
 from odoo.addons.cpq.tests.common import TestCpqCommon
 
 
+@tagged("post_install", "-at_install")
 class TestNormalBom(TestCpqCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
         cls.product_bolt = cls.env["product.product"].create(
-            {"type": "product", "name": "Bolt"}
+            {"is_storable": True, "name": "Bolt"}
         )
 
         cls.product_washer = cls.env["product.product"].create(
-            {"type": "product", "name": "Bolt"}
+            {"is_storable": True, "name": "Bolt"}
         )
 
         cls.product_tmpl_chair_fabric_no_cpq = cls.env["product.template"].create(
             {
-                "type": "product",
+                "is_storable": True,
                 "name": "Chair Fabric",
                 "cpq_ok": False,
                 "attribute_line_ids": [
@@ -46,7 +49,7 @@ class TestNormalBom(TestCpqCommon):
 
         cls.product_tmpl_chair_base_cpq = cls.env["product.template"].create(
             {
-                "type": "product",
+                "is_storable": True,
                 "name": "Chair Base",
                 "cpq_ok": True,
                 "attribute_line_ids": [
@@ -75,7 +78,7 @@ class TestNormalBom(TestCpqCommon):
 
         cls.product_tmpl_chair_cpq = cls.env["product.template"].create(
             {
-                "type": "product",
+                "is_storable": True,
                 "name": "Built Chair",
                 "cpq_ok": True,
                 "attribute_line_ids": [
@@ -124,7 +127,7 @@ class TestNormalBom(TestCpqCommon):
     def assertBoMExplosionEqual(self, parts, expected):
         self.assertEqual(len(parts), len(expected))
 
-        for found, expected in zip(parts, expected):  # noqa: B020
+        for found, expected in zip(parts, expected, strict=False):  # noqa: B020
             (found_product_id, found_quantity, found_uom, _found_cpq_bom_line) = found
             (
                 expected_product_id,
@@ -136,12 +139,7 @@ class TestNormalBom(TestCpqCommon):
             self.assertEqual(
                 found_product_id,
                 expected_product_id,
-                "Found: {p_id} ({d_name}), Expected {ep_id} ({e_dname}))".format(
-                    p_id=found_product_id,
-                    d_name=found_product_id.display_name,
-                    ep_id=expected_product_id,
-                    e_dname=expected_product_id.display_name,
-                ),
+                f"Found: {found_product_id} ({found_product_id.display_name}), Expected {expected_product_id} ({expected_product_id.display_name}))",  # noqa: E501
             )
             self.assertEqual(found_quantity, expected_quantity)
             self.assertEqual(found_uom, expected_uom)
@@ -191,7 +189,7 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950, E501
+                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: E501
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",
@@ -322,7 +320,7 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950, E501
+                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: E501
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",
@@ -422,3 +420,62 @@ class TestNormalBom(TestCpqCommon):
                 ),
             ],
         )
+
+    def test_cpq_manufacture_route_selected_from_warehouse_routes(self):
+        self.env["cpq.dynamic.bom"].create(
+            {
+                "type": "normal",
+                "product_tmpl_id": self.product_tmpl_chair_cpq.id,
+                "product_uom_id": self.product_tmpl_chair_cpq.uom_id.id,
+                "product_qty": 1,
+                "bom_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "component_type": "variant",
+                            "component_product_id": self.product_bolt.id,
+                            "quantity_type": "fixed",
+                            "quantity_fixed": 1.0,
+                            "condition_type": "always",
+                            "uom_id": self.product_bolt.uom_id.id,
+                        },
+                    ),
+                ],
+            }
+        )
+
+        ptav_red_id = self.env["product.template.attribute.value"].search(
+            [
+                ("product_tmpl_id", "=", self.product_tmpl_chair_cpq.id),
+                ("product_attribute_value_id", "=", self.prod_attrib_colour_red.id),
+            ],
+            limit=1,
+        )
+        ptav_small_id = self.env["product.template.attribute.value"].search(
+            [
+                ("product_tmpl_id", "=", self.product_tmpl_chair_cpq.id),
+                ("product_attribute_value_id", "=", self.prod_attrib_size_small.id),
+            ],
+            limit=1,
+        )
+        product = self.product_tmpl_chair_cpq._cpq_get_create_variant(
+            ptav_small_id | ptav_red_id, None
+        )
+
+        warehouse = self.env["stock.warehouse"].search(
+            [("company_id", "=", self.env.company.id)],
+            limit=1,
+        )
+        self.assertTrue(warehouse)
+
+        rule = self.env["stock.rule"]._get_rule(
+            product,
+            warehouse.lot_stock_id,
+            {
+                "warehouse_id": warehouse,
+                "company_id": self.env.company,
+            },
+        )
+        self.assertTrue(rule)
+        self.assertEqual(rule.action, "manufacture")
