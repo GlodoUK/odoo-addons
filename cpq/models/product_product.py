@@ -1,6 +1,6 @@
 import hashlib
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -49,19 +49,16 @@ class ProductAttributeCustomValue(models.Model):
     def _ensure_ptav_propagate_to_variant(self):
         if self.filtered(lambda v: not v.ptav_id.cpq_propagate_to_variant):
             raise ValidationError(
-                _(
+                self.env._(
                     "Attempting to propagate variant to custom values, however"
                     " it is marked as no propagate"
                 )
             )
 
-    _sql_constraints = [
-        (
-            "product_ptav_uniq",
-            "unique (product_id, ptav_id)",
-            "Duplicate CPQ custom value",
-        ),
-    ]
+    _product_ptav_uniq = models.Constraint(
+        "unique(product_id, ptav_id)",
+        "Duplicate CPQ custom value",
+    )
 
 
 class ProductProduct(models.Model):
@@ -115,15 +112,13 @@ class ProductProduct(models.Model):
             product.combination_indices = False
         return res
 
-    def name_get(self):
-        res = dict(super().name_get())
+    @api.depends("cpq_ok")
+    def _compute_display_name(self):
+        res = super()._compute_display_name()
 
         for record in self.sudo().filtered(lambda p: p.cpq_ok):
-            # This was the least duplicate inducing version of this that I could
-            # think of.
-
             # Find the original calculated variant name, and then string replace
-            # it
+            # it with custom value info
             original_variant_name = (
                 record.product_template_attribute_value_ids._get_combination_name()
             )
@@ -140,11 +135,12 @@ class ProductProduct(models.Model):
 
                 variant_combination.append(custom_info_dict.get(ptav_id))
 
-            res[record.id] = res[record.id].replace(
-                original_variant_name, ", ".join(variant_combination)
-            )
+            if original_variant_name:
+                record.display_name = record.display_name.replace(
+                    original_variant_name, ", ".join(variant_combination)
+                )
 
-        return list(res.items())
+        return res
 
     def _cpq_combination_tuples(self):
         self.ensure_one()

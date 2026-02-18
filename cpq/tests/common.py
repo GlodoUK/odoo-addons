@@ -47,3 +47,40 @@ class TestCpqCommon(TransactionCase):
                 "sequence": 4,
             }
         )
+
+        cls.prod_attrib_weight = cls.env["product.attribute"].create({"name": "weight"})
+        cls.prod_attrib_weight_custom = cls.env["product.attribute.value"].create(
+            {
+                "name": "custom",
+                "attribute_id": cls.prod_attrib_weight.id,
+                "is_custom": True,
+                "cpq_custom_type": "float",
+                "sequence": 1,
+            }
+        )
+
+        cls.product_tmpl = cls.env["product.template"].create(
+            {
+                "name": "CPQ Test Template",
+                "cpq_ok": True,
+                "attribute_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "attribute_id": cls.prod_attrib_colour.id,
+                            "value_ids": [
+                                (
+                                    6,
+                                    0,
+                                    [
+                                        cls.prod_attrib_colour_red.id,
+                                        cls.prod_attrib_colour_blue.id,
+                                    ],
+                                )
+                            ],
+                        },
+                    )
+                ],
+            }
+        )

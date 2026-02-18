@@ -2,8 +2,6 @@ import uuid
 
 from odoo.addons.cpq.tests.common import TestCpqCommon
 
-COW_PRINT = "Cow Print"
-
 
 class TestOneAttributeVariantCreation(TestCpqCommon):
     def setUp(self):
@@ -151,7 +149,7 @@ class TestOneAttributeVariantCreation(TestCpqCommon):
         )
 
         # generate a random name
-        cow_print = "COW PRINT %s" % (uuid.uuid4())
+        cow_print = f"COW PRINT {uuid.uuid4()}"
 
         custom_dict = {ptav_ids: cow_print}
 

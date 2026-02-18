@@ -6,10 +6,7 @@
         <field name="inherit_id" ref="product.product_normal_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//div[@name='options']" position="inside">
-                <span
-                    class="d-inline-block"
-                    attrs="{'invisible': [('cpq_ok', '=', False)]}"
-                >
+                <span class="d-inline-block" invisible="not cpq_ok">
                     <field name="cpq_ok" />
                     <label for="cpq_ok" />
                 </span>
@@ -33,11 +30,10 @@
                 expr="//field[@name='product_template_variant_value_ids']"
                 position="after"
             >
-                <field name="cpq_ok" />
                 <field
                     name="cpq_custom_value_ids"
                     widget="many2many_tags"
-                    attrs="{'invisible': [('cpq_ok', '=', False)]}"
+                    invisible="not cpq_ok"
                 />
             </xpath>
         </field>

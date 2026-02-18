@@ -4,8 +4,6 @@ from odoo.exceptions import UserError
 
 from odoo.addons.cpq.tests.common import TestCpqCommon
 
-COW_PRINT = "Cow Print"
-
 
 class TestMultiAttributeVariantCreation(TestCpqCommon):
     def setUp(self):

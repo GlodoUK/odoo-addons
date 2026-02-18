@@ -1,6 +1,6 @@
 import copy
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import (
     format_amount,
@@ -31,7 +31,7 @@ ref = ""
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    cpq_ok = fields.Boolean(string="Configurable Product?")
+    cpq_ok = fields.Boolean("Configurable")
     cpq_ref = fields.Char(
         string="Configurable Internal Reference",
         index=True,
@@ -58,11 +58,13 @@ class ProductTemplate(models.Model):
     )
     cpq_tooltip = fields.Html(compute="_compute_cpq_tooltip")
 
+    @api.model
     def _cpq_tooltip_items(self):
-        self.ensure_one()
         return [
-            _("Configurable Products will generate their product variants on demand."),
-            _(
+            self.env._(
+                "Configurable Products will generate their product variants on demand."
+            ),
+            self.env._(
                 "Configurable Products allow for custom "
                 "inputs to be propagated through the system."
             ),
@@ -75,7 +77,7 @@ class ProductTemplate(models.Model):
                 record.cpq_tooltip = False
                 continue
             record.cpq_tooltip = "".join(
-                [f"<p>{i}</p>" for i in self._cpq_tooltip_items()]
+                [f"<p>{i}</p>" for i in record._cpq_tooltip_items()]
             )
 
     @api.depends("product_variant_ids.product_tmpl_id")
@@ -118,6 +120,7 @@ class ProductTemplate(models.Model):
             " into the system.",
         ]
 
+    # ruff: noqa: E501
     @api.onchange("cpq_ok")
     def _onchange_cpq_ok(self):
         if not self._origin:
@@ -126,8 +129,10 @@ class ProductTemplate(models.Model):
         if self._origin.cpq_ok != self.cpq_ok and self.product_variant_ids:
             return {
                 "warning": {
-                    "title": _("Changing Configurable is Dangerous"),
-                    "message": _("\n\n".join(self._onchange_cpq_ok_warning_msg())),
+                    "title": self.env._("Changing Configurable Is Dangerous"),
+                    "message": self.env._(
+                        "\n\n".join(self._onchange_cpq_ok_warning_msg())
+                    ),
                 }
             }
 
@@ -199,16 +204,20 @@ class ProductTemplate(models.Model):
         errors = []
 
         if not self.cpq_ok:
-            msg = _("%s is not a CPQ Enabled Product!") % (self.display_name)
+            msg = self.env._(
+                "%(product_name)s is not a CPQ Enabled Product!",
+                product_name=self.display_name,
+            )
             if raise_on_invalidity:
                 raise UserError(msg)
             return (False, msg)
 
         if not ptav_ids:
-            msg = _(
-                "%s could not be configured - did not receive any product"
-                "template attribute values!"
-            ) % (self.display_name)
+            msg = self.env._(
+                "%(product_name)s could not be configured - did not receive any product"
+                "template attribute values!",
+                product_name=self.display_name,
+            )
             if raise_on_invalidity:
                 raise UserError(msg)
             return (False, msg)
@@ -236,12 +245,11 @@ class ProductTemplate(models.Model):
             if not self.env.context.get("skip_cpq_validate_ptav_ids"):
                 # we allow this to be disabled for CoGs explosions
                 if ptav_id not in valid_product_tmpl_ptav_ids:
-                    msg = _(
-                        "Unknown product template attribute value %(key)s for %(tmpl)s"
-                    ) % {
-                        "key": ptav_id,
-                        "tmpl": self.display_name,
-                    }
+                    msg = self.env._(
+                        "Unknown product template attribute value %(key)s for %(tmpl)s",
+                        key=ptav_id,
+                        tmpl=self.display_name,
+                    )
 
                     if raise_on_invalidity:
                         raise UserError(msg)
@@ -258,8 +266,9 @@ class ProductTemplate(models.Model):
 
             if ptav_id in matched_ptav_ids:
                 # have we seen this more than once when we should not have?
-                msg = _("%s - product template attribute value seen multiple times") % (
-                    self
+                msg = self.env._(
+                    "%(template)s - product template attribute value seen multiple times",
+                    template=self,
                 )
                 if raise_on_invalidity:
                     raise UserError(msg)
@@ -274,20 +283,21 @@ class ProductTemplate(models.Model):
                 ) and not ptav_id.product_attribute_value_id._cpq_validate_custom(
                     custom_dict.get(ptav_id)
                 ):
-                    msg = _("Custom value '%(name)s' invalid: '%(value)s'") % {
-                        "name": ptav_id.display_name,
-                        "value": custom_dict.get(ptav_id),
-                    }
+                    msg = self.env._(
+                        "Custom value '%(name)s' invalid: '%(value)s'",
+                        name=ptav_id.display_name,
+                        value=custom_dict.get(ptav_id),
+                    )
                     if raise_on_invalidity:
                         raise UserError(msg)
                     errors[ptav_id.id] = msg
                     continue
 
                 matched_custom_ptav_ids |= ptav_id
-                matched_custom_dict[
-                    ptav_id
-                ] = ptav_id.product_attribute_value_id._cpq_sanitise_custom(
-                    custom_dict.get(ptav_id)
+                matched_custom_dict[ptav_id] = (
+                    ptav_id.product_attribute_value_id._cpq_sanitise_custom(
+                        custom_dict.get(ptav_id)
+                    )
                 )
 
         is_possible = self._is_combination_possible_by_config(
@@ -298,38 +308,37 @@ class ProductTemplate(models.Model):
         if not is_possible and not self.env.context.get("skip_cpq_validate_ptav_ids"):
             is_possible_ptals = self.valid_product_template_attribute_line_ids._without_no_variant_attributes()  # noqa: E501
 
-            extra_info = _("Likely exclusion is configured. Please check.")
+            extra_info = self.env._("Likely exclusion is configured. Please check.")
 
             if len(combination_ptav_ids) != len(is_possible_ptals):
-                extra_info = _(
+                extra_info = self.env._(
                     "Missing configuration options. Found %(found)s,"
-                    " expected %(expected)s. "
-                ) % {
-                    "found": len(combination_ptav_ids),
-                    "expected": len(is_possible_ptals),
-                }
+                    " expected %(expected)s. ",
+                    found=len(combination_ptav_ids),
+                    expected=len(is_possible_ptals),
+                )
 
                 is_possible_ptals_missing_ids = (
                     is_possible_ptals - combination_ptav_ids.attribute_line_id
                 )
                 if is_possible_ptals_missing_ids:
-                    extra_info += _("Suspected missing options: %(suspected)s ") % {
-                        "suspected": ", ".join(
+                    extra_info += self.env._(
+                        "Suspected missing options: %(suspected)s ",
+                        suspected=", ".join(
                             is_possible_ptals_missing_ids.mapped("display_name")
-                        )
-                    }
+                        ),
+                    )
 
-            msg = _(
+            msg = self.env._(
                 "%(tmpl_name)s configuration is not possible by configuration.\n"
                 "Using configuration: %(configuration)s\n"
                 "%(extra_info)s\n"
                 "If this is not on your order or configuration, "
-                "please check the configuration of any child items."
-            ) % {
-                "tmpl_name": self.display_name,
-                "configuration": ", ".join(combination_ptav_ids.mapped("display_name")),
-                "extra_info": extra_info or "",
-            }
+                "please check the configuration of any child items.",
+                tmpl_name=self.display_name,
+                configuration=", ".join(combination_ptav_ids.mapped("display_name")),
+                extra_info=extra_info or "",
+            )
             if raise_on_invalidity:
                 raise UserError(msg)
 
@@ -379,7 +388,7 @@ class ProductTemplate(models.Model):
         variant_ids = self.env["product.product"].search(search_domain)
 
         if variant_ids:
-            variant_id = fields.first(variant_ids)
+            variant_id = next(iter(variant_ids), variant_ids)
             return self._cpq_get_create_variant_post_find_hook(variant_id)
 
         variant_id = (
@@ -392,31 +401,27 @@ class ProductTemplate(models.Model):
         )
         variant_id = self._cpq_get_create_variant_post_create_hook(variant_id)
         variant_id.message_post(
-            body=_("Product created via CPQ wizard"),
+            body=self.env._("Product created via CPQ wizard"),
             author_id=self.env.user.partner_id.id,
         )
         if variant_id.cpq_combination_indices != cpq_combination_indices:
             raise ValidationError(
-                _(
+                self.env._(
                     "Possible programming error, cpq_combination_indices"
-                    " mismatch. Found %(found)s, expected %(expected)s"
+                    " mismatch. Found %(found)s, expected %(expected)s",
+                    found=variant_id.cpq_combination_indices,
+                    expected=cpq_combination_indices,
                 )
-                % {
-                    "found": variant_id.cpq_combination_indices,
-                    "expected": cpq_combination_indices,
-                }
             )
 
         if variant_id.cpq_custom_combination_indices != cpq_custom_combination_indices:
             raise ValidationError(
-                _(
+                self.env._(
                     "Possible programming error, cpq_custom_combination_indices"
-                    " mismatch. Found %(found)s, expected %(expected)s"
+                    " mismatch. Found %(found)s, expected %(expected)s",
+                    found=variant_id.cpq_custom_combination_indices,
+                    expected=cpq_custom_combination_indices,
                 )
-                % {
-                    "found": variant_id.cpq_custom_combination_indices,
-                    "expected": cpq_custom_combination_indices,
-                }
             )
 
         return variant_id
@@ -510,7 +515,7 @@ class ProductTemplate(models.Model):
             ),
             "format_duration": lambda value: format_duration(value),
             "user": self.env.user,
-            "ctx": self._context,
+            "ctx": self.env.context,
             "is_html_empty": is_html_empty,
         }
         render_context.update(copy.copy(template_env_globals))
@@ -539,7 +544,7 @@ class ProductTemplate(models.Model):
                     archived |= variant
                     variant.active = False
                     variant.message_post(
-                        body=_(
+                        body=self.env._(
                             "Auto-archived as no longer possible by configuration"
                             " (CPQ) through attribute change."
                         )

@@ -1,50 +1,43 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class ProductAttribute(models.Model):
     _inherit = "product.attribute"
     _order = "sequence"
 
-    active = fields.Boolean(
-        default=True,
-    )
     cpq_propagate_to_variant = fields.Boolean(
-        string="Propagate to the Variant",
+        "Propagate To Variant",
         default=True,
     )
 
-    @api.returns("self", lambda value: value.id)
-    def copy(self, default=None):
-        self.ensure_one()
+    def copy_data(self, default=None):
         default = dict(default or {})
+        vals_list = super().copy_data(default=default)
         if "name" not in default:
-            default["name"] = _("%s (copy)") % (self.name)
-        return super().copy(default=default)
+            for attribute, vals in zip(self, vals_list, strict=False):
+                vals["name"] = self.env._("%s (copy)", attribute.name)
+        return vals_list
 
 
 class ProductAttributeValue(models.Model):
     _inherit = "product.attribute.value"
 
-    active = fields.Boolean(
-        default=True,
-    )
     cpq_custom_type = fields.Selection(
         [
             ("integer", "Integer"),
             ("float", "Float"),
             ("char", "Text"),
-            ("many2one", "Many2one"),
         ],
-        string="Configurable custom type",
+        "Configurable Custom Type",
     )
 
-    @api.returns("self", lambda value: value.id)
-    def copy(self, default=None):
-        self.ensure_one()
+    def copy_data(self, default=None):
         default = dict(default or {})
+        vals_list = super().copy_data(default=default)
         if "name" not in default:
-            default["name"] = _("%s (copy)") % (self.name)
-        return super().copy(default=default)
+            for value, vals in zip(self, vals_list, strict=False):
+                vals["name"] = self.env._("%s (copy)", value.name)
+        return vals_list
 
     def _cpq_cast_custom(self, value):
         """
@@ -64,13 +57,10 @@ class ProductAttributeValue(models.Model):
         return self._cpq_sanitise_custom_integer(value)
 
     def _cpq_cast_custom_float(self, value):
-        return self._cpq_sanitise_custom_integer(value)
+        return self._cpq_sanitise_custom_float(value)
 
     def _cpq_cast_custom_char(self, value):
         return self._cpq_sanitise_custom_char(value)
-
-    def _cpq_cast_custom_many2one(self, _value):
-        return NotImplementedError()
 
     def _cpq_sanitise_custom(self, value):
         self.ensure_one()
@@ -81,19 +71,19 @@ class ProductAttributeValue(models.Model):
         method = f"_cpq_sanitise_custom_{self.cpq_custom_type}"
         return getattr(self, method)(value)
 
+    @api.model
     def _cpq_sanitise_custom_integer(self, value):
         return int(value)
 
+    @api.model
     def _cpq_sanitise_custom_float(self, value):
         return float(value)
 
+    @api.model
     def _cpq_sanitise_custom_char(self, value):
-        if value is None:
+        if not value:
             return ""
         return value.strip()
-
-    def _cpq_sanitise_custom_many2one(self, value):
-        raise NotImplementedError()
 
     def _cpq_validate_custom(self, value):
         self.ensure_one()
@@ -104,32 +94,34 @@ class ProductAttributeValue(models.Model):
         method = f"_cpq_validate_custom_{self.cpq_custom_type}"
         return getattr(self, method)(value)
 
+    @api.model
     def _cpq_validate_custom_integer(self, value):
+        if isinstance(value, bool):
+            return False
         try:
             int(value)
             return True
         except (ValueError, TypeError):
             return False
 
+    @api.model
     def _cpq_validate_custom_float(self, value):
+        if isinstance(value, bool):
+            return False
         try:
             float(value)
             return True
         except (ValueError, TypeError):
             return False
 
+    @api.model
     def _cpq_validate_custom_char(self, value):
-        return isinstance(value, str) and len(value) > 0
-
-    def _cpq_validate_custom_many2one(self, value):
-        raise NotImplementedError()
+        return isinstance(value, str) and value.strip()
 
 
-class ProductAttributeLine(models.Model):
+class ProductTemplateAttributeLine(models.Model):
     _inherit = "product.template.attribute.line"
-    _order = "product_tmpl_id, sequence, id"
 
-    sequence = fields.Integer(default=10)
     cpq_propagate_to_variant = fields.Boolean(
         related="attribute_id.cpq_propagate_to_variant", store=True
     )
