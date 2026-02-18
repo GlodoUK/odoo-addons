@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_template_only_form_view_inherited" model="ir.ui.view">
+        <field name="name">product_template_only_form_view_inherited</field>
+        <field name="model">product.template</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="cpq_ok" />
+                    <label for="cpq_ok" />
+                </span>
+                <button
+                    name="configure_cpq_dialog"
+                    class="btn btn-secondary ms-2"
+                    type="object"
+                    icon="fa-wrench"
+                    string="Configure Product"
+                    invisible="not cpq_ok"
+                />
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page
+                    name="cpq_general_information"
+                    string="Configurable Options"
+                    invisible="not cpq_ok"
+                >
+                    <group colspan="2">
+                        <field name="cpq_ref" />
+                        <p colspan="2" class="text-muted">
+                            The reference for this configurable template. This is shared by all variants.
+                        </p>
+
+                        <field name="cpq_ref_mode" />
+                        <p colspan="2" class="text-muted">
+                            When enabled, dynamically generate variant internal references.
+                        </p>
+
+                        <field
+                            name="cpq_ref_tmpl"
+                            invisible="cpq_ref_mode != 'inline'"
+                        />
+
+                        <field
+                            name="cpq_ref_code"
+                            options="{'mode': 'python'}"
+                            widget="ace"
+                            invisible="cpq_ref_mode != 'code'"
+                        />
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute
+                    name="invisible"
+                >product_variant_count &gt; 1 or cpq_ok</attribute>
+            </xpath>
+            <xpath expr="//page[@name='variants']" position="inside">
+                <p class="opacity-50 oe_edit_only" invisible="not cpq_ok">
+                <strong
+                >Warning</strong>: Removing attributes or attribute values from a configurable product should be carefully carried out, especially if there are BoMs involved as these will not automatically change.
+                    Removing an attribute will automatically archive any products which are now invalid.
+                </p>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product_template_search_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='goods']" position="after">
+                <separator />
+                <filter
+                    string="Configurable"
+                    name="cpq_products"
+                    domain="[('cpq_ok', '=', True)]"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product_template_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tooltip']" position="before">
+                <field name="cpq_tooltip" string="" class="font-italic text-muted" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

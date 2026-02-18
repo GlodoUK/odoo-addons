@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+
+    <t t-name="cpq.ConfigureDialog" owl="1">
+        <Dialog size="props.size or 'lg'" title="title">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <img
+                        t-attf-src="/web/image/product.template/{{ props.productTmplId }}/image_128"
+                        alt="Product"
+                    />
+                </div>
+                <div class="col">
+                    <div
+                        t-if="!state.valid &amp;&amp; Object.keys(state.errors).length &gt; 0"
+                        class="alert alert-warning"
+                        role="alert"
+                    >
+                        <ul class="list-unstyled mb-0">
+                            <li
+                                t-foreach="Object.entries(state.errors)"
+                                t-as="entry"
+                                t-key="entry[0]"
+                                t-esc="entry[1]"
+                            />
+                        </ul>
+                    </div>
+
+                    <div
+                        t-if="state.productTmpl &amp;&amp; state.productTmpl.description_sale"
+                        class="mb-3"
+                        t-esc="state.productTmpl.description_sale"
+                    />
+
+                    <ProductTmplAttrib
+                        t-foreach="state.ptalIds"
+                        t-as="line"
+                        t-key="line.id"
+                        id="line.id"
+                        attribute="line"
+                        selected="state.selected"
+                        onSelect="(attributeId, valueId) =&gt; this._onSelectAttribute(attributeId, valueId)"
+                        onCustom="(ptavId, value) =&gt; this._onCustomValue(ptavId, value)"
+                    />
+                </div>
+            </div>
+
+            <t t-set-slot="footer">
+                <button
+                    class="btn btn-primary"
+                    t-on-click="_onClickCreate"
+                    t-att-disabled="!canCreate"
+                >
+                    Confirm
+                </button>
+                <button class="btn btn-secondary" t-on-click="_onDiscard">
+                    Back
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
