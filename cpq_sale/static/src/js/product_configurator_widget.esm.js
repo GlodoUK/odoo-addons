@@ -1,55 +1,40 @@
-/** @odoo-module **/
-
+import {patch} from "@web/core/utils/patch";
+import {SaleOrderLineProductField} from "@sale/js/sale_product_field";
 import ConfigureDialog from "@cpq/components/dialog/dialog.esm";
-import ProductConfiguratorWidget from "sale_product_configurator.product_configurator";
 
-ProductConfiguratorWidget.include({
-    _onEditConfiguration: function () {
-        if (this.recordData.product_template_id_cpq_ok) {
-            this._cpqConfigureDialog(
-                this.recordData.product_template_id.data.id,
-                this.dataPointID
-            );
-            return;
-        }
-
-        this._super.apply(this, arguments);
+patch(SaleOrderLineProductField.prototype, {
+    get isCpq() {
+        return this.props.record.data.product_template_id_cpq_ok;
     },
 
-    _cpqConfigureDialog: function (productTemplateId, dataPointId) {
-        // FIXME: This is the only way I could figure out to get the
-        // Owl env in a legacy widget, in a time reasonable manner.
-        // When ProductConfiguratorWidget is ported to Owl this can probably
-        // go away
-        const env = odoo.__WOWL_DEBUG__.root.env;
-        const self = this;
+    async _onProductTemplateUpdate() {
+        if (this.isCpq) {
+            return this._openCpqConfigurator();
+        }
+        return super._onProductTemplateUpdate(...arguments);
+    },
 
-        env.services.dialog.add(ConfigureDialog, {
-            productTmplId: this.recordData.product_template_id.res_id,
-            save: (productTmplId, productId) => {
-                self.trigger_up("field_changed", {
-                    changes: {
-                        product_id: {id: productId},
-                    },
-                    dataPointID: dataPointId,
+    onEditConfiguration() {
+        if (this.isCpq) {
+            return this._openCpqConfigurator();
+        }
+        return super.onEditConfiguration(...arguments);
+    },
+
+    _openCpqConfigurator() {
+        const record = this.props.record;
+        const saleOrderRecord = record.model.root;
+
+        this.dialog.add(ConfigureDialog, {
+            productTmplId: record.data.product_template_id.id,
+            save: async (productTmplId, productId) => {
+                await record.update({
+                    product_id: {id: productId},
                 });
             },
             discard: () => {
-                self.trigger_up("field_changed", {
-                    changes: {
-                        product_id: false,
-                        name: false,
-                    },
-                    dataPointID: dataPointId,
-                });
+                saleOrderRecord.data.order_line.delete(record);
             },
         });
-    },
-
-    _onTemplateChange: function (productTemplateId, dataPointId) {
-        if (this.recordData.product_template_id_cpq_ok) {
-            return this._cpqConfigureDialog(productTemplateId, dataPointId);
-        }
-        return this._super.apply(this, arguments);
     },
 });
