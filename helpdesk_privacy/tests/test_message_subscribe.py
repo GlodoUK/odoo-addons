@@ -1,6 +1,9 @@
+from odoo.tests import tagged
+
 from .common import TestHelpdeskPrivacyCommon
 
 
+@tagged("post_install", "-at_install")
 class TestMessageSubscribe(TestHelpdeskPrivacyCommon):
     def test_private_ticket_message_subscribe(self):
         ticket_id = self.env["helpdesk.ticket"].create(
