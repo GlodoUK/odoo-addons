@@ -1,6 +1,9 @@
+from odoo.tests import tagged
+
 from .common import TestHelpdeskPrivacyCommon
 
 
+@tagged("post_install", "-at_install")
 class TestHelpdeskTeamPrivacyVisibility(TestHelpdeskPrivacyCommon):
     def test_helpdesk_team_visibility_private(self):
         self.ticket.write({"partner_id": self.partner.id})
