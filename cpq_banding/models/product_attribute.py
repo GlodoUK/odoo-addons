@@ -1,17 +1,21 @@
 from odoo import api, fields, models
-from odoo.osv import expression
+from odoo.fields import Domain
 
 
 class ProductAttributeCustomValue(models.Model):
     _inherit = "product.product.cpq.custom.value"
 
-    @api.depends("ptav_id.display_name", "custom_value")
+    @api.depends("custom_value", "ptav_id.display_name")
     def _compute_name(self):
         res = super()._compute_name()
-        # XXX: This is horrific. This needs to be sorted.
-        for record in self.filtered(lambda v: v.ptav_id.cpq_custom_type == "banding"):
-            banding_id = self.env["cpq.banding"].browse(int(record.custom_value))
-            record.name = f"{record.ptav_id.display_name}: {banding_id.display_name}"
+
+        for value in self.filtered(lambda v: v.ptav_id.cpq_custom_type == "banding"):
+            banding = value.ptav_id.product_attribute_value_id._cpq_cast_custom_banding(
+                value.custom_value
+            )
+            if banding:
+                value.name = f"{value.ptav_id.display_name}: {banding.display_name}"
+
         return res
 
 
@@ -38,8 +42,9 @@ class ProductAttributeValue(models.Model):
 
     def _cpq_sanitise_banding_domain(self, domain):
         self.ensure_one()
+
         if not self.cpq_banding_relaxed_validation:
-            return expression.AND(
+            return Domain.AND(
                 [
                     domain,
                     [
@@ -104,17 +109,19 @@ class ProductTemplateAttributeValue(models.Model):
 
     def _cpq_get_combination_info(self):
         res = super()._cpq_get_combination_info()
+
         if self.is_custom and self.cpq_custom_type == "banding":
             res.update(
                 {
-                    "cpq_selection_values": self.env["cpq.banding"]
-                    .search(
-                        [
-                            ("parent_id", "child_of", self.cpq_banding_id.id),
-                            ("is_leaf", "=", True),
-                        ]
-                    )
-                    .name_get()
+                    "cpq_selection_values": [
+                        (b.id, b.display_name)
+                        for b in self.env["cpq.banding"].search(
+                            [
+                                ("parent_id", "child_of", self.cpq_banding_id.id),
+                                ("is_leaf", "=", True),
+                            ]
+                        )
+                    ]
                 }
             )
 

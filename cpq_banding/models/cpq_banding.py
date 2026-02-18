@@ -1,29 +1,28 @@
-from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models
 
 
 class ProductBanding(models.Model):
     _name = "cpq.banding"
     _description = "CPQ Banding"
-    _rec_name = "display_name"
-
     _parent_name = "parent_id"
     _parent_store = True
-    _order = "display_name asc"
+    _order = "complete_name, id"
+    _rec_name = "display_name"
+    _rec_names_search = ["complete_name"]
 
     name = fields.Char(required=True)
     ref = fields.Char()
-    display_name = fields.Char(
-        compute="_compute_display_name",
-        store=True,
+    complete_name = fields.Char(
+        "Full Name",
+        compute="_compute_complete_name",
         recursive=True,
-        index=True,
+        store=True,
+        index="trigram",
     )
     parent_id = fields.Many2one(
         comodel_name="cpq.banding", string="Parent", ondelete="cascade"
     )
     parent_path = fields.Char(index=True)
-    depth = fields.Integer(compute="_compute_depth", store=True)
     child_ids = fields.One2many(
         comodel_name="cpq.banding",
         inverse_name="parent_id",
@@ -35,66 +34,79 @@ class ProductBanding(models.Model):
     comment = fields.Text()
     active = fields.Boolean(default=True)
 
+    def copy_data(self, default=None):
+        default = dict(default or {})
+        vals_list = super().copy_data(default=default)
+        if "name" not in default:
+            for banding, vals in zip(self, vals_list, strict=False):
+                vals["name"] = self.env._("%s (copy)", banding.name)
+        return vals_list
+
+    # ruff: noqa: E501
+    @api.model
+    def _onchange_parent_id_warning(self):
+        return [
+            self.env._(
+                "Changing the parent of a banding record may have unexpected results if this has been used on a product."
+            ),
+            self.env._(
+                "The recommended action is to archive this banding and create a new one."
+            ),
+        ]
+
     @api.onchange("parent_id")
     def _onchange_parent_id(self):
         if self._origin and self._origin.parent_id != self.parent_id:
             return {
                 "warning": {
-                    "title": _("Warning"),
-                    "message": _(
-                        "Changing the parent of a banding record may"
-                        " have unexpected results if this has been"
-                        " used on a product.\n"
-                        "Recommended action is to archive this banding and"
-                        " create a new one"
-                    ),
+                    "title": self.env._("Warning"),
+                    "message": "\n".join(self._onchange_parent_id_warning()),
                 }
             }
 
-    @api.depends("name", "parent_id.display_name")
-    def _compute_display_name(self):
-        for record in self:
-            if record.parent_id:
-                record.display_name = f"{record.parent_id.display_name}/{record.name}"
+    @api.depends("name", "parent_id.complete_name")
+    def _compute_complete_name(self):
+        for banding in self:
+            if banding.parent_id:
+                banding.complete_name = (
+                    f"{banding.parent_id.complete_name}/{banding.name}"
+                )
             else:
-                record.display_name = record.name
+                banding.complete_name = banding.name
+
+    @api.depends("name", "parent_id.complete_name")
+    def _compute_display_name(self):
+        res = super()._compute_display_name()
+        for banding in self:
+            banding.display_name = banding.complete_name
+        return res
 
     @api.depends("child_ids")
     def _compute_is_leaf(self):
-        for record in self:
-            record.is_leaf = len(record.child_ids) < 1
+        read_group_data = self.env["cpq.banding"]._read_group(
+            [("parent_id", "in", self.ids)],
+            ["parent_id"],
+        )
 
-    @api.depends("parent_path")
-    def _compute_depth(self):
-        for record in self:
-            record.depth = (record.parent_path or "").count("/") - 1
+        parent_ids = {parent.id for (parent,) in read_group_data}
 
+        for banding in self:
+            banding.is_leaf = banding.id not in parent_ids
+
+    @api.depends("child_ids")
     def _compute_child_count(self):
-        read_group_res = self.read_group(
-            [
-                ("parent_id", "child_of", self.ids),
-            ],
-            ["parent_id"],
-            ["parent_id"],
-        )
-        group_data = {
-            data["parent_id"][0]: data["parent_id_count"]
-            for data in read_group_res
-            if data["parent_id"]
-        }
-        for record in self:
-            child_count = 0
-            for sub_parent_id in record.search([("id", "child_of", record.ids)]).ids:
-                child_count += group_data.get(sub_parent_id, 0)
-            record.child_count = child_count
-
-    def return_final_child_variants(self):
-        """Returns child variants that have no child_ids"""
-        self.ensure_one()
-
-        return self.search(
-            [("parent_path", "ilike", self.parent_path + "%"), ("is_leaf", "=", True)]
-        )
+        for binding in self:
+            if not binding.parent_path:
+                binding.child_count = 0
+                continue
+            binding.child_count = (
+                self.search_count(
+                    [
+                        ("parent_path", "=like", binding.parent_path + "%"),
+                    ]
+                )
+                - 1
+            )
 
     def action_view_children(self):
         self.ensure_one()
@@ -105,10 +117,5 @@ class ProductBanding(models.Model):
             ("parent_path", "ilike", self.parent_path + "%"),
             ("id", "!=", self.id),
         ]
-        action["name"] = "Children"
+        action["name"] = self.env._("Children")
         return action
-
-    @api.constrains("parent_id")
-    def _check_category_recursion(self):
-        if not self._check_recursion():
-            raise ValidationError(_("You cannot create recursive bandings."))
