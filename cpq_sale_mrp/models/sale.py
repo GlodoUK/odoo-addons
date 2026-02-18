@@ -6,9 +6,9 @@ class SaleOrderLine(models.Model):
 
     def _get_qty_procurement(self, previous_product_uom_qty=False):
         self.ensure_one()
-        # Specific case when we change the qty on a SO for a CPQ phantom product.
-        # We don't try to be too smart and keep a simple approach: we compare the
-        # quantity before and after update, and return the difference.
+        # Specific case when we change the qty on for a CPQ phantom product.
+        # We don't try to be too smart and keep a simple approach: we compare
+        # the quantity before and after update, and return the difference.
         # We don't take into account what was already sent, or any other
         # case.
         #
@@ -34,8 +34,8 @@ class SaleOrderLine(models.Model):
             previous_product_uom_qty=previous_product_uom_qty
         )
 
-    def _compute_qty_delivered(self):
-        res = super()._compute_qty_delivered()
+    def _prepare_qty_delivered(self):
+        delivered_qties = super()._prepare_qty_delivered()
         for line in self:
             if line.qty_delivered_method == "stock_move" and line.product_id.cpq_ok:
                 # In the case of a kit cpq.dynamic.bom, we need to check if all
@@ -60,7 +60,6 @@ class SaleOrderLine(models.Model):
                     )
                 )
                 if bom:
-                    # bom_delivered
                     moves = line.move_ids.filtered(
                         lambda m: m.picking_id
                         and m.picking_id.state != "cancel"
@@ -73,21 +72,16 @@ class SaleOrderLine(models.Model):
                             or (m.origin_returned_move_id and m.to_refund)
                         )
                     )
-                    bom_returned = all(
-                        [
-                            moves.filtered(
-                                lambda m, move=move: m.location_dest_id.usage
-                                != "customer"
-                                and m.to_refund
-                                and m.origin_returned_move_id.id == move.id
-                            )
-                            for move in outgoing_moves
-                        ]
+                    bom_returned = outgoing_moves and all(
+                        moves.filtered(
+                            lambda m, move=move: m.location_dest_id.usage != "customer"
+                            and m.to_refund
+                            and m.origin_returned_move_id.id == move.id
+                        )
+                        for move in outgoing_moves
                     )
                     if moves and not bom_returned:
-                        line.qty_delivered = (
-                            line.qty_delivered_manual or line.product_uom_qty
-                        )
+                        delivered_qties[line] = line.product_uom_qty
                     else:
-                        line.qty_delivered = 0.0
-        return res
+                        delivered_qties[line] = 0.0
+        return delivered_qties
