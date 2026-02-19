@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_attribute_form_view" model="ir.ui.view">
+        <field name="name">product.attribute.form.view</field>
+        <field name="model">product.attribute</field>
+        <field name="priority">100</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='value_ids']" position="after">
+                <group name="cpq" string="Configurable Product Options">
+                    <p
+                        colspan="2"
+                        class="fst-italic text-muted"
+                    >The following configurable options are only applicable to configurable products.</p>
+                    <p
+                        colspan="2"
+                        class="fst-italic text-muted"
+                    >Changing the configurable options after products have been created is not recommended.</p>
+                    <group>
+                        <field name="cpq_propagate_to_variant" />
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath
+                expr="//field[@name='value_ids']/list/field[@name='is_custom']"
+                position="after"
+            >
+                <field name="cpq_custom_type" invisible="not is_custom" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
