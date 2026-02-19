@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <menuitem
+        id="menu_mrp_cpq_dynamic_bom"
+        action="action_cpq_dynamic_bom_act_window"
+        parent="mrp.menu_mrp_bom"
+        sequence="14"
+    />
+</odoo>
