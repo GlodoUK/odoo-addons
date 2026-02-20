@@ -21,6 +21,7 @@ addon | version | maintainers | summary
 [account_payment_better_matching](account_payment_better_matching/) | 15.0.1.1.0 |  | A better interface for bulk, but manual payment matching
 [account_payment_better_matching_queued](account_payment_better_matching_queued/) | 15.0.1.0.0 |  | Adds queued support to account_payment_better_matching
 [auth_signup_optional_notify](auth_signup_optional_notify/) | 15.0.1.0.0 |  | Optionally disable the notification on user login
+[backport_stock_barcode_manual_scan](backport_stock_barcode_manual_scan/) | 15.0.1.0.0 |  | Manually scan a barcode
 [backport_stock_removal_least_packages](backport_stock_removal_least_packages/) | 15.0.1.0.0 |  | Backport 'least packages' stock removal strategy
 [brands](brands/) | 15.0.2.0.0 |  | Allows a sale order and product to be associated with a brand
 [brands_crm](brands_crm/) | 15.0.0.1.0 |  | Allows a CRM entry to be associated with a brand

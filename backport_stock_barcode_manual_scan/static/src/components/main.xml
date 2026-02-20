@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@t-if='mobileScanner']" position="after">
+            <button
+                class="backport_stock_barcode_manual_scan btn nav-link"
+                t-on-click="barcodeManualScan"
+            >
+                <i class="fa fa-keyboard-o" />
+            </button>
+        </xpath>
+    </t>
+</templates>
