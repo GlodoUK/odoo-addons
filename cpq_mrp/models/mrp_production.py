@@ -1,14 +1,46 @@
+import logging
+
 from odoo import Command, api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
+    cpq_ok = fields.Boolean(related="product_id.cpq_ok")
+
     cpq_dynamic_bom_id = fields.Many2one(
         "cpq.dynamic.bom",
+        string="Configurable Bill of Material",
         context={"active_test": False},
         index=True,
+        compute="_compute_cpq_dynamic_bom_id",
+        store=True,
+        precompute=True,
+        domain="[('product_tmpl_id', '=', product_tmpl_id), ('type', '=', 'normal')]",
     )
+
+    @api.depends("product_id")
+    def _compute_cpq_dynamic_bom_id(self):
+        for production in self:
+            if not production.product_id or not production.product_id.cpq_ok:
+                production.cpq_dynamic_bom_id = False
+                continue
+
+            if (
+                production.cpq_dynamic_bom_id
+                and production.cpq_dynamic_bom_id.product_tmpl_id
+                == production.product_id.product_tmpl_id
+            ):
+                continue
+
+            dyn_bom = (
+                production.product_id.product_tmpl_id.cpq_dynamic_bom_ids.filtered(
+                    lambda b: b.type == "normal"
+                )[:1]
+            )
+            production.cpq_dynamic_bom_id = dyn_bom or False
 
     def _compute_move_raw_ids(self):
         cpq_productions = self.filtered(lambda p: p.product_id.cpq_ok)
@@ -25,11 +57,7 @@ class MrpProduction(models.Model):
 
         for production in cpq_productions:
             if production.state == "draft":
-                dyn_bom = (
-                    production.product_id.product_tmpl_id.cpq_dynamic_bom_ids.filtered(
-                        lambda b: b.type == "normal"
-                    )[:1]
-                )
+                dyn_bom = production.cpq_dynamic_bom_id
 
                 if (
                     not dyn_bom
@@ -38,9 +66,6 @@ class MrpProduction(models.Model):
                 ):
                     production.move_raw_ids = [Command.clear()]
                     continue
-
-                if production.cpq_dynamic_bom_id != dyn_bom:
-                    production.cpq_dynamic_bom_id = dyn_bom
 
                 bom_lines = dyn_bom.explode(
                     production.product_id, production.product_qty
@@ -84,6 +109,13 @@ class MrpProduction(models.Model):
 
                 production.move_raw_ids = list_move_raw
 
+        return res
+
+    def _compute_show_generate_bom(self):
+        res = super()._compute_show_generate_bom()
+        for production in self:
+            if production.product_id.cpq_ok:
+                production.show_generate_bom = False
         return res
 
     # fmt off

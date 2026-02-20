@@ -1,17 +1,39 @@
-import {Component, onWillStart, useState} from "@odoo/owl";
+import {Component, onWillStart, useState, xml} from "@odoo/owl";
 import {_lt, _t} from "@web/core/l10n/translation";
 
 import ProductTmplAttrib from "./product_tmpl_attrib.esm";
 import {Dialog} from "@web/core/dialog/dialog";
+import {Notebook} from "@web/core/notebook/notebook";
 import {WarningDialog} from "@web/core/errors/error_dialogs";
 import {registry} from "@web/core/registry";
 import {rpc} from "@web/core/network/rpc";
 
+class CpqGroupPage extends Component {
+    static template = xml`
+        <ProductTmplAttrib
+            t-foreach="props.ptalIds" t-as="line" t-key="line.id"
+            id="line.id"
+            attribute="line"
+            selected="props.selected"
+            onSelect="props.onSelect"
+            onCustom="props.onCustom"
+        />
+    `;
+    static components = {ProductTmplAttrib};
+    static props = {
+        ptalIds: Array,
+        selected: Object,
+        onSelect: Function,
+        onCustom: Function,
+    };
+}
+
 export default class ConfigureDialog extends Component {
     static template = "cpq.ConfigureDialog";
-    static components = {Dialog, ProductTmplAttrib};
+    static components = {Dialog, ProductTmplAttrib, Notebook};
     static props = {
         productTmplId: Number,
+        productId: {type: Number, optional: true},
         save: {type: Function, optional: true},
         discard: {type: Function, optional: true},
         close: Function,
@@ -38,11 +60,46 @@ export default class ConfigureDialog extends Component {
             this.state.ptalIds = data.ptal_ids || [];
             this.state.productTmpl = data.product_tmpl_id;
             this.title = _t("Configure: %s", data.product_tmpl_id.display_name);
+
+            if (this.props.productId) {
+                const combination = await this._loadCombination();
+                for (const [ptavId, customValue] of Object.entries(
+                    combination.selected
+                )) {
+                    this.state.selected[parseInt(ptavId, 10)] = customValue;
+                }
+            }
+
+            this._autoSelectSingleOptions();
+            await this._validate();
         });
+    }
+
+    _autoSelectSingleOptions() {
+        for (const ptal of this.state.ptalIds) {
+            const alreadySelected = ptal.ptav_ids.some(
+                (v) => v.id in this.state.selected
+            );
+            if (alreadySelected) {
+                continue;
+            }
+
+            const available = ptal.ptav_ids.filter((v) => !v.excluded);
+            if (available.length === 1 && !available[0].is_custom) {
+                this.state.selected[available[0].id] = null;
+            }
+        }
     }
 
     async _loadData() {
         return rpc(`/cpq/${this.props.productTmplId}/data`, {});
+    }
+
+    async _loadCombination() {
+        return rpc(
+            `/cpq/${this.props.productTmplId}/combination/${this.props.productId}`,
+            {}
+        );
     }
 
     _resetAttributeSelections(attributeId) {
@@ -131,6 +188,41 @@ export default class ConfigureDialog extends Component {
             this.props.discard();
         }
         this.props.close();
+    }
+
+    get groups() {
+        const groupMap = new Map();
+        for (const ptal of this.state.ptalIds) {
+            const gId = ptal.group_id || false;
+            if (!groupMap.has(gId)) {
+                groupMap.set(gId, {
+                    id: gId,
+                    name: ptal.group_name || _t("General"),
+                    sequence:
+                        ptal.group_sequence !== undefined ? ptal.group_sequence : 9999,
+                    ptalIds: [],
+                });
+            }
+            groupMap.get(gId).ptalIds.push(ptal);
+        }
+        return [...groupMap.values()].sort(
+            (a, b) => a.sequence - b.sequence || (a.id || 0) - (b.id || 0)
+        );
+    }
+
+    get notebookPages() {
+        return this.groups.map((group) => ({
+            Component: CpqGroupPage,
+            id: String(group.id || "general"),
+            title: group.name,
+            props: {
+                ptalIds: group.ptalIds,
+                selected: this.state.selected,
+                onSelect: (attributeId, valueId) =>
+                    this._onSelectAttribute(attributeId, valueId),
+                onCustom: (ptavId, value) => this._onCustomValue(ptavId, value),
+            },
+        }));
     }
 
     get canCreate() {

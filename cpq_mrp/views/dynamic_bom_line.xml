@@ -16,11 +16,11 @@
                             string="Product Template"
                         />
                         <field
-                            name="component_product_tmpl_id_cpq_ok"
+                            name="product_tmpl_cpq_ok"
                             invisible="component_type != 'template'"
                         />
                         <field
-                            name="component_product_tmpl_ptav_passthru_ids"
+                            name="product_tmpl_ptav_passthru_ids"
                             widget="many2many_tags"
                             invisible="component_type != 'template'"
                             string="Passthru Attributes"

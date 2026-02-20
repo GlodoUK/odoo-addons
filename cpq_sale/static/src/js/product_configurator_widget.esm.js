@@ -16,25 +16,33 @@ patch(SaleOrderLineProductField.prototype, {
 
     onEditConfiguration() {
         if (this.isCpq) {
-            return this._openCpqConfigurator();
+            return this._openCpqConfigurator(true);
         }
         return super.onEditConfiguration(...arguments);
     },
 
-    _openCpqConfigurator() {
+    _openCpqConfigurator(edit = false) {
         const record = this.props.record;
         const saleOrderRecord = record.model.root;
 
-        this.dialog.add(ConfigureDialog, {
+        const props = {
             productTmplId: record.data.product_template_id.id,
             save: async (productTmplId, productId) => {
                 await record.update({
                     product_id: {id: productId},
                 });
             },
-            discard: () => {
-                saleOrderRecord.data.order_line.delete(record);
-            },
-        });
+            discard: edit
+                ? () => {}
+                : () => {
+                      saleOrderRecord.data.order_line.delete(record);
+                  },
+        };
+
+        if (edit && record.data.product_id) {
+            props.productId = record.data.product_id.id;
+        }
+
+        this.dialog.add(ConfigureDialog, props);
     },
 });

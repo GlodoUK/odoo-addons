@@ -17,7 +17,6 @@ class ProductBanding(models.Model):
         compute="_compute_complete_name",
         recursive=True,
         store=True,
-        index="trigram",
     )
     parent_id = fields.Many2one(
         comodel_name="cpq.banding", string="Parent", ondelete="cascade"

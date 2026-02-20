@@ -18,6 +18,7 @@
                     >Changing the configurable options after products have been created is not recommended.</p>
                     <group>
                         <field name="cpq_propagate_to_variant" />
+                        <field name="cpq_attribute_group_id" />
                     </group>
                 </group>
             </xpath>

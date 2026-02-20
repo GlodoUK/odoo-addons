@@ -69,6 +69,27 @@ class ProductConfiguratorController(Controller):
             "errors": msg,
         }
 
+    @route(
+        "/cpq/<int:product_tmpl_id>/combination/<int:product_id>",
+        type="jsonrpc",
+        auth="user",
+    )
+    def cpq_combination(self, product_tmpl_id, product_id):
+        product = request.env["product.product"].browse(product_id)
+        if not product.exists() or product.product_tmpl_id.id != product_tmpl_id:
+            raise UserError(
+                request.env._("Product variant does not belong to this template")
+            )
+
+        selected = {}
+        custom_by_ptav = {
+            v.ptav_id.id: v.custom_value for v in product.cpq_custom_value_ids
+        }
+        for ptav in product.product_template_attribute_value_ids:
+            selected[ptav.id] = custom_by_ptav.get(ptav.id)
+
+        return {"selected": selected}
+
     @route("/cpq/<int:product_tmpl_id>/configure", type="jsonrpc", auth="user")
     def cpq_configure(
         self,

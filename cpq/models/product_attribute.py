@@ -9,6 +9,10 @@ class ProductAttribute(models.Model):
         "Propagate To Variant",
         default=True,
     )
+    cpq_attribute_group_id = fields.Many2one(
+        "cpq.attribute.group",
+        string="Configurator Group",
+    )
 
     def copy_data(self, default=None):
         default = dict(default or {})
@@ -130,10 +134,14 @@ class ProductTemplateAttributeLine(models.Model):
         self.ensure_one()
         i = self
 
+        group = i.attribute_id.cpq_attribute_group_id
         return {
             "id": i.id,
             "name": i.display_name,
             "display_type": i.attribute_id.display_type,
+            "group_id": group.id or False,
+            "group_name": group.name or False,
+            "group_sequence": group.sequence if group else 9999,
             "ptav_ids": [
                 ptav_id._cpq_get_combination_info()
                 for ptav_id in i.product_template_value_ids.filtered(

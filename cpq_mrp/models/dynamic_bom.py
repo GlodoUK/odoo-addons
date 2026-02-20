@@ -19,11 +19,8 @@ class DynamicBom(models.Model):
         index=True,
     )
     type = fields.Selection(
-        [
-            ("phantom", "Kit"),
-            ("normal", "Manufacture"),
-        ],
-        default="phantom",
+        [("normal", "Manufacture"), ("phantom", "Kit")],
+        default="normal",
         required=True,
         index=True,
     )
@@ -81,35 +78,26 @@ class DynamicBom(models.Model):
     def init(self):
         # we want a unique constraint only if the bom is active
         self.env.cr.execute(
-            f"""
+            """
             CREATE UNIQUE INDEX IF NOT EXISTS
-            cpq_dynamic_bom_unique ON {self._table}
+            cpq_dynamic_bom_unique ON %s
             (product_tmpl_id)
             WHERE active is true
             """
+            % (self._table)
         )
 
     @api.depends("code", "product_tmpl_id")
     def _compute_display_name(self):
         for bom in self:
-            prefix = f"[{bom.code}] " if bom.code else ""
-            bom.display_name = f"{prefix}{bom.product_tmpl_id.display_name}"
+            prefix = "[%s] " % bom.code if bom.code else ""
+            bom.display_name = "%s%s" % (prefix, bom.product_tmpl_id.display_name)
 
     @api.constrains("product_tmpl_id")
     def _ensure_product_tmpl_cpq_ok(self):
         if not all(self.mapped("product_tmpl_id.cpq_ok")):
             raise ValidationError(
                 self.env._("Product Template must be enabled as configurable")
-            )
-
-    @api.constrains("type", "picking_type_id")
-    def _ensure_manufacture_has_picking_type_id(self):
-        if not self.env.user.has_group("stock.group_adv_location"):
-            return
-
-        if self.filtered(lambda b: b.type == "normal" and not b.picking_type_id):
-            raise ValidationError(
-                self.env._("Manufactured dynamic BoMs must have an operation type set")
             )
 
     @api.onchange("product_tmpl_id")
@@ -129,10 +117,10 @@ class DynamicBom(models.Model):
                 res["warning"] = {
                     "title": self.env._("Standard BoMs Exist"),
                     "message": self.env._(
-                        "There are already %(bom_count)d standard BoMs for this product!"  # noqa: E501
+                        "There are already %(count)d standard BoMs for this product!"
                         " These should be archived, or you will experience"
                         " inconsistent BoM handling!",
-                        bom_count=existing_standard_boms,
+                        count=existing_standard_boms,
                     ),
                 }
         return res
@@ -261,12 +249,10 @@ class DynamicBomLine(models.Model):
     component_product_tmpl_id = fields.Many2one(
         "product.template",
     )
-    component_product_tmpl_id_cpq_ok = fields.Boolean(
-        related="component_product_tmpl_id.cpq_ok"
-    )
-    component_product_tmpl_ptav_passthru_ids = fields.Many2many(
+    product_tmpl_cpq_ok = fields.Boolean(related="component_product_tmpl_id.cpq_ok")
+    product_tmpl_ptav_passthru_ids = fields.Many2many(
         "product.template.attribute.value",
-        compute="_compute_component_product_tmpl_ptav_passthru_ids",
+        compute="_compute_product_tmpl_ptav_passthru_ids",
     )
     quantity_type = fields.Selection(
         [
@@ -290,6 +276,12 @@ class DynamicBomLine(models.Model):
         required=True,
         string="Unit of Measure",
     )
+
+    @api.depends("component_product_tmpl_id", "component_product_tmpl_id.cpq_ok")
+    def _ensure_product_tmpl_cpq_ok(self):
+        for record in self:
+            if not record.component_product_tmpl_id.cpq_ok:
+                raise ValidationError(self.env._("Product must be configurable"))
 
     @api.constrains("uom_id", "component_type")
     def _ensure_valid_uom(self):
@@ -377,14 +369,14 @@ class DynamicBomLine(models.Model):
             record.name = False
 
     @api.depends("bom_product_tmpl_id", "component_type", "component_product_tmpl_id")
-    def _compute_component_product_tmpl_ptav_passthru_ids(self):
+    def _compute_product_tmpl_ptav_passthru_ids(self):
         for record in self:
             if (
                 not record.bom_product_tmpl_id
                 or record.component_type != "template"
                 or not record.component_product_tmpl_id
             ):
-                record.component_product_tmpl_ptav_passthru_ids = False
+                record.product_tmpl_ptav_passthru_ids = False
                 continue
 
             # build attrs for *this* line and *this* current_product_tmpl_id
@@ -417,7 +409,7 @@ class DynamicBomLine(models.Model):
                     ]
                 )
 
-            record.component_product_tmpl_ptav_passthru_ids = passthru_ptav_ids
+            record.product_tmpl_ptav_passthru_ids = passthru_ptav_ids
 
     @api.depends("quantity_type", "quantity_ptav_custom_id", "quantity_fixed", "uom_id")
     def _compute_display_quantity(self):

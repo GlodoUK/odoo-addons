@@ -1,11 +1,8 @@
 from random import randint
 
-from odoo.tests import tagged
-
 from odoo.addons.cpq.tests.common import TestCpqCommon
 
 
-@tagged("post_install", "-at_install")
 class TestNormalBom(TestCpqCommon):
     @classmethod
     def setUpClass(cls):
@@ -139,7 +136,7 @@ class TestNormalBom(TestCpqCommon):
             self.assertEqual(
                 found_product_id,
                 expected_product_id,
-                f"Found: {found_product_id} ({found_product_id.display_name}), Expected {expected_product_id} ({expected_product_id.display_name}))",  # noqa: E501
+                f"Found: {found_product_id} ({found_product_id.display_name}), Expected {expected_product_id} ({expected_product_id.display_name}))",
             )
             self.assertEqual(found_quantity, expected_quantity)
             self.assertEqual(found_uom, expected_uom)
@@ -189,7 +186,7 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: E501
+                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950, E501
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",
@@ -320,7 +317,7 @@ class TestNormalBom(TestCpqCommon):
                         0,
                         {
                             "component_type": "template",
-                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: E501
+                            "component_product_tmpl_id": self.product_tmpl_chair_fabric_no_cpq.id,  # noqa: B950, E501
                             "quantity_type": "fixed",
                             "quantity_fixed": 1.0,
                             "condition_type": "always",

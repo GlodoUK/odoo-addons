@@ -149,7 +149,7 @@ class TestOneAttributeVariantCreation(TestCpqCommon):
         )
 
         # generate a random name
-        cow_print = f"COW PRINT {uuid.uuid4()}"
+        cow_print = "COW PRINT %s" % (uuid.uuid4())
 
         custom_dict = {ptav_ids: cow_print}
 

@@ -1,14 +1,10 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <templates xml:space="preserve">
 
-    <t t-name="cpq.ProductTmplAttrib" owl="1">
+    <t t-name="cpq.ProductTmplAttrib">
         <div class="mb-3">
             <div class="mb-2">
-                <label
-                    t-if="props.attribute.ptav_ids.length &gt; 1 or hasCustomPTAV"
-                    class="form-label fw-bold"
-                    t-esc="props.attribute.name"
-                />
+                <label class="form-label fw-bold" t-esc="props.attribute.name" />
                 <t t-call="{{ getPTAVTemplate() }}" />
             </div>
 
@@ -38,7 +34,7 @@
         </div>
     </t>
 
-    <t t-name="cpq.ProductTmplAttribSelect" owl="1">
+    <t t-name="cpq.ProductTmplAttribSelect">
         <select
             class="form-select"
             t-on-change="onSelect"
@@ -58,7 +54,7 @@
         </select>
     </t>
 
-    <t t-name="cpq.ProductTmplAttribRadio" owl="1">
+    <t t-name="cpq.ProductTmplAttribRadio">
         <div class="d-flex flex-wrap gap-3">
             <div
                 t-foreach="props.attribute.ptav_ids"
@@ -87,7 +83,7 @@
         </div>
     </t>
 
-    <t t-name="cpq.ProductTmplAttribColor" owl="1">
+    <t t-name="cpq.ProductTmplAttribColor">
         <ul class="list-inline mb-0">
             <li
                 t-foreach="props.attribute.ptav_ids"

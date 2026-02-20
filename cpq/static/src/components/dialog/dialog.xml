@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <templates xml:space="preserve">
 
-    <t t-name="cpq.ConfigureDialog" owl="1">
+    <t t-name="cpq.ConfigureDialog">
         <Dialog size="props.size or 'lg'" title="title">
             <div class="row g-3">
                 <div class="col-auto">
@@ -32,16 +32,25 @@
                         t-esc="state.productTmpl.description_sale"
                     />
 
-                    <ProductTmplAttrib
-                        t-foreach="state.ptalIds"
-                        t-as="line"
-                        t-key="line.id"
-                        id="line.id"
-                        attribute="line"
-                        selected="state.selected"
-                        onSelect="(attributeId, valueId) =&gt; this._onSelectAttribute(attributeId, valueId)"
-                        onCustom="(ptavId, value) =&gt; this._onCustomValue(ptavId, value)"
+                    <Notebook
+                        t-if="groups.length &gt; 1"
+                        orientation="'vertical'"
+                        pages="notebookPages"
                     />
+
+                    <!-- No groups or single group: flat list (original layout) -->
+                    <t t-if="groups.length &lt;= 1">
+                        <ProductTmplAttrib
+                            t-foreach="state.ptalIds"
+                            t-as="line"
+                            t-key="line.id"
+                            id="line.id"
+                            attribute="line"
+                            selected="state.selected"
+                            onSelect="(attributeId, valueId) =&gt; this._onSelectAttribute(attributeId, valueId)"
+                            onCustom="(ptavId, value) =&gt; this._onCustomValue(ptavId, value)"
+                        />
+                    </t>
                 </div>
             </div>
 

@@ -19,10 +19,10 @@ class MrpBom(models.Model):
                 res["warning"] = {
                     "title": self.env._("Configurable BoMs Exist"),
                     "message": self.env._(
-                        "There are already %(bom_count)d configurable BoMs for this product!"  # noqa: E501
-                        " Attempting to use both standard BoMs and configurable"  # noqa: E501
+                        "There are already %(count)d configurable BoMs for this product!"
+                        " Attempting to use both standard BoMs and configurable"
                         " BoMs will result in inconsistent BoM handling!",
-                        bom_count=cpq_dynamic_bom_count,
+                        count=cpq_dynamic_bom_count,
                     ),
                 }
         return res
