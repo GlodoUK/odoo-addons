@@ -17,5 +17,5 @@
     "data": [
         "views/stock_picking_type.xml",
     ],
-    "license": "LGPL-3",
+    "license": "Other proprietary",
 }
