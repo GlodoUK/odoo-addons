@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_location_form" model="ir.ui.view">
+        <field name="name">view_location_form</field>
+        <field name="model">stock.location</field>
+        <field name="priority">75</field>
+        <field name="inherit_id" ref="stock.view_location_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button
+                        name="action_freeze"
+                        type="object"
+                        icon="fa-lock"
+                        attrs="{'invisible': [('frozen', '=', True)]}"
+                        string="Freeze"
+                    />
+                    <button
+                        name="action_unfreeze"
+                        type="object"
+                        icon="fa-unlock"
+                        attrs="{'invisible': [('frozen', '=', False)]}"
+                        string="Unfreeze"
+                    />
+                </header>
+            </xpath>
+            <xpath expr="//group[@name='additional_info']" position="after">
+                <group string="Freeze Information" name="freeze_info">
+                    <field name="frozen" />
+                    <field name="frozen_parent_path" />
+                    <field name="frozen_by_ancestor" />
+                    <field
+                        name="freeze_reason_id"
+                        attrs="{'invisible': [('frozen', '=', False)]}"
+                    />
+                    <field
+                        name="freeze_uid"
+                        attrs="{'invisible': [('frozen', '=', False)]}"
+                    />
+                    <field
+                        name="freeze_date"
+                        attrs="{'invisible': [('frozen', '=', False)]}"
+                    />
+                    <field
+                        name="unfreeze_uid"
+                        attrs="{'invisible': [('frozen', '=', True)]}"
+                    />
+                    <field
+                        name="unfreeze_date"
+                        attrs="{'invisible': [('frozen', '=', True)]}"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
