@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_barcode_control')]" position="inside">
+            <button
+                class="btn btn-secondary text-uppercase stock_barcode_putaway_rules"
+                t-if="showStockBarcodePutawayRules"
+                t-on-click="applyStockBarcodePutawayRules"
+            >Update Storage Location</button>
+        </xpath>
+    </t>
+</templates>

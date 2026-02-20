@@ -21,6 +21,7 @@ addon | version | maintainers | summary
 [account_payment_better_matching](account_payment_better_matching/) | 15.0.1.1.0 |  | A better interface for bulk, but manual payment matching
 [account_payment_better_matching_queued](account_payment_better_matching_queued/) | 15.0.1.0.0 |  | Adds queued support to account_payment_better_matching
 [auth_signup_optional_notify](auth_signup_optional_notify/) | 15.0.1.0.0 |  | Optionally disable the notification on user login
+[backport_stock_removal_least_packages](backport_stock_removal_least_packages/) | 15.0.1.0.0 |  | Backport 'least packages' stock removal strategy
 [brands](brands/) | 15.0.2.0.0 |  | Allows a sale order and product to be associated with a brand
 [brands_crm](brands_crm/) | 15.0.0.1.0 |  | Allows a CRM entry to be associated with a brand
 [brands_sale_stock](brands_sale_stock/) | 15.0.0.1.0 |  | Integrates sale_stock with brands
@@ -81,6 +82,8 @@ addon | version | maintainers | summary
 [sale_stock_force_pdf_download](sale_stock_force_pdf_download/) | 15.0.1.0.0 |  | Sale Stock Force PDF Download
 [sendgrid](sendgrid/) | 15.0.1.0.0 |  | Handle Inbound Email through Sendgrid Webhooks
 [stock_available_sale_stock](stock_available_sale_stock/) | 15.0.1.0.0 |  | Integrates stock_available and sale_stock
+[stock_barcode_putaway_rules](stock_barcode_putaway_rules/) | 15.0.1.0.0 |  | Add a button on the barcode app to evaluate putaway rules
+[stock_location_freeze](stock_location_freeze/) | 15.0.1.0.2 |  | Prevent further movements of stock in a given location
 [stock_picking_component_events](stock_picking_component_events/) | 15.0.1.0.0 |  | Stock Picking Component Events
 [stock_picking_hold](stock_picking_hold/) | 15.0.2.0.0 |  | Adds a custom hold state to stock.pickings which prevents deliveries from being processed
 [stock_picking_move_form](stock_picking_move_form/) | 15.0.1.0.0 |  | Adds a button to the stock.picking form view to easily show the stock.move form
