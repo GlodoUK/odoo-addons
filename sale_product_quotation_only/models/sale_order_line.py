@@ -1,4 +1,4 @@
-from odoo import _, api, models
+from odoo import api, models
 from odoo.exceptions import ValidationError
 
 
@@ -25,9 +25,9 @@ class SaleOrderLine(models.Model):
             ]
 
             raise ValidationError(
-                _(
+                self.env._(
                     "Products marked as Quotation Only cannot be added to a "
-                    "confirmed sale order.\n%s"
+                    "confirmed sale order.\n%s",
+                    "\n".join(error_msg),
                 )
-                % "\n".join(error_msg)
             )

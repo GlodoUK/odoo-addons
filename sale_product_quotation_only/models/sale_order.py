@@ -1,4 +1,4 @@
-from odoo import _, models
+from odoo import models
 from odoo.exceptions import UserError
 
 
@@ -17,11 +17,11 @@ class SaleOrder(models.Model):
             ]
 
             raise UserError(
-                _(
+                self.env._(
                     "Products marked as Quotation Only cannot be added to a "
-                    "confirmed sale order.\n%s"
+                    "confirmed sale order.\n%s",
+                    "\n".join(error_msg),
                 )
-                % "\n".join(error_msg)
             )
 
         return super().action_confirm()
