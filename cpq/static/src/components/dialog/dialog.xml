@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <templates xml:space="preserve">
 
-    <t t-name="cpq.ConfigureDialog" owl="1">
+    <t t-name="cpq.ConfigureDialog">
         <Dialog size="props.size or 'lg'" title="title">
             <div class="row g-3">
                 <div class="col-auto">
@@ -21,7 +21,7 @@
                                 t-foreach="Object.entries(state.errors)"
                                 t-as="entry"
                                 t-key="entry[0]"
-                                t-esc="entry[1]"
+                                t-out="entry[1]"
                             />
                         </ul>
                     </div>
@@ -29,7 +29,7 @@
                     <div
                         t-if="state.productTmpl &amp;&amp; state.productTmpl.description_sale"
                         class="mb-3"
-                        t-esc="state.productTmpl.description_sale"
+                        t-out="state.productTmpl.description_sale"
                     />
 
                     <ProductTmplAttrib

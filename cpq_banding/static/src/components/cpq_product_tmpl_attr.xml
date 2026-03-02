@@ -20,7 +20,7 @@
                     t-key="i[0]"
                     t-att-value="i[0]"
                     t-att-selected="props.selected[ptav.id] == i[0]"
-                    t-esc="i[1]"
+                    t-out="i[1]"
                 />
             </select>
         </xpath>
