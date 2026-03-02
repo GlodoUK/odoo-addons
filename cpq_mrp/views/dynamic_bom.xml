@@ -31,16 +31,19 @@
                             <field name="code" />
                             <field name="type" widget="radio" />
                             <p
-                                class="oe_grey oe_edit_only"
+                                colspan="2"
+                                class="opacity-50 oe_edit_only"
                                 invisible="type != 'phantom'"
                             >
                                 <ul>
-                                    A BoM of type kit is used to split the product into its components.
+                                    A BoM of type Kit is not produced with a manufacturing order.<br
+                                />
+                                    Instead, it is used to decompose a BoM into its components when:
                                     <li>
-                                        At the creation of a Manufacturing Order.
+                                        it is added as a component in a manufacturing order
                                     </li>
                                     <li>
-                                        At the creation of a Stock Transfer.
+                                        it is moved via a transfer, such as a receipt or a delivery order for instance.
                                     </li>
                                 </ul>
                             </p>
@@ -202,7 +205,7 @@
     </record>
 
     <record id="action_cpq_dynamic_bom_act_window" model="ir.actions.act_window">
-        <field name="name">Configurable Products Bill of Materials</field>
+        <field name="name">Configurable Bills of Materials</field>
         <field name="res_model">cpq.dynamic.bom</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

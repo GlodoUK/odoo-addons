@@ -14,6 +14,7 @@
         "views/dynamic_bom_line.xml",
         "views/stock_picking.xml",
         "views/stock_move_line.xml",
+        "views/mrp_production.xml",
         "views/product.xml",
         "views/menu.xml",
     ],

@@ -75,13 +75,22 @@ class ProductTemplate(models.Model):
             record.cpq_dynamic_bom_count = len(record.cpq_dynamic_bom_ids)
 
     def action_view_cpq_dynamic_bom(self):
-        return {
+        self.ensure_one()
+
+        action = {
             "type": "ir.actions.act_window",
             "name": self.env._("Configurable Products Bill of Materials"),
             "res_model": "cpq.dynamic.bom",
             "view_mode": "form",
-            "res_id": self.cpq_dynamic_bom_ids.id,
+            "context": {
+                **self.env.context,
+                "default_product_tmpl_id": self.id,
+                "default_product_uom_id": self.uom_id.id,
+            },
         }
+        if self.cpq_dynamic_bom_ids:
+            action["res_id"] = self.cpq_dynamic_bom_ids[:1].id
+        return action
 
     def write(self, vals):
         if not self.env.context.get("cpq_mrp_skip_auto_archive", False):

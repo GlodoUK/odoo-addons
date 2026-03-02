@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">cpq_mrp.mrp_production_form_view</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="cpq_ok" invisible="1" />
+            </field>
+            <label for="bom_id" name="bom_label" position="attributes">
+                <attribute name="invisible">cpq_ok</attribute>
+            </label>
+            <div name="bom_div" position="attributes">
+                <attribute name="invisible">cpq_ok</attribute>
+            </div>
+            <div name="bom_div" position="after">
+                <label for="cpq_dynamic_bom_id" invisible="not cpq_ok" />
+                <div class="o_row" invisible="not cpq_ok">
+                    <field
+                        name="cpq_dynamic_bom_id"
+                        context="{'default_product_tmpl_id': product_tmpl_id}"
+                        invisible="state != 'draft' and not cpq_dynamic_bom_id"
+                        readonly="state != 'draft'"
+                    />
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>

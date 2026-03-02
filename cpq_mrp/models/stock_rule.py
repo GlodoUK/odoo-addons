@@ -89,6 +89,7 @@ class StockRule(models.Model):
         return move_values
 
     # fmt: off
+    # ruff: noqa: E501
     @api.model
     def _run_manufacture(self, procurements):
         procurements_without_dynamic_bom = []
@@ -96,7 +97,7 @@ class StockRule(models.Model):
 
         for procurement, rule in procurements:
             product_id = procurement.product_id.with_company(procurement.company_id)
-            if not (product_id.cpq_ok and product_id.cpq_dynamic_bom_ids.type == "normal"):  # noqa: E501
+            if not (product_id.cpq_ok and product_id.cpq_dynamic_bom_ids.type == "normal"):
                 procurements_without_dynamic_bom.append((procurement, rule))
                 continue
 
@@ -109,12 +110,14 @@ class StockRule(models.Model):
                 *procurement, self.env["mrp.bom"]
             )
             picking_type = dyn_bom_id.picking_type_id or rule.picking_type_id
-            production_values.update({
+            update_vals = {
                 "consumption": dyn_bom_id.consumption,
-                "picking_type_id": picking_type.id,
-                "location_src_id": picking_type.default_location_src_id.id,
                 "cpq_dynamic_bom_id": dyn_bom_id.id,
-            })
+            }
+            if picking_type:
+                update_vals["picking_type_id"] = picking_type.id
+                update_vals["location_src_id"] = picking_type.default_location_src_id.id
+            production_values.update(update_vals)
 
             cpq_productions_by_company[procurement.company_id.id]["values"].append(production_values)
             cpq_productions_by_company[procurement.company_id.id]["procurements"].append(procurement)
