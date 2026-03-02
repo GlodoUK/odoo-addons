@@ -14,6 +14,7 @@ export default class ConfigureDialog extends Component {
         productTmplId: Number,
         save: {type: Function, optional: true},
         discard: {type: Function, optional: true},
+        combination: {type: Object, optional: true},
         close: Function,
         size: {
             type: String,
@@ -38,6 +39,19 @@ export default class ConfigureDialog extends Component {
             this.state.ptalIds = data.ptal_ids || [];
             this.state.productTmpl = data.product_tmpl_id;
             this.title = _t("Configure: %s", data.product_tmpl_id.display_name);
+
+            if (this.props.combination) {
+                for (const [ptavId, customValue] of Object.entries(
+                    this.props.combination
+                )) {
+                    const parsed = parseInt(ptavId, 10);
+                    if (!Number.isInteger(parsed)) {
+                        continue;
+                    }
+                    this.state.selected[parsed] = customValue ?? null;
+                }
+                await this._validate();
+            }
         });
     }
 

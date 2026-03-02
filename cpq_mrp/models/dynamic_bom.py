@@ -19,11 +19,8 @@ class DynamicBom(models.Model):
         index=True,
     )
     type = fields.Selection(
-        [
-            ("phantom", "Kit"),
-            ("normal", "Manufacture"),
-        ],
-        default="phantom",
+        [("normal", "Manufacture"), ("phantom", "Kit")],
+        default="normal",
         required=True,
         index=True,
     )
@@ -100,16 +97,6 @@ class DynamicBom(models.Model):
         if not all(self.mapped("product_tmpl_id.cpq_ok")):
             raise ValidationError(
                 self.env._("Product Template must be enabled as configurable")
-            )
-
-    @api.constrains("type", "picking_type_id")
-    def _ensure_manufacture_has_picking_type_id(self):
-        if not self.env.user.has_group("stock.group_adv_location"):
-            return
-
-        if self.filtered(lambda b: b.type == "normal" and not b.picking_type_id):
-            raise ValidationError(
-                self.env._("Manufactured dynamic BoMs must have an operation type set")
             )
 
     @api.onchange("product_tmpl_id")

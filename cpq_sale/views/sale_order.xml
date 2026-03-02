@@ -10,6 +10,12 @@
                 position="before"
             >
                 <field name="product_template_id_cpq_ok" column_invisible="1" />
+                <field name="cpq_custom_value_ids" column_invisible="1">
+                    <list>
+                        <field name="ptav_id" />
+                        <field name="custom_value" />
+                    </list>
+                </field>
             </xpath>
         </field>
     </record>

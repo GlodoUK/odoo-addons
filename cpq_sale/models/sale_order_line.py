@@ -4,7 +4,9 @@ from odoo import fields, models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    product_template_id_cpq_ok = fields.Boolean(related="product_template_id.cpq_ok")
+    product_template_id_cpq_ok = fields.Boolean(
+        related="product_template_id.cpq_ok",
+    )
 
     def _compute_name(self):
         res = super()._compute_name()
