@@ -12,7 +12,7 @@ class MrpProduction(models.Model):
 
     cpq_dynamic_bom_id = fields.Many2one(
         "cpq.dynamic.bom",
-        string="Configurable Bill of Material",
+        "Configurable Bill of Materials",
         context={"active_test": False},
         index=True,
         compute="_compute_cpq_dynamic_bom_id",

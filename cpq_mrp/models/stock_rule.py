@@ -89,6 +89,7 @@ class StockRule(models.Model):
         return move_values
 
     # fmt: off
+    # ruff: noqa: E501
     @api.model
     def _run_manufacture(self, procurements):
         procurements_without_dynamic_bom = []

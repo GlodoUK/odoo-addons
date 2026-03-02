@@ -29,7 +29,7 @@
                             <label
                                 t-attf-for="team_id_{{ team_id.id }}"
                                 class="form-check-label"
-                                t-esc="team_id.display_name"
+                                t-out="team_id.display_name"
                             />
                         </div>
                     </t>
