@@ -31,7 +31,7 @@ patch(SaleOrderLineProductField.prototype, {
         if (edit && record.data.product_id) {
             combination = await this.orm.call(
                 "product.product",
-                "cpq_get_combination_dict",
+                "cpq_combination_tuples",
                 [record.data.product_id.id]
             );
         }
