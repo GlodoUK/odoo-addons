@@ -9,7 +9,7 @@ patch(SaleOrderLineProductField.prototype, {
 
     async _onProductTemplateUpdate() {
         if (this.isCpq) {
-            return this._openCpqConfigurator();
+            return this._openCpqConfigurator(false);
         }
         return super._onProductTemplateUpdate(...arguments);
     },
@@ -21,28 +21,35 @@ patch(SaleOrderLineProductField.prototype, {
         return super.onEditConfiguration(...arguments);
     },
 
-    _openCpqConfigurator(edit = false) {
+    async _openCpqConfigurator(edit = false) {
         const record = this.props.record;
         const saleOrderRecord = record.model.root;
+        const productTmplId = record.data.product_template_id.id;
 
-        const props = {
-            productTmplId: record.data.product_template_id.id,
-            save: async (productTmplId, productId) => {
+        let combination = {};
+
+        if (edit && record.data.product_id) {
+            combination = await this.orm.call(
+                "product.product",
+                "cpq_combination_tuples",
+                [record.data.product_id.id]
+            );
+        }
+
+        this.dialog.add(ConfigureDialog, {
+            productTmplId: productTmplId,
+            combination: combination,
+
+            save: async (_resultTmplId, productId) => {
                 await record.update({
                     product_id: {id: productId},
                 });
             },
-            discard: edit
-                ? () => {}
-                : () => {
-                      saleOrderRecord.data.order_line.delete(record);
-                  },
-        };
-
-        if (edit && record.data.product_id) {
-            props.productId = record.data.product_id.id;
-        }
-
-        this.dialog.add(ConfigureDialog, props);
+            discard: () => {
+                if (!edit) {
+                    saleOrderRecord.data.order_line.delete(record);
+                }
+            },
+        });
     },
 });

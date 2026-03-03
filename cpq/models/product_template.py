@@ -201,8 +201,6 @@ class ProductTemplate(models.Model):
         # and sanitise the inputs
         self.ensure_one()
 
-        errors = []
-
         if not self.cpq_ok:
             msg = self.env._(
                 "%(product_name)s is not a CPQ Enabled Product!",

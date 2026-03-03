@@ -1,5 +1,5 @@
-import {Component, onWillStart, useState, xml} from "@odoo/owl";
-import {_lt, _t} from "@web/core/l10n/translation";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 import ProductTmplAttrib from "./product_tmpl_attrib.esm";
 import {Dialog} from "@web/core/dialog/dialog";
@@ -36,6 +36,7 @@ export default class ConfigureDialog extends Component {
         productId: {type: Number, optional: true},
         save: {type: Function, optional: true},
         discard: {type: Function, optional: true},
+        combination: {type: Object, optional: true},
         close: Function,
         size: {
             type: String,
@@ -61,16 +62,20 @@ export default class ConfigureDialog extends Component {
             this.state.productTmpl = data.product_tmpl_id;
             this.title = _t("Configure: %s", data.product_tmpl_id.display_name);
 
-            if (this.props.productId) {
-                const combination = await this._loadCombination();
+            if (this.props.combination && Object.keys(this.props.combination).length) {
                 for (const [ptavId, customValue] of Object.entries(
-                    combination.selected
+                    this.props.combination
                 )) {
-                    this.state.selected[parseInt(ptavId, 10)] = customValue;
+                    const parsed = parseInt(ptavId, 10);
+                    this.state.selected[parsed] = customValue ?? null;
+                }
+            } else {
+                for (const ptal of this.state.ptalIds) {
+                    if (ptal.ptav_ids.length === 1) {
+                        this.state.selected[ptal.ptav_ids[0].id] = null;
+                    }
                 }
             }
-
-            this._autoSelectSingleOptions();
             await this._validate();
         });
     }
@@ -164,7 +169,7 @@ export default class ConfigureDialog extends Component {
     }
 
     async _onClickCreate() {
-        if (!this.canCreate || this.state.creating) {
+        if (!this.canCreate) {
             return;
         }
 
@@ -234,7 +239,7 @@ registry.category("actions").add("cpq.ConfigureDialogAction", (env, action) => {
     const context = action.context || {};
     if (context.active_model !== "product.template" || !context.active_id) {
         env.services.dialog.add(WarningDialog, {
-            message: _lt(
+            message: _t(
                 "The product configurator was somehow executed against something which is not a product template. Please contact support."
             ),
         });
