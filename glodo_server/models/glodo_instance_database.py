@@ -40,6 +40,7 @@ class GlodoInstanceDatabase(models.Model):
 
     instance_name = fields.Char(
         related="instance_id.name",
+        string="Instance Name",
         store=True,
         readonly=True,
     )
@@ -50,6 +51,7 @@ class GlodoInstanceDatabase(models.Model):
 
     instance_active = fields.Boolean(
         related="instance_id.active",
+        string="Instance Active",
     )
 
     remote_user_ids = fields.One2many(
@@ -93,13 +95,9 @@ class GlodoInstanceDatabase(models.Model):
 
     notes = fields.Text()
 
-    _sql_constraints = [
-        (
-            "unique_instance_database",
-            "UNIQUE(instance_id, name)",
-            "Database name must be unique per instance.",
-        ),
-    ]
+    _unique_instance_database = models.Constraint(
+        "UNIQUE(instance_id, name)", "Database name must be unique per instance."
+    )
 
     @api.depends("remote_user_ids")
     def _compute_remote_user_count(self):
