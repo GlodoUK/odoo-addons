@@ -10,6 +10,11 @@ class ProductAttribute(models.Model):
         default=True,
     )
 
+    cpq_group_id = fields.Many2one(
+        "product.attribute.cpq.group",
+        "Configurator Group",
+    )
+
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
@@ -130,10 +135,14 @@ class ProductTemplateAttributeLine(models.Model):
         self.ensure_one()
         i = self
 
+        group = i.attribute_id.cpq_group_id
         return {
             "id": i.id,
             "name": i.display_name,
             "display_type": i.attribute_id.display_type,
+            "group_id": group.id,
+            "group_name": group.name,
+            "group_sequence": group.sequence or 9999,
             "ptav_ids": [
                 ptav_id._cpq_get_combination_info()
                 for ptav_id in i.product_template_value_ids.filtered(

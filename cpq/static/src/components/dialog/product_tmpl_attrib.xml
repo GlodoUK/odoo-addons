@@ -55,7 +55,7 @@
     </t>
 
     <t t-name="cpq.ProductTmplAttribRadio">
-        <div class="d-flex flex-wrap gap-3">
+        <div class="d-flex flex-column gap-2">
             <div
                 t-foreach="props.attribute.ptav_ids"
                 t-as="ptav"
