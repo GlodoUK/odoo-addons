@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_glodo_instance_user,glodo.instance.user,model_glodo_instance,group_glodo_cloud_user,1,0,0,0
+access_glodo_instance_manager,glodo.instance.manager,model_glodo_instance,group_glodo_cloud_manager,1,1,0,0
+access_glodo_instance_admin,glodo.instance.admin,model_glodo_instance,group_glodo_cloud_admin,1,1,1,1
+access_glodo_instance_database_user,glodo.instance.database.user,model_glodo_instance_database,group_glodo_cloud_user,1,0,0,0
+access_glodo_instance_database_manager,glodo.instance.database.manager,model_glodo_instance_database,group_glodo_cloud_manager,1,1,1,1
+access_glodo_instance_database_admin,glodo.instance.database.admin,model_glodo_instance_database,group_glodo_cloud_admin,1,1,1,1
+access_glodo_remote_user_user,glodo.remote.user.user,model_glodo_remote_user,group_glodo_cloud_user,1,0,0,0
+access_glodo_remote_user_manager,glodo.remote.user.manager,model_glodo_remote_user,group_glodo_cloud_manager,1,1,1,1
+access_glodo_action_log_user,glodo.action.log.user,model_glodo_action_log,group_glodo_cloud_user,1,0,0,0
+access_glodo_action_log_manager,glodo.action.log.manager,model_glodo_action_log,group_glodo_cloud_manager,1,0,1,0
+access_glodo_action_log_admin,glodo.action.log.admin,model_glodo_action_log,group_glodo_cloud_admin,1,1,1,1
+access_glodo_instance_info_wizard,glodo.instance.info.wizard,model_glodo_instance_info_wizard,group_glodo_cloud_manager,1,1,1,1

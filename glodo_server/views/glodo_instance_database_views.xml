@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <!-- Database Form View -->
+    <record id="glodo_instance_database_view_form" model="ir.ui.view">
+        <field name="name">glodo.instance.database.view.form</field>
+        <field name="model">glodo.instance.database</field>
+        <field name="arch" type="xml">
+            <form string="Instance Database">
+                <header>
+                    <button
+                        name="action_sync_users"
+                        string="Sync Users"
+                        type="object"
+                        class="btn-primary"
+                        invisible="not instance_active"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_remote_users"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-users"
+                        >
+                            <field
+                                name="remote_user_count"
+                                widget="statinfo"
+                                string="Users"
+                            />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Instance">
+                            <field name="instance_id" />
+                            <field name="instance_url" widget="url" />
+                            <field name="instance_active" invisible="1" />
+                        </group>
+                        <group string="Statistics">
+                            <field name="user_count" />
+                            <field name="last_user_sync" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Users">
+                            <field name="remote_user_ids">
+                                <list string="Remote Users">
+                                    <field name="name" />
+                                    <field name="login" optional="show" />
+                                    <field name="email" optional="hide" />
+                                    <field name="last_login" optional="show" />
+                                    <field name="is_archived" optional="hide" />
+                                    <field name="last_become_date" optional="hide" />
+                                    <button
+                                        name="action_become_user"
+                                        string="Become"
+                                        type="object"
+                                        class="btn-info"
+                                        icon="fa-sign-in"
+                                        invisible="is_archived"
+                                        groups="glodo_server.group_glodo_cloud_manager"
+                                    />
+                                    <button
+                                        name="action_archive_user"
+                                        string="Archive"
+                                        type="object"
+                                        class="btn-link btn-warning"
+                                        icon="fa-archive"
+                                        invisible="is_archived"
+                                        groups="glodo_server.group_glodo_cloud_manager"
+                                    />
+                                    <button
+                                        name="action_unarchive_user"
+                                        string="Unarchive"
+                                        type="object"
+                                        class="btn-link btn-warning"
+                                        icon="fa-archive"
+                                        invisible="not is_archived"
+                                        groups="glodo_server.group_glodo_cloud_manager"
+                                    />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Installed Modules">
+                            <field
+                                name="installed_modules_html"
+                                widget="html"
+                                readonly="1"
+                            />
+                        </page>
+                        <page string="CLOC">
+                            <field name="cloc_output" widget="text" readonly="1" />
+                        </page>
+                        <page string="Notes">
+                            <field
+                                name="notes"
+                                placeholder="Add notes about this database..."
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Database List View -->
+    <record id="glodo_instance_database_view_list" model="ir.ui.view">
+        <field name="name">glodo.instance.database.view.list</field>
+        <field name="model">glodo.instance.database</field>
+        <field name="arch" type="xml">
+            <list string="Instance Databases">
+                <field name="name" />
+                <field name="instance_name" />
+                <field name="user_count" string="Internal Users" />
+                <field name="remote_user_count" string="Synced Users" />
+                <field name="last_user_sync" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Database Search View -->
+    <record id="glodo_instance_database_view_search" model="ir.ui.view">
+        <field name="name">glodo.instance.database.view.search</field>
+        <field name="model">glodo.instance.database</field>
+        <field name="arch" type="xml">
+            <search string="Search Databases">
+                <field name="name" />
+                <field name="instance_id" />
+                <filter
+                    string="Active"
+                    name="filter_active"
+                    domain="[('active', '=', True)]"
+                />
+                <filter
+                    string="Archived"
+                    name="filter_archived"
+                    domain="[('active', '=', False)]"
+                />
+                <filter
+                    string="Instance"
+                    name="groupby_instance"
+                    context="{'group_by': 'instance_id'}"
+                />
+            </search>
+        </field>
+    </record>
+
+    <!-- Database Action -->
+    <record id="glodo_instance_database_action" model="ir.actions.act_window">
+        <field name="name">Instance Databases</field>
+        <field name="res_model">glodo.instance.database</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="glodo_instance_database_view_search" />
+        <field name="context">{'search_default_filter_active': 1}</field>
+    </record>
+</odoo>

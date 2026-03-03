@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <!-- Action Log Form View -->
+    <record id="glodo_action_log_view_form" model="ir.ui.view">
+        <field name="name">glodo.action.log.view.form</field>
+        <field name="model">glodo.action.log</field>
+        <field name="arch" type="xml">
+            <form string="Action Log" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group string="Action Details">
+                            <field name="action_type" />
+                            <field name="action_timestamp" />
+                            <field name="result" />
+                        </group>
+                        <group string="Context">
+                            <field name="instance_id" />
+                            <field name="remote_user_id" />
+                            <field name="admin_user_id" />
+                            <field name="ip_address" />
+                        </group>
+                    </group>
+                    <group string="Payload" invisible="not payload">
+                        <field
+                            name="payload"
+                            widget="text"
+                            readonly="1"
+                            nolabel="1"
+                            colspan="2"
+                        />
+                    </group>
+                    <group string="Notes" invisible="not notes">
+                        <field name="notes" readonly="1" nolabel="1" colspan="2" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action Log List View -->
+    <record id="glodo_action_log_view_list" model="ir.ui.view">
+        <field name="name">glodo.action.log.view.list</field>
+        <field name="model">glodo.action.log</field>
+        <field name="arch" type="xml">
+            <list
+                string="Action Logs"
+                create="0"
+                edit="0"
+                default_order="action_timestamp desc"
+            >
+                <field name="action_timestamp" />
+                <field
+                    name="action_type"
+                    widget="badge"
+                    decoration-info="action_type == 'become'"
+                    decoration-warning="action_type in ('archive', 'unarchive')"
+                    decoration-success="action_type == 'enroll'"
+                    decoration-primary="action_type == 'sync'"
+                />
+                <field name="instance_name" />
+                <field name="remote_user_login" />
+                <field name="admin_user_login" />
+                <field name="result" />
+                <field name="ip_address" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Action Log Search View -->
+    <record id="glodo_action_log_view_search" model="ir.ui.view">
+        <field name="name">glodo.action.log.view.search</field>
+        <field name="model">glodo.action.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Action Logs">
+                <field name="instance_id" />
+                <field name="remote_user_id" />
+                <field name="admin_user_id" />
+                <field name="action_type" />
+                <filter
+                    string="Become Actions"
+                    name="filter_become"
+                    domain="[('action_type', '=', 'become')]"
+                />
+                <filter
+                    string="Archive Actions"
+                    name="filter_archive"
+                    domain="[('action_type', 'in', ('archive', 'unarchive'))]"
+                />
+                <filter
+                    string="Enrollments"
+                    name="filter_enroll"
+                    domain="[('action_type', '=', 'enroll')]"
+                />
+                <filter
+                    string="Sync Actions"
+                    name="filter_sync"
+                    domain="[('action_type', '=', 'sync')]"
+                />
+                <separator />
+                <filter
+                    string="Today"
+                    name="filter_today"
+                    domain="[('action_timestamp', '&gt;=', (context_today()).strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    string="This Week"
+                    name="filter_week"
+                    domain="[('action_timestamp', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    string="This Month"
+                    name="filter_month"
+                    domain="[('action_timestamp', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    string="Instance"
+                    name="groupby_instance"
+                    context="{'group_by': 'instance_id'}"
+                />
+                <filter
+                    string="Action Type"
+                    name="groupby_action_type"
+                    context="{'group_by': 'action_type'}"
+                />
+                <filter
+                    string="Admin User"
+                    name="groupby_admin"
+                    context="{'group_by': 'admin_user_id'}"
+                />
+                <filter
+                    string="Date"
+                    name="groupby_date"
+                    context="{'group_by': 'action_timestamp:day'}"
+                />
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Log Action -->
+    <record id="glodo_action_log_action" model="ir.actions.act_window">
+        <field name="name">Action Logs</field>
+        <field name="res_model">glodo.action.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="glodo_action_log_view_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No action logs yet
+            </p>
+            <p>
+                Action logs record all administrative actions performed on managed instances,
+                including become actions, user management, and enrollment events.
+            </p>
+        </field>
+    </record>
+</odoo>
