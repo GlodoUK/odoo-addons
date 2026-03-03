@@ -94,8 +94,7 @@ class GlodoCloudServer(http.Controller):
         }
         encrypted_data = crypto.encrypt(payload)
 
-        # become_url = f"{instance.url.rstrip('/')}/glodo_cloud/become"
-        become_url = "http://localhost:19069/glodo_cloud/become"
+        become_url = f"{instance.url.rstrip('/')}/glodo_cloud/become"
 
         # Build auto-submit form
         iv_val = encrypted_data["iv"]
