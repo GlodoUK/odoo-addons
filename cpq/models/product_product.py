@@ -117,28 +117,22 @@ class ProductProduct(models.Model):
         res = super()._compute_display_name()
 
         for record in self.sudo().filtered(lambda p: p.cpq_ok):
-            # Find the original calculated variant name, and then string replace
-            # it with custom value info
-            original_variant_name = (
-                record.product_template_attribute_value_ids._get_combination_name()
-            )
-
             custom_info_dict = {
                 i.ptav_id: i.display_name for i in record.cpq_custom_value_ids
             }
 
-            variant_combination = []
+            # For CPQ products, build the variant name from all PTAVs
+            # (including single-value lines, which _get_combination_name filters out)
+            variant_parts = []
             for ptav_id in record.product_template_attribute_value_ids:
-                if not ptav_id.is_custom or not custom_info_dict.get(ptav_id):
-                    variant_combination.append(ptav_id._get_combination_name())
-                    continue
+                if ptav_id.is_custom and custom_info_dict.get(ptav_id):
+                    variant_parts.append(custom_info_dict.get(ptav_id))
+                else:
+                    variant_parts.append(ptav_id.name)
 
-                variant_combination.append(custom_info_dict.get(ptav_id))
-
-            if original_variant_name:
-                record.display_name = record.display_name.replace(
-                    original_variant_name, ", ".join(variant_combination)
-                )
+            variant_name = ", ".join(variant_parts)
+            if variant_name:
+                record.display_name = f"{record.product_tmpl_id.name} ({variant_name})"
 
         return res
 
