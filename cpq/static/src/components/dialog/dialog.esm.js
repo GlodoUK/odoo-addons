@@ -1,5 +1,5 @@
 import {Component, onWillStart, useState} from "@odoo/owl";
-import {_lt, _t} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 import ProductTmplAttrib from "./product_tmpl_attrib.esm";
 import {Dialog} from "@web/core/dialog/dialog";
@@ -14,6 +14,7 @@ export default class ConfigureDialog extends Component {
         productTmplId: Number,
         save: {type: Function, optional: true},
         discard: {type: Function, optional: true},
+        combination: {type: Object, optional: true},
         close: Function,
         size: {
             type: String,
@@ -38,6 +39,22 @@ export default class ConfigureDialog extends Component {
             this.state.ptalIds = data.ptal_ids || [];
             this.state.productTmpl = data.product_tmpl_id;
             this.title = _t("Configure: %s", data.product_tmpl_id.display_name);
+
+            if (this.props.combination && Object.keys(this.props.combination).length) {
+                for (const [ptavId, customValue] of Object.entries(
+                    this.props.combination
+                )) {
+                    const parsed = parseInt(ptavId, 10);
+                    this.state.selected[parsed] = customValue ?? null;
+                }
+            } else {
+                for (const ptal of this.state.ptalIds) {
+                    if (ptal.ptav_ids.length === 1) {
+                        this.state.selected[ptal.ptav_ids[0].id] = null;
+                    }
+                }
+            }
+            await this._validate();
         });
     }
 
@@ -107,7 +124,7 @@ export default class ConfigureDialog extends Component {
     }
 
     async _onClickCreate() {
-        if (!this.canCreate || this.state.creating) {
+        if (!this.canCreate) {
             return;
         }
 
@@ -142,7 +159,7 @@ registry.category("actions").add("cpq.ConfigureDialogAction", (env, action) => {
     const context = action.context || {};
     if (context.active_model !== "product.template" || !context.active_id) {
         env.services.dialog.add(WarningDialog, {
-            message: _lt(
+            message: _t(
                 "The product configurator was somehow executed against something which is not a product template. Please contact support."
             ),
         });

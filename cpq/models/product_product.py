@@ -136,21 +136,20 @@ class ProductProduct(models.Model):
 
         return res
 
-    def _cpq_combination_tuples(self):
+    def cpq_combination_tuples(self):
         self.ensure_one()
-        data = []
-        custom_info_dict = {i.ptav_id.id: i for i in self.cpq_custom_value_ids}
+        custom_info_dict = {cv.ptav_id.id: cv for cv in self.cpq_custom_value_ids}
 
+        combination = {}
         for ptav_id in self.product_template_attribute_value_ids:
-            if not ptav_id.is_custom or not custom_info_dict.get(ptav_id.id):
-                data.append((ptav_id, None))
-                continue
-
             custom_value_id = custom_info_dict.get(ptav_id.id)
-            value = ptav_id.product_attribute_value_id._cpq_cast_custom(
-                custom_value_id.custom_value
-            )
+            if ptav_id.is_custom and custom_value_id:
+                combination[ptav_id.id] = (
+                    ptav_id.product_attribute_value_id._cpq_cast_custom(
+                        custom_value_id.custom_value
+                    )
+                )
+            else:
+                combination[ptav_id.id] = None
 
-            data.append((ptav_id, value))
-
-        return data
+        return combination
