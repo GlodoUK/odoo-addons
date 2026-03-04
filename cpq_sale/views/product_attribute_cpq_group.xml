@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="product_attribute_cpq_group_list" model="ir.ui.view">
+        <field name="name">product.attribute.cpq.group.list</field>
+        <field name="model">product.attribute.cpq.group</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="product_attribute_cpq_group_action" model="ir.actions.act_window">
+        <field name="name">CPQ Attribute Groups</field>
+        <field name="res_model">product.attribute.cpq.group</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem
+        id="menu_product_attribute_cpq_group"
+        name="CPQ Attribute Groups"
+        parent="sale.prod_config_main"
+        action="product_attribute_cpq_group_action"
+        sequence="20"
+    />
+</odoo>

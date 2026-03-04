@@ -7,6 +7,7 @@
     "auto_install": ["cpq", "sale"],
     "depends": ["cpq", "sale"],
     "data": [
+        "views/product_attribute_cpq_group.xml",
         "views/product_template.xml",
         "views/sale_order.xml",
     ],

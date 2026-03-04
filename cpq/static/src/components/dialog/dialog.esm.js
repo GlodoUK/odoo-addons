@@ -1,17 +1,41 @@
-import {Component, onWillStart, useState} from "@odoo/owl";
+import {Component, onWillStart, useState, xml} from "@odoo/owl";
 import {_t} from "@web/core/l10n/translation";
 
 import ProductTmplAttrib from "./product_tmpl_attrib.esm";
 import {Dialog} from "@web/core/dialog/dialog";
+import {Notebook} from "@web/core/notebook/notebook";
 import {WarningDialog} from "@web/core/errors/error_dialogs";
 import {registry} from "@web/core/registry";
 import {rpc} from "@web/core/network/rpc";
 
+class CpqGroupPage extends Component {
+    static template = xml`
+        <div class="p-3">
+            <ProductTmplAttrib
+                t-foreach="props.ptalIds" t-as="line" t-key="line.id"
+                id="line.id"
+                attribute="line"
+                selected="props.selected"
+                onSelect="props.onSelect"
+                onCustom="props.onCustom"
+            />
+        </div>
+    `;
+    static components = {ProductTmplAttrib};
+    static props = {
+        ptalIds: Array,
+        selected: Object,
+        onSelect: Function,
+        onCustom: Function,
+    };
+}
+
 export default class ConfigureDialog extends Component {
     static template = "cpq.ConfigureDialog";
-    static components = {Dialog, ProductTmplAttrib};
+    static components = {Dialog, ProductTmplAttrib, Notebook};
     static props = {
         productTmplId: Number,
+        productId: {type: Number, optional: true},
         save: {type: Function, optional: true},
         discard: {type: Function, optional: true},
         combination: {type: Object, optional: true},
@@ -152,6 +176,41 @@ export default class ConfigureDialog extends Component {
 
     get canCreate() {
         return this.state.valid && !this.state.creating;
+    }
+
+    get groups() {
+        const groupMap = new Map();
+        for (const ptal of this.state.ptalIds) {
+            const gId = ptal.group_id || false;
+            if (!groupMap.has(gId)) {
+                groupMap.set(gId, {
+                    id: gId,
+                    name: ptal.group_name || _t("General"),
+                    sequence:
+                        ptal.group_sequence !== undefined ? ptal.group_sequence : 9999,
+                    ptalIds: [],
+                });
+            }
+            groupMap.get(gId).ptalIds.push(ptal);
+        }
+        return [...groupMap.values()].sort(
+            (a, b) => a.sequence - b.sequence || (a.id || 0) - (b.id || 0)
+        );
+    }
+
+    get notebookPages() {
+        return this.groups.map((group) => ({
+            Component: CpqGroupPage,
+            id: String(group.id || "general"),
+            title: group.name,
+            props: {
+                ptalIds: group.ptalIds,
+                selected: this.state.selected,
+                onSelect: (attributeId, valueId) =>
+                    this._onSelectAttribute(attributeId, valueId),
+                onCustom: (ptavId, value) => this._onCustomValue(ptavId, value),
+            },
+        }));
     }
 }
 
