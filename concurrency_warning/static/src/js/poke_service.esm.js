@@ -3,10 +3,12 @@ import {debounce} from "@web/core/utils/timing";
 import {registry} from "@web/core/registry";
 import {user} from "@web/core/user";
 
+export const CONCURRENCY_RELOAD_EVENT = "CONCURRENCY_WARNING:RELOAD_RECORD";
+
 export const concurrencyWarningService = {
     dependencies: ["bus_service", "notification", "action"],
 
-    start(_env, {bus_service, notification: notification_service, action}) {
+    start(env, {bus_service, notification: notification_service, action}) {
         const notify = (notification) => {
             const controller = action.currentController;
             if (notification.userId === user.userId) {
@@ -19,6 +21,8 @@ export const concurrencyWarningService = {
                 return;
             }
 
+            const reload = () => env.bus.trigger(CONCURRENCY_RELOAD_EVENT);
+
             const delNotification = notification_service.add(notification.message, {
                 type: notification.type,
                 sticky: notification.sticky || !notification.refresh,
@@ -28,17 +32,16 @@ export const concurrencyWarningService = {
                           {
                               name: _t("Refresh"),
                               primary: true,
-                              onClick: async () => {
-                                  await action.doAction("soft_reload");
+                              onClick: () => {
+                                  reload();
                                   delNotification();
                               },
                           },
                       ],
             });
 
-            // Soft_reload
             if (notification.refresh) {
-                action.doAction("soft_reload");
+                reload();
             }
         };
         bus_service.subscribe("poke/live_update", debounce(notify, 1000, true));
