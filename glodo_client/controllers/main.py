@@ -35,23 +35,6 @@ def get_db_registry(db_name: str) -> Registry:
         raise NotFound(f"Database '{db_name}' not accessible: {e}") from e
 
 
-def is_glodo_compatible(db_name: str) -> bool:
-    """Check if a database has glodo_client installed."""
-    try:
-        registry = Registry(db_name)
-        with registry.cursor() as cr:
-            cr.execute(
-                """
-                SELECT 1 FROM ir_module_module
-                WHERE name = 'glodo_client'
-                AND state = 'installed'
-                """
-            )
-            return cr.fetchone() is not None
-    except Exception:
-        return False
-
-
 class GlodoCloudClient(Controller):
     """
     Controller endpoints for Glodo Cloud client functionality.
@@ -117,9 +100,6 @@ class GlodoCloudClient(Controller):
 
         # Gather info for each compatible database
         for db_name in all_dbs:
-            if not is_glodo_compatible(db_name):
-                continue
-
             db_info = self._get_database_info(db_name)
             if db_info:
                 result["databases"].append(db_info)
@@ -199,9 +179,6 @@ class GlodoCloudClient(Controller):
         if not db_name:
             raise BadRequest("Missing 'database' in request payload")
 
-        if not is_glodo_compatible(db_name):
-            raise NotFound(f"Database '{db_name}' is not compatible")
-
         try:
             registry = Registry(db_name)
             with registry.cursor() as cr:
@@ -268,9 +245,6 @@ class GlodoCloudClient(Controller):
             user_id = int(user_id)
         except (TypeError, ValueError) as e:
             raise BadRequest("Invalid user_id format") from e
-
-        if not is_glodo_compatible(db_name):
-            raise NotFound(f"Database '{db_name}' is not compatible")
 
         # Validate user exists and is suitable
         try:
@@ -350,9 +324,6 @@ class GlodoCloudClient(Controller):
             user_id = int(user_id)
         except (TypeError, ValueError) as e:
             raise BadRequest("Invalid user_id format") from e
-
-        if not is_glodo_compatible(db_name):
-            raise NotFound(f"Database '{db_name}' is not compatible")
 
         try:
             registry = Registry(db_name)
