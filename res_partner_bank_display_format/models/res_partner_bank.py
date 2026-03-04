@@ -80,7 +80,7 @@ class ResPartnerBank(models.Model):
             try:
                 record.display_name = record._get_custom_display_name_format()
             except KeyError as e:
-                _logger.warning("Failed to compute custom display name", e)
+                _logger.warning("Failed to compute custom display name: %s", e)
                 pass
 
         return res
