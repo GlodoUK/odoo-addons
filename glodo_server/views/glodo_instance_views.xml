@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <!-- Instance Form View -->
+    <record id="glodo_instance_view_form" model="ir.ui.view">
+        <field name="name">glodo.instance.view.form</field>
+        <field name="model">glodo.instance</field>
+        <field name="arch" type="xml">
+            <form string="Managed Instance">
+                <header>
+                    <button
+                        name="action_sync_info"
+                        string="Sync Info"
+                        type="object"
+                        class="btn-primary"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                    />
+                    <button
+                        name="action_fetch_info"
+                        string="View Info"
+                        type="object"
+                        class="btn-secondary"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                    />
+                    <button
+                        name="action_ping_db"
+                        string="Ping"
+                        type="object"
+                        class="btn-secondary"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                    />
+                    <button
+                        name="action_regenerate_secret"
+                        string="Regenerate Secret"
+                        type="object"
+                        class="btn-warning"
+                        confirm="This will generate a new shared secret. You will need to update the client's odoo.conf. Continue?"
+                        groups="glodo_server.group_glodo_cloud_admin"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_databases"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-database"
+                        >
+                            <field
+                                name="database_count"
+                                widget="statinfo"
+                                string="Databases"
+                            />
+                        </button>
+                        <button
+                            name="action_view_action_logs"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-history"
+                        >
+                            <span class="o_stat_text">Action Logs</span>
+                        </button>
+                    </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Instance Name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Connection Details">
+                            <field name="url" widget="url" />
+                            <field name="unique_id" readonly="1" />
+                            <field name="odoo_version" readonly="1" />
+                            <field name="last_sync_date" readonly="1" />
+                        </group>
+                        <group
+                            string="Configuration"
+                            groups="glodo_server.group_glodo_cloud_admin"
+                        >
+                            <field name="shared_secret" widget="CopyClipboardChar" />
+                            <div colspan="2" class="alert alert-info" role="alert">
+                                <strong>Client Configuration:</strong><br
+                            /> Add these lines to the client's <code
+                            >odoo.conf</code>:<br />
+                                <code>glodo_cloud_instance_id = <field
+                                name="unique_id"
+                                readonly="1"
+                                nolabel="1"
+                            /></code><br />
+                                <code>glodo_cloud_shared_secret = <field
+                                name="shared_secret"
+                                readonly="1"
+                                nolabel="1"
+                            /></code>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Databases">
+                            <field name="database_ids">
+                                <list string="Databases">
+                                    <field name="name" />
+                                    <field name="user_count" string="Internal Users" />
+                                    <field
+                                        name="remote_user_count"
+                                        string="Synced Users"
+                                    />
+                                    <field name="last_user_sync" />
+                                    <field name="active" column_invisible="True" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field
+                                name="notes"
+                                placeholder="Add notes about this instance..."
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <!-- Instance List View -->
+    <record id="glodo_instance_view_list" model="ir.ui.view">
+        <field name="name">glodo.instance.view.list</field>
+        <field name="model">glodo.instance</field>
+        <field name="arch" type="xml">
+            <list string="Managed Instances">
+                <field name="name" />
+                <field name="url" widget="url" />
+                <field name="database_count" string="Databases" />
+                <field name="remote_user_count" string="Users" />
+                <field name="odoo_version" />
+                <field name="last_sync_date" />
+                <field name="active" column_invisible="True" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Instance Search View -->
+    <record id="glodo_instance_view_search" model="ir.ui.view">
+        <field name="name">glodo.instance.view.search</field>
+        <field name="model">glodo.instance</field>
+        <field name="arch" type="xml">
+            <search string="Search Instances">
+                <field name="name" />
+                <field name="url" />
+                <field name="unique_id" />
+                <filter
+                    string="Active"
+                    name="filter_active"
+                    domain="[('active', '=', True)]"
+                />
+                <filter
+                    string="Archived"
+                    name="filter_archived"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
+
+    <!-- Instance Action -->
+    <record id="glodo_instance_action" model="ir.actions.act_window">
+        <field name="name">Managed Instances</field>
+        <field name="res_model">glodo.instance</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="glodo_instance_view_search" />
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new managed instance
+            </p>
+            <p>
+                Create an instance here, then copy the unique ID and shared secret
+                to the client's odoo.conf file.
+            </p>
+        </field>
+    </record>
+</odoo>

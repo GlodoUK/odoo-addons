@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem
+        id="glodo_cloud_menu_root"
+        name="Glodo Cloud"
+        web_icon="glodo_server,static/description/icon.png"
+        sequence="100"
+        groups="glodo_server.group_glodo_cloud_user"
+    />
+
+    <!-- Instances Menu -->
+    <menuitem
+        id="glodo_cloud_menu_instances"
+        name="Instances"
+        parent="glodo_cloud_menu_root"
+        action="glodo_instance_action"
+        sequence="10"
+    />
+
+    <!-- Databases Menu -->
+    <menuitem
+        id="glodo_cloud_menu_databases"
+        name="Databases"
+        parent="glodo_cloud_menu_root"
+        action="glodo_instance_database_action"
+        sequence="15"
+    />
+
+    <!-- Remote Users Menu -->
+    <menuitem
+        id="glodo_cloud_menu_remote_users"
+        name="Remote Users"
+        parent="glodo_cloud_menu_root"
+        action="glodo_remote_user_action"
+        sequence="20"
+    />
+
+    <!-- Action Logs Menu -->
+    <menuitem
+        id="glodo_cloud_menu_action_logs"
+        name="Action Logs"
+        parent="glodo_cloud_menu_root"
+        action="glodo_action_log_action"
+        sequence="30"
+    />
+
+    <!-- Configuration Menu -->
+    <menuitem
+        id="glodo_cloud_menu_config"
+        name="Configuration"
+        parent="glodo_cloud_menu_root"
+        sequence="100"
+        groups="glodo_server.group_glodo_cloud_admin"
+    />
+</odoo>

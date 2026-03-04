@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <!-- Remote User Form View -->
+    <record id="glodo_remote_user_view_form" model="ir.ui.view">
+        <field name="name">glodo.remote.user.view.form</field>
+        <field name="model">glodo.remote.user</field>
+        <field name="arch" type="xml">
+            <form string="Remote User">
+                <header>
+                    <button
+                        name="action_become_user"
+                        string="Become User"
+                        type="object"
+                        class="btn-primary"
+                        invisible="is_archived"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                        confirm="This will log you into the remote instance as this user. Continue?"
+                    />
+                    <button
+                        name="action_archive_user"
+                        string="Archive User"
+                        type="object"
+                        class="btn-warning"
+                        invisible="is_archived"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                        confirm="This will archive the user on the remote instance. Continue?"
+                    />
+                    <button
+                        name="action_unarchive_user"
+                        string="Unarchive User"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="not is_archived"
+                        groups="glodo_server.group_glodo_cloud_manager"
+                        confirm="This will unarchive the user on the remote instance. Continue?"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-warning"
+                        invisible="not is_archived"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                        <h2>
+                            <field name="login" readonly="1" />
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="User Details">
+                            <field name="email" />
+                            <field name="remote_id" readonly="1" />
+                            <field name="last_login" readonly="1" />
+                            <field name="last_become_date" readonly="1" />
+                        </group>
+                        <group string="Location">
+                            <field name="database_id" readonly="1" />
+                            <field name="instance_id" readonly="1" />
+                            <field name="instance_url" widget="url" readonly="1" />
+                        </group>
+                    </group>
+                    <group string="Status">
+                        <field name="is_archived" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Remote User List View -->
+    <record id="glodo_remote_user_view_list" model="ir.ui.view">
+        <field name="name">glodo.remote.user.view.list</field>
+        <field name="model">glodo.remote.user</field>
+        <field name="arch" type="xml">
+            <list
+                string="Remote Users"
+                default_order="instance_name, database_name, name"
+            >
+                <field name="name" />
+                <field name="login" />
+                <field name="email" />
+                <field name="instance_name" />
+                <field name="database_name" />
+                <field name="is_archived" widget="boolean" optional="show" />
+                <field name="last_login" optional="hide" />
+                <field name="last_become_date" optional="hide" />
+                <button
+                    name="action_become_user"
+                    string="Become"
+                    type="object"
+                    class="btn-link"
+                    icon="fa-sign-in"
+                    invisible="is_archived"
+                    groups="glodo_server.group_glodo_cloud_manager"
+                />
+                <button
+                    name="action_toggle_archive"
+                    string="Toggle Archive"
+                    type="object"
+                    class="btn-link"
+                    icon="fa-archive"
+                    invisible="is_archived"
+                    groups="glodo_server.group_glodo_cloud_manager"
+                />
+            </list>
+        </field>
+    </record>
+
+    <!-- Remote User Search View -->
+    <record id="glodo_remote_user_view_search" model="ir.ui.view">
+        <field name="name">glodo.remote.user.view.search</field>
+        <field name="model">glodo.remote.user</field>
+        <field name="arch" type="xml">
+            <search string="Search Remote Users">
+                <field name="name" />
+                <field name="login" />
+                <field name="email" />
+                <field name="database_id" />
+                <field name="instance_id" />
+                <filter
+                    string="Active Users"
+                    name="filter_active"
+                    domain="[('is_archived', '=', False)]"
+                />
+                <filter
+                    string="Archived"
+                    name="filter_archived"
+                    domain="[('is_archived', '=', True)]"
+                />
+                <filter
+                    string="Instance"
+                    name="groupby_instance"
+                    context="{'group_by': 'instance_id'}"
+                />
+                <filter
+                    string="Database"
+                    name="groupby_database"
+                    context="{'group_by': 'database_id'}"
+                />
+                <filter
+                    string="Archived Status"
+                    name="groupby_archived"
+                    context="{'group_by': 'is_archived'}"
+                />
+            </search>
+        </field>
+    </record>
+
+    <!-- Remote User Action -->
+    <record id="glodo_remote_user_action" model="ir.actions.act_window">
+        <field name="name">Remote Users</field>
+        <field name="res_model">glodo.remote.user</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="glodo_remote_user_view_search" />
+        <field
+            name="context"
+        >{'search_default_filter_active': 1, 'search_default_filter_internal': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No remote users found
+            </p>
+            <p>
+                Remote users are synchronized from managed instances.
+                Select a database and click "Sync Users" to populate this list.
+            </p>
+        </field>
+    </record>
+</odoo>
