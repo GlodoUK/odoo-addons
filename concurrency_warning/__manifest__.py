@@ -16,7 +16,8 @@
     "license": "LGPL-3",
     "assets": {
         "web.assets_backend": [
-            "/concurrency_warning/static/src/js/poke_service.esm.js"
+            "/concurrency_warning/static/src/js/poke_service.esm.js",
+            "/concurrency_warning/static/src/js/form_controller_patch.esm.js",
         ],
     },
 }
