@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [connector_edi_sale](connector_edi_sale/) | 16.0.1.0.0 |  | EDI Sales module
 [credit_control](credit_control/) | 16.0.1.0.0 |  | Credit Control Policies
 [crm_stage_duration](crm_stage_duration/) | 16.0.0.0.0 |  | Monitors and adds stage duration on kanban and tree views, and also the chatter
+[glodo_client](glodo_client/) | 16.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 16.0.1.0.0 |  | Links Account Moves to Helpdesk Tickets
 [helpdesk_commercial_partner](helpdesk_commercial_partner/) | 16.0.1.0.0 |  | Make commercial_partner_id a stored field on helpdesk tickets.
 [helpdesk_concurrency_warning](helpdesk_concurrency_warning/) | 16.0.1.0.0 |  | Updates helpdesk tickets automatically while open
