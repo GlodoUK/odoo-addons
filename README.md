@@ -32,6 +32,7 @@ addon | version | maintainers | summary
 [credit_control](credit_control/) | 17.0.0.0.0 |  | Credit Control Policies
 [glo_checklists](glo_checklists/) | 17.0.1.0.0 |  | Add checklists to any model via a template.
 [glo_commercial_invoice](glo_commercial_invoice/) | 17.0.1.0.0 |  | Glo Commercial Invoice
+[glodo_client](glodo_client/) | 17.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
 [mail_bounce_catchall_custom_message](mail_bounce_catchall_custom_message/) | 17.0.1.0.0 |  | Customise the catchall bounce message
 [product_simple_variant_builder](product_simple_variant_builder/) | 17.0.1.0.0 |  | Simple wizard to build dynamic variants from a product template
 [product_supplier_info_apply_on_variants](product_supplier_info_apply_on_variants/) | 17.0.1.0.0 |  | Apply on Variants for product.supplierinfo records
@@ -39,8 +40,10 @@ addon | version | maintainers | summary
 [purchase_stock_update_move_date](purchase_stock_update_move_date/) | 17.0.1.0.0 |  | Purchase Stock Update Move Date
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 17.0.0.0.0 |  | Adds a 'To Invoice' menu to the Purchase menu
 [report_layout_no_header_no_footer](report_layout_no_header_no_footer/) | 17.0.1.0.0 |  | Report Layout No Header No Footer
+[sale_amount_company_currency](sale_amount_company_currency/) | 17.0.1.0.0 |  | Sale Amount Company Currency
 [sale_force_manual_delivered](sale_force_manual_delivered/) | 17.0.1.0.0 |  | Allow forced manual delivery
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 17.0.1.0.0 |  | Adds customer ref field to pricelist item.
+[sale_product_quotation_only](sale_product_quotation_only/) | 17.0.1.0.0 |  | Sale Product Quotation Only
 [stock_picking_move_form](stock_picking_move_form/) | 17.0.1.0.0 |  | Adds a button to the stock.picking form view to easily show the stock.move form
 [stock_picking_validation_warning](stock_picking_validation_warning/) | 17.0.1.0.0 |  | Partner warning on stock picking validation
 [stock_pre_reserve](stock_pre_reserve/) | 17.0.1.1.0 |  | Link an existing outbound move to a new inbound move manually, allowing reservations against inbound stock.
