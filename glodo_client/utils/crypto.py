@@ -61,7 +61,7 @@ class AESGCMCrypto:
         self.ttl = ttl
         self._aesgcm = AESGCM(shared_secret)
 
-    def encrypt(self, payload: dict[str, Any]) -> dict[str, str]:
+    def encrypt(self, payload):
         """
         Encrypt a payload with AES-GCM.
 
