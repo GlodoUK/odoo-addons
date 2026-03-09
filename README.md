@@ -72,6 +72,7 @@ addon | version | maintainers | summary
 [stock_picking_component_events](stock_picking_component_events/) | 18.0.1.0.0 |  | Stock Picking Component Events
 [stock_picking_hold](stock_picking_hold/) | 18.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [web_cmd_search](web_cmd_search/) | 18.0.1.0.0 |  | Adds a global command search to quick access records
+[web_graph_bar_zerofill](web_graph_bar_zerofill/) | 18.0.1.0.0 |  | Web Graph Bar Zero Fill
 
 [//]: # (end addons)
 
