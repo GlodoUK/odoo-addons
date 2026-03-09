@@ -124,7 +124,7 @@ class AESGCMCrypto:
         return payload
 
 
-def get_client_config() -> tuple[str | None, bytes | None]:
+def get_client_config():
     """
     Get the client's instance ID and shared secret from config.
 
