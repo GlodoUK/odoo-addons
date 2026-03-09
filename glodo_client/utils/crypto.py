@@ -11,7 +11,6 @@ import logging
 import os
 import time
 from functools import wraps
-from typing import Any
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from werkzeug.exceptions import BadRequest, Forbidden
@@ -85,7 +84,7 @@ class AESGCMCrypto:
             "ciphertext": base64.b64encode(ciphertext).decode("ascii"),
         }
 
-    def decrypt(self, encrypted_data) -> dict[str, Any]:
+    def decrypt(self, encrypted_data):
         """
         Decrypt and verify an AES-GCM encrypted payload.
 
@@ -125,7 +124,7 @@ class AESGCMCrypto:
         return payload
 
 
-def get_client_config() -> tuple[str | None, bytes | None]:
+def get_client_config():
     """
     Get the client's instance ID and shared secret from config.
 
