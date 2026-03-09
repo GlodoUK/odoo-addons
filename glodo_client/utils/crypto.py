@@ -85,7 +85,7 @@ class AESGCMCrypto:
             "ciphertext": base64.b64encode(ciphertext).decode("ascii"),
         }
 
-    def decrypt(self, encrypted_data: dict[str, str]) -> dict[str, Any]:
+    def decrypt(self, encrypted_data) -> dict[str, Any]:
         """
         Decrypt and verify an AES-GCM encrypted payload.
 
