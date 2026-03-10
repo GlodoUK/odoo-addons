@@ -230,7 +230,7 @@ class GlodoCloudClient(Controller):
 
         Payload: {"database": "db_name", "user_id": 5}
 
-        Creates a session for the specified user and redirects to /odoo.
+        Creates a session for the specified user and redirects to /web.
         """
         payload = getattr(request, "glodo_payload", {})
         db_name = payload.get("database")
@@ -292,7 +292,7 @@ class GlodoCloudClient(Controller):
             db_name,
         )
 
-        return request.redirect("/odoo")
+        return request.redirect("/web")
 
     @route(
         "/glodo_cloud/user_manage",
