@@ -54,6 +54,10 @@ class GlodoInstance(models.Model):
         help="AES-256 shared secret for encrypted communication",
     )
 
+    partner_id = fields.Many2one(
+        "res.partner",
+    )
+
     database_ids = fields.One2many(
         "glodo.instance.database",
         "instance_id",

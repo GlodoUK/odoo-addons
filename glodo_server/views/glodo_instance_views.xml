@@ -73,6 +73,7 @@
                     </div>
                     <group>
                         <group string="Connection Details">
+                            <field name="partner_id" />
                             <field name="url" widget="url" />
                             <field name="unique_id" readonly="1" />
                             <field name="odoo_version" readonly="1" />
@@ -128,13 +129,13 @@
         </field>
     </record>
 
-    <!-- Instance List View -->
     <record id="glodo_instance_view_list" model="ir.ui.view">
         <field name="name">glodo.instance.view.list</field>
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
-            <list string="Managed Instances">
+            <list>
                 <field name="name" />
+                <field name="partner_id" />
                 <field name="url" widget="url" />
                 <field name="database_count" string="Databases" />
                 <field name="remote_user_count" string="Users" />
@@ -145,12 +146,11 @@
         </field>
     </record>
 
-    <!-- Instance Search View -->
     <record id="glodo_instance_view_search" model="ir.ui.view">
         <field name="name">glodo.instance.view.search</field>
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
-            <search string="Search Instances">
+            <search>
                 <field name="name" />
                 <field name="url" />
                 <field name="unique_id" />
@@ -164,11 +164,17 @@
                     name="filter_archived"
                     domain="[('active', '=', False)]"
                 />
+                <group>
+                    <filter
+                        string="Partner"
+                        name="groupby_partner"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                </group>
             </search>
         </field>
     </record>
 
-    <!-- Instance Action -->
     <record id="glodo_instance_action" model="ir.actions.act_window">
         <field name="name">Managed Instances</field>
         <field name="res_model">glodo.instance</field>
