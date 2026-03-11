@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-    <!-- Database Form View -->
     <record id="glodo_instance_database_view_form" model="ir.ui.view">
         <field name="name">glodo.instance.database.view.form</field>
         <field name="model">glodo.instance.database</field>
@@ -25,9 +24,9 @@
                             icon="fa-users"
                         >
                             <field
-                                name="remote_user_count"
+                                name="active_remote_user_count"
                                 widget="statinfo"
-                                string="Users"
+                                string="Active Users"
                             />
                         </button>
                     </div>
@@ -109,27 +108,25 @@
         </field>
     </record>
 
-    <!-- Database List View -->
     <record id="glodo_instance_database_view_list" model="ir.ui.view">
         <field name="name">glodo.instance.database.view.list</field>
         <field name="model">glodo.instance.database</field>
         <field name="arch" type="xml">
-            <list string="Instance Databases">
+            <list>
                 <field name="name" />
                 <field name="instance_name" />
-                <field name="user_count" string="Internal Users" />
-                <field name="remote_user_count" string="Synced Users" />
+                <field name="active_remote_user_count" />
+                <field name="inactive_remote_user_count" optional="hide" />
                 <field name="last_user_sync" />
             </list>
         </field>
     </record>
 
-    <!-- Database Search View -->
     <record id="glodo_instance_database_view_search" model="ir.ui.view">
         <field name="name">glodo.instance.database.view.search</field>
         <field name="model">glodo.instance.database</field>
         <field name="arch" type="xml">
-            <search string="Search Databases">
+            <search>
                 <field name="name" />
                 <field name="instance_id" />
                 <filter
@@ -151,7 +148,6 @@
         </field>
     </record>
 
-    <!-- Database Action -->
     <record id="glodo_instance_database_action" model="ir.actions.act_window">
         <field name="name">Instance Databases</field>
         <field name="res_model">glodo.instance.database</field>

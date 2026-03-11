@@ -52,6 +52,18 @@
                             />
                         </button>
                         <button
+                            name="action_view_remote_users"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-users"
+                        >
+                            <field
+                                name="active_remote_user_count"
+                                widget="statinfo"
+                                string="Active Users"
+                            />
+                        </button>
+                        <button
                             name="action_view_action_logs"
                             type="object"
                             class="oe_stat_button"
@@ -111,10 +123,10 @@
                             <field name="database_ids">
                                 <list string="Databases">
                                     <field name="name" />
-                                    <field name="user_count" string="Internal Users" />
+                                    <field name="active_remote_user_count" />
                                     <field
-                                        name="remote_user_count"
-                                        string="Synced Users"
+                                        name="inactive_remote_user_count"
+                                        optional="hide"
                                     />
                                     <field name="last_user_sync" />
                                     <field name="active" column_invisible="True" />
@@ -143,7 +155,8 @@
                 <field name="partner_id" />
                 <field name="url" widget="url" />
                 <field name="database_count" string="Databases" />
-                <field name="remote_user_count" string="Users" />
+                <field name="active_remote_user_count" />
+                <field name="inactive_remote_user_count" optional="hide" />
                 <field name="odoo_version" />
                 <field name="last_sync_date" />
                 <field name="active" column_invisible="True" />

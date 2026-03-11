@@ -9,6 +9,7 @@ import base64
 import json
 import logging
 import secrets
+from collections import defaultdict
 
 import requests
 
@@ -82,10 +83,16 @@ class GlodoInstance(models.Model):
         readonly=True,
     )
 
-    remote_user_count = fields.Integer(
+    active_remote_user_count = fields.Integer(
+        "Active Users",
         compute="_compute_remote_user_count",
         store=True,
-        readonly=True,
+    )
+
+    inactive_remote_user_count = fields.Integer(
+        "Inactive Users",
+        compute="_compute_remote_user_count",
+        store=True,
     )
 
     last_sync_date = fields.Datetime(
@@ -104,12 +111,29 @@ class GlodoInstance(models.Model):
         for instance in self:
             instance.database_count = len(instance.database_ids)
 
-    @api.depends("database_ids.remote_user_ids")
+    @api.depends(
+        "database_ids.remote_user_ids", "database_ids.remote_user_ids.is_archived"
+    )
     def _compute_remote_user_count(self):
+        if not self.ids:
+            self.active_remote_user_count = self.inactive_remote_user_count = 0
+            return
+
+        count_data = defaultdict(lambda: {"active": 0, "inactive": 0})
+
+        remote_user_data = self.env["glodo.remote.user"]._read_group(
+            [("instance_id", "in", self.ids)],
+            ["instance_id", "is_archived"],
+            ["__count"],
+        )
+
+        for instance, is_archived, count in remote_user_data:
+            key = "inactive" if is_archived else "active"
+            count_data[instance.id][key] = count
+
         for instance in self:
-            instance.remote_user_count = sum(
-                len(db.remote_user_ids) for db in instance.database_ids
-            )
+            instance.active_remote_user_count = count_data[instance.id]["active"]
+            instance.inactive_remote_user_count = count_data[instance.id]["inactive"]
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -358,6 +382,20 @@ class GlodoInstance(models.Model):
             "domain": [("instance_id", "=", self.id)],
             "res_id": self.database_ids[0].id if len(self.database_ids) == 1 else False,
             "context": {"default_instance_id": self.id},
+        }
+
+    def action_view_remote_users(self):
+        self.ensure_one()
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": self.env._("Users - %(name)s", name=self.name),
+            "res_model": "glodo.remote.user",
+            "view_mode": "list,form",
+            "domain": [("instance_id", "=", self.id)],
+            "context": {
+                "search_default_filter_active": 1,
+            },
         }
 
     def action_view_action_logs(self):
