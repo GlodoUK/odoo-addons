@@ -8,6 +8,7 @@ Uses AES-GCM with a shared secret for secure communication.
 import base64
 import json
 import logging
+import secrets
 
 import requests
 
@@ -107,8 +108,6 @@ class GlodoInstance(models.Model):
         for vals in vals_list:
             if not vals.get("unique_id"):
                 # Generate a short unique ID for this instance
-                import secrets
-
                 vals["unique_id"] = secrets.token_urlsafe(16)
             if not vals.get("shared_secret"):
                 vals["shared_secret"] = generate_shared_secret()
