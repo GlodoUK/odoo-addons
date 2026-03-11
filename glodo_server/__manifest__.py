@@ -11,6 +11,7 @@
         "security/ir.model.access.csv",
         "wizards/glodo_instance_info_wizard_views.xml",
         "views/glodo_instance_views.xml",
+        "views/glodo_instance_tag_views.xml",
         "views/glodo_instance_database_views.xml",
         "views/glodo_remote_user_views.xml",
         "views/glodo_action_log_views.xml",

@@ -58,6 +58,10 @@ class GlodoInstance(models.Model):
         "res.partner",
     )
 
+    tag_ids = fields.Many2many(
+        "glodo.instance.tag",
+    )
+
     database_ids = fields.One2many(
         "glodo.instance.database",
         "instance_id",

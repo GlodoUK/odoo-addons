@@ -70,6 +70,11 @@
                         <h1>
                             <field name="name" placeholder="Instance Name" />
                         </h1>
+                        <field
+                            name="tag_ids"
+                            widget="many2many_tags"
+                            options="{'color_field': 'color'}"
+                        />
                     </div>
                     <group>
                         <group string="Connection Details">
@@ -154,6 +159,7 @@
                 <field name="name" />
                 <field name="url" />
                 <field name="unique_id" />
+                <field name="tag_ids" />
                 <filter
                     string="Active"
                     name="filter_active"
@@ -169,6 +175,11 @@
                         string="Partner"
                         name="groupby_partner"
                         context="{'group_by': 'partner_id'}"
+                    />
+                    <filter
+                        string="Tag"
+                        name="groupby_tag"
+                        context="{'group_by': 'tag_ids'}"
                     />
                 </group>
             </search>

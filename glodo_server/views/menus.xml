@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-    <!-- Root Menu -->
     <menuitem
         id="glodo_cloud_menu_root"
         name="Glodo Cloud"
@@ -9,7 +8,6 @@
         groups="glodo_server.group_glodo_cloud_user"
     />
 
-    <!-- Instances Menu -->
     <menuitem
         id="glodo_cloud_menu_instances"
         name="Instances"
@@ -18,7 +16,6 @@
         sequence="10"
     />
 
-    <!-- Databases Menu -->
     <menuitem
         id="glodo_cloud_menu_databases"
         name="Databases"
@@ -27,7 +24,6 @@
         sequence="15"
     />
 
-    <!-- Remote Users Menu -->
     <menuitem
         id="glodo_cloud_menu_remote_users"
         name="Remote Users"
@@ -36,7 +32,6 @@
         sequence="20"
     />
 
-    <!-- Action Logs Menu -->
     <menuitem
         id="glodo_cloud_menu_action_logs"
         name="Action Logs"
@@ -45,12 +40,19 @@
         sequence="30"
     />
 
-    <!-- Configuration Menu -->
     <menuitem
         id="glodo_cloud_menu_config"
         name="Configuration"
         parent="glodo_cloud_menu_root"
         sequence="100"
         groups="glodo_server.group_glodo_cloud_admin"
+    />
+
+    <menuitem
+        id="glodo_cloud_menu_tags"
+        name="Tags"
+        action="glodo_instance_tag_action"
+        parent="glodo_cloud_menu_config"
+        sequence="10"
     />
 </odoo>

@@ -2,6 +2,9 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_glodo_instance_user,glodo.instance.user,model_glodo_instance,group_glodo_cloud_user,1,0,0,0
 access_glodo_instance_manager,glodo.instance.manager,model_glodo_instance,group_glodo_cloud_manager,1,1,0,0
 access_glodo_instance_admin,glodo.instance.admin,model_glodo_instance,group_glodo_cloud_admin,1,1,1,1
+access_glodo_instance_tag_user,glodo.instance.tag.user,model_glodo_instance_tag,group_glodo_cloud_user,1,0,0,0
+access_glodo_instance_tag_manager,glodo.instance.tag.manager,model_glodo_instance_tag,group_glodo_cloud_manager,1,1,1,1
+access_glodo_instance_tag_admin,glodo.instance.tag.admin,model_glodo_instance_tag,group_glodo_cloud_admin,1,1,1,1
 access_glodo_instance_database_user,glodo.instance.database.user,model_glodo_instance_database,group_glodo_cloud_user,1,0,0,0
 access_glodo_instance_database_manager,glodo.instance.database.manager,model_glodo_instance_database,group_glodo_cloud_manager,1,1,1,1
 access_glodo_instance_database_admin,glodo.instance.database.admin,model_glodo_instance_database,group_glodo_cloud_admin,1,1,1,1
