@@ -115,8 +115,12 @@
             <list>
                 <field name="name" />
                 <field name="instance_name" />
-                <field name="active_remote_user_count" />
-                <field name="inactive_remote_user_count" optional="hide" />
+                <field name="active_remote_user_count" sum="Active Users" />
+                <field
+                    name="inactive_remote_user_count"
+                    optional="hide"
+                    sum="Inactive Users"
+                />
                 <field name="last_user_sync" />
             </list>
         </field>

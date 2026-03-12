@@ -155,8 +155,12 @@
                 <field name="partner_id" />
                 <field name="url" widget="url" />
                 <field name="database_count" string="Databases" />
-                <field name="active_remote_user_count" />
-                <field name="inactive_remote_user_count" optional="hide" />
+                <field name="active_remote_user_count" sum="Active Users" />
+                <field
+                    name="inactive_remote_user_count"
+                    optional="hide"
+                    sum="Inactive Users"
+                />
                 <field name="odoo_version" />
                 <field name="last_sync_date" />
                 <field name="active" column_invisible="True" />
