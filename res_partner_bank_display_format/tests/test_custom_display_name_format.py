@@ -1,4 +1,5 @@
 from odoo.tests import TransactionCase, tagged
+from odoo.tools import mute_logger
 
 
 @tagged("post_install", "-at_install")
@@ -44,6 +45,7 @@ class TestCustomDisplayNameFormat(TransactionCase):
         self.assertEqual("TESTY TEST Test123", self.res_partner_bank_id.display_name)
         self.assertFalse(self.res_partner_bank_id.custom_display_name_format_warning)
 
+    @mute_logger("odoo.addons.res_partner_bank_display_format.models.res_partner_bank")
     def test_recover_from_keyerror(self):
         self.res_partner_bank_id.acc_number = False
         self.res_partner_bank_id.custom_display_name_format = (
