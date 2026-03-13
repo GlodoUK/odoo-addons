@@ -52,6 +52,18 @@
                             />
                         </button>
                         <button
+                            name="action_view_remote_users"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-users"
+                        >
+                            <field
+                                name="active_remote_user_count"
+                                widget="statinfo"
+                                string="Active Users"
+                            />
+                        </button>
+                        <button
                             name="action_view_action_logs"
                             type="object"
                             class="oe_stat_button"
@@ -70,9 +82,15 @@
                         <h1>
                             <field name="name" placeholder="Instance Name" />
                         </h1>
+                        <field
+                            name="tag_ids"
+                            widget="many2many_tags"
+                            options="{'color_field': 'color'}"
+                        />
                     </div>
                     <group>
                         <group string="Connection Details">
+                            <field name="partner_id" />
                             <field name="url" widget="url" />
                             <field name="unique_id" readonly="1" />
                             <field name="odoo_version" readonly="1" />
@@ -105,10 +123,10 @@
                             <field name="database_ids">
                                 <list string="Databases">
                                     <field name="name" />
-                                    <field name="user_count" string="Internal Users" />
+                                    <field name="active_remote_user_count" />
                                     <field
-                                        name="remote_user_count"
-                                        string="Synced Users"
+                                        name="inactive_remote_user_count"
+                                        optional="hide"
                                     />
                                     <field name="last_user_sync" />
                                     <field name="active" column_invisible="True" />
@@ -128,16 +146,21 @@
         </field>
     </record>
 
-    <!-- Instance List View -->
     <record id="glodo_instance_view_list" model="ir.ui.view">
         <field name="name">glodo.instance.view.list</field>
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
-            <list string="Managed Instances">
+            <list>
                 <field name="name" />
+                <field name="partner_id" />
                 <field name="url" widget="url" />
                 <field name="database_count" string="Databases" />
-                <field name="remote_user_count" string="Users" />
+                <field name="active_remote_user_count" sum="Active Users" />
+                <field
+                    name="inactive_remote_user_count"
+                    optional="hide"
+                    sum="Inactive Users"
+                />
                 <field name="odoo_version" />
                 <field name="last_sync_date" />
                 <field name="active" column_invisible="True" />
@@ -145,15 +168,15 @@
         </field>
     </record>
 
-    <!-- Instance Search View -->
     <record id="glodo_instance_view_search" model="ir.ui.view">
         <field name="name">glodo.instance.view.search</field>
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
-            <search string="Search Instances">
+            <search>
                 <field name="name" />
                 <field name="url" />
                 <field name="unique_id" />
+                <field name="tag_ids" />
                 <filter
                     string="Active"
                     name="filter_active"
@@ -164,11 +187,22 @@
                     name="filter_archived"
                     domain="[('active', '=', False)]"
                 />
+                <group>
+                    <filter
+                        string="Partner"
+                        name="groupby_partner"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                    <filter
+                        string="Tag"
+                        name="groupby_tag"
+                        context="{'group_by': 'tag_ids'}"
+                    />
+                </group>
             </search>
         </field>
     </record>
 
-    <!-- Instance Action -->
     <record id="glodo_instance_action" model="ir.actions.act_window">
         <field name="name">Managed Instances</field>
         <field name="res_model">glodo.instance</field>

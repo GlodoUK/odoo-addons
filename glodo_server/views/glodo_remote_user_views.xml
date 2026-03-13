@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <odoo>
-    <!-- Remote User Form View -->
     <record id="glodo_remote_user_view_form" model="ir.ui.view">
         <field name="name">glodo.remote.user.view.form</field>
         <field name="model">glodo.remote.user</field>
@@ -71,7 +70,6 @@
         </field>
     </record>
 
-    <!-- Remote User List View -->
     <record id="glodo_remote_user_view_list" model="ir.ui.view">
         <field name="name">glodo.remote.user.view.list</field>
         <field name="model">glodo.remote.user</field>
@@ -103,14 +101,12 @@
                     type="object"
                     class="btn-link"
                     icon="fa-archive"
-                    invisible="is_archived"
                     groups="glodo_server.group_glodo_cloud_manager"
                 />
             </list>
         </field>
     </record>
 
-    <!-- Remote User Search View -->
     <record id="glodo_remote_user_view_search" model="ir.ui.view">
         <field name="name">glodo.remote.user.view.search</field>
         <field name="model">glodo.remote.user</field>
@@ -150,7 +146,6 @@
         </field>
     </record>
 
-    <!-- Remote User Action -->
     <record id="glodo_remote_user_action" model="ir.actions.act_window">
         <field name="name">Remote Users</field>
         <field name="res_model">glodo.remote.user</field>

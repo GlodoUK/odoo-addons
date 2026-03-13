@@ -7,6 +7,7 @@ Each instance can have multiple databases.
 
 import json
 import logging
+from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -57,14 +58,19 @@ class GlodoInstanceDatabase(models.Model):
     remote_user_ids = fields.One2many(
         "glodo.remote.user",
         "database_id",
-        string="Remote Users",
         readonly=True,
     )
 
-    remote_user_count = fields.Integer(
+    active_remote_user_count = fields.Integer(
+        "Active Users",
         compute="_compute_remote_user_count",
         store=True,
-        readonly=True,
+    )
+
+    inactive_remote_user_count = fields.Integer(
+        "Inactive Users",
+        compute="_compute_remote_user_count",
+        store=True,
     )
 
     user_count = fields.Integer(
@@ -99,10 +105,27 @@ class GlodoInstanceDatabase(models.Model):
         "UNIQUE(instance_id, name)", "Database name must be unique per instance."
     )
 
-    @api.depends("remote_user_ids")
+    @api.depends("remote_user_ids", "remote_user_ids.is_archived")
     def _compute_remote_user_count(self):
+        if not self.ids:
+            self.active_remote_user_count = self.inactive_remote_user_count = 0
+            return
+
+        count_data = defaultdict(lambda: {"active": 0, "inactive": 0})
+
+        remote_user_data = self.env["glodo.remote.user"]._read_group(
+            [("database_id", "in", self.ids)],
+            ["database_id", "is_archived"],
+            ["__count"],
+        )
+
+        for database, is_archived, count in remote_user_data:
+            key = "inactive" if is_archived else "active"
+            count_data[database.id][key] = count
+
         for db in self:
-            db.remote_user_count = len(db.remote_user_ids)
+            db.active_remote_user_count = count_data[db.id]["active"]
+            db.inactive_remote_user_count = count_data[db.id]["inactive"]
 
     @api.depends("installed_modules_json")
     def _compute_installed_modules_html(self):
@@ -228,7 +251,6 @@ class GlodoInstanceDatabase(models.Model):
         }
 
     def action_view_remote_users(self):
-        """View remote users for this database."""
         self.ensure_one()
 
         return {
@@ -237,5 +259,8 @@ class GlodoInstanceDatabase(models.Model):
             "res_model": "glodo.remote.user",
             "view_mode": "list,form",
             "domain": [("database_id", "=", self.id)],
-            "context": {"default_database_id": self.id},
+            "context": {
+                "default_database_id": self.id,
+                "search_default_filter_active": 1,
+            },
         }
