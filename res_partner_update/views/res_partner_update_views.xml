@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_partner_update_view_form" model="ir.ui.view">
+        <field name="name">res.partner.update.form</field>
+        <field name="model">res.partner.update</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Monthly Review" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" />
+                        </group>
+                        <group>
+                            <field name="user_id" readonly="1" />
+                            <field name="date" readonly="1" />
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Description..." />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="res_partner_update_view_list" model="ir.ui.view">
+        <field name="name">res.partner.update.list</field>
+        <field name="model">res.partner.update</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="user_id" />
+                <field name="date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="res_partner_update_view_search" model="ir.ui.view">
+        <field name="name">res.partner.update.search</field>
+        <field name="model">res.partner.update</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="partner_id" />
+
+                <filter
+                    name="filter_my_updates"
+                    string="My Updates"
+                    domain="[('user_id', '=', uid)]"
+                />
+
+                <group>
+                    <filter
+                        name="group_partner"
+                        string="Partner"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                    <filter
+                        name="group_user"
+                        string="User"
+                        context="{'group_by': 'user_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="res_partner_update_action" model="ir.actions.act_window">
+        <field name="name">Partner Updates</field>
+        <field name="res_model">res.partner.update</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
