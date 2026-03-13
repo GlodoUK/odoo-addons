@@ -37,6 +37,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 19.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 19.0.1.0.0 |  | Helpdesk Ticket Type Properties
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
+[res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
 
 [//]: # (end addons)
