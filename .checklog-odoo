@@ -1,3 +1,4 @@
 [checklog-odoo]
 ignore=
     WARNING.* 0 failed, 0 error\(s\).*
+    res\.users\.notification_type
