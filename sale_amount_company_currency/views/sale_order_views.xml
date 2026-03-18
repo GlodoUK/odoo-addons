@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="sale_order_tree" model="ir.ui.view">
-        <field name="name">sale.order.tree</field>
+        <field name="name">sale.order.list</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.sale_order_tree" />
         <field name="arch" type="xml">
@@ -36,5 +35,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>
