@@ -1,0 +1,25 @@
+<odoo>
+    <record id="action_purchases_to_invoice" model="ir.actions.act_window">
+        <field name="name">Purchase Orders To Invoice</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('purchase.purchase_order_view_tree')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('purchase.purchase_order_view_kanban_without_dashboard')}),
+        ]"
+        />
+        <field name="domain">[('state','=', 'purchase')]</field>
+        <field name="context">{'search_default_not_invoiced': 1}</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search" />
+    </record>
+
+    <menuitem
+        id="menu_purchase_invoicing"
+        name="Orders To Invoice"
+        action="action_purchases_to_invoice"
+        parent="purchase.menu_purchase_root"
+        sequence="3"
+    />
+</odoo>
