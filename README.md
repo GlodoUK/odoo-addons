@@ -36,6 +36,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_category](helpdesk_ticket_category/) | 19.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 19.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 19.0.1.0.0 |  | Helpdesk Ticket Type Properties
+[purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
