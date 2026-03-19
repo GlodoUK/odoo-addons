@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product.template.search.sbs_conformity</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_exception']" position="after">
+                <separator />
+                <filter
+                    string="Conformity Enabled"
+                    name="conformity_enabled"
+                    domain="[('product_variant_ids.conformity_enabled', '!=', False)]"
+                />
+                <filter
+                    string="Conformity Warning"
+                    name="conformity_alert"
+                    domain="[('open_conformity_alert_ids', '!=', False)]"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div
+                    class="alert alert-danger text-center"
+                    role="alert"
+                    invisible="not open_conformity_alert_count"
+                >
+                    This product has an open conformity alert!
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='bom_count']/.." position="after">
+                <button
+                    class="oe_stat_button"
+                    name="action_view_conformity_alerts"
+                    type="object"
+                    invisible="not open_conformity_alert_count"
+                    icon="fa-exclamation-triangle"
+                >
+                    <field
+                        string="Conformity Alerts"
+                        name="open_conformity_alert_count"
+                        widget="statinfo"
+                    />
+                </button>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Conformity"
+                    name="conformity"
+                    invisible="product_variant_count &gt; 1"
+                >
+                    <group>
+                        <group>
+                            <field name="conformity_enabled" />
+                            <field name="conformity_start_date" />
+                            <field name="conformity_end_date" />
+
+                            <label for="conformity_interval" string="Interval" />
+                            <div class="o_row">
+                                <field name="conformity_interval" class="oe_inline" />
+                                <field
+                                    name="conformity_interval_type"
+                                    class="oe_inline"
+                                />
+                            </div>
+
+                            <label for="conformity_quantity" string="Quantity" />
+                            <div class="o_row">
+                                <field name="conformity_quantity" class="oe_inline" />
+                                <field
+                                    name="uom_id"
+                                    class="oe_inline"
+                                    groups="uom.group_uom"
+                                    readonly="1"
+                                />
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
