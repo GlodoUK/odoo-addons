@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_alert_form" model="ir.ui.view">
+        <field name="name">product.conformity.alert.form</field>
+        <field name="model">product.conformity.alert</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        string="Pass"
+                        type="object"
+                        name="action_pass"
+                        invisible="state != 'open'"
+                        class="oe_highlight"
+                    />
+                    <button
+                        string="Fail"
+                        type="object"
+                        name="action_fail"
+                        invisible="state != 'open'"
+                        class="btn-secondary"
+                    />
+                    <button
+                        string="Suppress"
+                        type="object"
+                        name="action_suppress"
+                        invisible="state != 'open'"
+                        class="btn-secondary"
+                    />
+                    <field name="state" widget="statusbar" readonly="1" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="action_view_boms"
+                            icon="fa-flask"
+                            invisible="not bom_count"
+                        >
+                            <field
+                                name="bom_count"
+                                widget="statinfo"
+                                string="Bill of Materials"
+                            />
+                        </button>
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="action_view_mrp_productions"
+                            icon="fa-wrench"
+                            invisible="not mrp_production_count"
+                        >
+                            <field
+                                name="mrp_production_count"
+                                widget="statinfo"
+                                string="Productions"
+                            />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_id" />
+                            <field name="reason" />
+                        </group>
+                        <group>
+                            <field name="date_start" />
+                            <field name="date_end" />
+                            <field name="date_acknowledge" readonly="1" />
+                        </group>
+                    </group>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="view_alert_tree" model="ir.ui.view">
+        <field name="name">product.conformity.alert.tree</field>
+        <field name="model">product.conformity.alert</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="product_id" />
+                <field name="reason" />
+                <field name="state" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="date_acknowledge" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_alert_search" model="ir.ui.view">
+        <field name="name">product.conformity.alert.search</field>
+        <field name="model">product.conformity.alert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id" />
+                <field name="mrp_production_ids" />
+
+                <filter
+                    name="filter_open"
+                    string="Open"
+                    domain="[('state', '=', 'open')]"
+                />
+                <filter
+                    name="filter_pass"
+                    string="Passed"
+                    domain="[('state', '=', 'pass')]"
+                />
+                <filter
+                    name="filter_fail"
+                    string="Failed"
+                    domain="[('state', '=', 'fail')]"
+                />
+                <filter
+                    name="filter_suppress"
+                    string="Suppressed"
+                    domain="[('state', '=', 'suppress')]"
+                />
+
+                <separator />
+
+                <filter
+                    name="filter_quantity"
+                    string="Quantity Exceeded"
+                    domain="[('reason', '=', 'quantity')]"
+                />
+                <filter
+                    name="filter_time"
+                    string="Period Expired"
+                    domain="[('reason', '=', 'time')]"
+                />
+
+                <group>
+                    <filter
+                        name="group_by_product"
+                        string="Product"
+                        context="{'group_by': 'product_id'}"
+                    />
+                    <filter
+                        name="group_by_reason"
+                        string="Reason"
+                        context="{'group_by': 'reason'}"
+                    />
+                    <filter
+                        name="group_by_state"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_product_conformity_alert" model="ir.actions.act_window">
+        <field name="name">Conformity Alerts</field>
+        <field name="res_model">product.conformity.alert</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_conformity_header"
+        name="Conformity Alerts"
+        action="action_product_conformity_alert"
+        parent="mrp.menu_mrp_reporting"
+        sequence="100"
+    />
+</odoo>
