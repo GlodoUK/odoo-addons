@@ -7,7 +7,6 @@ class SaleOrder(models.Model):
     helpdesk_tickets_ids = fields.Many2many(
         "helpdesk.ticket",
         "helpdesk_ticket_sale_order_rel",
-        string="Helpdesk Tickets",
     )
 
     helpdesk_tickets_count = fields.Integer(
