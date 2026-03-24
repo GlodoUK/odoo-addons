@@ -61,22 +61,28 @@ class SaleOrderLine(models.Model):
                 )
                 if bom:
                     moves = line.move_ids.filtered(
-                        lambda m: m.picking_id
-                        and m.picking_id.state != "cancel"
-                        and m.state == "done"
+                        lambda m: (
+                            m.picking_id
+                            and m.picking_id.state != "cancel"
+                            and m.state == "done"
+                        )
                     )
                     outgoing_moves = moves.filtered(
-                        lambda m: m.location_dest_id.usage == "customer"
-                        and (
-                            not m.origin_returned_move_id
-                            or (m.origin_returned_move_id and m.to_refund)
+                        lambda m: (
+                            m.location_dest_id.usage == "customer"
+                            and (
+                                not m.origin_returned_move_id
+                                or (m.origin_returned_move_id and m.to_refund)
+                            )
                         )
                     )
                     bom_returned = outgoing_moves and all(
                         moves.filtered(
-                            lambda m, move=move: m.location_dest_id.usage != "customer"
-                            and m.to_refund
-                            and m.origin_returned_move_id.id == move.id
+                            lambda m, move=move: (
+                                m.location_dest_id.usage != "customer"
+                                and m.to_refund
+                                and m.origin_returned_move_id.id == move.id
+                            )
                         )
                         for move in outgoing_moves
                     )

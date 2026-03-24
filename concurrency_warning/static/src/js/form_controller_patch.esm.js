@@ -1,9 +1,7 @@
 import {CONCURRENCY_RELOAD_EVENT} from "./poke_service.esm";
-
 import {FormController} from "@web/views/form/form_controller";
-
-import {useBus} from "@web/core/utils/hooks";
 import {patch} from "@web/core/utils/patch";
+import {useBus} from "@web/core/utils/hooks";
 
 patch(FormController.prototype, {
     setup() {

@@ -19,8 +19,10 @@ class HelpdeskTicket(models.Model):
 
         for ticket, sla_items in super()._sla_find().items():
             result[ticket] = sla_items.filtered(
-                lambda s: not s.ticket_categ_ids
-                or (ticket.ticket_categ_id & s.ticket_categ_ids)  # noqa: B023
+                lambda s, ticket=ticket: (
+                    not s.ticket_categ_ids
+                    or (ticket.ticket_categ_id & s.ticket_categ_ids)
+                )  # noqa: B023
             )
 
         return result

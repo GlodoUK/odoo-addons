@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class StockLocationFreeze(models.TransientModel):
@@ -24,7 +24,7 @@ class StockLocationFreeze(models.TransientModel):
             )
 
             if reserved_quants > 0:
-                wizard.warning_message = _(
+                wizard.warning_message = self.env._(
                     "Warning: There is reserved stock in this location "
                     "(or its sub-locations). Freezing this location will prevent "
                     "these items from being picked or unreserved until the freeze "

@@ -7,7 +7,6 @@ class GlodoInstanceInfoWizard(models.TransientModel):
 
     instance_id = fields.Many2one(
         "glodo.instance",
-        string="Instance",
         readonly=True,
     )
 

@@ -4,7 +4,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
-    "version": "15.0.1.0.2",
+    "version": "19.0.1.0.0",
     "depends": ["stock"],
     "data": [
         "security/ir.model.access.csv",

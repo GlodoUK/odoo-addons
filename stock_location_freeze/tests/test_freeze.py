@@ -16,7 +16,8 @@ class TestStockLocationFreeze(TransactionCase):
         cls.product = cls.env["product.product"].create(
             {
                 "name": "Test Product",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
             }
         )
 
@@ -256,10 +257,13 @@ class TestStockLocationFreeze(TransactionCase):
         # Only put stock in sublocation_a (not in WH/Stock itself)
         self._create_quant(self.product, self.sublocation_a, 5.0)
 
+        # Freeze sublocation_a
+        self.sublocation_a.frozen = True
+        self.assertTrue(self.sublocation_a.frozen_parent_path)
+
         # Create a stock move from WH/Stock to Customers
         move = self.env["stock.move"].create(
             {
-                "name": "Test Move",
                 "product_id": self.product.id,
                 "product_uom": self.uom_unit.id,
                 "product_uom_qty": 5.0,
@@ -268,17 +272,18 @@ class TestStockLocationFreeze(TransactionCase):
             }
         )
         move._action_confirm()
-
-        # Freeze sublocation_a
-        self.sublocation_a.frozen = True
-        self.assertTrue(self.sublocation_a.frozen_parent_path)
+        self.assertEqual(
+            move.quantity,
+            0.0,
+            "Should not reserve stock from frozen sublocation on _action_confirm",
+        )
 
         # Try to assign - should not reserve anything since stock is in frozen location
         move._action_assign()
         self.assertEqual(
-            move.reserved_availability,
+            move.quantity,
             0.0,
-            "Should not reserve stock from frozen sublocation",
+            "Should not reserve stock from frozen sublocation on _action_assign",
         )
 
         # Unfreeze sublocation_a
@@ -289,7 +294,7 @@ class TestStockLocationFreeze(TransactionCase):
         # Try to assign again - should now reserve the stock
         move._action_assign()
         self.assertEqual(
-            move.reserved_availability,
+            move.quantity,
             5.0,
             "Should reserve stock after unfreezing sublocation",
         )

@@ -35,7 +35,6 @@ class GlodoRemoteUser(models.Model):
 
     database_id = fields.Many2one(
         "glodo.instance.database",
-        string="Database",
         required=True,
         ondelete="cascade",
         index=True,

@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -48,14 +48,12 @@ class StockLocation(models.Model):
                 )
 
                 raise UserError(
-                    _(
+                    self.env._(
                         "Location '%(location)s' is frozen. "
-                        "Please check the configuration at '%(origin)s'."
+                        "Please check the configuration at '%(origin)s'.",
+                        location=record.display_name,
+                        origin=origin_id.display_name,
                     )
-                    % {
-                        "location": record.display_name,
-                        "origin": origin_id.display_name,
-                    }
                 )
 
     def _check_can_be_used(self, product, quantity=0, package=None, location_qty=0):

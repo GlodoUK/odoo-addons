@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="action_purchases_to_invoice" model="ir.actions.act_window">
         <field name="name">Purchase Orders To Invoice</field>
