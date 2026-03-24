@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="tickets_followup" inherit_id="helpdesk.tickets_followup">
         <xpath expr="//div[@name='description']" position="before">
