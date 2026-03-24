@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="helpdesk_sla_report_analysis_view_search" model="ir.ui.view">
         <field name="name">helpdesk.sla.report.analysis.search</field>
