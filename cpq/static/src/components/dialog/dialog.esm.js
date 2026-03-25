@@ -1,12 +1,12 @@
 import {Component, onWillStart, useState, xml} from "@odoo/owl";
-import {_t} from "@web/core/l10n/translation";
-
-import ProductTmplAttrib from "./product_tmpl_attrib.esm";
 import {Dialog} from "@web/core/dialog/dialog";
 import {Notebook} from "@web/core/notebook/notebook";
 import {WarningDialog} from "@web/core/errors/error_dialogs";
+import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import {rpc} from "@web/core/network/rpc";
+// eslint-disable-next-line sort-imports
+import ProductTmplAttrib from "./product_tmpl_attrib.esm";
 
 class CpqGroupPage extends Component {
     static template = xml`
@@ -182,6 +182,7 @@ export default class ConfigureDialog extends Component {
         const groupMap = new Map();
         for (const ptal of this.state.ptalIds) {
             const gId = ptal.group_id || false;
+            /* eslint-disable no-negated-condition */
             if (!groupMap.has(gId)) {
                 groupMap.set(gId, {
                     id: gId,
@@ -191,6 +192,7 @@ export default class ConfigureDialog extends Component {
                     ptalIds: [],
                 });
             }
+            /* eslint-enable no-negated-condition */
             groupMap.get(gId).ptalIds.push(ptal);
         }
         return [...groupMap.values()].sort(

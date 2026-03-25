@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="glodo_instance_tag_view_list" model="ir.ui.view">
         <field name="name">glodo.instance.tag.view.list</field>

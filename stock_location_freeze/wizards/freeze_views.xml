@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_location_freeze_form" model="ir.ui.view">
+        <field name="name">stock.location.freeze.form</field>
+        <field name="model">stock.location.freeze</field>
+        <field name="arch" type="xml">
+            <form string="Freeze Location">
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                    invisible="not warning_message"
+                >
+                    <field name="warning_message" nolabel="1" />
+                </div>
+                <group>
+                    <field name="location_id" readonly="1" />
+                    <field name="freeze_reason_id" options="{'no_create': False}" />
+                </group>
+                <footer>
+                    <button
+                        name="action_freeze"
+                        string="Freeze"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_stock_location_freeze" model="ir.actions.act_window">
+        <field name="name">Freeze Location</field>
+        <field name="res_model">stock.location.freeze</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -19,9 +19,7 @@ class ProductBanding(models.Model):
         store=True,
         index="trigram",
     )
-    parent_id = fields.Many2one(
-        comodel_name="cpq.banding", string="Parent", ondelete="cascade"
-    )
+    parent_id = fields.Many2one(comodel_name="cpq.banding", ondelete="cascade")
     parent_path = fields.Char(index=True)
     child_ids = fields.One2many(
         comodel_name="cpq.banding",

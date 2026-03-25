@@ -32,7 +32,6 @@ class GlodoInstanceDatabase(models.Model):
 
     instance_id = fields.Many2one(
         "glodo.instance",
-        string="Instance",
         required=True,
         ondelete="cascade",
         index=True,

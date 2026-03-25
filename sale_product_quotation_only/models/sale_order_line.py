@@ -13,9 +13,11 @@ class SaleOrderLine(models.Model):
     @api.constrains("product_id")
     def _check_quotation_only_product(self):
         quotation_only_line_ids = self.filtered(
-            lambda x: x.product_id.quotation_only
-            and x.order_id.state
-            not in self._check_quotation_only_product_allowed_states()
+            lambda x: (
+                x.product_id.quotation_only
+                and x.order_id.state
+                not in self._check_quotation_only_product_allowed_states()
+            )
         )
 
         if quotation_only_line_ids:

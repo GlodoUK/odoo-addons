@@ -1,10 +1,10 @@
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Security Groups -->
     <record id="module_category_glodo_cloud" model="ir.module.category">
         <field name="name">Glodo Cloud</field>
         <field name="description">Manage Glodo Cloud permissions</field>
-        <field name="sequence">100</field>
+        <field name="sequence" eval="100" />
     </record>
 
     <record id="privilege_glodo_cloud" model="res.groups.privilege">

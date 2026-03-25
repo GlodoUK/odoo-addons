@@ -17,7 +17,6 @@ class GlodoActionLog(models.Model):
 
     instance_id = fields.Many2one(
         "glodo.instance",
-        string="Instance",
         required=True,
         ondelete="cascade",
         index=True,
@@ -31,7 +30,6 @@ class GlodoActionLog(models.Model):
 
     remote_user_id = fields.Many2one(
         "glodo.remote.user",
-        string="Remote User",
         ondelete="set null",
     )
 
@@ -43,7 +41,6 @@ class GlodoActionLog(models.Model):
 
     admin_user_id = fields.Many2one(
         "res.users",
-        string="Admin User",
         required=True,
         ondelete="restrict",
         default=lambda self: self.env.user,
