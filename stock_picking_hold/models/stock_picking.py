@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 
@@ -41,18 +41,14 @@ class StockPicking(models.Model):
         held_picking_ids = self.filtered(lambda p: p.hold)
         if held_picking_ids:
             held_names = "\n".join(held_picking_ids.mapped("name"))
-            msg = _(
-                f"Cannot validate the following pickings because they are on hold:\n{held_names}"  # noqa: E501
+            msg = self.env._(
+                "Cannot validate the following pickings because they are on hold:\n%s",
+                held_names,
             )
             raise UserError(msg)
         return super().button_validate()
 
-    @api.depends(
-        "hold",
-        "move_ids.product_uom_qty",
-        "picking_type_code",
-        "state",
-    )
+    @api.depends("hold")
     def _compute_show_check_availability(self):
         held_picking_ids = self.filtered(lambda p: p.hold)
 

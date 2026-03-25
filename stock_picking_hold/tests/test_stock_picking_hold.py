@@ -1,6 +1,3 @@
-from dateutil.relativedelta import relativedelta
-
-from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
@@ -34,14 +31,11 @@ class TestStockPickingHold(TransactionCase):
 
         self.move_id = self.env["stock.move"].create(
             {
-                "name": "Test Out 1",
                 "location_id": self.env.ref("stock.stock_location_stock").id,
                 "location_dest_id": self.env.ref("stock.stock_location_customers").id,
                 "product_id": self.product_id.id,
-                "product_uom": self.product_id.uom_id.id,
                 "product_uom_qty": 1.0,
                 "picking_type_id": self.env.ref("stock.picking_type_out").id,
-                "date": fields.Date.today() + relativedelta(days=7),
             }
         )
 
