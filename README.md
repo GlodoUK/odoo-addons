@@ -44,6 +44,7 @@ addon | version | maintainers | summary
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
 [sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
 [stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
+[stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
 
 [//]: # (end addons)
