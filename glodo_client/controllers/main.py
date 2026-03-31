@@ -11,6 +11,7 @@ import logging
 import time
 
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
+from werkzeug.utils import redirect
 
 import odoo
 from odoo import SUPERUSER_ID, api
@@ -292,7 +293,7 @@ class GlodoCloudClient(Controller):
             db_name,
         )
 
-        return request.redirect("/web")
+        return redirect("/web")
 
     @route(
         "/glodo_cloud/user_manage",
