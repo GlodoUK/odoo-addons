@@ -5,7 +5,7 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["web"],
     "assets": {
-        "web.assets_backend": [
+        "web.assets_backend_lazy": [
             "web_graph_bar_zerofill/static/src/js/graph_model_patch.esm.js",
         ],
     },
