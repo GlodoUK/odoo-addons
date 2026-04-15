@@ -1,4 +1,4 @@
-**[![Build Status](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml/badge.svg?branch=19.0)](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml?query=branch%3A19.0)
+[![Build Status](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml/badge.svg?branch=19.0)](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml?query=branch%3A19.0)
 
 # Addons for Odoo
 
