@@ -1,6 +1,8 @@
 # Addons for Odoo
 
-This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.)
+This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.).
+
+Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-proprietary](https://github.com/GlodoUK/odoo-addons-proprietary).
 
 <!-- prettier-ignore-start -->
 
