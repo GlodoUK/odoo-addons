@@ -2,7 +2,9 @@
 
 # Addons for Odoo
 
-This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.)
+This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.).
+
+Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-proprietary](https://github.com/GlodoUK/odoo-addons-proprietary).
 
 <!-- /!\ do not modify below this line -->
 
@@ -83,5 +85,3 @@ addon | version | maintainers | summary
 Each module can have a totally different license, as long as they adhere to Glo Networks
 policy. Consult each module's `__manifest__.py` file, which contains a `license` key
 that explains its license.
-
-asd
