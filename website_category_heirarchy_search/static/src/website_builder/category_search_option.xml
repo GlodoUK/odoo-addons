@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+<t t-name="website_category_heirarchy_search.CategorySearchOption">
+        <BuilderRow label.translate="Root Category">
+            <BuilderSelect dataAttributeAction="'rootCategory'" preview="false">
+                <BuilderSelectItem
+                    t-foreach="state.rootCategories"
+                    t-as="cat"
+                    t-key="cat.id"
+                    dataAttributeActionValue="cat.name"
+                    t-out="cat.name"
+                />
+            </BuilderSelect>
+        </BuilderRow>
+
+        <BuilderRow
+            label.translate="Level Labels"
+            action="'categorySearchUpdateSelects'"
+            preview="false"
+            title.translate="Comma-separated label per dropdown level, e.g. 'Make, Model, Year'. The count of labels also limits the number of dropdowns shown."
+        >
+            <BuilderTextInput
+                dataAttributeAction="'levelLabels'"
+                placeholder.translate="e.g. Make, Model, Year"
+            />
+        </BuilderRow>
+
+        <BuilderRow
+            label.translate="Button Text"
+            action="'categorySearchUpdateButton'"
+            preview="false"
+        >
+            <BuilderTextInput
+                dataAttributeAction="'buttonLabel'"
+                placeholder.translate="Find Parts"
+            />
+        </BuilderRow>
+
+        <BuilderRow
+            label.translate="Shop URL"
+            title.translate="Base URL for search results. The selected category id is appended as ?category=N."
+        >
+            <BuilderTextInput
+                dataAttributeAction="'shopUrl'"
+                placeholder.translate="/shop"
+            />
+        </BuilderRow>
+    </t>
+
+</templates>
