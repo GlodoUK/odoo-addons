@@ -91,8 +91,16 @@
                 t-key="ptav.id"
                 class="list-inline-item me-1"
             >
+                <t
+                    t-set="img_style"
+                    t-value="ptav.image ? 'background-image: url(/web/image/product.template.attribute.value/' + ptav.id + '/image); background-size: cover;' : ''"
+                />
+                <t
+                    t-set="color_style"
+                    t-value="ptav.is_custom ? '' : 'background-color: ' + ptav.html_color"
+                />
                 <label
-                    t-attf-style="background-color: {{ ptav.is_custom ? '' : ptav.html_color }}; width: 36px; height: 36px;"
+                    t-attf-style="#{img_style or color_style}; width: 36px; height: 36px;"
                     t-attf-class="css_attribute_color #{isSelected(ptav.id) ? 'active' : ''}"
                     t-att-title="ptav.name"
                 >
@@ -105,6 +113,43 @@
                         t-att-name="'ptal-' + props.id"
                         t-on-change="onSelect"
                         t-attf-style="accent-color: {{ ptav.html_color ? ptav.html_color : '' }}"
+                    />
+                </label>
+            </li>
+        </ul>
+    </t>
+
+    <t t-name="cpq.ProductTmplAttribImage">
+        <ul class="list-inline mb-0">
+            <li
+                t-foreach="props.attribute.ptav_ids"
+                t-as="ptav"
+                t-key="ptav.id"
+                class="list-inline-item me-2"
+            >
+                <t
+                    t-set="img_style"
+                    t-value="ptav.image ? 'background-image: url(/web/image/product.template.attribute.value/' + ptav.id + '/image); background-size: cover;' : ''"
+                />
+                <label
+                    class="position-relative d-inline-block text-center o_sale_product_configurator_ptav_image rounded-3 cursor-pointer"
+                    t-att-title="ptav.name"
+                    t-attf-style="#{img_style}"
+                    t-att-class="{
+                        'active': isSelected(ptav.id),
+                        'custom_value': ptav.is_custom,
+                        'transparent': !ptav.is_custom and !ptav.html_color,
+                        'css_not_available': ptav.excluded
+                    }"
+                >
+                    <input
+                        type="radio"
+                        class="w-100 h-100 opacity-0 cursor-pointer"
+                        t-att-id="'ptav-' + ptav.id"
+                        t-att-value="ptav.id"
+                        t-att-checked="isSelected(ptav.id)"
+                        t-att-name="'ptal-' + props.id"
+                        t-on-change="onSelect"
                     />
                 </label>
             </li>

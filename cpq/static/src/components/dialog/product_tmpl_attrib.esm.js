@@ -12,7 +12,7 @@ export default class ProductTmplAttrib extends Component {
                 display_type: {
                     type: String,
                     validate: (type) =>
-                        ["color", "pills", "radio", "select"].includes(type),
+                        ["color", "image", "pills", "radio", "select"].includes(type),
                 },
                 ptav_ids: {
                     type: Array,
@@ -22,6 +22,7 @@ export default class ProductTmplAttrib extends Component {
                             id: Number,
                             name: String,
                             html_color: [Boolean, String],
+                            image: [Boolean, String],
                             is_custom: Boolean,
                             price_extra: Number,
                             excluded: {type: Boolean, optional: true},
@@ -47,6 +48,8 @@ export default class ProductTmplAttrib extends Component {
         switch (this.props.attribute.display_type) {
             case "color":
                 return "cpq.ProductTmplAttribColor";
+            case "image":
+                return "cpq.ProductTmplAttribImage";
             case "pills":
             case "radio":
                 return "cpq.ProductTmplAttribRadio";
