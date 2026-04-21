@@ -57,6 +57,7 @@ class GlodoInstance(models.Model):
 
     partner_id = fields.Many2one(
         "res.partner",
+        index=True,
     )
 
     tag_ids = fields.Many2many(
