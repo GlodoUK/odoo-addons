@@ -12,6 +12,7 @@
                     <img
                         t-attf-src="/web/image/product.template/{{ props.productTmplId }}/image_128"
                         alt="Product"
+                        style="max-height:128px;max-width:128px;"
                     />
                 </div>
                 <div class="col">

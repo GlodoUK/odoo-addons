@@ -170,6 +170,7 @@ class ProductTemplateAttributeValue(models.Model):
             "id": ptav_id.id,
             "name": ptav_id.name,
             "html_color": ptav_id.html_color,
+            "image": ptav_id.image,
             "is_custom": ptav_id.is_custom,
             "price_extra": 0.0,
             "excluded": False,
