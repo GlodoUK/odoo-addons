@@ -4,7 +4,7 @@
         <field name="name">glodo.instance.info.wizard.view.form</field>
         <field name="model">glodo.instance.info.wizard</field>
         <field name="arch" type="xml">
-            <form string="Instance Information">
+            <form>
                 <group>
                     <field name="instance_id" readonly="1" />
                 </group>

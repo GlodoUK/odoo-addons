@@ -9,10 +9,15 @@ import json
 import logging
 from collections import defaultdict
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.fields import Domain
 
 _logger = logging.getLogger(__name__)
+
+EXPIRY_WARNING_DAYS = 30
 
 
 class GlodoInstanceDatabase(models.Model):
@@ -21,7 +26,6 @@ class GlodoInstanceDatabase(models.Model):
     _order = "instance_id, name"
 
     name = fields.Char(
-        string="Database Name",
         required=True,
         index=True,
     )
@@ -39,8 +43,8 @@ class GlodoInstanceDatabase(models.Model):
     )
 
     instance_name = fields.Char(
-        related="instance_id.name",
         string="Instance Name",
+        related="instance_id.name",
         store=True,
         readonly=True,
     )
@@ -50,8 +54,8 @@ class GlodoInstanceDatabase(models.Model):
     )
 
     instance_active = fields.Boolean(
-        related="instance_id.active",
         string="Instance Active",
+        related="instance_id.active",
     )
 
     remote_user_ids = fields.One2many(
@@ -76,6 +80,22 @@ class GlodoInstanceDatabase(models.Model):
         string="Internal User Count",
         readonly=True,
         help="Number of internal users reported by the remote",
+    )
+
+    expiration_date = fields.Datetime(
+        readonly=True,
+        help="Enterprise subscription expiration date reported by the remote",
+    )
+
+    expiration_reason = fields.Char(
+        readonly=True,
+        help="Enterprise subscription expiration reason reported by the remote",
+    )
+
+    expiration_state = fields.Selection(
+        [("success", "OK"), ("warning", "Expiring Soon"), ("danger", "Expired")],
+        compute="_compute_expiration_state",
+        search="_search_expiration_state",
     )
 
     installed_modules_json = fields.Text(
@@ -125,6 +145,56 @@ class GlodoInstanceDatabase(models.Model):
         for db in self:
             db.active_remote_user_count = count_data[db.id]["active"]
             db.inactive_remote_user_count = count_data[db.id]["inactive"]
+
+    @api.depends("expiration_date")
+    def _compute_expiration_state(self):
+        now = fields.Datetime.now()
+        warning_threshold = now + relativedelta(days=EXPIRY_WARNING_DAYS)
+        for db in self:
+            expiration_date = db.expiration_date
+            if not expiration_date:
+                db.expiration_state = "success"
+                continue
+            db.expiration_state = (
+                "danger"
+                if expiration_date <= now
+                else "warning"
+                if expiration_date <= warning_threshold
+                else "success"
+            )
+
+    # See _search_status on HelpdeskSlaStatus for a similar search method
+    @api.model
+    def _search_expiration_state(self, operator, value):
+        if operator != "in":
+            return NotImplemented
+        now = fields.Datetime.now()
+        warning_threshold = now + relativedelta(days=EXPIRY_WARNING_DAYS)
+        domains = []
+        if "success" in value:
+            domains.append(
+                [
+                    "|",
+                    ("expiration_date", "=", False),
+                    ("expiration_date", ">", warning_threshold),
+                ]
+            )
+        if "warning" in value:
+            domains.append(
+                [
+                    ("expiration_date", "!=", False),
+                    ("expiration_date", ">", now),
+                    ("expiration_date", "<=", warning_threshold),
+                ]
+            )
+        if "danger" in value:
+            domains.append(
+                [
+                    ("expiration_date", "!=", False),
+                    ("expiration_date", "<=", now),
+                ]
+            )
+        return Domain.OR(domains)
 
     @api.depends("installed_modules_json")
     def _compute_installed_modules_html(self):

@@ -320,6 +320,8 @@ class GlodoInstance(models.Model):
 
             db_vals = {
                 "user_count": db_data.get("user_count", 0),
+                "expiration_date": db_data.get("expiration_date") or False,
+                "expiration_reason": db_data.get("expiration_reason") or False,
                 "installed_modules_json": json.dumps(
                     db_data.get("installed_modules", [])
                 ),
