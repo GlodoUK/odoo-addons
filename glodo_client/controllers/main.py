@@ -125,6 +125,11 @@ class GlodoCloudClient(Controller):
                     ]
                 )
 
+                # Enterprise subscription metadata, when present.
+                ICP = env["ir.config_parameter"].sudo()
+                expiration_date = ICP.get_param("database.expiration_date")
+                expiration_reason = ICP.get_param("database.expiration_reason")
+
                 # Get installed modules
                 modules = env["ir.module.module"].search([("state", "=", "installed")])
                 module_list = [
@@ -138,6 +143,8 @@ class GlodoCloudClient(Controller):
                 db_info = {
                     "name": db_name,
                     "user_count": user_count,
+                    "expiration_date": expiration_date or None,
+                    "expiration_reason": expiration_reason or None,
                     "installed_modules": module_list,
                     "cloc": {},
                 }
