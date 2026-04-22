@@ -41,6 +41,7 @@ class GlodoRemoteUser(models.Model):
     )
 
     database_name = fields.Char(
+        string="Database Name",
         related="database_id.name",
         store=True,
     )
@@ -52,6 +53,7 @@ class GlodoRemoteUser(models.Model):
     )
 
     instance_name = fields.Char(
+        string="Instance Name",
         related="database_id.instance_name",
         store=True,
     )
@@ -75,7 +77,8 @@ class GlodoRemoteUser(models.Model):
     )
 
     _unique_database_remote_id = models.Constraint(
-        "UNIQUE(database_id, remote_id)", "Remote user ID must be unique per database."
+        "UNIQUE(database_id, remote_id)",
+        "Remote user ID must be unique per database.",
     )
 
     def action_become_user(self):

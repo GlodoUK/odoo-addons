@@ -24,7 +24,6 @@ class GlodoActionLog(models.Model):
 
     instance_name = fields.Char(
         related="instance_id.name",
-        string="Instance Name",
         store=True,
     )
 
@@ -35,7 +34,6 @@ class GlodoActionLog(models.Model):
 
     remote_user_login = fields.Char(
         related="remote_user_id.login",
-        string="Remote User Login",
         store=True,
     )
 

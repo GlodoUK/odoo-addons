@@ -4,7 +4,7 @@
         <field name="name">glodo.instance.database.view.form</field>
         <field name="model">glodo.instance.database</field>
         <field name="arch" type="xml">
-            <form string="Instance Database">
+            <form>
                 <header>
                     <button
                         name="action_sync_users"
@@ -43,6 +43,8 @@
                         </group>
                         <group string="Statistics">
                             <field name="user_count" />
+                            <field name="expiration_date" />
+                            <field name="expiration_reason" />
                             <field name="last_user_sync" />
                         </group>
                     </group>
@@ -112,9 +114,15 @@
         <field name="name">glodo.instance.database.view.list</field>
         <field name="model">glodo.instance.database</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                decoration-warning="expiration_state == 'warning'"
+                decoration-danger="expiration_state == 'danger'"
+            >
+                <field name="expiration_state" invisible="1" />
                 <field name="name" />
                 <field name="instance_name" />
+                <field name="expiration_date" optional="show" />
+                <field name="expiration_reason" optional="hide" />
                 <field name="active_remote_user_count" sum="Active Users" />
                 <field
                     name="inactive_remote_user_count"
@@ -133,6 +141,8 @@
             <search>
                 <field name="name" />
                 <field name="instance_id" />
+                <field name="expiration_date" />
+                <field name="expiration_reason" />
                 <filter
                     string="Active"
                     name="filter_active"
@@ -143,6 +153,23 @@
                     name="filter_archived"
                     domain="[('active', '=', False)]"
                 />
+                <separator />
+                <filter
+                    string="OK"
+                    name="filter_expiration_ok"
+                    domain="[('expiration_state', 'in', ['success'])]"
+                />
+                <filter
+                    string="Expiring Soon"
+                    name="filter_expiration_warning"
+                    domain="[('expiration_state', 'in', ['warning'])]"
+                />
+                <filter
+                    string="Expired"
+                    name="filter_expiration_danger"
+                    domain="[('expiration_state', 'in', ['danger'])]"
+                />
+                <separator />
                 <filter
                     string="Instance"
                     name="groupby_instance"
