@@ -2,6 +2,7 @@
 cryptography
 ftpparser
 lxml
+manifestoo_core
 mock
 odoo-test-helper
 pandas
