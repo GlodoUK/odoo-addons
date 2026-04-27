@@ -4,7 +4,7 @@
         <field name="name">glodo.remote.user.view.form</field>
         <field name="model">glodo.remote.user</field>
         <field name="arch" type="xml">
-            <form string="Remote User">
+            <form>
                 <header>
                     <button
                         name="action_become_user"

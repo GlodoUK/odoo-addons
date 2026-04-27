@@ -5,7 +5,7 @@
         <field name="name">glodo.instance.view.form</field>
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
-            <form string="Managed Instance">
+            <form>
                 <header>
                     <button
                         name="action_sync_info"
@@ -123,6 +123,7 @@
                             <field name="database_ids">
                                 <list string="Databases">
                                     <field name="name" />
+                                    <field name="expiration_date" optional="show" />
                                     <field name="active_remote_user_count" />
                                     <field
                                         name="inactive_remote_user_count"
@@ -132,6 +133,14 @@
                                     <field name="active" column_invisible="True" />
                                 </list>
                             </field>
+                        </page>
+                        <page string="CLOC">
+                            <group>
+                                <field
+                                    name="cloc_excluded_modules"
+                                    placeholder="e.g. connector_edi, web_cmd_search"
+                                />
+                            </group>
                         </page>
                         <page string="Notes">
                             <field

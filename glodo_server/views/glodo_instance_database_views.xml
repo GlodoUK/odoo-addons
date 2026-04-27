@@ -4,7 +4,7 @@
         <field name="name">glodo.instance.database.view.form</field>
         <field name="model">glodo.instance.database</field>
         <field name="arch" type="xml">
-            <form string="Instance Database">
+            <form>
                 <header>
                     <button
                         name="action_sync_users"
@@ -43,6 +43,8 @@
                         </group>
                         <group string="Statistics">
                             <field name="user_count" />
+                            <field name="expiration_date" />
+                            <field name="expiration_reason" />
                             <field name="last_user_sync" />
                         </group>
                     </group>
@@ -94,7 +96,12 @@
                             />
                         </page>
                         <page string="CLOC">
-                            <field name="cloc_output" widget="text" readonly="1" />
+                            <group>
+                                <field name="cloc_total" />
+                                <field name="cloc_modules_total" />
+                                <field name="cloc_customization_total" />
+                            </group>
+                            <field name="cloc_data_json" readonly="1" />
                         </page>
                         <page string="Notes">
                             <field
@@ -112,14 +119,27 @@
         <field name="name">glodo.instance.database.view.list</field>
         <field name="model">glodo.instance.database</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                decoration-warning="expiration_state == 'warning'"
+                decoration-danger="expiration_state == 'danger'"
+            >
+                <field name="expiration_state" invisible="1" />
                 <field name="name" />
                 <field name="instance_name" />
+                <field name="expiration_date" optional="show" />
+                <field name="expiration_reason" optional="hide" />
                 <field name="active_remote_user_count" sum="Active Users" />
                 <field
                     name="inactive_remote_user_count"
                     optional="hide"
                     sum="Inactive Users"
+                />
+                <field name="cloc_total" optional="hide" sum="CLOC Total" />
+                <field name="cloc_modules_total" optional="hide" sum="CLOC Modules" />
+                <field
+                    name="cloc_customization_total"
+                    optional="hide"
+                    sum="CLOC Customization"
                 />
                 <field name="last_user_sync" />
             </list>
@@ -133,6 +153,8 @@
             <search>
                 <field name="name" />
                 <field name="instance_id" />
+                <field name="expiration_date" />
+                <field name="expiration_reason" />
                 <filter
                     string="Active"
                     name="filter_active"

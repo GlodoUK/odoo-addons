@@ -5,7 +5,7 @@
         <field name="name">glodo.action.log.view.form</field>
         <field name="model">glodo.action.log</field>
         <field name="arch" type="xml">
-            <form string="Action Log" create="0" edit="0">
+            <form create="0" edit="0">
                 <sheet>
                     <group>
                         <group string="Action Details">

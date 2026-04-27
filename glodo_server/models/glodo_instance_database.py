@@ -9,10 +9,15 @@ import json
 import logging
 from collections import defaultdict
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.fields import Domain
 
 _logger = logging.getLogger(__name__)
+
+EXPIRY_WARNING_DAYS = 30
 
 
 class GlodoInstanceDatabase(models.Model):
@@ -21,7 +26,6 @@ class GlodoInstanceDatabase(models.Model):
     _order = "instance_id, name"
 
     name = fields.Char(
-        string="Database Name",
         required=True,
         index=True,
     )
@@ -40,7 +44,6 @@ class GlodoInstanceDatabase(models.Model):
 
     instance_name = fields.Char(
         related="instance_id.name",
-        string="Instance Name",
         store=True,
         readonly=True,
     )
@@ -51,7 +54,6 @@ class GlodoInstanceDatabase(models.Model):
 
     instance_active = fields.Boolean(
         related="instance_id.active",
-        string="Instance Active",
     )
 
     remote_user_ids = fields.One2many(
@@ -78,6 +80,22 @@ class GlodoInstanceDatabase(models.Model):
         help="Number of internal users reported by the remote",
     )
 
+    expiration_date = fields.Datetime(
+        readonly=True,
+        help="Enterprise subscription expiration date reported by the remote",
+    )
+
+    expiration_reason = fields.Char(
+        readonly=True,
+        help="Enterprise subscription expiration reason reported by the remote",
+    )
+
+    expiration_state = fields.Selection(
+        [("success", "OK"), ("warning", "Expiring Soon"), ("danger", "Expired")],
+        compute="_compute_expiration_state",
+        search="_search_expiration_state",
+    )
+
     installed_modules_json = fields.Text(
         string="Installed Modules (JSON)",
         readonly=True,
@@ -89,9 +107,37 @@ class GlodoInstanceDatabase(models.Model):
         compute="_compute_installed_modules_html",
     )
 
-    cloc_output = fields.Text(
-        string="CLOC Output",
+    cloc_data_json = fields.Text(
+        string="CLOC (JSON)",
         readonly=True,
+        help="Raw CLOC payload as reported by the remote.",
+    )
+
+    cloc_total = fields.Integer(
+        string="CLOC Total",
+        compute="_compute_cloc_totals",
+        store=True,
+        readonly=True,
+    )
+
+    cloc_modules_total = fields.Integer(
+        string="CLOC Modules",
+        compute="_compute_cloc_totals",
+        store=True,
+        readonly=True,
+        help="Lines of code counted in custom-module source trees, including "
+        "tests/ and static/tests/. Excludes core, enterprise, and any modules "
+        "listed in the instance's CLOC Excluded Modules.",
+    )
+
+    cloc_customization_total = fields.Integer(
+        string="CLOC Customization",
+        compute="_compute_cloc_totals",
+        store=True,
+        readonly=True,
+        help="Lines of code counted in studio actions, manual compute fields, "
+        "and imported-module artifacts stored in the database. Excludes any "
+        "modules listed in the instance's CLOC Excluded Modules.",
     )
 
     last_user_sync = fields.Datetime(
@@ -125,6 +171,95 @@ class GlodoInstanceDatabase(models.Model):
         for db in self:
             db.active_remote_user_count = count_data[db.id]["active"]
             db.inactive_remote_user_count = count_data[db.id]["inactive"]
+
+    @api.depends("expiration_date")
+    def _compute_expiration_state(self):
+        now = fields.Datetime.now()
+        warning_threshold = now + relativedelta(days=EXPIRY_WARNING_DAYS)
+        for db in self:
+            expiration_date = db.expiration_date
+            if not expiration_date:
+                db.expiration_state = "success"
+                continue
+            db.expiration_state = (
+                "danger"
+                if expiration_date <= now
+                else "warning"
+                if expiration_date <= warning_threshold
+                else "success"
+            )
+
+    # See _search_status on HelpdeskSlaStatus for a similar search method
+    @api.model
+    def _search_expiration_state(self, operator, value):
+        if operator != "in":
+            return NotImplemented
+        now = fields.Datetime.now()
+        warning_threshold = now + relativedelta(days=EXPIRY_WARNING_DAYS)
+        domains = []
+        if "success" in value:
+            domains.append(
+                [
+                    "|",
+                    ("expiration_date", "=", False),
+                    ("expiration_date", ">", warning_threshold),
+                ]
+            )
+        if "warning" in value:
+            domains.append(
+                [
+                    ("expiration_date", "!=", False),
+                    ("expiration_date", ">", now),
+                    ("expiration_date", "<=", warning_threshold),
+                ]
+            )
+        if "danger" in value:
+            domains.append(
+                [
+                    ("expiration_date", "!=", False),
+                    ("expiration_date", "<=", now),
+                ]
+            )
+        return Domain.OR(domains)
+
+    @api.model
+    def _cloc_vals_from_payload(self, cloc_payload):
+        """Return ``{cloc_data_json: ...}`` from a ``cloc`` payload.
+
+        The payload follows the shape emitted by
+        ``glodo_client.utils.cloc.count``: a dict with ``modules``,
+        ``customization``, ``errors``. Totals are derived in
+        ``_compute_cloc_totals`` so they pick up changes to the instance's
+        excluded-modules list without re-syncing.
+        """
+        if not isinstance(cloc_payload, dict) or not cloc_payload:
+            return {"cloc_data_json": False}
+        return {"cloc_data_json": json.dumps(cloc_payload, sort_keys=True)}
+
+    @api.depends("cloc_data_json", "instance_id.cloc_excluded_modules")
+    def _compute_cloc_totals(self):
+        for db in self:
+            modules_total = 0
+            customization_total = 0
+            if db.cloc_data_json:
+                try:
+                    payload = json.loads(db.cloc_data_json)
+                except Exception:
+                    payload = {}
+                excluded = db.instance_id._parse_excluded_modules()
+                modules_total = sum(
+                    v
+                    for k, v in (payload.get("modules") or {}).items()
+                    if k not in excluded and isinstance(v, int)
+                )
+                customization_total = sum(
+                    v
+                    for k, v in (payload.get("customization") or {}).items()
+                    if k not in excluded and isinstance(v, int)
+                )
+            db.cloc_modules_total = modules_total
+            db.cloc_customization_total = customization_total
+            db.cloc_total = modules_total + customization_total
 
     @api.depends("installed_modules_json")
     def _compute_installed_modules_html(self):

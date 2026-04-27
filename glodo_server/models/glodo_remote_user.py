@@ -75,7 +75,8 @@ class GlodoRemoteUser(models.Model):
     )
 
     _unique_database_remote_id = models.Constraint(
-        "UNIQUE(database_id, remote_id)", "Remote user ID must be unique per database."
+        "UNIQUE(database_id, remote_id)",
+        "Remote user ID must be unique per database.",
     )
 
     def action_become_user(self):
