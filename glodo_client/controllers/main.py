@@ -18,7 +18,7 @@ from odoo.http import Controller, request, route
 from odoo.modules.registry import Registry
 from odoo.service.db import list_dbs
 
-from ..utils.cloc import count as cloc_count
+from ..utils.cloc import CustomCloc
 from ..utils.crypto import (
     get_client_config,
     glodo_authenticated,
@@ -140,9 +140,10 @@ class GlodoCloudClient(Controller):
                 ]
 
                 try:
-                    cloc_data = cloc_count(env)
+                    cl = CustomCloc()
+                    cl.count_env(env)
+                    cloc_data = cl.summary()
                 except Exception as e:
-                    _logger.exception("CLOC failed for database %s", db_name)
                     cloc_data = {"error": str(e)}
 
                 db_info = {

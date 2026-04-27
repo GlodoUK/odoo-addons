@@ -43,6 +43,7 @@ class GlodoInstanceDatabase(models.Model):
     )
 
     instance_name = fields.Char(
+        string="Instance Name",
         related="instance_id.name",
         store=True,
         readonly=True,
@@ -53,6 +54,7 @@ class GlodoInstanceDatabase(models.Model):
     )
 
     instance_active = fields.Boolean(
+        string="Instance Active",
         related="instance_id.active",
     )
 
@@ -118,26 +120,11 @@ class GlodoInstanceDatabase(models.Model):
         compute="_compute_cloc_totals",
         store=True,
         readonly=True,
-    )
-
-    cloc_modules_total = fields.Integer(
-        string="CLOC Modules",
-        compute="_compute_cloc_totals",
-        store=True,
-        readonly=True,
-        help="Lines of code counted in custom-module source trees, including "
-        "tests/ and static/tests/. Excludes core, enterprise, and any modules "
-        "listed in the instance's CLOC Excluded Modules.",
-    )
-
-    cloc_customization_total = fields.Integer(
-        string="CLOC Customization",
-        compute="_compute_cloc_totals",
-        store=True,
-        readonly=True,
-        help="Lines of code counted in studio actions, manual compute fields, "
-        "and imported-module artifacts stored in the database. Excludes any "
-        "modules listed in the instance's CLOC Excluded Modules.",
+        help="Lines of code counted in custom-module source trees (including "
+        "tests/ and static/tests/) plus studio actions, manual compute fields, "
+        "and imported-module artifacts stored in the database. Excludes core, "
+        "enterprise, and any modules listed in the instance's CLOC Excluded "
+        "Modules.",
     )
 
     last_user_sync = fields.Datetime(
@@ -227,10 +214,10 @@ class GlodoInstanceDatabase(models.Model):
         """Return ``{cloc_data_json: ...}`` from a ``cloc`` payload.
 
         The payload follows the shape emitted by
-        ``glodo_client.utils.cloc.count``: a dict with ``modules``,
-        ``customization``, ``errors``. Totals are derived in
-        ``_compute_cloc_totals`` so they pick up changes to the instance's
-        excluded-modules list without re-syncing.
+        ``glodo_client.utils.cloc.CustomCloc.summary``: a dict with ``code``
+        (per-module LOC, source + customization fused) and ``errors``. The
+        total is derived in ``_compute_cloc_totals`` so it picks up changes
+        to the instance's excluded-modules list without re-syncing.
         """
         if not isinstance(cloc_payload, dict) or not cloc_payload:
             return {"cloc_data_json": False}
@@ -239,27 +226,19 @@ class GlodoInstanceDatabase(models.Model):
     @api.depends("cloc_data_json", "instance_id.cloc_excluded_modules")
     def _compute_cloc_totals(self):
         for db in self:
-            modules_total = 0
-            customization_total = 0
+            total = 0
             if db.cloc_data_json:
                 try:
                     payload = json.loads(db.cloc_data_json)
                 except Exception:
                     payload = {}
                 excluded = db.instance_id._parse_excluded_modules()
-                modules_total = sum(
+                total = sum(
                     v
-                    for k, v in (payload.get("modules") or {}).items()
+                    for k, v in (payload.get("code") or {}).items()
                     if k not in excluded and isinstance(v, int)
                 )
-                customization_total = sum(
-                    v
-                    for k, v in (payload.get("customization") or {}).items()
-                    if k not in excluded and isinstance(v, int)
-                )
-            db.cloc_modules_total = modules_total
-            db.cloc_customization_total = customization_total
-            db.cloc_total = modules_total + customization_total
+            db.cloc_total = total
 
     @api.depends("installed_modules_json")
     def _compute_installed_modules_html(self):

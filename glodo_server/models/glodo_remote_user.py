@@ -41,6 +41,7 @@ class GlodoRemoteUser(models.Model):
     )
 
     database_name = fields.Char(
+        string="Database Name",
         related="database_id.name",
         store=True,
     )
@@ -52,6 +53,7 @@ class GlodoRemoteUser(models.Model):
     )
 
     instance_name = fields.Char(
+        string="Instance Name",
         related="database_id.instance_name",
         store=True,
     )
