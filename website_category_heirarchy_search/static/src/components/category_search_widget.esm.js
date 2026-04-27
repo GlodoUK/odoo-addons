@@ -1,4 +1,4 @@
-import {Component, useState, onWillStart, xml} from "@odoo/owl";
+import {Component, onWillStart, useState, xml} from "@odoo/owl";
 import {SelectMenu} from "@web/core/select_menu/select_menu";
 import {rpc} from "@web/core/network/rpc";
 
@@ -36,9 +36,10 @@ export class CategorySearchWidget extends Component {
         const init = (this.props.initialSelected || []).slice(0, this.props.depth);
         while (init.length < this.props.depth) init.push(null);
 
+        // Counts is a stringified cat id → count
         this.state = useState({
             selected: init,
-            counts: {}, // stringified cat id → count
+            counts: {},
         });
 
         onWillStart(async () => {
@@ -99,7 +100,7 @@ export class CategorySearchWidget extends Component {
 
     _labelFor(item) {
         const count = this.state.counts[String(item.id)];
-        return count !== undefined ? `${item.name} (${count})` : item.name;
+        return count === undefined ? item.name : `${item.name} (${count})`;
     }
 
     /** IDs of all items that need counts on the initial render. */

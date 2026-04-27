@@ -1,7 +1,7 @@
+import {CategorySearchWidget} from "@website_category_heirarchy_search/components/category_search_widget";
 import {Interaction} from "@web/public/interaction";
 import {registry} from "@web/core/registry";
 import {rpc} from "@web/core/network/rpc";
-import {CategorySearchWidget} from "@website_category_heirarchy_search/components/category_search_widget";
 
 export class CategorySearch extends Interaction {
     static selector = ".s_category_search";
@@ -42,7 +42,7 @@ export class CategorySearch extends Interaction {
         if (vcats) {
             this.initialSelected = vcats
                 .split(",")
-                .map((n) => parseInt(n) || null)
+                .map((n) => parseInt(n, 10) || null)
                 .slice(0, this.depth);
         }
     }

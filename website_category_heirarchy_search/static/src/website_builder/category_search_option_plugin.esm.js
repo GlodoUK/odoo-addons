@@ -1,8 +1,8 @@
+import {onWillStart, useState} from "@odoo/owl";
 import {BaseOptionComponent} from "@html_builder/core/utils";
 import {BuilderAction} from "@html_builder/core/builder_action";
 import {Plugin} from "@html_editor/plugin";
 import {registry} from "@web/core/registry";
-import {onWillStart, useState} from "@odoo/owl";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared DOM helpers (used by actions and the drop handler)

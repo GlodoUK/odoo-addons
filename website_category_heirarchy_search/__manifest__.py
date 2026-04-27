@@ -13,8 +13,8 @@
     ],
     "assets": {
         "web.assets_frontend": [
-            "website_category_heirarchy_search/static/src/components/*.js.esm",
-            "website_category_heirarchy_search/static/src/interactions/*.js.esm",
+            "website_category_heirarchy_search/static/src/components/*.js",
+            "website_category_heirarchy_search/static/src/interactions/*.js",
             "website_category_heirarchy_search/static/src/scss/*.scss",
         ],
         "website.website_builder_assets": [
