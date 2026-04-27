@@ -134,6 +134,14 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="CLOC">
+                            <group>
+                                <field
+                                    name="cloc_excluded_modules"
+                                    placeholder="e.g. connector_edi, web_cmd_search"
+                                />
+                            </group>
+                        </page>
                         <page string="Notes">
                             <field
                                 name="notes"

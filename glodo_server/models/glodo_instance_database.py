@@ -109,9 +109,22 @@ class GlodoInstanceDatabase(models.Model):
         compute="_compute_installed_modules_html",
     )
 
-    cloc_output = fields.Text(
-        string="CLOC Output",
+    cloc_data_json = fields.Text(
+        string="CLOC (JSON)",
         readonly=True,
+        help="Raw CLOC payload as reported by the remote.",
+    )
+
+    cloc_total = fields.Integer(
+        string="CLOC Total",
+        compute="_compute_cloc_totals",
+        store=True,
+        readonly=True,
+        help="Lines of code counted in custom-module source trees (including "
+        "tests/ and static/tests/) plus studio actions, manual compute fields, "
+        "and imported-module artifacts stored in the database. Excludes core, "
+        "enterprise, and any modules listed in the instance's CLOC Excluded "
+        "Modules.",
     )
 
     last_user_sync = fields.Datetime(
@@ -195,6 +208,37 @@ class GlodoInstanceDatabase(models.Model):
                 ]
             )
         return Domain.OR(domains)
+
+    @api.model
+    def _cloc_vals_from_payload(self, cloc_payload):
+        """Return ``{cloc_data_json: ...}`` from a ``cloc`` payload.
+
+        The payload follows the shape emitted by
+        ``glodo_client.utils.cloc.CustomCloc.summary``: a dict with ``code``
+        (per-module LOC, source + customization fused) and ``errors``. The
+        total is derived in ``_compute_cloc_totals`` so it picks up changes
+        to the instance's excluded-modules list without re-syncing.
+        """
+        if not isinstance(cloc_payload, dict) or not cloc_payload:
+            return {"cloc_data_json": False}
+        return {"cloc_data_json": json.dumps(cloc_payload, sort_keys=True)}
+
+    @api.depends("cloc_data_json", "instance_id.cloc_excluded_modules")
+    def _compute_cloc_totals(self):
+        for db in self:
+            total = 0
+            if db.cloc_data_json:
+                try:
+                    payload = json.loads(db.cloc_data_json)
+                except Exception:
+                    payload = {}
+                excluded = db.instance_id._parse_excluded_modules()
+                total = sum(
+                    v
+                    for k, v in (payload.get("code") or {}).items()
+                    if k not in excluded and isinstance(v, int)
+                )
+            db.cloc_total = total
 
     @api.depends("installed_modules_json")
     def _compute_installed_modules_html(self):

@@ -105,7 +105,21 @@ class GlodoInstance(models.Model):
         readonly=True,
     )
 
+    cloc_excluded_modules = fields.Char(
+        string="CLOC Excluded Modules",
+        help="Comma-separated list of module names (or the literal "
+        "'odoo/studio') to exclude from CLOC totals for this instance. "
+        "Applies to every database under the instance.",
+    )
+
     notes = fields.Text()
+
+    def _parse_excluded_modules(self):
+        self.ensure_one()
+        raw = self.cloc_excluded_modules
+        if not raw:
+            return set()
+        return {part.strip() for part in raw.split(",") if part.strip()}
 
     @api.depends("database_ids")
     def _compute_database_count(self):
@@ -325,8 +339,8 @@ class GlodoInstance(models.Model):
                 "installed_modules_json": json.dumps(
                     db_data.get("installed_modules", [])
                 ),
-                "cloc_output": db_data.get("cloc", {}).get("output", ""),
             }
+            db_vals.update(Database._cloc_vals_from_payload(db_data.get("cloc") or {}))
 
             if existing:
                 existing.write(db_vals)

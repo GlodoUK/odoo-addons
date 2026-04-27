@@ -96,7 +96,10 @@
                             />
                         </page>
                         <page string="CLOC">
-                            <field name="cloc_output" widget="text" readonly="1" />
+                            <group>
+                                <field name="cloc_total" />
+                            </group>
+                            <field name="cloc_data_json" readonly="1" />
                         </page>
                         <page string="Notes">
                             <field
@@ -129,6 +132,7 @@
                     optional="hide"
                     sum="Inactive Users"
                 />
+                <field name="cloc_total" optional="hide" sum="CLOC Total" />
                 <field name="last_user_sync" />
             </list>
         </field>
