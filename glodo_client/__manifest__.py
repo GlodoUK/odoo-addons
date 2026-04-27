@@ -7,7 +7,7 @@
     "version": "18.0.1.0.0",
     "depends": ["base"],
     "external_dependencies": {
-        "python": ["cryptography"],
+        "python": ["cryptography", "manifestoo_core"],
     },
     "license": "Other proprietary",
 }
