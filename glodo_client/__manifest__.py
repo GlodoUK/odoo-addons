@@ -7,7 +7,7 @@
     "version": "14.0.1.0.1",
     "depends": ["base"],
     "external_dependencies": {
-        "python": ["cryptography"],
+        "python": ["cryptography", "manifestoo_core"],
     },
     "license": "Other proprietary",
     "post_load": "_post_load",
