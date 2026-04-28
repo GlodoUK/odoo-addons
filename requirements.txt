@@ -2,6 +2,7 @@
 cryptography
 human_readable
 lxml
+manifestoo_core
 mock
 oauthlib
 phonenumbers
