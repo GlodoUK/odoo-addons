@@ -2,6 +2,7 @@
 cryptography
 ftpparser
 lxml
+manifestoo_core
 paramiko
 pycurl
 requests
