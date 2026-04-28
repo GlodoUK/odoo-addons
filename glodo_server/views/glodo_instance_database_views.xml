@@ -121,7 +121,7 @@
                 decoration-warning="expiration_state == 'warning'"
                 decoration-danger="expiration_state == 'danger'"
             >
-                <field name="expiration_state" invisible="1" />
+                <field name="expiration_state" column_invisible="1" />
                 <field name="name" />
                 <field name="instance_name" />
                 <field name="expiration_date" optional="show" />
