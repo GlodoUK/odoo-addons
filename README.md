@@ -49,6 +49,7 @@ addon | version | maintainers | summary
 [stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
 [stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
+[website_category_heirarchy_search](website_category_heirarchy_search/) | 19.0.1.0.0 |  | Website snippet: cascading dropdowns to search products by category hierarchy
 
 [//]: # (end addons)
 
