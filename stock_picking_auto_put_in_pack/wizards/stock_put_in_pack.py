@@ -49,7 +49,7 @@ class StockPutInPack(models.TransientModel):
 
             record.missing_capacity_warning = ", ".join(missing) if missing else False
 
-    def _action_auto_put_in_pack(self):
+    def _action_auto_put_in_pack(self):  # noqa: C901
         self.ensure_one()
         candidates_to_split = self.move_line_ids.filtered(
             lambda x: not x.result_package_id
@@ -61,11 +61,8 @@ class StockPutInPack(models.TransientModel):
         package_max_height = self.package_type_id.height
         package_volume = package_max_length * package_max_width * package_max_height
 
-        # Build a lookup keyed by (product_id, uom_id) so that capacities
-        # for different UoMs are kept distinct and matched exactly — no
-        # automatic conversion.  A "pack of 4" may physically differ from
-        # 4x "each", so the caller must define the capacity in the UoM
-        # they actually use on the move line.
+        # Pre-emptively split all stock.move.lines for anything that exceeds the
+        # capacity of the package type, to make our lives easier when repackaging.
         capacity_by_product_uom = {
             (cap.product_id.id, cap.uom_id.id): cap.quantity
             for cap in self.package_type_id.product_capacity_ids
@@ -110,13 +107,63 @@ class StockPutInPack(models.TransientModel):
 
         self.move_line_ids |= split_move_line_ids
 
-        # Each chunk must go into its own package.
-        # Calling super().action_put_in_pack() would pack all unpackaged lines into one,
-        # so we assign packages individually here.
-        for line in (candidates_to_split | split_move_line_ids).filtered(
+        # Accumulate lines into a group until adding
+        # the next line would breach any capacity, then start a new
+        # group. Each group is packed in one _put_in_pack call so lines that
+        # share a package are linked to the same quant_package.
+        all_lines_to_pack = (candidates_to_split | split_move_line_ids).filtered(
             lambda x: not x.result_package_id
-        ):
-            line._put_in_pack(package_type_id=self.package_type_id.id)
+        )
+
+        groups = []
+        current_group = self.env["stock.move.line"]
+        current_weight = 0.0
+        current_volume = 0.0
+        current_qty_by_key = {}
+
+        for line in all_lines_to_pack:
+            product = line.product_id
+            qty = line.quantity
+            line_weight = product.weight * qty if product.weight else 0.0
+            line_volume = product.volume * qty if product.volume else 0.0
+            capacity_key = (product.id, line.product_uom_id.id)
+
+            fits = True
+            if package_max_weight and product.weight:
+                if current_weight + line_weight > package_max_weight:
+                    fits = False
+            if fits and package_volume and product.volume:
+                if current_volume + line_volume > package_volume:
+                    fits = False
+            if fits and capacity_key in capacity_by_product_uom:
+                if (
+                    current_qty_by_key.get(capacity_key, 0.0) + qty
+                    > capacity_by_product_uom[capacity_key]
+                ):
+                    fits = False
+
+            if not fits and current_group:
+                groups.append(current_group)
+                current_group = self.env["stock.move.line"]
+                current_weight = 0.0
+                current_volume = 0.0
+                current_qty_by_key = {}
+
+            current_group |= line
+            current_weight += line_weight
+            current_volume += line_volume
+            current_qty_by_key[capacity_key] = (
+                current_qty_by_key.get(capacity_key, 0.0) + qty
+            )
+
+        if current_group:
+            groups.append(current_group)
+
+        for group in groups:
+            # Calling super().action_put_in_pack() is intentionally avoided: it
+            # would see all unpackaged lines and nest them into a single package,
+            # or set parent_package_id on already-created packages.
+            group._put_in_pack(package_type_id=self.package_type_id.id)
 
     def action_put_in_pack(self):
         if self.auto_put_in_pack == "auto":
