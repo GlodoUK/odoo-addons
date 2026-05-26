@@ -65,7 +65,12 @@ class StockPutInPack(models.TransientModel):
         # capacity of the package type, to make our lives easier when repackaging.
         capacity_by_product_uom = {
             (cap.product_id.id, cap.uom_id.id): cap.quantity
-            for cap in self.package_type_id.product_capacity_ids
+            for cap in self.env["stock.package.type.product.capacity"].search(
+                [
+                    ("product_id", "in", self.move_line_ids.mapped("product_id").ids),
+                    ("package_type_id", "=", self.package_type_id.id),
+                ]
+            )
         }
 
         for candidate in candidates_to_split:
@@ -163,7 +168,9 @@ class StockPutInPack(models.TransientModel):
             # Calling super().action_put_in_pack() is intentionally avoided: it
             # would see all unpackaged lines and nest them into a single package,
             # or set parent_package_id on already-created packages.
-            group._put_in_pack(package_type_id=self.package_type_id.id)
+            for line in group:
+                # XXX: doing it with `group._put_in_pack` results in wonky results
+                line._put_in_pack(package_type_id=self.package_type_id.id)
 
     def action_put_in_pack(self):
         if self.auto_put_in_pack == "auto":
