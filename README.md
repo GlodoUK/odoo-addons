@@ -2,7 +2,9 @@
 
 # Addons for Odoo
 
-This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.)
+This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.).
+
+Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-proprietary](https://github.com/GlodoUK/odoo-addons-proprietary).
 
 <!-- prettier-ignore-start -->
 
@@ -25,7 +27,7 @@ addon | version | maintainers | summary
 [connector_edi_sale](connector_edi_sale/) | 14.0.1.0.0 |  | EDI Sales module
 [credit_control](credit_control/) | 14.0.1.0.0 |  | Credit Control Policies
 [delivery_state_events](delivery_state_events/) | 14.0.1.0.1 |  | Provides fields and methods to support tracking a shipment
-[glodo_client](glodo_client/) | 14.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
+[glodo_client](glodo_client/) | 14.0.1.0.1 |  | Server-wide client for Glodo Cloud remote instance management
 [healthcheck](healthcheck/) | 14.0.1.0.0 |  | Healthcheck for monitoring, etc. Complementary to prometheus module.
 [mail_force_sender](mail_force_sender/) | 14.0.1.0.0 |  | Force the outgoing email address, overriding Odoo's default behaviour of using the initiating user's email.
 [mailgun](mailgun/) | 14.0.1.0.0 |  | Setup the outgoing and incoming mail flow easily by using Mailgun

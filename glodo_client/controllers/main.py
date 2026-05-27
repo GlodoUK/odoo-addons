@@ -11,14 +11,15 @@ import logging
 import time
 
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
+from werkzeug.utils import redirect
 
 import odoo
 from odoo import SUPERUSER_ID, api
 from odoo.http import Controller, request, route
 from odoo.modules.registry import Registry
 from odoo.service.db import list_dbs
-from odoo.tools import cloc
 
+from ..utils.cloc import CustomCloc
 from ..utils.crypto import (
     get_client_config,
     glodo_authenticated,
@@ -78,7 +79,7 @@ class GlodoCloudClient(Controller):
 
         Response includes:
         - Instance-level information (Odoo version, etc.)
-        - List of databases with CLOC and module info
+        - List of databases with module info and CLOC breakdown
         """
         # payload available via request.glodo_payload if needed
 
@@ -124,6 +125,11 @@ class GlodoCloudClient(Controller):
                     ]
                 )
 
+                # Enterprise subscription metadata, when present.
+                ICP = env["ir.config_parameter"].sudo()
+                expiration_date = ICP.get_param("database.expiration_date")
+                expiration_reason = ICP.get_param("database.expiration_reason")
+
                 # Get installed modules
                 modules = env["ir.module.module"].search([("state", "=", "installed")])
                 module_list = [
@@ -134,24 +140,21 @@ class GlodoCloudClient(Controller):
                     for m in modules
                 ]
 
+                try:
+                    cl = CustomCloc()
+                    cl.count_env(env)
+                    cloc_data = cl.summary()
+                except Exception as e:
+                    cloc_data = {"error": str(e)}
+
                 db_info = {
                     "name": db_name,
                     "user_count": user_count,
+                    "expiration_date": expiration_date or None,
+                    "expiration_reason": expiration_reason or None,
                     "installed_modules": module_list,
-                    "cloc": {},
+                    "cloc": cloc_data,
                 }
-
-                # Try to get CLOC
-                try:
-                    cl = cloc.Cloc()
-                    cl.count_customization(env)
-
-                    db_info["cloc"] = {
-                        "output": cl.report(),
-                        "returncode": cl.code,
-                    }
-                except Exception as e:
-                    db_info["cloc"] = {"error": str(e)}
 
                 return db_info
 
@@ -292,7 +295,7 @@ class GlodoCloudClient(Controller):
             db_name,
         )
 
-        return request.redirect("/web")
+        return redirect("/web")
 
     @route(
         "/glodo_cloud/user_manage",
