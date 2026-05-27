@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Posted on the target picking after a merge. -->
+    <template id="stock_picking_merge_target_message">
+        <p>The following transfers were merged into this transfer:</p>
+        <t t-foreach="sources" t-as="source_entry">
+            <p>
+                <a
+                    href="#"
+                    t-att-data-oe-model="source_entry[0]._name"
+                    t-att-data-oe-id="source_entry[0].id"
+                >
+                    <t t-out="source_entry[0].display_name" />
+                </a>
+            </p>
+            <ul>
+                <t t-foreach="source_entry[1]" t-as="move">
+                    <li>
+                        <t t-out="move[0]" />:
+                        <t t-out="'{:g}'.format(move[1])" />
+                        <t t-out="move[2]" />
+                    </li>
+                </t>
+            </ul>
+        </t>
+    </template>
+
+    <!-- Posted on each source picking after it is cancelled by a merge. -->
+    <template id="stock_picking_merge_source_message">
+        <p>
+            This transfer was merged into
+            <a href="#" t-att-data-oe-model="target._name" t-att-data-oe-id="target.id">
+            <t t-out="target.display_name" />
+        </a>.
+        </p>
+        <ul>
+            <t t-foreach="moves" t-as="move">
+                <li>
+                    <t t-out="move[0]" />:
+                    <t t-out="'{:g}'.format(move[1])" />
+                    <t t-out="move[2]" />
+                </li>
+            </t>
+        </ul>
+    </template>
+</odoo>
