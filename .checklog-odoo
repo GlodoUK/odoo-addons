@@ -2,3 +2,4 @@
 ignore=
     WARNING.* 0 failed, 0 error\(s\).*
     Missing not-null constraint
+    this is a deprecated feature
