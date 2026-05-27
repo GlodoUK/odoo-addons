@@ -22,6 +22,7 @@ addon | version | maintainers | summary
 [cpq_mrp](cpq_mrp/) | 19.0.1.0.0 |  | Glue module between CPQ and MRP
 [cpq_sale](cpq_sale/) | 19.0.1.0.0 |  | Glue module between CPQ and Sale
 [cpq_sale_mrp](cpq_sale_mrp/) | 19.0.1.0.0 |  | Glue module for sale_mrp and cpq_mrp
+[delivery_skip_send_to_shipper](delivery_skip_send_to_shipper/) | 19.0.1.0.0 |  | Utility module to skip the send_to_shipper call
 [glodo_client](glodo_client/) | 19.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
 [glodo_server](glodo_server/) | 19.0.1.0.0 |  | Central management server for remote Odoo instances
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 19.0.1.0.0 |  | Helpdesk Account Move Link
@@ -43,6 +44,7 @@ addon | version | maintainers | summary
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
+[sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
 [sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
 [stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
@@ -50,6 +52,7 @@ addon | version | maintainers | summary
 [stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
 [stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [stock_picking_mandatory_packing](stock_picking_mandatory_packing/) | 19.0.1.0.0 |  | Ensure that a picking type must have all items packaged
+[stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
 [website_category_heirarchy_search](website_category_heirarchy_search/) | 19.0.1.0.0 |  | Website snippet: cascading dropdowns to search products by category hierarchy
 
