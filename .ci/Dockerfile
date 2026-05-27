@@ -20,7 +20,8 @@ RUN apt-get -yq update && \
     curl \
     debianutils \
     expect \
-    git
+    git \
+    postgresql-client
 
 WORKDIR /opt/odoo
 
