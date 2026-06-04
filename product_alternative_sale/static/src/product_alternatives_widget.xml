@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+
+    <t t-name="product_alternative_sale.ProductAlternatives">
+        <a
+            t-if="props.record.data.display_alternatives_widget"
+            t-on-click="showPopup"
+            class="fa fa-exchange cursor-pointer text-info"
+            title="Alternative products available"
+        />
+    </t>
+
+    <t t-name="product_alternative_sale.ProductAlternativesPopover">
+        <div class="p-2">
+            <h6 t-out="title" />
+            <ul class="ps-3 mb-0">
+                <li t-foreach="props.alternatives" t-as="alt" t-key="alt.id">
+                    <t t-out="alt.display_name" />
+                </li>
+            </ul>
+            <p t-if="props.remainingCount" class="text-muted fst-italic mb-0 mt-1">
+                There are <t t-out="props.remainingCount" /> more...
+            </p>
+            <button
+                t-if="props.lineId"
+                class="btn btn-link text-start ps-0"
+                type="button"
+                t-on-click="viewCatalog"
+            >
+                <i class="oi oi-fw o_button_icon oi-arrow-right" /> View in Catalog
+            </button>
+        </div>
+    </t>
+
+</templates>
