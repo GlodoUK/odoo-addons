@@ -7,6 +7,11 @@
     "version": "19.0.1.0.0",
     "depends": ["base"],
     "license": "Other proprietary",
-    # The CLI command works from the addons path alone; installing this
-    # module into a database is a harmless no-op.
+    "data": [
+        "security/ir.model.access.csv",
+        "views/generate_wizard_views.xml",
+    ],
+    # The CLI command works from the addons path alone, without installing.
+    # Installing this module only adds the "Generate shoehorn migration"
+    # wizard under Settings > Technical.
 }

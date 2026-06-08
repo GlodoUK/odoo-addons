@@ -22,10 +22,19 @@ transaction.
 
     odoo shoehorn apply --shoehorn-path ./bootstrap -c /etc/odoo/odoo.conf
 
-The module only needs to be on the addons path - Odoo discovers the command
-from ``cli/shoehorn.py`` by filesystem convention; installing the module into
-a database is a harmless no-op. The engine versions with Odoo itself: this
-branch targets Odoo 19.
+The engine versions with Odoo itself: this branch targets Odoo 19.
+
+Installation
+============
+
+shoehorn is **not installed like a normal module**. The ``odoo shoehorn``
+CLI command (both ``apply`` and ``generate``) is discovered by filesystem
+convention from ``cli/shoehorn.py``, so having the module on the addons path
+is all the CLI needs - it does not have to be added to a database.
+
+Installing the module into a database is optional. It changes nothing about
+how the CLI works; it only adds a *Settings > Technical > Generate shoehorn
+migration* wizard - a UI front-end for ``generate`` (see below).
 
 Usage
 =====
@@ -101,6 +110,11 @@ Generating migrations
     odoo shoehorn generate ir.model.access.csv --shoehorn-path ./bootstrap  # data file
 
 creates e.g. ``20260604164512_add_a_thing.py`` with the conventional stub.
+
+When the module is installed, the same thing is available from the UI via
+*Settings > Technical > Generate shoehorn migration*: a minimal wizard taking
+a directory, a file type and a name. It calls the same ``generate`` code, so
+the naming, validation and stub templates are identical to the CLI.
 
 Conventions
 ===========
