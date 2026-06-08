@@ -6,7 +6,7 @@ Represents a user on a remote Odoo database.
 
 import logging
 
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -76,6 +76,10 @@ class GlodoRemoteUser(models.Model):
         readonly=True,
     )
 
+    reactivate_until = fields.Datetime(
+        readonly=True,
+    )
+
     _unique_database_remote_id = models.Constraint(
         "UNIQUE(database_id, remote_id)",
         "Remote user ID must be unique per database.",
@@ -117,14 +121,6 @@ class GlodoRemoteUser(models.Model):
         )
 
         self.last_become_date = fields.Datetime.now()
-
-        _logger.info(
-            "Glodo Cloud: Admin %s initiating become action for user %s on %s/%s",
-            self.env.user.login,
-            self.login,
-            instance.name,
-            database.name,
-        )
 
         return {
             "type": "ir.actions.act_url",
@@ -175,15 +171,7 @@ class GlodoRemoteUser(models.Model):
             }
         )
 
-        self.is_archived = True
-
-        _logger.info(
-            "Glodo Cloud: User %s archived on %s/%s by admin %s",
-            self.login,
-            instance.name,
-            database.name,
-            self.env.user.login,
-        )
+        self.write({"is_archived": True, "reactivate_until": False})
 
         return {
             "type": "ir.actions.client",
@@ -201,7 +189,6 @@ class GlodoRemoteUser(models.Model):
         }
 
     def action_unarchive_user(self):
-        """Unarchive this user on the remote instance."""
         self.ensure_one()
 
         if not self.is_archived:
@@ -227,7 +214,6 @@ class GlodoRemoteUser(models.Model):
                 database.name,
                 e,
             )
-            raise
 
         self.env["glodo.action.log"].create(
             {
@@ -240,14 +226,6 @@ class GlodoRemoteUser(models.Model):
         )
 
         self.is_archived = False
-
-        _logger.info(
-            "Glodo Cloud: User %s unarchived on %s/%s by admin %s",
-            self.login,
-            instance.name,
-            database.name,
-            self.env.user.login,
-        )
 
         return {
             "type": "ir.actions.client",
@@ -264,11 +242,55 @@ class GlodoRemoteUser(models.Model):
             },
         }
 
+    def action_open_unarchive_wizard(self):
+        self.ensure_one()
+
+        if not self.is_archived:
+            raise UserError(self.env._("User is not archived."))
+
+        context = dict(self.env.context, default_remote_user_id=self.id)
+
+        view_id = self.env.ref(
+            "glodo_server.glodo_remote_user_unarchive_wizard_view_form"
+        )
+
+        return {
+            "name": self.env._("Unarchive User"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "glodo.remote.user.unarchive.wizard",
+            "views": [(view_id.id, "form")],
+            "view_id": view_id.id,
+            "target": "new",
+            "context": context,
+        }
+
     def action_toggle_archive(self):
-        """Toggle the archive status of this user."""
         self.ensure_one()
 
         if self.is_archived:
-            return self.action_unarchive_user()
+            return self.action_open_unarchive_wizard()
         else:
             return self.action_archive_user()
+
+    @api.model
+    def _cron_rearchive_expired_users(self):
+        now = fields.Datetime.now()
+
+        expire_remote_user_ids = self.search(
+            [
+                ("is_archived", "=", False),
+                ("reactivate_until", "<=", now),
+            ]
+        )
+
+        for user in expire_remote_user_ids:
+            try:
+                with self.env.cr.savepoint():
+                    user.action_archive_user()
+            except Exception as e:
+                _logger.exception(
+                    "Failed to re-archive remote user %(login)s: %(error)s",
+                    user.login,
+                    error=str(e),
+                )

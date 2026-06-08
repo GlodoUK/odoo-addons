@@ -4,7 +4,7 @@
         <field name="name">glodo.remote.user.view.form</field>
         <field name="model">glodo.remote.user</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="0">
                 <header>
                     <button
                         name="action_become_user"
@@ -25,13 +25,12 @@
                         confirm="This will archive the user on the remote instance. Continue?"
                     />
                     <button
-                        name="action_unarchive_user"
+                        name="action_open_unarchive_wizard"
                         string="Unarchive User"
                         type="object"
                         class="btn-secondary"
                         invisible="not is_archived"
                         groups="glodo_server.group_glodo_cloud_manager"
-                        confirm="This will unarchive the user on the remote instance. Continue?"
                     />
                 </header>
                 <sheet>
@@ -64,6 +63,11 @@
                     </group>
                     <group string="Status">
                         <field name="is_archived" readonly="1" />
+                        <field
+                            name="reactivate_until"
+                            readonly="1"
+                            invisible="not reactivate_until"
+                        />
                     </group>
                 </sheet>
             </form>
@@ -77,6 +81,7 @@
             <list
                 string="Remote Users"
                 default_order="instance_name, database_name, name"
+                create="0"
             >
                 <field name="name" />
                 <field name="login" />

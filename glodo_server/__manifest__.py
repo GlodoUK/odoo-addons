@@ -7,9 +7,11 @@
     "version": "19.0.1.0.0",
     "depends": ["base", "web", "mail"],
     "data": [
+        "data/ir_cron_data.xml",
         "security/glodo_server_security.xml",
         "security/ir.model.access.csv",
         "wizards/glodo_instance_info_wizard_views.xml",
+        "wizards/glodo_remote_user_unarchive_wizard_views.xml",
         "views/glodo_instance_views.xml",
         "views/glodo_instance_tag_views.xml",
         "views/glodo_instance_database_views.xml",
