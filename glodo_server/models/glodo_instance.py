@@ -427,35 +427,6 @@ class GlodoInstance(models.Model):
             "domain": [("instance_id", "=", self.id)],
         }
 
-    def action_fetch_info(self):
-        """Fetch system info from the remote instance and display in wizard."""
-        self.ensure_one()
-
-        if not self.active:
-            raise UserError(self.env._("Instance is not active."))
-
-        try:
-            response = self._make_encrypted_request(
-                "/glodo_cloud/info",
-                {},
-                timeout=180,
-            )
-        except Exception as e:
-            _logger.error("Failed to fetch info from %s: %s", self.name, e)
-            raise
-
-        return {
-            "type": "ir.actions.act_window",
-            "name": self.env._("Instance Info - %(name)s", name=self.name),
-            "res_model": "glodo.instance.info.wizard",
-            "view_mode": "form",
-            "target": "new",
-            "context": {
-                "default_instance_id": self.id,
-                "default_info_json": json.dumps(response, indent=2),
-            },
-        }
-
     def action_ping_db(self):
         """Ping the remote instance to check connectivity."""
         self.ensure_one()
