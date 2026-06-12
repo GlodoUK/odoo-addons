@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Security Groups -->
     <record id="module_category_glodo_cloud" model="ir.module.category">
         <field name="name">Glodo Cloud</field>
         <field name="description">Manage Glodo Cloud permissions</field>
@@ -37,7 +36,6 @@
         <field name="user_ids" eval="[(4, ref('base.user_admin'))]" />
     </record>
 
-    <!-- Record Rules -->
     <record id="glodo_instance_rule_user" model="ir.rule">
         <field name="name">Glodo Instance: User can read active</field>
         <field name="model_id" ref="model_glodo_instance" />

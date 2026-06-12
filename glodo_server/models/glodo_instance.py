@@ -161,7 +161,6 @@ class GlodoInstance(models.Model):
         return super().create(vals_list)
 
     def action_regenerate_secret(self):
-        """Generate a new shared secret for this instance."""
         self.ensure_one()
 
         self.shared_secret = generate_shared_secret()
