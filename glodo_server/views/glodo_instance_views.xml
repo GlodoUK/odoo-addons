@@ -15,13 +15,6 @@
                         groups="glodo_server.group_glodo_cloud_manager"
                     />
                     <button
-                        name="action_fetch_info"
-                        string="View Info"
-                        type="object"
-                        class="btn-secondary"
-                        groups="glodo_server.group_glodo_cloud_manager"
-                    />
-                    <button
                         name="action_ping_db"
                         string="Ping"
                         type="object"

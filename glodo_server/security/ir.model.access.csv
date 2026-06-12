@@ -13,5 +13,4 @@ access_glodo_remote_user_manager,glodo.remote.user.manager,model_glodo_remote_us
 access_glodo_action_log_user,glodo.action.log.user,model_glodo_action_log,group_glodo_cloud_user,1,0,0,0
 access_glodo_action_log_manager,glodo.action.log.manager,model_glodo_action_log,group_glodo_cloud_manager,1,0,1,0
 access_glodo_action_log_admin,glodo.action.log.admin,model_glodo_action_log,group_glodo_cloud_admin,1,1,1,1
-access_glodo_instance_info_wizard,glodo.instance.info.wizard,model_glodo_instance_info_wizard,group_glodo_cloud_manager,1,1,1,1
 access_glodo_remote_user_unarchive_wizard,glodo.remote.user.unarchive.wizard,model_glodo_remote_user_unarchive_wizard,group_glodo_cloud_manager,1,1,1,0
