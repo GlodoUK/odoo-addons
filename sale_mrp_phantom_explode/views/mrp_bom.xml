@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="autoguide_flatten_bom_view_mrp_bom_form" model="ir.ui.view">
+        <field name="name">mrp.bom.form</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='miscellaneous']//field[@name='consumption']"
+                position="after"
+            >
+                <field name="sale_explode" invisible="type != 'phantom'" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

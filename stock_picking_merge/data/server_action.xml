@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_server_stock_picking_merge" model="ir.actions.server">
+        <field name="name">Merge Pickings</field>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    wizard = env['stock.picking.merge.wizard'].create({
+        'picking_ids': [(6, 0, records.ids)],
+    })
+    action = {
+        'type': 'ir.actions.act_window',
+        'name': 'Merge Pickings',
+        'res_model': 'stock.picking.merge.wizard',
+        'res_id': wizard.id,
+        'view_mode': 'form',
+        'target': 'new',
+    }
+        </field>
+    </record>
+</odoo>

@@ -22,6 +22,7 @@ addon | version | maintainers | summary
 [cpq_mrp](cpq_mrp/) | 19.0.1.0.0 |  | Glue module between CPQ and MRP
 [cpq_sale](cpq_sale/) | 19.0.1.0.0 |  | Glue module between CPQ and Sale
 [cpq_sale_mrp](cpq_sale_mrp/) | 19.0.1.0.0 |  | Glue module for sale_mrp and cpq_mrp
+[delivery_skip_send_to_shipper](delivery_skip_send_to_shipper/) | 19.0.1.0.0 |  | Utility module to skip the send_to_shipper call
 [glodo_client](glodo_client/) | 19.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
 [glodo_server](glodo_server/) | 19.0.1.0.0 |  | Central management server for remote Odoo instances
 [helpdesk_account_move_link](helpdesk_account_move_link/) | 19.0.1.0.0 |  | Helpdesk Account Move Link
@@ -39,16 +40,26 @@ addon | version | maintainers | summary
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 19.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 19.0.1.0.0 |  | Helpdesk Ticket Type Properties
 [mrp_product_conformity](mrp_product_conformity/) | 19.0.1.0.0 |  | MRP Product Conformity
+[product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
+[product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
+[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.0.0 |  | Invoicing policy
+[sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
+[sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
 [sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
 [stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
+[stock_picking_archive](stock_picking_archive/) | 19.0.1.0.0 |  | Allow stock.picking records to be archived
 [stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
 [stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
+[stock_picking_mandatory_packing](stock_picking_mandatory_packing/) | 19.0.1.0.0 |  | Ensure that a picking type must have all items packaged
+[stock_picking_merge](stock_picking_merge/) | 19.0.1.0.0 |  | Adds the ability to merge stock.picking records
+[stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
+[website_category_heirarchy_search](website_category_heirarchy_search/) | 19.0.1.0.0 |  | Website snippet: cascading dropdowns to search products by category hierarchy
 
 [//]: # (end addons)
 
