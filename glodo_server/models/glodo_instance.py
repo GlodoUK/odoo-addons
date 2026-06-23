@@ -185,11 +185,11 @@ class GlodoInstance(models.Model):
         """Get a crypto handler configured for this instance."""
         self.ensure_one()
 
-        if not self.shared_secret:
+        if not self.sudo().shared_secret:
             raise UserError(self.env._("Instance shared secret not configured."))
 
         try:
-            secret_bytes = base64.b64decode(self.shared_secret)
+            secret_bytes = base64.b64decode(self.sudo().shared_secret)
         except Exception as e:
             raise UserError(self.env._("Invalid shared secret format.")) from e
 
