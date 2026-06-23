@@ -1,10 +1,10 @@
 from odoo import fields, models
 
 
-class ResPartner(models.Model):
-    _inherit = "res.partner"
+class HelpdeskTicket(models.Model):
+    _inherit = "helpdesk.ticket"
 
-    glodo_instance_ids = fields.One2many("glodo.instance", "partner_id", readonly=True)
+    glodo_instance_ids = fields.One2many(related="partner_id.glodo_instance_ids")
 
     def action_view_instance(self):
         """View instance for this contact."""
