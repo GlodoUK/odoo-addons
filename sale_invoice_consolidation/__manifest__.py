@@ -3,7 +3,7 @@
     "summary": "Invoicing policy",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.0",
     "depends": ["sale", "account"],
     "data": [
         "data/cron.xml",
