@@ -47,6 +47,12 @@ class GlodoInstance(models.Model):
         help="Base URL of the managed Odoo instance",
     )
 
+    git_repo_url = fields.Char(
+        string="Git Repo URL", help="URL for the Active GitHub Repository"
+    )
+
+    git_branch = fields.Char(help="The name of the live branch")
+
     shared_secret = fields.Char(
         string="Shared Secret (Base64)",
         readonly=True,

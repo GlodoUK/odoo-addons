@@ -85,6 +85,8 @@
                         <group string="Connection Details">
                             <field name="partner_id" />
                             <field name="url" widget="url" />
+                            <field name="git_repo_url" widget="url" />
+                            <field name="git_branch" />
                             <field name="unique_id" readonly="1" />
                             <field name="odoo_version" readonly="1" />
                             <field name="last_sync_date" readonly="1" />
@@ -96,8 +98,8 @@
                             <field name="shared_secret" widget="CopyClipboardChar" />
                             <div colspan="2" class="alert alert-info" role="alert">
                                 <strong>Client Configuration:</strong><br
-                            /> Add these lines to the client's <code
-                            >odoo.conf</code>:<br />
+                            /> Add these lines to the
+                                client's <code>odoo.conf</code>:<br />
                                 <code>glodo_cloud_instance_id = <field
                                 name="unique_id"
                                 readonly="1"
@@ -156,6 +158,8 @@
                 <field name="name" />
                 <field name="partner_id" />
                 <field name="url" widget="url" />
+                <field name="git_repo_url" widget="url" />
+                <field name="git_branch" />
                 <field name="database_count" string="Databases" />
                 <field name="active_remote_user_count" sum="Active Users" />
                 <field
@@ -177,6 +181,8 @@
             <search>
                 <field name="name" />
                 <field name="url" />
+                <field name="git_repo_url" />
+                <field name="git_branch" />
                 <field name="unique_id" />
                 <field name="tag_ids" />
                 <filter

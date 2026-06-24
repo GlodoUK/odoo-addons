@@ -5,7 +5,7 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Technical",
     "version": "19.0.1.0.0",
-    "depends": ["base", "web", "mail"],
+    "depends": ["base", "web", "mail", "helpdesk"],
     "data": [
         "data/ir_cron_data.xml",
         "security/glodo_server_security.xml",
@@ -17,6 +17,8 @@
         "views/glodo_remote_user_views.xml",
         "views/glodo_action_log_views.xml",
         "views/menus.xml",
+        "views/res_partner.xml",
+        "views/helpdesk_ticket.xml",
     ],
     "external_dependencies": {
         "python": ["cryptography"],
