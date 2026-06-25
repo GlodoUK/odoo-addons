@@ -26,15 +26,20 @@ no preference fall back to the caller's choice.
 Automatic invoicing
 -------------------
 
-Each customer can be given an **Auto-Invoice Frequency** (daily, weekly, monthly,
-quarterly) and a **Next Auto-Invoice Date**. A daily scheduled action invoices
-the pending orders of any customer whose next date has arrived, then rolls the
-date forward.
+Each customer can be given an **Auto-Invoice Frequency** (hourly, daily, weekly,
+monthly, quarterly) and a **Next Auto-Invoice Run**. A scheduled action invoices
+the pending orders of any customer whose next run is due, then rolls the moment
+forward.
 
-* The next date advances by whole periods from the
-  previous date, so the cadence stays anchored (a customer billed monthly on the
+* The next run advances by whole periods from the
+  previous value, so the cadence stays anchored (a customer billed monthly on the
   1st stays on the 1st) and missed runs are caught up in a single jump rather
   than invoiced one period per run.
+* ``Next Auto-Invoice Run`` is a datetime, stored and compared in UTC, so sub-day
+  cadences are possible. The **hourly** cadence only fires as often as the
+  scheduled action runs - the action ships at a 1-hour interval. Coarser
+  cadences (daily and up) are unaffected by how often the action runs, because
+  each customer is gated on their own next-run moment.
 * Progress is reported through ``ir.cron._commit_progress``: each
   customer is committed as it completes, so a timed-out run resumes where it left
   off, and a failure rolls back only the customer being processed.
@@ -47,7 +52,7 @@ differ per company.
 Configuration
 -------------
 
-Set the preference, frequency and next date on the *Invoicing* tab of the
+Set the preference, frequency and next run on the *Invoicing* tab of the
 partner used as the order's invoice address. This may be a company or one of its
 child contacts - the settings are read from the invoice address itself and are
 not inherited from the commercial entity, so configure them on the partner you
