@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_sale_delivery_required_bypass" model="res.groups">
+        <field name="name">Sale Delivery Required: Bypass</field>
+        <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_manager'))]" />
+    </record>
+</odoo>

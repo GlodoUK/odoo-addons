@@ -6,6 +6,7 @@
     "depends": ["sale", "delivery"],
     "data": [
         "views/sale_order.xml",
+        "security/group.xml",
     ],
     "license": "LGPL-3",
 }
