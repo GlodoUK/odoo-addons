@@ -15,9 +15,13 @@ class SaleOrder(models.Model):
             "sale_delivery_required.group_sale_delivery_required_bypass"
         )
         for order in self:
-            if not has_bypass and not order.allow_confirm_without_delivery and (
-                not order.carrier_id
-                or not any(line.is_delivery for line in order.order_line)
+            if (
+                not has_bypass
+                and not order.allow_confirm_without_delivery
+                and (
+                    not order.carrier_id
+                    or not any(line.is_delivery for line in order.order_line)
+                )
             ):
                 raise ValidationError(
                     self.env._(
