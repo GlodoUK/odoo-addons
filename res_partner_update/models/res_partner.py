@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+
 from odoo import fields, models
 
 
@@ -16,8 +18,10 @@ class ResPartner(models.Model):
             self.partner_update_count = 0
             return
 
+        cutoff = fields.Date.today() - relativedelta(days=30)
+
         res_partner_update_data = self.env["res.partner.update"]._read_group(
-            [("partner_id", "in", self.ids)],
+            [("partner_id", "in", self.ids), ("date", ">=", cutoff)],
             ["partner_id"],
             ["__count"],
         )
@@ -34,6 +38,7 @@ class ResPartner(models.Model):
             "type": "ir.actions.act_window",
             "name": self.env._("Partner Updates"),
             "res_model": "res.partner.update",
-            "view_mode": "list,form",
+            "view_mode": "kanban,list,form",
+            "domain": [("partner_id", "=", self.id)],
             "context": {"default_partner_id": self.id},
         }
