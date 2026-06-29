@@ -120,9 +120,7 @@ class GlodoInstance(models.Model):
 
     notes = fields.Text()
 
-    is_managed = fields.Boolean(
-        string="Managed?", default="1", help="Is this instance managed by us?"
-    )
+    is_managed = fields.Boolean(string="Managed?", default="1")
 
     host_id = fields.Many2one("glodo.instance.host")
 
