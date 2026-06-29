@@ -23,7 +23,7 @@ class TestSaleDeliveryRequired(DeliveryCommon, SaleCommon):
             {
                 "name": "Test Salesperson",
                 "login": "test_salesperson_sdr@example.com",
-                "groups_id": [
+                "group_ids": [
                     (6, 0, [cls.env.ref("sales_team.group_sale_salesman").id])
                 ],
             }
