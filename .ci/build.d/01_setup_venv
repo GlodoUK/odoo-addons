@@ -25,6 +25,6 @@ uv pip install \
 uv pip install \
   checklog-odoo \
   coverage \
-  manifestoo \
+  manifestoo>=1.1 \
   pyproject-dependencies \
   whool

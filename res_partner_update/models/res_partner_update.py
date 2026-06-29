@@ -12,6 +12,7 @@ class ResPartnerUpdate(models.Model):
 
     date = fields.Date(
         default=fields.Date.context_today,
+        index=True,
     )
 
     description = fields.Html()

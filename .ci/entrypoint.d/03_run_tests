@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ADDONS=$(manifestoo --select-addons-dir src/private list --separator=, --sort=topological)
+ADDONS=$(manifestoo --select-addons-dir src/private ${MANIFESTOO_SELECT:-} list --separator=, --sort=topological)
 unbuffer odoo \
     -d ${PGDATABASE} \
     --reinit ${ADDONS} \

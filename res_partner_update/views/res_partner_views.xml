@@ -16,7 +16,7 @@
                     <field
                         name="partner_update_count"
                         widget="statinfo"
-                        string="Updates"
+                        string="Updates (30d)"
                     />
                 </button>
             </xpath>
