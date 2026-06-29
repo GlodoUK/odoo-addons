@@ -6,7 +6,7 @@
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
             <form>
-                <header>
+                <header invisible="not is_managed">
                     <button
                         name="action_sync_info"
                         string="Sync Info"
@@ -82,11 +82,15 @@
                         />
                     </div>
                     <group>
-                        <group string="Connection Details">
+                        <group string="General Details">
+                            <field name="is_managed" />
+                            <field name="host_id" />
                             <field name="partner_id" />
                             <field name="url" widget="url" />
                             <field name="git_repo_url" widget="url" />
                             <field name="git_branch" />
+                        </group>
+                        <group string="Connection Details" invisible="not is_managed">
                             <field name="unique_id" readonly="1" />
                             <field name="odoo_version" readonly="1" />
                             <field name="last_sync_date" readonly="1" />
@@ -94,6 +98,7 @@
                         <group
                             string="Configuration"
                             groups="glodo_server.group_glodo_cloud_admin"
+                            invisible="not is_managed"
                         >
                             <field name="shared_secret" widget="CopyClipboardChar" />
                             <div colspan="2" class="alert alert-info" role="alert">
@@ -114,7 +119,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Databases">
+                        <page string="Databases" invisible="not is_managed">
                             <field name="database_ids">
                                 <list string="Databases">
                                     <field name="name" />
@@ -129,7 +134,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="CLOC">
+                        <page string="CLOC" invisible="not is_managed">
                             <group>
                                 <field
                                     name="cloc_excluded_modules"
@@ -155,20 +160,24 @@
         <field name="model">glodo.instance</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" />
-                <field name="partner_id" />
-                <field name="url" widget="url" />
-                <field name="git_repo_url" widget="url" />
-                <field name="git_branch" />
-                <field name="database_count" string="Databases" />
-                <field name="active_remote_user_count" sum="Active Users" />
+                <field name="name" optional="show" />
+                <field name="partner_id" optional="hide" />
+                <field name="url" widget="url" optional="show" />
+                <field name="git_repo_url" widget="url" optional="show" />
+                <field name="git_branch" optional="hide" />
+                <field name="database_count" string="Databases" optional="hide" />
+                <field
+                    name="active_remote_user_count"
+                    sum="Active Users"
+                    optional="hide"
+                />
                 <field
                     name="inactive_remote_user_count"
                     optional="hide"
                     sum="Inactive Users"
                 />
-                <field name="odoo_version" />
-                <field name="last_sync_date" />
+                <field name="odoo_version" optional="show" />
+                <field name="last_sync_date" optional="hide" />
                 <field name="active" column_invisible="True" />
             </list>
         </field>
@@ -185,6 +194,8 @@
                 <field name="git_branch" />
                 <field name="unique_id" />
                 <field name="tag_ids" />
+                <field name="is_managed" />
+                <field name="host_id" />
                 <filter
                     string="Active"
                     name="filter_active"
@@ -194,6 +205,12 @@
                     string="Archived"
                     name="filter_archived"
                     domain="[('active', '=', False)]"
+                />
+                <separator />
+                <filter
+                    string="Managed"
+                    name="filter_managed"
+                    domain="[('is_managed', '=', True)]"
                 />
                 <group>
                     <filter
@@ -206,6 +223,11 @@
                         name="groupby_tag"
                         context="{'group_by': 'tag_ids'}"
                     />
+                    <filter
+                        string="Host"
+                        name="groupby_host_id"
+                        context="{'group_by': 'host_id'}"
+                    />
                 </group>
             </search>
         </field>
@@ -216,7 +238,9 @@
         <field name="res_model">glodo.instance</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="glodo_instance_view_search" />
-        <field name="context">{'search_default_filter_active': 1}</field>
+        <field
+            name="context"
+        >{'search_default_filter_active': 1,'search_default_filter_managed':1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new managed instance

@@ -120,6 +120,12 @@ class GlodoInstance(models.Model):
 
     notes = fields.Text()
 
+    is_managed = fields.Boolean(
+        string="Managed?", default="1", help="Is this instance managed by us?"
+    )
+
+    host_id = fields.Many2one("glodo.instance.host")
+
     def _parse_excluded_modules(self):
         self.ensure_one()
         raw = self.cloc_excluded_modules
