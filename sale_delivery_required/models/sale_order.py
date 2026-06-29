@@ -1,5 +1,5 @@
 from odoo import fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 
 
 class SaleOrder(models.Model):
@@ -10,18 +10,28 @@ class SaleOrder(models.Model):
         help="If checked, the order can be confirmed without a delivery method.",
     )
 
-    def action_confirm(self):
-        has_bypass = self.env.user.has_group(
+    def _has_delivery_bypass_group(self):
+        return self.env.user.has_group(
             "sale_delivery_required.group_sale_delivery_required_bypass"
         )
-        for order in self:
-            if (
-                not has_bypass
-                and not order.allow_confirm_without_delivery
-                and (
-                    not order.carrier_id
-                    or not any(line.is_delivery for line in order.order_line)
+
+    def write(self, vals):
+        if (
+            vals.get("allow_confirm_without_delivery")
+            and not self._has_delivery_bypass_group()
+        ):
+            raise AccessError(
+                self.env._(
+                    "You do not have permission to bypass the delivery requirement."
                 )
+            )
+        return super().write(vals)
+
+    def action_confirm(self):
+        for order in self:
+            if not order.allow_confirm_without_delivery and (
+                not order.carrier_id
+                or not any(line.is_delivery for line in order.order_line)
             ):
                 raise ValidationError(
                     self.env._(

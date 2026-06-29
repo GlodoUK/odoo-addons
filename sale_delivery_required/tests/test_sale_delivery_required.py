@@ -1,4 +1,4 @@
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import tagged
 
 from odoo.addons.delivery.tests.common import DeliveryCommon
@@ -16,6 +16,17 @@ class TestSaleDeliveryRequired(DeliveryCommon, SaleCommon):
             name="Test Delivery",
             delivery_type="fixed",
             fixed_price=5.0,
+        )
+
+        # Regular salesperson — not a sales manager, so no bypass group
+        cls.salesperson = cls.env["res.users"].create(
+            {
+                "name": "Test Salesperson",
+                "login": "test_salesperson_sdr@example.com",
+                "groups_id": [
+                    (6, 0, [cls.env.ref("sales_team.group_sale_salesman").id])
+                ],
+            }
         )
 
     def _make_order(self):
@@ -76,3 +87,10 @@ class TestSaleDeliveryRequired(DeliveryCommon, SaleCommon):
         self._add_delivery(order)
         order.action_confirm()
         self.assertEqual(order.state, "sale")
+
+    def test_non_bypass_user_cannot_set_allow_confirm_without_delivery(self):
+        order = self._make_order()
+        with self.assertRaises(AccessError):
+            order.with_user(self.salesperson).write(
+                {"allow_confirm_without_delivery": True}
+            )
