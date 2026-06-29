@@ -126,7 +126,6 @@ class GlodoInstance(models.Model):
 
     responsible_id = fields.Many2one(
         "res.users",
-        domain="[('groups_id.category_id.name', '=', 'Glodo Cloud')]",
     )
 
     last_ping_status = fields.Selection(
