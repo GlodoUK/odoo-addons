@@ -13,3 +13,7 @@ class GlodoInstanceHost(models.Model):
     name = fields.Char(
         required=True,
     )
+
+    host_properties_definition = fields.PropertiesDefinition(
+        "Host Properties",
+    )

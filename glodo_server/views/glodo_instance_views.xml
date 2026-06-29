@@ -86,6 +86,7 @@
                             <field name="is_managed" />
                             <field name="host_id" />
                             <field name="partner_id" />
+                            <field name="responsible_id" />
                             <field name="url" widget="url" />
                             <field name="git_repo_url" widget="url" />
                             <field name="git_branch" />
@@ -94,6 +95,14 @@
                             <field name="unique_id" readonly="1" />
                             <field name="odoo_version" readonly="1" />
                             <field name="last_sync_date" readonly="1" />
+                            <field
+                                name="last_ping_status"
+                                readonly="1"
+                                widget="badge"
+                                decoration-success="last_ping_status == 'ok'"
+                                decoration-danger="last_ping_status == 'failed'"
+                                decoration-warning="last_ping_status == 'unknown'"
+                            />
                         </group>
                         <group
                             string="Configuration"
@@ -141,6 +150,9 @@
                                     placeholder="e.g. connector_edi, web_cmd_search"
                                 />
                             </group>
+                        </page>
+                        <page string="Properties" invisible="not host_id">
+                            <field name="host_properties" nolabel="1" columns="2" />
                         </page>
                         <page string="Notes">
                             <field
