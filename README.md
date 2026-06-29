@@ -42,6 +42,7 @@ addon | version | maintainers | summary
 [mrp_product_conformity](mrp_product_conformity/) | 19.0.1.0.0 |  | MRP Product Conformity
 [product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
 [product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
+[purchase_moq](purchase_moq/) | 19.0.1.0.0 |  | Purchase Minimum Order Quantities
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
