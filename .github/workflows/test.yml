@@ -74,6 +74,8 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     name: test (${{ matrix.name }})
+    env:
+      ADDONS: ${{ matrix.addons }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -100,7 +102,5 @@ jobs:
           docker compose -f .ci/docker-compose.yaml build --build-arg GITHUB_TOKEN="$GITHUB_TOKEN"
 
       - name: Run CI
-        env:
-          ADDONS: ${{ matrix.addons }}
         run: |
           docker compose -f .ci/docker-compose.yaml up --quiet-pull --exit-code-from odoo

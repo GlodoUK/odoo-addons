@@ -5,8 +5,8 @@
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["sale", "delivery"],
     "data": [
-        "views/sale_order.xml",
         "security/group.xml",
+        "views/sale_order.xml",
     ],
     "license": "LGPL-3",
 }
