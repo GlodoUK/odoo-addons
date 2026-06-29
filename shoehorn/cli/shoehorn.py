@@ -23,20 +23,17 @@ class Shoehorn(Command):
         )
         subparsers = parser.add_subparsers(dest="command", required=True)
 
-        common = argparse.ArgumentParser(add_help=False)
-        common.add_argument(
-            "--shoehorn-path",
-            required=True,
-            metavar="DIR",
+        path_arg = dict(
+            metavar="PATH",
             help="Directory of shoehorn files (YYYYMMDDHHMMSS_name.{py,xml,csv,sql})."
             " The directory's basename is the migration namespace.",
         )
 
         generate_parser = subparsers.add_parser(
             "generate",
-            parents=[common],
             help="Create a new migration file and exit.",
         )
+        generate_parser.add_argument("path", **path_arg)
         generate_parser.add_argument(
             "name",
             metavar="NAME",
@@ -46,11 +43,11 @@ class Shoehorn(Command):
 
         apply_parser = subparsers.add_parser(
             "apply",
-            parents=[common],
             help="Apply pending shoehorns to the database.",
             epilog="Unrecognised arguments are passed through to Odoo's config"
             " parser (e.g. -c /etc/odoo/odoo.conf, -d mydb).",
         )
+        apply_parser.add_argument("path", **path_arg)
         apply_parser.add_argument(
             "--shoehorn-namespace",
             metavar="NAME",
@@ -68,14 +65,14 @@ class Shoehorn(Command):
 
         if args.command == "generate":
             # CLI output, not debugging
-            print(generate(args.shoehorn_path, args.name))  # pylint: disable=print-used
+            print(generate(args.path, args.name))  # pylint: disable=print-used
             return
 
         # pass anything else to odoo to parse
         odoo.tools.config.parse_config(odoo_args)
 
         if args.command == "apply":
-            migrate(args.shoehorn_path, namespace_override=args.shoehorn_namespace)
+            migrate(args.path, namespace_override=args.shoehorn_namespace)
 
             if args.neutralize:
                 input("Press Enter to continue with odoo neutralize...")
