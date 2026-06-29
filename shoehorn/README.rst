@@ -20,7 +20,7 @@ transaction.
 
 .. code-block:: sh
 
-    odoo shoehorn apply --shoehorn-path ./bootstrap -c /etc/odoo/odoo.conf
+    odoo shoehorn apply ./bootstrap -c /etc/odoo/odoo.conf
 
 The engine versions with Odoo itself: this branch targets Odoo 19.
 
@@ -79,8 +79,8 @@ and tracked independently:
 
 .. code-block:: sh
 
-    odoo shoehorn apply --shoehorn-path ./bootstrap -c /etc/odoo/odoo.conf
-    odoo shoehorn apply --shoehorn-path ./fixup_t12345 -c /etc/odoo/odoo.conf
+    odoo shoehorn apply ./bootstrap -c /etc/odoo/odoo.conf
+    odoo shoehorn apply ./fixup_t12345 -c /etc/odoo/odoo.conf
 
 The namespace can be pinned explicitly with ``--shoehorn-namespace NAME``,
 which takes precedence over the basename. Two consequences of "the basename
@@ -105,9 +105,9 @@ Generating migrations
 
 .. code-block:: sh
 
-    odoo shoehorn generate add_a_thing --shoehorn-path ./bootstrap      # .py (default)
-    odoo shoehorn generate res_partner.xml --shoehorn-path ./bootstrap  # data file
-    odoo shoehorn generate ir.model.access.csv --shoehorn-path ./bootstrap  # data file
+    odoo shoehorn generate ./bootstrap add_a_thing          # .py (default)
+    odoo shoehorn generate ./bootstrap res_partner.xml      # data file
+    odoo shoehorn generate ./bootstrap ir.model.access.csv  # data file
 
 creates e.g. ``20260604164512_add_a_thing.py`` with the conventional stub.
 
@@ -151,10 +151,9 @@ Reusable helpers for ``.py`` migrations live in ``shoehorn/tools/``:
 CLI
 ===
 
-- ``odoo shoehorn generate NAME --shoehorn-path DIR`` - create a new
-  migration (NAME may carry a ``.py``/``.xml``/``.csv``/``.sql`` extension;
-  defaults to ``.py``).
-- ``odoo shoehorn apply --shoehorn-path DIR`` - apply pending migrations.
+- ``odoo shoehorn generate DIR NAME`` - create a new migration (NAME may
+  carry a ``.py``/``.xml``/``.csv``/``.sql`` extension; defaults to ``.py``).
+- ``odoo shoehorn apply DIR`` - apply pending migrations.
   ``--shoehorn-namespace NAME`` overrides the namespace (default: DIR's
   basename). ``--neutralize`` runs ``odoo neutralize`` afterwards. Anything
   unrecognised is passed through to Odoo's config parser (``-c``, ``-d``,
