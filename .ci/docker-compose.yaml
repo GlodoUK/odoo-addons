@@ -15,9 +15,7 @@ services:
       - PGUSER=odoo
       - PGHOST=db
       - PGPASSWORD=odoo
-      # manifestoo selection flag, e.g. "--select-exclude foo,bar" or
-      # "--select-include foo". Empty = act on all private addons.
-      - MANIFESTOO_SELECT=${MANIFESTOO_SELECT:-}
+      - ADDONS=${ADDONS}
     tty: true
     volumes:
       - filestore:/var/lib/odoo:z

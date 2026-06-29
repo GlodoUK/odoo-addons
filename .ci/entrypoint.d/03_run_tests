@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-ADDONS=$(manifestoo --select-addons-dir src/private ${MANIFESTOO_SELECT:-} list --separator=, --sort=topological)
 unbuffer odoo \
     -d ${PGDATABASE} \
-    --reinit ${ADDONS} \
+    --reinit "${ADDONS}" \
     --test-enable \
     --http-interface=0.0.0.0 \
     --stop-after-init | checklog-odoo -c src/private/.checklog-odoo
