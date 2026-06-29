@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-manifestoo --select-addons-dir src/private ${MANIFESTOO_SELECT:-} check-licenses
+manifestoo --select-include "${ADDONS}" check-licenses

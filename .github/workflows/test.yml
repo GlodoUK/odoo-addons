@@ -12,7 +12,7 @@ env:
   # "Rebel" modules: addons that must be tested in isolation. Comma separated.
   # Each gets its own database/run and is excluded from the main run.
   # To add one, append its technical name to the list, e.g. "foo,bar".
-  REBEL_MODULES: ""
+  REBEL_MODULES: "sale_delivery_required"
 
 jobs:
   pre-commit:
@@ -41,26 +41,30 @@ jobs:
     outputs:
       matrix: ${{ steps.set.outputs.matrix }}
     steps:
-      - name: Build test matrix from rebel list
+      - uses: actions/checkout@v4
+      - name: Build test matrix
         id: set
         run: |
-          # Strip whitespace from the comma-separated rebel list.
           rebels="$(echo "$REBEL_MODULES" | tr -d '[:space:]')"
 
-          # The "main" run is everything except the rebels. Each rebel then
-          # gets its own run selecting only itself. Every entry carries an
-          # explicit manifestoo select flag.
-          if [ -n "$rebels" ] ; then
-              main_select="--select-exclude $rebels"
-          else
-              main_select=""
-          fi
-          include="$(jq -cn --arg s "$main_select" '[{"name":"main","select":$s}]')"
+          # Discover all addons (directories containing __manifest__.py).
+          all_addons="$(find . -maxdepth 2 -name "__manifest__.py" \
+            | xargs dirname | xargs -n1 basename | sort | tr '\n' ',' | sed 's/,$//')"
+
+          # Main run excludes rebels.
+          main_addons="$all_addons"
           for module in ${rebels//,/ } ; do
-              include="$(jq -c --arg m "$module" \
-                '. + [{"name":$m,"select":("--select-include " + $m)}]' <<<"$include")"
+              main_addons="$(echo "$main_addons" | tr ',' '\n' | grep -v "^${module}$" \
+                | tr '\n' ',' | sed 's/,$//')"
           done
 
+          include="$(jq -cn --arg a "$main_addons" '[{"name":"main","addons":$a}]')"
+          for module in ${rebels//,/ } ; do
+              include="$(jq -c --arg m "$module" '. + [{"name":$m,"addons":$m}]' <<<"$include")"
+          done
+
+          echo "Matrix:"
+          echo "$include" | jq .
           echo "matrix={\"include\":$include}" >> "$GITHUB_OUTPUT"
 
   test:
@@ -70,6 +74,8 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     name: test (${{ matrix.name }})
+    env:
+      ADDONS: ${{ matrix.addons }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -96,7 +102,5 @@ jobs:
           docker compose -f .ci/docker-compose.yaml build --build-arg GITHUB_TOKEN="$GITHUB_TOKEN"
 
       - name: Run CI
-        env:
-          MANIFESTOO_SELECT: ${{ matrix.select }}
         run: |
           docker compose -f .ci/docker-compose.yaml up --quiet-pull --exit-code-from odoo
