@@ -69,9 +69,71 @@
         </field>
     </record>
 
+    <record id="res_partner_update_view_kanban" model="ir.ui.view">
+        <field name="name">res.partner.update.kanban</field>
+        <field name="model">res.partner.update</field>
+        <field name="arch" type="xml">
+            <kanban
+                on_create="quick_create"
+                default_order="id desc"
+                class="o_res_partner_update_kanban"
+            >
+                <field name="name" />
+                <field name="date" />
+                <field name="user_id" />
+                <field name="description" />
+                <field name="partner_id" />
+                <templates>
+                    <t t-name="kanban-quick-create">
+                        <div class="p-2">
+                            <field name="name" placeholder="Title..." />
+                            <field
+                                name="description"
+                                widget="html"
+                                placeholder="What's the update?"
+                            />
+                            <div class="d-flex justify-content-end gap-1 mt-2">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-sm"
+                                >Add Update</button>
+                                <button
+                                    type="discard"
+                                    class="btn btn-secondary btn-sm"
+                                >Discard</button>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="kanban-card">
+                        <div class="d-flex flex-column gap-2 w-100">
+                            <div
+                                class="d-flex align-items-center justify-content-between"
+                            >
+                                <strong class="fs-6">
+                                    <field name="name" />
+                                </strong>
+                                <div
+                                    class="d-flex align-items-center gap-2 text-muted small"
+                                >
+                                    <field
+                                        name="user_id"
+                                        widget="many2one_avatar_user"
+                                        readonly="1"
+                                    />
+                                    <field name="date" />
+                                </div>
+                            </div>
+                            <field name="description" widget="html" readonly="1" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="res_partner_update_action" model="ir.actions.act_window">
         <field name="name">Partner Updates</field>
         <field name="res_model">res.partner.update</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 </odoo>

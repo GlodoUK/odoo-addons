@@ -10,5 +10,10 @@
         "views/res_partner_views.xml",
         "views/res_partner_update_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "res_partner_update/static/src/css/res_partner_update_kanban.scss",
+        ],
+    },
     "license": "LGPL-3",
 }
