@@ -145,6 +145,7 @@
             <search>
                 <field name="name" />
                 <field name="instance_id" />
+                <field name="installed_module_name" />
                 <field name="expiration_date" />
                 <field name="expiration_reason" />
                 <filter

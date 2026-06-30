@@ -13,6 +13,7 @@
         "wizards/glodo_remote_user_unarchive_wizard_views.xml",
         "views/glodo_instance_views.xml",
         "views/glodo_instance_tag_views.xml",
+        "views/glodo_instance_host_views.xml",
         "views/glodo_instance_database_views.xml",
         "views/glodo_remote_user_views.xml",
         "views/glodo_action_log_views.xml",

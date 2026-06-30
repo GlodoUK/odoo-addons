@@ -55,4 +55,12 @@
         parent="glodo_cloud_menu_config"
         sequence="10"
     />
+
+    <menuitem
+        id="glodo_cloud_menu_hosts"
+        name="Hosts"
+        action="glodo_instance_host_action"
+        parent="glodo_cloud_menu_config"
+        sequence="20"
+    />
 </odoo>

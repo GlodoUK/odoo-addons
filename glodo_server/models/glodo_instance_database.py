@@ -103,6 +103,12 @@ class GlodoInstanceDatabase(models.Model):
         readonly=True,
     )
 
+    installed_module_name = fields.Char(
+        string="Installed Module",
+        store=False,
+        search="_search_installed_module_name",
+    )
+
     installed_modules_html = fields.Html(
         string="Installed Modules",
         readonly=True,
@@ -208,6 +214,30 @@ class GlodoInstanceDatabase(models.Model):
                 ]
             )
         return Domain.OR(domains)
+
+    def _search_installed_module_name(self, operator, value):
+        if operator not in ("ilike", "not ilike", "=", "!="):
+            return NotImplemented
+        negate = operator in ("not ilike", "!=")
+        sql_op = "ILIKE" if operator in ("ilike", "not ilike") else "="
+        sql_val = f"%{value}%" if operator == "ilike" else value
+        self.env.cr.execute(
+            """
+            SELECT id
+            FROM glodo_instance_database
+            WHERE installed_modules_json IS NOT NULL
+            AND EXISTS (
+                SELECT 1
+                FROM jsonb_array_elements(installed_modules_json::jsonb) AS elem
+                WHERE elem->>'name' """
+            + sql_op
+            + """ %s
+            )
+            """,
+            [sql_val],
+        )
+        matched_ids = [r[0] for r in self.env.cr.fetchall()]
+        return [("id", "not in" if negate else "in", matched_ids)]
 
     @api.model
     def _cloc_vals_from_payload(self, cloc_payload):
