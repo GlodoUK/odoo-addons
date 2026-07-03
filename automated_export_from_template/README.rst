@@ -12,7 +12,7 @@ your needs, then activate it.
 Here is an example ir.cron record to use as a template for creating your own scheduled
 action.
 
-```
+``
 <record id="cron_example_weekly_export" model="ir.cron">
     <field name="name">Example: Weekly Invoice Export</field>
     <field name="model_id" ref="account.model_account_move" />
@@ -37,4 +37,4 @@ model._cron_export_and_email(
     <field name="interval_type">weeks</field>
     <field name="active" eval="False" />
 </record>
-```
+``
