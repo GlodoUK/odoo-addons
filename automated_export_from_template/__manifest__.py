@@ -6,8 +6,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["mail"],
-    "data": [
-        "data/ir_cron.xml",
-    ],
+    "data": [],
+    "demo": [],
     "license": "Other proprietary",
 }
