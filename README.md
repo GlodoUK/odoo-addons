@@ -17,6 +17,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
+[automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
 [concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
 [cpq_banding](cpq_banding/) | 19.0.1.0.0 |  | Banding/Fabric Custom Values
