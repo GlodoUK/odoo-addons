@@ -1,9 +1,9 @@
 from odoo_test_helper import FakeModelLoader
 
 from odoo.exceptions import UserError
-from odoo.tests import TransactionCase
+from odoo.tests import TransactionCase, tagged
 
-
+@tagged("-at_install", "post_install")
 class TestEnsureValid(TransactionCase):
     @classmethod
     def setUpClass(cls):
