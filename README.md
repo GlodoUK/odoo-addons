@@ -19,6 +19,7 @@ addon | version | maintainers | summary
 [account_invoice_component_events](account_invoice_component_events/) | 18.0.1.0.0 |  | Account Invoice Component Events
 [auth_oauth_restrict_website](auth_oauth_restrict_website/) | 18.0.1.0.0 |  | Restrict certain OAuth providers from display
 [automate_customer_lead_time](automate_customer_lead_time/) | 18.0.1.0.0 |  | Automatically modify lead times on sales for vendor lead time
+[automated_export_from_template](automated_export_from_template/) | 18.0.1.0.0 |  | Scheduled export of records using a saved export template
 [brands](brands/) | 18.0.1.0.0 |  | Brands
 [brands_sale_stock](brands_sale_stock/) | 18.0.1.0.0 |  | Brands Sale Stock
 [concurrency_warning](concurrency_warning/) | 18.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
