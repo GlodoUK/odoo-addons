@@ -57,7 +57,7 @@ class BaseModel(models.AbstractModel):
                 model = self.env[field_data["relation"]]
         return "/".join(labels), field_type
 
-    def _export_from_template(self, export_template, format="xlsx"):
+    def _export_from_template(self, export_template, file_format="xlsx"):
         field_names = [line.name for line in export_template.export_fields]
 
         export_data = self.export_data(field_names).get("datas", [])
@@ -69,7 +69,7 @@ class BaseModel(models.AbstractModel):
             fields.append({"name": field_name, "label": label, "type": field_type})
             headers.append(label)
 
-        if format == "csv":
+        if file_format == "csv":
             return self._generate_csv_export(headers, export_data)
         else:
             return self._generate_xlsx_export(fields, headers, export_data)
@@ -95,13 +95,18 @@ class BaseModel(models.AbstractModel):
         return xlsx_data
 
     def _cron_export_and_email(
-        self, export_template, email_to, format="xlsx", domain=None, email_subject=None
+        self,
+        export_template,
+        email_to,
+        file_format="xlsx",
+        domain=None,
+        email_subject=None,
     ):
         export_template_id = self._get_export_template(export_template)
         export_name = export_template_id.name
-        format = format.lower()
-        if format not in ["xlsx", "csv"]:
-            format = "xlsx"
+        file_format = file_format.lower()
+        if file_format not in ["xlsx", "csv"]:
+            file_format = "xlsx"
 
         if not domain:
             domain = []
@@ -115,19 +120,22 @@ class BaseModel(models.AbstractModel):
             )
             return
 
-        export_data = records._export_from_template(export_template_id, format=format)
+        export_data = records._export_from_template(
+            export_template_id, file_format=file_format
+        )
 
-        extension = "csv" if format == "csv" else "xlsx"
+        extension = "csv" if file_format == "csv" else "xlsx"
+        mimetype = (
+            "text/csv"
+            if extension == "csv"
+            else "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
         attachment = self.env["ir.attachment"].create(
             {
                 "name": f"{export_name}.{extension}",
                 "type": "binary",
                 "datas": base64.b64encode(export_data),
-                "mimetype": (
-                    "text/csv"
-                    if extension == "csv"
-                    else "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                ),
+                "mimetype": mimetype,
             }
         )
 
