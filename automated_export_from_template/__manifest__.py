@@ -4,7 +4,7 @@
     "summary": "Scheduled export of records using a saved export template",
     "category": "Tools",
     "author": "Glo Networks",
-    "website": "http://glo.systems/",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "depends": ["mail"],
     "data": [
         "data/ir_cron.xml",

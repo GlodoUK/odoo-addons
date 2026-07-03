@@ -1,8 +1,8 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo noupdate="1">
     <record id="cron_example_weekly_export" model="ir.cron">
         <field name="name">Example: Weekly Invoice Export</field>
-        <field name="model_id" ref="account.model_account_move"/>
+        <field name="model_id" ref="account.model_account_move" />
         <field name="state">code</field>
         <field name="code">
 # Example weekly invoice export cron job.
@@ -22,6 +22,6 @@ model._cron_export_and_email(
 )</field>
         <field name="interval_number">1</field>
         <field name="interval_type">weeks</field>
-        <field name="active" eval="False"/>
+        <field name="active" eval="False" />
     </record>
 </odoo>
