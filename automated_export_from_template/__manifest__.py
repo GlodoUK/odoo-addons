@@ -1,6 +1,6 @@
 {
     "name": "Automated Export From Template",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "summary": "Scheduled export of records using a saved export template",
     "category": "Tools",
     "author": "Glo Networks",
