@@ -24,8 +24,8 @@ action.
 
     domain = [
         ("payment_state", "in", ["paid", "in_payment"]),
-        ("invoice_date", ">=", datetime.date.today() - datetime.timedelta(weeks=1)),
-        ("invoice_date", "<=", datetime.date.today()),
+        ("invoice_date", "&gt;=", datetime.date.today() - datetime.timedelta(weeks=1)),
+        ("invoice_date", "&lt;=", datetime.date.today()),
     ]
     model._cron_export_and_email(
         export_template="Weekly Invoice Export", # Required. Can be the name or database ID of the export template
