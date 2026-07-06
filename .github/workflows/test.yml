@@ -8,14 +8,20 @@ on:
     branches:
       - "19.0"
 
+env:
+  # "Rebel" modules: addons that must be tested in isolation. Comma separated.
+  # Each gets its own database/run and is excluded from the main run.
+  # To add one, append its technical name to the list, e.g. "foo,bar".
+  REBEL_MODULES: "sale_delivery_required"
+
 jobs:
   pre-commit:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.14"
       - uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files --show-diff-on-failure --color=always
@@ -30,10 +36,48 @@ jobs:
               exit 1
           fi
 
-  test:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - name: Build test matrix
+        id: set
+        run: |
+          rebels="$(echo "$REBEL_MODULES" | tr -d '[:space:]')"
+
+          # Discover all addons (directories containing __manifest__.py).
+          all_addons="$(find . -maxdepth 2 -name "__manifest__.py" \
+            | xargs dirname | xargs -n1 basename | sort | tr '\n' ',' | sed 's/,$//')"
+
+          # Main run excludes rebels.
+          main_addons="$all_addons"
+          for module in ${rebels//,/ } ; do
+              main_addons="$(echo "$main_addons" | tr ',' '\n' | grep -v "^${module}$" \
+                | tr '\n' ',' | sed 's/,$//')"
+          done
+
+          include="$(jq -cn --arg a "$main_addons" '[{"name":"main","addons":$a}]')"
+          for module in ${rebels//,/ } ; do
+              include="$(jq -c --arg m "$module" '. + [{"name":$m,"addons":$m}]' <<<"$include")"
+          done
+
+          echo "Matrix:"
+          echo "$include" | jq .
+          echo "matrix={\"include\":$include}" >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    name: test (${{ matrix.name }})
+    env:
+      ADDONS: ${{ matrix.addons }}
+    steps:
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 

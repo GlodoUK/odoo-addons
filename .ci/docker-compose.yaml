@@ -15,6 +15,7 @@ services:
       - PGUSER=odoo
       - PGHOST=db
       - PGPASSWORD=odoo
+      - ADDONS=${ADDONS}
     tty: true
     volumes:
       - filestore:/var/lib/odoo:z

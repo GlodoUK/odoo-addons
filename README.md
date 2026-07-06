@@ -16,6 +16,8 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
+[automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
 [concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
 [cpq_banding](cpq_banding/) | 19.0.1.0.0 |  | Banding/Fabric Custom Values
@@ -42,11 +44,13 @@ addon | version | maintainers | summary
 [mrp_product_conformity](mrp_product_conformity/) | 19.0.1.0.0 |  | MRP Product Conformity
 [product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
 [product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
+[purchase_moq](purchase_moq/) | 19.0.1.0.0 |  | Purchase Minimum Order Quantities
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
-[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.0.0 |  | Invoicing policy
+[sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
+[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.1.0 |  | Invoicing policy
 [sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
 [sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
@@ -57,6 +61,7 @@ addon | version | maintainers | summary
 [stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [stock_picking_mandatory_packing](stock_picking_mandatory_packing/) | 19.0.1.0.0 |  | Ensure that a picking type must have all items packaged
 [stock_picking_merge](stock_picking_merge/) | 19.0.1.0.0 |  | Adds the ability to merge stock.picking records
+[stock_reception_steps_one_point_five](stock_reception_steps_one_point_five/) | 19.0.1.0.0 |  | Receive into a landing area (Input) and store to Stock manually
 [stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
 [website_category_heirarchy_search](website_category_heirarchy_search/) | 19.0.1.0.0 |  | Website snippet: cascading dropdowns to search products by category hierarchy
