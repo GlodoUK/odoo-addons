@@ -16,7 +16,7 @@
                         confirm="This will log you into the remote instance as this user. Continue?"
                     />
                     <button
-                        name="action_archive_user"
+                        name="action_toggle_archive"
                         string="Archive User"
                         type="object"
                         class="btn-warning"
@@ -25,7 +25,7 @@
                         confirm="This will archive the user on the remote instance. Continue?"
                     />
                     <button
-                        name="action_open_unarchive_wizard"
+                        name="action_toggle_archive"
                         string="Unarchive User"
                         type="object"
                         class="btn-secondary"
