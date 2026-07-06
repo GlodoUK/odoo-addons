@@ -207,13 +207,31 @@ class GlodoRemoteUser(models.Model):
                 },
             )
         except Exception as e:
-            _logger.error(
-                "Failed to unarchive user %s on %s/%s: %s",
-                self.login,
-                instance.name,
-                database.name,
-                e,
+            self.env["glodo.action.log"].create(
+                {
+                    "instance_id": instance.id,
+                    "remote_user_id": self.id,
+                    "admin_user_id": self.env.user.id,
+                    "action_type": "unarchive",
+                    "result": "failed",
+                    "notes": str(e),
+                }
             )
+
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": self.env._("Unarchive Failed"),
+                    "message": self.env._(
+                        "Failed to unarchive user %(user)s on %(db)s.",
+                        user=self.login,
+                        db=database.name,
+                    ),
+                    "type": "danger",
+                    "sticky": False,
+                },
+            }
 
         self.env["glodo.action.log"].create(
             {

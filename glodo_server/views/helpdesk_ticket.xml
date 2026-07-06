@@ -13,6 +13,7 @@
                     class="oe_stat_button"
                     icon="fa-server"
                     invisible="not glodo_instance_ids"
+                    groups="glodo_server.group_glodo_cloud_user"
                 >
                     <span class="o_stat_text">View Instance</span>
                 </button>

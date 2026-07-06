@@ -68,7 +68,7 @@
                                         groups="glodo_server.group_glodo_cloud_manager"
                                     />
                                     <button
-                                        name="action_archive_user"
+                                        name="action_toggle_archive"
                                         string="Archive"
                                         type="object"
                                         class="btn-link btn-warning"
@@ -77,7 +77,7 @@
                                         groups="glodo_server.group_glodo_cloud_manager"
                                     />
                                     <button
-                                        name="action_unarchive_user"
+                                        name="action_toggle_archive"
                                         string="Unarchive"
                                         type="object"
                                         class="btn-link btn-warning"
@@ -145,6 +145,7 @@
             <search>
                 <field name="name" />
                 <field name="instance_id" />
+                <field name="installed_module_name" />
                 <field name="expiration_date" />
                 <field name="expiration_reason" />
                 <filter

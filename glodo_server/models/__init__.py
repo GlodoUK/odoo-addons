@@ -5,3 +5,4 @@ from . import glodo_instance_tag
 from . import glodo_remote_user
 from . import res_partner
 from . import helpdesk_ticket
+from . import glodo_instance_host

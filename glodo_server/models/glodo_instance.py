@@ -24,7 +24,7 @@ _logger = logging.getLogger(__name__)
 class GlodoInstance(models.Model):
     _name = "glodo.instance"
     _description = "Glodo Cloud Managed Instance"
-    _inherit = ["mail.thread"]
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "name"
 
     name = fields.Char(
@@ -119,6 +119,25 @@ class GlodoInstance(models.Model):
     )
 
     notes = fields.Text()
+
+    is_managed = fields.Boolean(string="Managed?", default="1")
+
+    host_id = fields.Many2one("glodo.instance.host")
+
+    responsible_id = fields.Many2one(
+        "res.users",
+    )
+
+    last_ping_status = fields.Selection(
+        [("ok", "OK"), ("failed", "Failed"), ("unknown", "Unknown")],
+        default="unknown",
+        readonly=True,
+    )
+
+    host_properties = fields.Properties(
+        definition="host_id.host_properties_definition",
+        copy=True,
+    )
 
     def _parse_excluded_modules(self):
         self.ensure_one()
@@ -295,6 +314,46 @@ class GlodoInstance(models.Model):
                     name=self.name,
                 )
             ) from e
+
+    @api.model
+    def _cron_check_instances(self):
+        instances = self.search(
+            [
+                ("active", "=", True),
+                ("is_managed", "=", True),
+                ("url", "!=", False),
+                ("responsible_id", "!=", False),
+            ]
+        )
+        activity_type = self.env.ref("mail.mail_activity_data_todo")
+        for instance in instances:
+            try:
+                instance._make_encrypted_request(
+                    "/glodo_cloud/ping", {}, method="GET", timeout=10
+                )
+                if instance.last_ping_status == "failed":
+                    instance.activity_ids.filtered(
+                        lambda a, inst=instance: (
+                            a.activity_type_id == activity_type
+                            and a.user_id == inst.responsible_id
+                        )
+                    ).action_feedback(feedback=self.env._("Instance recovered."))
+                instance.last_ping_status = "ok"
+            except Exception:
+                _logger.warning(
+                    "Glodo Cloud: health check failed for %s", instance.name
+                )
+                if instance.last_ping_status != "failed":
+                    instance.activity_schedule(
+                        "mail.mail_activity_data_todo",
+                        user_id=instance.responsible_id.id,
+                        note=self.env._(
+                            "Health check failed for instance <b>%(name)s</b>."
+                            " Please investigate connectivity.",
+                            name=instance.name,
+                        ),
+                    )
+                instance.last_ping_status = "failed"
 
     def action_sync_info(self):
         """Fetch and sync instance and database info from the remote."""
