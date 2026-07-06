@@ -84,27 +84,7 @@
                 <field name="description" />
                 <field name="partner_id" />
                 <templates>
-                    <t t-name="kanban-quick-create">
-                        <div class="p-2">
-                            <field name="name" placeholder="Title..." />
-                            <field
-                                name="description"
-                                widget="html"
-                                placeholder="What's the update?"
-                            />
-                            <div class="d-flex justify-content-end gap-1 mt-2">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary btn-sm"
-                                >Add Update</button>
-                                <button
-                                    type="discard"
-                                    class="btn btn-secondary btn-sm"
-                                >Discard</button>
-                            </div>
-                        </div>
-                    </t>
-                    <t t-name="kanban-card">
+                    <t t-name="card">
                         <div class="d-flex flex-column gap-2 w-100">
                             <div
                                 class="d-flex align-items-center justify-content-between"
