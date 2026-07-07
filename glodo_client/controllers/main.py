@@ -338,7 +338,7 @@ class GlodoCloudClient(Controller):
                     raise NotFound(f"User {user_id} not found")
 
                 # Don't allow archiving admin
-                if user_id in (1, 2):
+                if user_id == 1:
                     raise Forbidden("Cannot modify system/admin users")
 
                 new_active = action == "unarchive"
