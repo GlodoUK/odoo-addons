@@ -30,6 +30,7 @@
                             invisible="fsc_classification not in ('fsc_mix', 'fsc_recycled')"
                         />
                     </div>
+                    <field name="fsc_type_id" />
                     <field name="fsc_license_code" />
                     <field name="fsc_label" invisible="not fsc_classification" />
                 </group>

@@ -8,6 +8,7 @@ class ProductTemplate(models.Model):
     # Flag that gates the FSC detail page: lets non-FSC products hide the tab
     # entirely and avoids half-states (classification set on a non-FSC product).
     fsc_certified = fields.Boolean(string="FSC Certified", index=True)
+    fsc_type_id = fields.Many2one("product_fsc.type", string="FSC Type")
     # FSC on-product labels are a fixed standard with three consumer-facing
     # claims (https://fsc.org/en/label), so a Selection is the right shape here
     # rather than a free-form model.
@@ -17,7 +18,7 @@ class ProductTemplate(models.Model):
             ("fsc_mix", "FSC Mix"),
             ("fsc_recycled", "FSC Recycled"),
         ],
-        string="FSC Classification",
+        string="FSC Claim",
         index=True,
         help=(
             "FSC on-product label claim:\n"

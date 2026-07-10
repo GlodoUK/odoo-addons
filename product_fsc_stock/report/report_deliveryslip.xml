@@ -4,7 +4,7 @@
         id="report_delivery_document_fsc"
         inherit_id="stock.report_delivery_document"
     >
-        <xpath expr="//div[@class='page']" position="inside">
+        <xpath expr="//div[hasclass('page')]" position="inside">
             <t t-call="product_fsc.fsc_claim_block">
                 <t t-set="fsc_lines" t-value="o.move_ids.filtered('fsc_label')" />
                 <t t-set="company" t-value="o.company_id" />

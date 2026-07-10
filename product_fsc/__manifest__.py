@@ -7,6 +7,8 @@
     "version": "19.0.1.0.0",
     "depends": ["product"],
     "data": [
+        "security/ir.model.access.csv",
+        "data/product_fsc.type.csv",
         "report/fsc_report_templates.xml",
         "views/product_template.xml",
         "views/res_partner.xml",
