@@ -1,7 +1,7 @@
 Automated Export
 ================
 
-Scheduled export of a model's records to XLSX/CSV using a saved
+Scheduled export of a model's records to CSV using a saved
 ("Favorites > Save current export") export template, emailed as an
 attachment.
 
@@ -30,7 +30,6 @@ action.
     model._cron_export_and_email(
         export_template="Weekly Invoice Export", # Required. Can be the name or database ID of the export template
         email_to="text@example.com", # Required
-        file_format="xlsx", # Optional. Can be "xlsx" or "csv". Default is "xlsx"
         domain=domain, # Not required, [] (All records of model) by default
         email_subject="Weekly Invoice Export", # If not defined, the export template name will be used
     )</field>
