@@ -6,8 +6,6 @@ import logging
 from odoo import models
 from odoo.exceptions import UserError
 
-from odoo.addons.web.controllers.export import ExportXlsxWriter
-
 _logger = logging.getLogger(__name__)
 
 
@@ -57,22 +55,17 @@ class BaseModel(models.AbstractModel):
                 model = self.env[field_data["relation"]]
         return "/".join(labels), field_type
 
-    def _export_from_template(self, export_template, file_format="xlsx"):
+    def _export_from_template(self, export_template):
         field_names = [line.name for line in export_template.export_fields]
 
         export_data = self.export_data(field_names).get("datas", [])
 
-        fields = []
         headers = []
         for field_name in field_names:
-            label, field_type = self._get_export_field_info(field_name)
-            fields.append({"name": field_name, "label": label, "type": field_type})
+            label, _field_type = self._get_export_field_info(field_name)
             headers.append(label)
 
-        if file_format == "csv":
-            return self._generate_csv_export(headers, export_data)
-        else:
-            return self._generate_xlsx_export(fields, headers, export_data)
+        return self._generate_csv_export(headers, export_data)
 
     def _generate_csv_export(self, headers, export_data):
         output = io.StringIO()
@@ -82,31 +75,15 @@ class BaseModel(models.AbstractModel):
             writer.writerow(row)
         return output.getvalue().encode("utf-8")
 
-    def _generate_xlsx_export(self, fields, headers, export_data):
-        xlsx_writer = ExportXlsxWriter(fields, headers, len(export_data))
-        xlsx_writer.write_header()
-        for row_index, row in enumerate(export_data):
-            for col_index, cell_value in enumerate(row):
-                xlsx_writer.write_cell(row_index + 1, col_index, cell_value)
-        xlsx_writer.close()
-        xlsx_data = xlsx_writer.value
-        if not isinstance(xlsx_data, bytes):
-            raise UserError(self.env._("Failed to generate the XLSX export file."))
-        return xlsx_data
-
     def _cron_export_and_email(
         self,
         export_template,
         email_to,
-        file_format="xlsx",
         domain=None,
         email_subject=None,
     ):
         export_template_id = self._get_export_template(export_template)
         export_name = export_template_id.name
-        file_format = file_format.lower()
-        if file_format not in ["xlsx", "csv"]:
-            file_format = "xlsx"
 
         if not domain:
             domain = []
@@ -120,22 +97,14 @@ class BaseModel(models.AbstractModel):
             )
             return
 
-        export_data = records._export_from_template(
-            export_template_id, file_format=file_format
-        )
+        export_data = records._export_from_template(export_template_id)
 
-        extension = "csv" if file_format == "csv" else "xlsx"
-        mimetype = (
-            "text/csv"
-            if extension == "csv"
-            else "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
         attachment = self.env["ir.attachment"].create(
             {
-                "name": f"{export_name}.{extension}",
+                "name": f"{export_name}.csv",
                 "type": "binary",
                 "datas": base64.b64encode(export_data),
-                "mimetype": mimetype,
+                "mimetype": "text/csv",
             }
         )
 
