@@ -47,6 +47,7 @@ addon | version | maintainers | summary
 [product_fsc](product_fsc/) | 19.0.1.0.0 |  | FSC certification classification for products
 [product_fsc_sale](product_fsc_sale/) | 19.0.1.0.0 |  | FSC claim on sale orders and invoices
 [product_fsc_stock](product_fsc_stock/) | 19.0.1.0.0 |  | FSC claim on delivery documents
+[project_task_category](project_task_category/) | 19.0.1.0.0 |  | Project Task Category
 [purchase_moq](purchase_moq/) | 19.0.1.0.0 |  | Purchase Minimum Order Quantities
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
