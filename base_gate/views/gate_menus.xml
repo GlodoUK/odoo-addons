@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem
+        id="menu_gate_root"
+        name="Gates"
+        sequence="95"
+        groups="base_gate.group_gate_manager"
+    />
+    <menuitem
+        id="menu_gate_holds"
+        name="Holds"
+        parent="menu_gate_root"
+        action="gate_hold_action"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_gate_config"
+        name="Configuration"
+        parent="menu_gate_root"
+        sequence="90"
+    />
+    <menuitem
+        id="menu_gate_rules"
+        name="Rules"
+        parent="menu_gate_config"
+        action="gate_rule_action"
+        sequence="10"
+    />
+</odoo>

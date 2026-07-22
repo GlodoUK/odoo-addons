@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gate_rule_user,gate.rule user read,model_gate_rule,base.group_user,1,0,0,0
+access_gate_rule_manager,gate.rule manager,model_gate_rule,base_gate.group_gate_manager,1,1,1,1
+access_gate_hold_user,gate.hold user read,model_gate_hold,base.group_user,1,0,0,0
+access_gate_hold_manager,gate.hold manager,model_gate_hold,base_gate.group_gate_manager,1,1,1,1
+access_gate_clearance_user,gate.clearance user,model_gate_clearance,base.group_user,1,0,1,0
+access_gate_clearance_manager,gate.clearance manager,model_gate_clearance,base_gate.group_gate_manager,1,1,1,1

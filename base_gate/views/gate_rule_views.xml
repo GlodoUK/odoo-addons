@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="gate_rule_view_tree" model="ir.ui.view">
+        <field name="model">gate.rule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="model_id" />
+                <field name="trigger" />
+                <field name="condition" />
+                <field name="action" />
+                <field name="dismiss_group_id" />
+                <field name="min_dismissals" />
+                <field name="active" column_invisible="1" />
+            </list>
+        </field>
+    </record>
+
+    <record id="gate_rule_view_form" model="ir.ui.view">
+        <field name="model">gate.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1><field name="name" placeholder="e.g. Over credit limit" /></h1>
+                    </div>
+                    <group>
+                        <group string="Applies to">
+                            <field name="model_id" options="{'no_create': True}" />
+                            <field name="model_name" invisible="1" />
+                            <field name="trigger" />
+                            <field
+                                name="record_domain"
+                                widget="domain"
+                                options="{'model': 'model_name', 'foldable': True}"
+                            />
+                            <field name="sequence" string="Tier" />
+                            <field name="active" invisible="1" />
+                        </group>
+                        <group string="Trips when">
+                            <field name="condition" />
+                            <field
+                                name="code"
+                                widget="code"
+                                options="{'mode': 'python'}"
+                                invisible="condition != 'code'"
+                            />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Consequence">
+                            <field name="action" />
+                        </group>
+                        <group string="Cleared by">
+                            <field name="dismiss_group_id" />
+                            <field name="min_dismissals" />
+                            <field name="allow_self" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="gate_rule_view_search" model="ir.ui.view">
+        <field name="model">gate.rule</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="model_id" />
+                <field name="dismiss_group_id" />
+                <filter
+                    name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_model"
+                        string="Model"
+                        context="{'group_by': 'model_id'}"
+                    />
+                    <filter
+                        name="group_action"
+                        string="Consequence"
+                        context="{'group_by': 'action'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="gate_rule_action" model="ir.actions.act_window">
+        <field name="name">Gate Rules</field>
+        <field name="res_model">gate.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

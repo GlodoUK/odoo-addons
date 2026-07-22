@@ -26,5 +26,6 @@ uv pip install \
   checklog-odoo \
   coverage \
   manifestoo>=1.1 \
+  odoo_test_helper \
   pyproject-dependencies \
   whool

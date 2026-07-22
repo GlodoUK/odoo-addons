@@ -1,0 +1,4 @@
+# Test-only Python dependencies (not required at runtime).
+# Installed in CI via .ci/build.d/01_setup_venv; install locally with:
+#   pip install -r test-requirements.txt
+odoo-test-helper
