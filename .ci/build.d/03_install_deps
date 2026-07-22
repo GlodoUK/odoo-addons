@@ -13,3 +13,9 @@ PY_DEPS=$(pyproject-dependencies \
 if [ -n "${PY_DEPS}" ]; then
   uv pip install ${PY_DEPS}
 fi
+
+# Test-only Python dependencies, kept out of module external_dependencies so
+# modules stay installable without them at runtime.
+if [ -f src/private/test-requirements.txt ]; then
+  uv pip install -r src/private/test-requirements.txt
+fi
