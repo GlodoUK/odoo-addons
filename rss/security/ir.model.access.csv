@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rss_feed_user,rss.feed user,model_rss_feed,base.group_user,1,1,1,1
+access_rss_feed_filter_user,rss.feed.filter user,model_rss_feed_filter,base.group_user,1,1,1,1
+access_rss_item_user,rss.item user,model_rss_item,base.group_user,1,1,1,1
