@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [cpq_mrp](cpq_mrp/) | 19.0.1.0.0 |  | Glue module between CPQ and MRP
 [cpq_sale](cpq_sale/) | 19.0.1.0.0 |  | Glue module between CPQ and Sale
 [cpq_sale_mrp](cpq_sale_mrp/) | 19.0.1.0.0 |  | Glue module for sale_mrp and cpq_mrp
+[credit_control](credit_control/) | 19.0.1.0.0 |  | Credit Control Policies
 [delivery_skip_send_to_shipper](delivery_skip_send_to_shipper/) | 19.0.1.0.0 |  | Utility module to skip the send_to_shipper call
 [glodo_client](glodo_client/) | 19.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
 [glodo_server](glodo_server/) | 19.0.1.0.0 |  | Central management server for remote Odoo instances
@@ -60,6 +61,7 @@ addon | version | maintainers | summary
 [sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
 [sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
+[shoehorn](shoehorn/) | 19.0.1.0.0 |  | Repeatedly and safely bootstrap Odoo databases (odoo shoehorn)
 [stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
 [stock_picking_archive](stock_picking_archive/) | 19.0.1.0.0 |  | Allow stock.picking records to be archived
 [stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
