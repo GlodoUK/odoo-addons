@@ -285,7 +285,7 @@
         id="menu_rss_root"
         name="Feed Reader"
         sequence="55"
-        web_icon="pipeline_rss,static/description/icon.svg"
+        web_icon="rss,static/description/icon.svg"
     />
     <menuitem
         id="menu_rss_items"

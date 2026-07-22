@@ -8,13 +8,13 @@ from odoo import api, fields, models
 from ..steps.poll import parse_feed
 
 _TIMEOUT = 30
-_USER_AGENT = "odoo-pipeline-rss/1.0"
+_USER_AGENT = "odoo-rss/1.0"
 
 
 class RssFeed(models.Model):
     _name = "rss.feed"
     _description = "RSS Feed"
-    _inherit = ["pipeline.mixin", "mail.thread"]
+    _inherit = ["mail.thread"]
     _order = "name"
 
     name = fields.Char(required=True, tracking=True)
@@ -45,19 +45,16 @@ class RssFeed(models.Model):
 
     def _poll(self):
         self.ensure_one()
-        pipeline = self.pipeline()
-        return pipeline.path(pipeline._download(), pipeline._store())
+        return self._store(self._download())
 
     def action_poll(self):
         for feed in self:
-            feed._poll().run()
+            feed._poll()
         return True
 
     def action_view_items(self):
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id(
-            "pipeline_rss.rss_item_action"
-        )
+        action = self.env["ir.actions.actions"]._for_xml_id("rss.rss_item_action")
         action["domain"] = [("feed_id", "=", self.id)]
         action["context"] = {"default_feed_id": self.id}
         return action
@@ -65,7 +62,7 @@ class RssFeed(models.Model):
     @api.model
     def _cron_poll(self):
         for feed in self.search([("active", "=", True)]):
-            feed._poll().run()
+            feed._poll()
 
     @api.autovacuum
     def _gc_archived_items(self):
