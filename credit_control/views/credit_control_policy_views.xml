@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="credit_control_policy_form" model="ir.ui.view">
+        <field name="name">credit_control_policy_form</field>
+        <field name="model">credit.control.policy</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            name="action_open_partners"
+                            type="object"
+                            icon="fa-user"
+                        >
+                            <field
+                                name="partner_count"
+                                widget="statinfo"
+                                string="Partners"
+                            />
+                        </button>
+                    </div>
+                    <label for="name" string="Display Name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" default_focus="1" placeholder="Name" />
+                    </h1>
+                    <group>
+                        <field name="action" />
+                        <field name="active" widget="boolean_toggle" />
+                        <field name="default" widget="boolean_toggle" />
+                    </group>
+                    <notebook>
+                        <page string="Rules">
+                            <field name="rule_ids">
+                                <list decoration-muted="not active">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="classification_id" />
+                                    <field name="name" />
+                                    <field name="rule" />
+                                    <field name="event" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="credit_control_policy_list" model="ir.ui.view">
+        <field name="name">credit_control_policy_list</field>
+        <field name="model">credit.control.policy</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="default" />
+                <field name="rule_count" />
+                <field name="partner_count" />
+            </list>
+        </field>
+    </record>
+
+    <record id="credit_control_policy_action_window" model="ir.actions.act_window">
+        <field name="name">Credit Control Policies</field>
+        <field name="res_model">credit.control.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_root" name="wwuk_credit_control" />
+
+    <menuitem
+        id="credit_control_policy_account_menu"
+        name="Credit Control Policies"
+        action="credit_control_policy_action_window"
+        parent="account.account_management_menu"
+    />
+
+    <menuitem
+        id="credit_control_policy_sale_menu"
+        name="Credit Control Policies"
+        action="credit_control_policy_action_window"
+        parent="sale.menu_sale_config"
+    />
+</odoo>
