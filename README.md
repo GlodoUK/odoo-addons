@@ -24,7 +24,6 @@ addon | version | maintainers | summary
 [cpq_mrp](cpq_mrp/) | 19.0.1.0.0 |  | Glue module between CPQ and MRP
 [cpq_sale](cpq_sale/) | 19.0.1.0.0 |  | Glue module between CPQ and Sale
 [cpq_sale_mrp](cpq_sale_mrp/) | 19.0.1.0.0 |  | Glue module for sale_mrp and cpq_mrp
-[credit_control](credit_control/) | 19.0.1.0.0 |  | Credit Control Policies
 [delivery_skip_send_to_shipper](delivery_skip_send_to_shipper/) | 19.0.1.0.0 |  | Utility module to skip the send_to_shipper call
 [glodo_client](glodo_client/) | 19.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
 [glodo_server](glodo_server/) | 19.0.1.0.0 |  | Central management server for remote Odoo instances
