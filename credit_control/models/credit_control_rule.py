@@ -8,20 +8,20 @@ class CreditControlRule(models.Model):
     _description = "Credit Control Rule"
     _order = "sequence asc"
 
-    @api.depends("classification_id", "policy_id")
+    @api.depends("event", "rule", "policy_id.name", "active")
     def _compute_display_name(self):
         for rule in self:
+            event_name = dict(self._fields["event"].selection).get(rule.event)
+            rule_name = dict(self._fields["rule"].selection).get(rule.rule)
+            rule_inactive = ""
+            if not rule.active:
+                rule_inactive = " (" + self.env._("Inactive") + ")"
             rule.display_name = (
-                f"{rule.policy_id.name} > {rule.classification_id.name}/{rule.name}"
+                f"{rule.policy_id.name}: {event_name} > {rule_name}{rule_inactive}"
             )
 
     active = fields.Boolean(
         default=True,
-    )
-
-    name = fields.Char(
-        "Description",
-        help="Optional descriptive message",
     )
 
     sequence = fields.Integer(
@@ -34,11 +34,6 @@ class CreditControlRule(models.Model):
 
     sale_domain = fields.Char(
         default="[]",
-    )
-
-    classification_id = fields.Many2one(
-        "credit.control.classification",
-        required=True,
     )
 
     policy_id = fields.Many2one(
@@ -92,7 +87,6 @@ class CreditControlRule(models.Model):
 """,
     )
 
-    @api.onchange("rule")
     def _onchange_rule(self):
         self.ensure_one()
 
@@ -141,7 +135,7 @@ class CreditControlRule(models.Model):
         return False
 
     def _check_rule_over_limit(self, partner_id, sale_id):
-        if -1 * partner_id.credit > partner_id.credit_limit:
+        if partner_id.credit > partner_id.credit_limit:
             return True
 
         sale_amount = sale_id.amount_total
@@ -157,7 +151,7 @@ class CreditControlRule(models.Model):
         if (
             sale_id.state == "draft"
             and float_compare(
-                (-1 * partner_id.credit) + sale_amount,
+                (partner_id.credit) + sale_amount,
                 partner_id.credit_limit,
                 precision_rounding=partner_id.currency_id.rounding,
             )

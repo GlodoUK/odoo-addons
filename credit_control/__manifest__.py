@@ -11,11 +11,11 @@
     "data": [
         "security/ir.model.access.csv",
         "data/mail_activity_data.xml",
-        "views/credit_control_classification_views.xml",
         "views/credit_control_policy_views.xml",
         "views/credit_control_rule_views.xml",
         "views/res_partner_views.xml",
         "views/sale_order_views.xml",
+        "views/account_move_views.xml",
     ],
     "license": "Other proprietary",
 }

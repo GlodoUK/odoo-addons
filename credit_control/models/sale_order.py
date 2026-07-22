@@ -1,11 +1,12 @@
 from odoo import fields, models
+from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     skip_credit_control_rules = fields.Boolean(
-        "Skip Credit Rules",
+        "Allow Credit Control Bypass",
         copy=False,
     )
 
@@ -15,7 +16,7 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         for order in self:
-            order._check_credit_control()
+            order._check_credit_control(events=["confirm"])
 
         return super(
             SaleOrder, self.with_context(skip_check_credit_control=True)
@@ -38,16 +39,11 @@ class SaleOrder(models.Model):
         if self._context.get("website_order_tx", False):
             return
 
-        if self.skip_credit_control_rules:
-            return
-
         if "website_id" in self._fields and self.website_id:
             return
 
         partner_id = self.partner_id.sudo().commercial_partner_id
-
         policy_id = partner_id.credit_control_policy_id
-
         if not policy_id:
             policy_id = (
                 self.env["credit.control.policy"]
@@ -55,8 +51,45 @@ class SaleOrder(models.Model):
                 .search([("default", "=", True)], limit=1)
             )
 
+        if policy_id and self.skip_credit_control_rules:
+            if (
+                policy_id.action_bypass_users
+                and self.env.user in policy_id.action_bypass_users
+            ):
+                return
+            if (
+                policy_id.action_bypass_groups
+                and self.env.user.groups_id & policy_id.action_bypass_groups
+            ):
+                return
+
         if policy_id:
             return policy_id.check_rules(events, partner_id, self)
+
+    def action_release_hold(self):
+        for order in self:
+            policy_id = (
+                order.partner_id.sudo().commercial_partner_id.credit_control_policy_id
+            )
+            if not policy_id:
+                order.credit_control_hold.unlink()
+                continue
+            if order.credit_control_hold:
+                if (
+                    policy_id.action_bypass_users
+                    and self.env.user in policy_id.action_bypass_users
+                ):
+                    order.credit_control_hold.unlink()
+                    continue
+                if (
+                    policy_id.action_bypass_groups
+                    and self.env.user.groups_id & policy_id.action_bypass_groups
+                ):
+                    order.credit_control_hold.unlink()
+                    continue
+                raise UserError(
+                    self.env._("You are not allowed to release this order from hold.")
+                )
 
     def write(self, vals):
         """

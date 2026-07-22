@@ -41,10 +41,17 @@ class CreditControlPolicy(models.Model):
     )
 
     action = fields.Selection(
-        [("block", "Block"), ("hold", "Hold")],
+        [("block", "Block"), ("hold", "Hold Sale")],
         default="block",
         required=True,
+        help=(
+            "Action to take when a rule is triggered."
+            "\nNote: Hold only applies to records with a credit_control_hold field."
+        ),
     )
+
+    action_bypass_users = fields.Many2many("res.users", string="Bypass Users")
+    action_bypass_groups = fields.Many2many("res.groups", string="Bypass Groups")
 
     # ruff: noqa: E501
     @api.constrains("default")
@@ -64,43 +71,50 @@ class CreditControlPolicy(models.Model):
         for policy in self:
             policy.rule_count = len(policy.rule_ids)
 
-    def check_rules(self, events, partner_id, sale_id):
+    def check_rules(self, events, partner_id, record):
         self.ensure_one()
 
         res = self.env["credit.control.rule"]
 
         for rule_id in self.rule_ids.filtered(lambda r: r.active and r.event in events):
-            result = rule_id.check_rule(partner_id, sale_id)
+            result = rule_id.check_rule(partner_id, record)
 
             if result:
                 res |= rule_id
 
         if res and self.action == "block":
             raise UserError(
-                self.env._("Credit Control Policy: %s", ",".join(res.mapped("name")))
+                self.env._(
+                    "Blocked by Credit Control Policy\n%s",
+                    ",".join(res.mapped("display_name")),
+                )
             )
-        elif res and self.action == "hold":
-            if not sale_id.credit_control_hold:
-                self.post_todo_task(sale_id, res)
+        elif (
+            res and self.action == "hold" and record._fields.get("credit_control_hold")
+        ):
+            if not record.credit_control_hold:
+                self.post_todo_task(record, res)
 
         return res
 
-    def post_todo_task(self, sale_id, res):
+    def post_todo_task(self, record, res):
         self.ensure_one()
 
         activity_vals = {
             "note": self.env._(
-                "Credit Control Policy: %s", ",".join(res.mapped("name"))
+                "Credit Control Policy: %s", ",".join(res.mapped("display_name"))
             ),
             "user_id": self.env.user.id,
             "date_deadline": fields.Date.today(),
             "state": "open",
             "activity_type_id": self.env.ref("credit_control.activity_sale_hold").id,
-            "res_id": sale_id.id,
-            "res_model_id": self.env.ref("sale.model_sale_order").id,
+            "res_id": record.id,
+            "res_model_id": self.env.ref(
+                f"{record._module}.model_{record._name.replace('.', '_')}"
+            ).id,
         }
 
-        sale_id.credit_control_hold = self.env["mail.activity"].create(activity_vals)
+        record.credit_control_hold = self.env["mail.activity"].create(activity_vals)
 
     def action_open_partners(self):
         self.ensure_one()

@@ -2,10 +2,10 @@
 <odoo>
     <template id="template_hold_msg">
         <div>
-            <t t-out="object.display_name" /> has been placed on <t
-            t-out="classification"
-        /> hold
-            <div class="mt16" t-if="msg">
+            <t t-out="object.display_name" /> has been placed on hold <div
+            class="mt16"
+            t-if="msg"
+        >
             <p t-out="msg" />
         </div>
         </div>
@@ -17,6 +17,15 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="priority" eval="75" />
         <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_draft']" position="after">
+                <button
+                    name="action_release_hold"
+                    type="object"
+                    string="Release Hold"
+                    class="btn btn-primary"
+                    invisible="not credit_control_hold or not skip_credit_control_rules"
+                />
+            </xpath>
             <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
                 <widget
                     name="web_ribbon"
@@ -38,6 +47,23 @@
         <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale" />
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='order_date']" position="after">
+                <filter
+                    string="On Hold"
+                    name="credit_control_on_hold"
+                    domain="[('credit_control_hold', '!=', False)]"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record
+        id="credit_control_sale_order_view_search_inherit_quotation"
+        model="ir.ui.view"
+    >
+        <field name="name">credit.control.sale.order.search.inherit.quotation</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='filter_create_date']" position="after">
                 <filter
                     string="On Hold"
                     name="credit_control_on_hold"

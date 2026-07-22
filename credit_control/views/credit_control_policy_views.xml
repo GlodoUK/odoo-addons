@@ -34,12 +34,25 @@
                             <field name="rule_ids">
                                 <list decoration-muted="not active">
                                     <field name="sequence" widget="handle" />
-                                    <field name="classification_id" />
-                                    <field name="name" />
+                                    <field name="display_name" />
                                     <field name="rule" />
                                     <field name="event" />
                                 </list>
                             </field>
+                        </page>
+                        <page string="Bypass Users/Groups">
+                            <p
+                            >Specified users and groups can bypass credit control rules when "Allow Credit COntrol Bypass" is ticked.</p>
+                            <group>
+                                <field
+                                    name="action_bypass_users"
+                                    widget="many2many_tags"
+                                />
+                                <field
+                                    name="action_bypass_groups"
+                                    widget="many2many_tags"
+                                />
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -72,7 +85,7 @@
         id="credit_control_policy_account_menu"
         name="Credit Control Policies"
         action="credit_control_policy_action_window"
-        parent="account.account_management_menu"
+        parent="account.account_account_menu"
     />
 
     <menuitem
