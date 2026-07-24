@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_picking_form_inherit_gatekeeper" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.gatekeeper</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
+                <widget
+                    name="web_ribbon"
+                    title="Sale Held"
+                    bg_color="text-bg-danger"
+                    invisible="not gatekeeper_hold"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

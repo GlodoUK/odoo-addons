@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="gatekeeper_line_list" model="ir.ui.view">
+        <field name="name">gatekeeper_line_list</field>
+        <field name="model">gatekeeper.line</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="is_released">
+                <field name="rule_name" />
+                <field name="action" />
+                <field name="is_released" />
+                <field name="released_by" />
+                <field name="released_on" />
+                <button
+                    name="action_release"
+                    type="object"
+                    string="Release"
+                    icon="fa-unlock"
+                    invisible="is_released or not can_release"
+                />
+            </list>
+        </field>
+    </record>
+</odoo>

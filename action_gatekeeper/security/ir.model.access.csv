@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gatekeeper_rule,access_gatekeeper_rule,model_gatekeeper_rule,base.group_system,1,1,1,1
+access_gatekeeper_line,access_gatekeeper_line,model_gatekeeper_line,base.group_system,1,1,1,1

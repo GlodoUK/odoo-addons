@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="gatekeeper_rule_form" model="ir.ui.view">
+        <field name="name">gatekeeper_rule_form</field>
+        <field name="model">gatekeeper.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="target_model" />
+                        <p
+                            invisible="target_model"
+                            colspan="2"
+                        >If no Target Models are available, you need to install an addon module to add support.</p>
+                    </group>
+
+                    <group invisible="target_model == False">
+                        <field name="trigger" />
+                        <field name="rule" />
+                        <field name="action" />
+                        <field
+                            name="partner_domain"
+                            widget="domain"
+                            options="{'model': 'res.partner'}"
+                            invisible="rule != 'partner_domain'"
+                        />
+                        <field
+                            name="record_domain"
+                            widget="domain"
+                            options="{'model': 'target_model'}"
+                            invisible="rule != 'record_domain'"
+                        />
+                        <field
+                            name="code"
+                            widget="code"
+                            options="{'mode': 'python'}"
+                            invisible="rule != 'code'"
+                        />
+                    </group>
+
+                    <group
+                        string="Release Permissions"
+                        invisible="target_model == False"
+                    >
+                        <p
+                            colspan="2"
+                        >When triggered, which users or groups can release this rule?</p>
+                        <field
+                            name="release_users"
+                            widget="many2many_tags"
+                            string="Release Users"
+                        />
+                        <field
+                            name="release_groups"
+                            widget="many2many_tags"
+                            string="Release Groups"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="gatekeeper_rule_list" model="ir.ui.view">
+        <field name="name">gatekeeper_rule_list</field>
+        <field name="model">gatekeeper.rule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="target_model" />
+            </list>
+        </field>
+    </record>
+
+    <record id="gatekeeper_rule_action_window" model="ir.actions.act_window">
+        <field name="name">Gatekeeper Rules</field>
+        <field name="res_model">gatekeeper.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="gatekeeper_rule_menu"
+        name="Gatekeeper Rules"
+        action="gatekeeper_rule_action_window"
+        parent="base.menu_automation"
+    />
+</odoo>

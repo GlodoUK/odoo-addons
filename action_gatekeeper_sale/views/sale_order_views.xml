@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
+                <widget
+                    name="web_ribbon"
+                    title="Sale Held"
+                    bg_color="text-bg-danger"
+                    invisible="not gatekeeper_hold"
+                />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="gatekeeper"
+                    string="Gatekeeper"
+                    icon="fa-shield"
+                    invisible="not gatekeeper_rule_lines"
+                >
+                    <field
+                        name="gatekeeper_rule_lines"
+                        widget="one2many_list"
+                        nolabel="1"
+                    />
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="gatekeeper_rule_action_window" model="ir.actions.act_window">
+        <field name="name">Gatekeeper Rules</field>
+        <field name="res_model">gatekeeper.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('target_model', '=', 'sale.order')]</field>
+    </record>
+
+    <menuitem
+        id="gatekeeper_rule_menu_sale"
+        name="Gatekeeper Rules"
+        action="gatekeeper_rule_action_window"
+        parent="sale.menu_sale_config"
+    />
+</odoo>
