@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- =========================== Order binding =========================== -->
+    <record id="autopilot_sale_order_view_list" model="ir.ui.view">
+        <field name="name">autopilot_sale.order.list</field>
+        <field name="model">autopilot_sale.order</field>
+        <field name="arch" type="xml">
+            <list string="Sale EDI Orders">
+                <field name="display_name" />
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="external_ref" />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_order_view_form" model="ir.ui.view">
+        <field name="name">autopilot_sale.order.form</field>
+        <field name="model">autopilot_sale.order</field>
+        <field name="arch" type="xml">
+            <form string="Sale EDI Order">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="odoo_id" />
+                        </group>
+                        <group>
+                            <field name="external_ref" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids">
+                                <list>
+                                    <field name="odoo_id" />
+                                    <field name="external_ref" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================= Dispatch note binding ========================= -->
+    <record id="autopilot_sale_picking_view_list" model="ir.ui.view">
+        <field name="name">autopilot_sale.picking.list</field>
+        <field name="model">autopilot_sale.picking</field>
+        <field name="arch" type="xml">
+            <list string="Sale EDI Dispatch Notes">
+                <field name="display_name" />
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sent_date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_picking_view_form" model="ir.ui.view">
+        <field name="name">autopilot_sale.picking.form</field>
+        <field name="model">autopilot_sale.picking</field>
+        <field name="arch" type="xml">
+            <form string="Sale EDI Dispatch Note">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="odoo_id" />
+                        </group>
+                        <group>
+                            <field name="sent_date" />
+                            <field name="attachment_id" />
+                        </group>
+                    </group>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <!-- =========================== Invoice binding =========================== -->
+    <record id="autopilot_sale_invoice_view_list" model="ir.ui.view">
+        <field name="name">autopilot_sale.invoice.list</field>
+        <field name="model">autopilot_sale.invoice</field>
+        <field name="arch" type="xml">
+            <list string="Sale EDI Invoices">
+                <field name="display_name" />
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sent_date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_invoice_view_form" model="ir.ui.view">
+        <field name="name">autopilot_sale.invoice.form</field>
+        <field name="model">autopilot_sale.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Sale EDI Invoice">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="odoo_id" />
+                        </group>
+                        <group>
+                            <field name="sent_date" />
+                            <field name="attachment_id" />
+                        </group>
+                    </group>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+</odoo>

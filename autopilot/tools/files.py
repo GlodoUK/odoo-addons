@@ -6,8 +6,8 @@ list a set of files, and archive one aside. Single-call operations
 (``fs.cat_file``, ``fs.pipe_file``, ``fs.mv``, ``fs.rm``, ``fs.open``) are not
 wrapped -- the caller already holds ``fs`` and should just call them.
 
-The file-driving helpers (``glob``, ``archive``, ``sweep``) each take the
-filesystem as their first argument (``fs``). The caller owns constructing and
+The file-driving helpers (``glob``, ``archive``, ``sweep``, ``opened``) each take
+the filesystem as their first argument (``fs``). The caller owns constructing and
 configuring it -- local, SFTP, S3, whatever fsspec exposes -- and these just
 drive it: they import neither fsspec nor Odoo, only calling the standard fsspec
 filesystem methods, so they are duck-typed over the protocol and unit-testable
@@ -21,6 +21,7 @@ right tool when a caller needs the file name of a path.
 """
 
 import posixpath
+from contextlib import contextmanager
 
 
 def glob(fs, pattern, *, files_only=True):
@@ -88,8 +89,6 @@ _NON_TRANSPORT_PROTOCOLS = frozenset(
         "hf",
         "wandb",
         "dvc",
-        "http",
-        "https",
         "arrow_hdfs",
     }
 )
@@ -142,3 +141,35 @@ def sweep(fs, pattern, directory):
     ``pattern`` to a single folder (``"/in/*.csv"``) unless names are unique.
     """
     return [archive(fs, path, directory) for path in glob(fs, pattern)]
+
+
+@contextmanager
+def opened(fs, path, mode="wb", auto_mkdir=True, **kwargs):
+    """Open ``path`` on ``fs`` in ``mode`` (default ``wb``) and yield the handle
+    (closed on exit).
+
+    ``fs.open`` alone is a single call the caller could make, but for a write
+    mode ensuring the parent directory exists first (as :func:`archive` does for
+    a move) is the extra step worth wrapping - so this is the write counterpart
+    to :func:`sweep` on the read side. It matters because most real transports
+    do *not* create it: fsspec's own ``auto_mkdir`` defaults to False on the
+    local filesystem and is absent entirely on SFTP, so a write into a new
+    (e.g. date-partitioned) folder would otherwise fail.
+
+    ``auto_mkdir`` (default True) creates the parent directory for a creating
+    mode (``w``/``a``/``x``); pass False to skip it when the directory is known
+    to exist (e.g. to avoid the extra round-trip on SFTP). Reads never create
+    anything. Any extra keyword arguments are forwarded to ``fs.open`` (e.g.
+    ``block_size``, or ``autocommit=False`` for SFTP's write-to-temp-then-commit
+    atomic delivery). The caller writes/reads through the yielded handle, so a
+    codec can stream straight to it::
+
+        with open(fs, "/out/2026/01/order-5.csv") as handle:
+            csv.write_rows(handle, rows)
+    """
+    if auto_mkdir and any(flag in mode for flag in ("w", "a", "x")):
+        directory = posixpath.dirname(path)
+        if directory:
+            fs.makedirs(directory, exist_ok=True)
+    with fs.open(path, mode, **kwargs) as handle:
+        yield handle
