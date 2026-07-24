@@ -113,7 +113,7 @@ def fsspec_providers():
 
         protocol = fields.Selection(
             selection=lambda self: [("disabled", "Disabled")]
-            + base_etl.files.fsspec_providers(),
+            + autopilot.tools.files.fsspec_providers(),
         )
     """
     try:

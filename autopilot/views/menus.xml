@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_autopilot_overview" model="ir.actions.client">
+        <field name="name">Overview</field>
+        <field name="tag">autopilot_overview</field>
+    </record>
+
+    <!-- The app lands on the static overview, not an arbitrary connector. -->
+    <menuitem
+        id="menu_autopilot_root"
+        name="Autopilot"
+        web_icon="autopilot,static/description/icon.svg"
+        action="action_autopilot_overview"
+        sequence="95"
+        groups="base.group_user"
+    />
+
+    <!-- Connectors nest their own backend menus under here (not directly under
+         the app root) so the top level stays tidy as connectors are added. -->
+    <menuitem
+        id="menu_autopilot_connections"
+        name="Backends"
+        parent="menu_autopilot_root"
+        sequence="10"
+    />
+
+    <!-- Quick access to the primitives autopilot manages, otherwise buried in
+         Settings > Technical. -->
+    <menuitem
+        id="menu_autopilot_scheduled_actions"
+        name="Scheduled Actions"
+        parent="menu_autopilot_root"
+        action="base.ir_cron_act"
+        groups="base.group_system"
+        sequence="90"
+    />
+
+    <menuitem
+        id="menu_autopilot_automation_rules"
+        name="Automation Rules"
+        parent="menu_autopilot_root"
+        action="base_automation.base_automation_act"
+        groups="base.group_system"
+        sequence="91"
+    />
+</odoo>

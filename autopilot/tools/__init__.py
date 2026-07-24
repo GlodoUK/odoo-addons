@@ -1,16 +1,17 @@
-"""base_etl: reusable, Odoo-free building blocks for file-based ETL.
+"""autopilot.tools: reusable, Odoo-free building blocks for file-based ETL.
 
-Each module is small, format/protocol-agnostic and unit-testable without an
-Odoo env:
+Moved verbatim from the old ``base_etl`` module. Each helper is small,
+format/protocol-agnostic and unit-testable without an Odoo env:
 
 * :mod:`files` - drive an fsspec filesystem: ``glob``, ``archive``, and
-  ``sweep`` (glob + archive, the one-shot "claim the batch" primitive).
+  ``sweep`` (glob + archive, the one-shot "claim the batch" primitive), plus
+  ``fsspec_providers`` for a transport ``Selection``.
 * :mod:`csv`, :mod:`xls`, :mod:`xlsx` - row codecs (see below).
 * :mod:`batch` - ``batched``, splitting rows into chunks for fan-out.
 
-These are helpers a step *calls*, never a framework it plugs into. See the
-README for the surrounding conventions (fsspec at the boundary, logic in
-methods not the database, ``queue_job`` for async, ``petl`` for transforms).
+These are helpers a step *calls*, never a framework it plugs into. Nothing here
+imports Odoo, so the whole package can be pytested on an in-memory handle - keep
+it that way: no model, controller, or ``odoo`` import belongs under ``tools/``.
 
 Codec pattern
 -------------
@@ -22,7 +23,8 @@ differing only in format-specific keyword options (``csv``:
 identical, a step can pick the codec by file extension and drive any format
 through one call site; :func:`codec_for` does that lookup::
 
-    codec = codec_for(path)                 # -> the csv / xls / xlsx module
+    from odoo.addons.autopilot import tools
+    codec = tools.codec_for(path)           # -> the csv / xls / xlsx module
     with fs.open(path, "rb") as handle:
         rows = codec.read_rows(handle)
 
@@ -67,6 +69,7 @@ def codec_for(name):
     if codec is None:
         supported = ", ".join(sorted(CODECS))
         raise ValueError(
-            f"No base_etl row codec for {name!r}; supported extensions: {supported}."
+            f"No autopilot.tools row codec for {name!r}; "
+            f"supported extensions: {supported}."
         )
     return codec

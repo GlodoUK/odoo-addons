@@ -4,7 +4,7 @@ The Excel mirror of :mod:`.csv`, reading and writing one worksheet with the
 first row as the header. Both functions take an open **binary** file handle
 (an xlsx is a zip archive -- there is no text mode); ``open(..., "rb"/"wb")``,
 ``fsspec.open(..., "rb"/"wb")`` and ``io.BytesIO()`` all work, and the caller
-owns opening/closing. openpyxl is a hard dependency of base_etl (see the
+owns opening/closing. openpyxl is a hard dependency of autopilot (see the
 manifest). Unlike the CSV codec's all-strings, values round-trip as whatever
 types Excel carries (str/int/float/datetime). Nothing here imports Odoo, so it
 is unit-testable on an in-memory handle.

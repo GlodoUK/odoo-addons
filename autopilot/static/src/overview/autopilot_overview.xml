@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="autopilot.Overview">
+        <div class="o_view_nocontent">
+            <div class="o_nocontent_help">
+                <p class="o_view_nocontent_smiling_face">
+                    Autopilot runs your connectors
+                </p>
+                <p>
+                    On its own, Autopilot does nothing - it's the home for your
+                    integration connectors. Pick one from the menu above to
+                    configure and run it.
+                </p>
+                <p>
+                    Don't see any? Install a connector module (anything that
+                    provides an Autopilot backend) and it will appear here.
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
