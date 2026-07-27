@@ -1,6 +1,15 @@
+import base64
+import re
+
 from odoo import fields, models
-from odoo.exceptions import ValidationError
-from odoo.tools.safe_eval import safe_eval
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import safe_eval as safe_eval_module
+from odoo.tools.safe_eval import safe_eval, wrap_module
+
+_BASE64 = wrap_module(base64, ["b64encode", "b64decode"])
+_RE = wrap_module(
+    re, ["match", "search", "sub", "subn", "split", "findall", "finditer", "compile"]
+)
 
 
 class GatekeeperRule(models.Model):
@@ -95,8 +104,7 @@ trigger_rule = False
         elif self.rule == "record_domain":
             domain = safe_eval(self.record_domain)
             result = record.filtered_domain(domain)
-            if result:
-                return True
+            return bool(result)
         elif self.rule == "partner_domain":
             if not getattr(record, "partner_id", None):
                 return False
@@ -112,23 +120,22 @@ trigger_rule = False
                 "rule_id": self,
                 "record_id": record,
                 "env": self.env,
-                "time": __import__("time"),
-                "datetime": __import__("datetime"),
-                "relativedelta": __import__("dateutil.relativedelta").relativedelta,
-                "rrule": __import__("dateutil.rrule").rrule,
-                "base64": __import__("base64"),
-                "Warning": __import__("odoo.exceptions").Warning,
+                "time": safe_eval_module.time,
+                "datetime": safe_eval_module.datetime,
+                "relativedelta": safe_eval_module.dateutil.relativedelta,
+                "rrule": safe_eval_module.dateutil.rrule,
+                "base64": _BASE64,
+                "Warning": UserError,
                 "ValueError": ValueError,
                 "ValidationError": ValidationError,
-                "re": __import__("re"),
+                "re": _RE,
                 "next": next,
                 "iter": iter,
             }
-            safe_eval(self.code, eval_context)
+            safe_eval(self.code, eval_context, mode="exec")
             return eval_context.get("trigger_rule", False)
         else:
             return True
-        return True
 
     def _check_can_release(self, user) -> bool:
         self.ensure_one()
