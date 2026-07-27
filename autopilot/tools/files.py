@@ -21,6 +21,7 @@ right tool when a caller needs the file name of a path.
 """
 
 import posixpath
+import re
 from contextlib import contextmanager
 
 
@@ -83,6 +84,7 @@ _NON_TRANSPORT_PROTOCOLS = frozenset(
         "libarchive",
         "git",
         "github",
+        "gist",
         "dask",
         "jupyter",
         "jlab",
@@ -90,8 +92,49 @@ _NON_TRANSPORT_PROTOCOLS = frozenset(
         "wandb",
         "dvc",
         "arrow_hdfs",
+        "async_wrapper",
+        "asyncwrapper",
+        "pyscript",
     }
 )
+
+# Labels for protocols whose class name does not humanise correctly:
+# ``WebdavFileSystem`` -> "Webdav" rather than "WebDAV", ``LakeFSFileSystem``
+# -> "Lake FS", and http/https sharing one class so both would read "HTTP".
+# Anything absent falls back to the class name, so a newly installed backend
+# gets a readable label with no entry here.
+_PROTOCOL_LABELS = {
+    "adl": "Azure Data Lake",
+    "https": "HTTPS",
+    "lakefs": "LakeFS",
+    "tos": "TOS",
+    "tosfs": "TOS",
+    "webdav": "WebDAV",
+    "webhdfs": "WebHDFS",
+}
+
+# Split a class name into words, keeping acronyms and their trailing digits
+# whole: "AzureBlob" -> Azure Blob, but "SFTP" -> SFTP and "S3" -> S3 rather
+# than "S F T P" and "S 3".
+_CLASS_WORDS = re.compile(r"[A-Z]+(?![a-z])\d*|[A-Z][a-z]+\d*|[a-z]+\d*|\d+")
+
+
+def _humanise(protocol, class_path):
+    """``("sftp", "fsspec.implementations.sftp.SFTPFileSystem")`` ->
+    ``"sftp (SFTP)"``.
+
+    The label is derived from the registered class *name*, which fsspec holds
+    as a dotted string -- so no backend package has to be importable to read
+    it. The protocol leads, because that is the value being stored; the class
+    name follows as the gloss.
+    """
+    label = _PROTOCOL_LABELS.get(protocol)
+    if label is None:
+        name = class_path.rsplit(".", 1)[-1]
+        if name.endswith("FileSystem"):
+            name = name[: -len("FileSystem")]
+        label = " ".join(_CLASS_WORDS.findall(name))
+    return f"{protocol} ({label})" if label else protocol
 
 
 def fsspec_providers():
@@ -105,6 +148,20 @@ def fsspec_providers():
     newly installed backend appears on its own. Returns ``[]`` if fsspec is
     unavailable.
 
+    Each label reads ``protocol (Backend)`` -- ``"sftp (SFTP)"``,
+    ``"abfs (Azure Blob)"`` -- humanised from the registered class name (see
+    :func:`_humanise`), with the protocol leading because that is the value
+    stored on the field. Several protocols are aliases of one class and so
+    repeat the same gloss (``s3``/``s3a``, ``file``/``local``,
+    ``sftp``/``ssh``): fsspec discards the protocol string once it has looked
+    up the class, so the alias chosen makes no difference to the filesystem
+    built. Sorted by protocol, matching the order the labels read in.
+
+    The registry is read as ``known_implementations`` rather than via
+    ``available_protocols()`` -- the latter is defined as
+    ``list(known_implementations)``, so this is the same protocol set, and the
+    dict additionally carries the dotted class path the label needs.
+
     This lists what fsspec *knows*; whether the chosen backend's package is
     installed is a separate check the consumer makes (e.g. via
     ``fsspec.get_filesystem_class``) when a protocol is actually used. A model
@@ -116,16 +173,14 @@ def fsspec_providers():
         )
     """
     try:
-        import fsspec
-
-        available = fsspec.available_protocols()
-    except (ImportError, AttributeError):
+        from fsspec.registry import known_implementations
+    except ImportError:
         return []
-    return [
-        (protocol, protocol)
-        for protocol in sorted(available)
+    return sorted(
+        (protocol, _humanise(protocol, spec.get("class", protocol)))
+        for protocol, spec in known_implementations.items()
         if protocol not in _NON_TRANSPORT_PROTOCOLS
-    ]
+    )
 
 
 def sweep(fs, pattern, directory):
