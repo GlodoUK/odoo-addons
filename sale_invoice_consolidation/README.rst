@@ -49,8 +49,35 @@ forward.
 All scheduling and consolidation fields are ``company_dependent``, so values can
 differ per company.
 
+Sale orders carry a read-only **Automatic Invoicing** mirror
+(``sale.order.sale_auto_invoice_enabled``), shown on the *Other Info* tab, so it
+is visible from the order whether the scheduled action will pick it up. It is
+computed from the **Auto-Invoice Frequency** of the order's invoice address, read
+in the order's company.
+
+Automatic credit notes
+----------------------
+
+Each company has an **Auto-Raise Credit Notes** setting
+(``res.company.sale_auto_invoice_credit_notes``, on by default) that decides
+whether the scheduled action invoices with Odoo's ``final`` flag.
+
+* **On** - pending negative quantities (returns, downward corrections after
+  invoicing) are picked up and the resulting negative invoice is switched to a
+  credit note.
+* **Off** - only positive quantities are invoiced automatically. Orders whose
+  only pending quantity is negative are left alone for someone to credit by
+  hand; they do not hold up the customer's schedule, which still rolls forward.
+
+Only the scheduled action is affected. Manual invoicing from the *Create
+Invoice* wizard keeps Odoo's own behaviour, where ``final`` follows the wizard's
+*Deduct down payments* option.
+
 Configuration
 -------------
+
+Set **Auto-Raise Credit Notes** in *Accounting > Configuration > Settings*,
+under *Consolidation*.
 
 Set the preference, frequency and next run on the *Invoicing* tab of the
 partner used as the order's invoice address. This may be a company or one of its
