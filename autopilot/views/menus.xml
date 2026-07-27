@@ -8,7 +8,7 @@
     <!-- The app lands on the static overview, not an arbitrary connector. -->
     <menuitem
         id="menu_autopilot_root"
-        name="Autopilot"
+        name="Integrations &amp; Connections"
         web_icon="autopilot,static/description/icon.svg"
         action="action_autopilot_overview"
         sequence="95"
@@ -19,7 +19,7 @@
          the app root) so the top level stays tidy as connectors are added. -->
     <menuitem
         id="menu_autopilot_connections"
-        name="Backends"
+        name="Integrations &amp; Connections"
         parent="menu_autopilot_root"
         sequence="10"
     />
