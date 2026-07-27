@@ -2,6 +2,7 @@ from odoo import models
 
 
 class AccountMove(models.Model):
+    _name = "account.move"
     _inherit = ["account.move", "gatekeeper.mixin"]
 
     def action_post(self):
