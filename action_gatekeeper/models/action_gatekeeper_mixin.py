@@ -86,14 +86,10 @@ class ActionGatekeeperMixin(models.AbstractModel):
                                 "\nModel: %(model_name)s,"
                                 "ID: %(record_id)s%(record_name)s"
                                 "\nRule: %(rule_name)s",
-                                {
-                                    "model_name": self._name,
-                                    "record_id": self.id,
-                                    "record_name": "\n" + record_name
-                                    if record_name
-                                    else "",
-                                    "rule_name": rule.name,
-                                },
+                                model_name=self._name,
+                                record_id=self.id,
+                                record_name="\n" + record_name if record_name else "",
+                                rule_name=rule.name,
                             )
                         )
 
