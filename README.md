@@ -18,6 +18,8 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
 [automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
+[autopilot](autopilot/) | 19.0.1.0.0 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
+[autopilot_sale](autopilot_sale/) | 19.0.1.0.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
 [concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
 [cpq_banding](cpq_banding/) | 19.0.1.0.0 |  | Banding/Fabric Custom Values
@@ -50,8 +52,10 @@ addon | version | maintainers | summary
 [project_task_category](project_task_category/) | 19.0.1.0.0 |  | Project Task Category
 [purchase_moq](purchase_moq/) | 19.0.1.0.0 |  | Purchase Minimum Order Quantities
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
+[queue_job_trace](queue_job_trace/) | 19.0.1.0.0 |  | Correlate jobs spawned from the same origin with a trace id
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
+[rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
 [sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.1.0 |  | Invoicing policy
