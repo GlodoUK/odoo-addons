@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="autopilot_sale_backend_view_form" model="ir.ui.view">
+        <field name="name">autopilot_sale.backend.form</field>
+        <field name="model">autopilot_sale.backend</field>
+        <field name="arch" type="xml">
+            <form string="Sale EDI Backend">
+                <header>
+                    <button
+                        name="action_import_orders"
+                        type="object"
+                        string="Import Orders"
+                        class="btn-primary"
+                        groups="sales_team.group_sale_manager"
+                        invisible="not supports_import_order or provider == 'disabled'"
+                    />
+                    <button
+                        name="action_export_asns"
+                        type="object"
+                        string="Export Dispatch Notes"
+                        groups="sales_team.group_sale_manager"
+                        invisible="not supports_asn"
+                    />
+                    <button
+                        name="action_export_invoices"
+                        type="object"
+                        string="Export Invoices"
+                        groups="sales_team.group_sale_manager"
+                        invisible="not supports_invoice"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_orders"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-shopping-cart"
+                        >
+                            <field
+                                name="order_count"
+                                widget="statinfo"
+                                string="Orders"
+                            />
+                        </button>
+                        <button
+                            name="action_view_pickings"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-truck"
+                        >
+                            <field
+                                name="picking_count"
+                                widget="statinfo"
+                                string="Dispatch Notes"
+                            />
+                        </button>
+                        <button
+                            name="action_view_invoices"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o"
+                        >
+                            <field
+                                name="invoice_count"
+                                widget="statinfo"
+                                string="Invoices"
+                            />
+                        </button>
+                    </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. YPO Production" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active" invisible="1" />
+                            <field name="supports_import_order" invisible="1" />
+                            <field name="supports_ack" invisible="1" />
+                            <field name="supports_asn" invisible="1" />
+                            <field name="supports_invoice" invisible="1" />
+                            <field name="dialect" />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                        </group>
+                        <group>
+                            <field name="partner_id" />
+                            <field name="provider" />
+                            <field
+                                name="storage_options"
+                                widget="text"
+                                placeholder="{'host': 'sftp.example.com', 'username': 'edi'}"
+                                invisible="provider in ('disabled', 'file')"
+                            />
+                        </group>
+                    </group>
+                    <group string="Access &amp; Notifications">
+                        <field
+                            name="restrict_group_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True}"
+                            placeholder="Everyone with access"
+                        />
+                        <field
+                            name="notify_user_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True}"
+                        />
+                    </group>
+                    <group string="Paths" invisible="provider == 'disabled'">
+                        <field
+                            name="order_import_path"
+                            string="Orders Source"
+                            invisible="not supports_import_order"
+                            required="supports_import_order"
+                        />
+                        <field
+                            name="order_import_processed_path"
+                            placeholder="/in/processed"
+                            invisible="not supports_import_order"
+                        />
+                        <field
+                            name="ack_export_path"
+                            string="Acknowledgements"
+                            invisible="not supports_ack"
+                        />
+                        <field
+                            name="asn_export_path"
+                            string="Dispatch Notes"
+                            invisible="not supports_asn"
+                        />
+                        <field
+                            name="invoice_export_path"
+                            string="Invoices"
+                            invisible="not supports_invoice"
+                        />
+                    </group>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_backend_view_list" model="ir.ui.view">
+        <field name="name">autopilot_sale.backend.list</field>
+        <field name="model">autopilot_sale.backend</field>
+        <field name="arch" type="xml">
+            <list string="Sale EDI Backends">
+                <field name="name" />
+                <field name="dialect" />
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="partner_id" />
+                <field name="order_count" />
+                <field name="picking_count" />
+                <field name="invoice_count" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_autopilot_sale_backend" model="ir.actions.act_window">
+        <field name="name">Sale EDI Backends</field>
+        <field name="res_model">autopilot_sale.backend</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_autopilot_sale_backend"
+        name="Sale EDI"
+        parent="autopilot.menu_autopilot_connections"
+        action="action_autopilot_sale_backend"
+        groups="sales_team.group_sale_salesman"
+        sequence="20"
+    />
+</odoo>

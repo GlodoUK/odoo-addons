@@ -1,0 +1,4 @@
+# Test-only Python dependencies, installed by .ci/build.d/03_install_deps.
+# Not part of any module's external_dependencies, so modules stay installable
+# without them at runtime.
+fsspec

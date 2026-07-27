@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="rss_feed_view_list" model="ir.ui.view">
+        <field name="name">rss.feed.list</field>
+        <field name="model">rss.feed</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="url" widget="url" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="show"
+                />
+                <field name="item_count" string="Items" />
+                <field name="last_fetch" />
+                <field name="active" widget="boolean_toggle" />
+            </list>
+        </field>
+    </record>
+
+    <record id="rss_feed_view_form" model="ir.ui.view">
+        <field name="name">rss.feed.form</field>
+        <field name="model">rss.feed</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_poll"
+                        type="object"
+                        string="Poll Now"
+                        class="btn-primary"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            type="object"
+                            name="action_view_items"
+                            icon="fa-list"
+                        >
+                            <field name="item_count" widget="statinfo" string="Items" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <field name="active" invisible="1" />
+                    <group>
+                        <field name="url" widget="url" />
+                        <field name="last_fetch" />
+                        <field name="archived_retention_days" />
+                    </group>
+                    <notebook>
+                        <page string="Filters" name="filters">
+                            <p class="text-muted">
+                                With no rules, every item is stored. Otherwise only items
+                                matching <strong>at least one</strong> rule are kept.
+                                Each pattern is a case-insensitive regular expression.
+                            </p>
+                            <field name="filter_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="field" />
+                                    <field name="pattern" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <field
+                                    name="company_id"
+                                    groups="base.group_multi_company"
+                                />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="rss_item_view_kanban" model="ir.ui.view">
+        <field name="name">rss.item.kanban</field>
+        <field name="model">rss.item</field>
+        <field name="arch" type="xml">
+            <kanban
+                class="o_rss_item_kanban"
+                can_open="0"
+                default_order="published desc, id desc"
+            >
+                <header>
+                    <button name="action_archive" type="object" string="Archive" />
+                </header>
+                <field name="active" />
+                <field name="category" />
+                <field name="link" />
+                <templates>
+                    <t t-name="card">
+                        <widget
+                            name="web_ribbon"
+                            title="Archived"
+                            bg_color="text-bg-danger"
+                            invisible="active"
+                        />
+                        <main class="position-relative">
+                            <a
+                                t-if="record.link.raw_value"
+                                t-att-href="record.link.raw_value"
+                                target="_blank"
+                                rel="noreferrer noopener"
+                                class="stretched-link"
+                                aria-label="Open source article"
+                            />
+                            <field name="title" class="fw-bold fs-5" />
+                            <div class="text-muted small mb-2">
+                                <field name="feed_id" /> · <field name="published" />
+                                <span
+                                t-if="record.category.raw_value"
+                                class="badge bg-secondary rounded-pill smaller o_tag ms-1"
+                            >
+                                <field name="category" />
+                            </span>
+                            </div>
+                            <div class="o_rss_summary">
+                                <field name="summary" />
+                            </div>
+                        </main>
+                        <footer class="justify-content-end">
+                            <button
+                                name="action_archive"
+                                type="object"
+                                string="Archive"
+                                icon="fa-archive"
+                                class="btn btn-secondary"
+                                invisible="not active"
+                            />
+                            <button
+                                name="action_unarchive"
+                                type="object"
+                                string="Restore"
+                                icon="fa-undo"
+                                class="btn btn-secondary"
+                                invisible="active"
+                            />
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="rss_item_view_list" model="ir.ui.view">
+        <field name="name">rss.item.list</field>
+        <field name="model">rss.item</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="active" column_invisible="1" />
+                <field name="published" />
+                <field name="title" />
+                <field name="feed_id" />
+                <field name="category" optional="show" />
+                <field name="author" optional="hide" />
+                <field name="link" widget="url" />
+                <button
+                    name="action_archive"
+                    type="object"
+                    string="Archive"
+                    icon="fa-archive"
+                    invisible="not active"
+                />
+                <button
+                    name="action_unarchive"
+                    type="object"
+                    string="Restore"
+                    icon="fa-undo"
+                    invisible="active"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="rss_item_view_form" model="ir.ui.view">
+        <field name="name">rss.item.form</field>
+        <field name="model">rss.item</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_archive"
+                        type="object"
+                        string="Archive"
+                        class="btn-primary"
+                        invisible="not active"
+                    />
+                    <button
+                        name="action_unarchive"
+                        type="object"
+                        string="Restore"
+                        invisible="active"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-secondary"
+                        invisible="active"
+                    />
+                    <field name="active" invisible="1" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="title" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="feed_id" />
+                        <field name="published" />
+                        <field name="category" />
+                        <field name="author" />
+                        <field name="link" widget="url" />
+                        <field name="guid" />
+                    </group>
+                    <field name="summary" />
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="rss_item_view_search" model="ir.ui.view">
+        <field name="name">rss.item.search</field>
+        <field name="model">rss.item</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="title" />
+                <field name="feed_id" />
+                <field name="category" />
+                <field name="author" />
+                <filter
+                    name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+                <group>
+                    <filter
+                        name="group_feed"
+                        string="Feed"
+                        context="{'group_by': 'feed_id'}"
+                    />
+                    <filter
+                        name="group_category"
+                        string="Category"
+                        context="{'group_by': 'category'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="rss_item_action" model="ir.actions.act_window">
+        <field name="name">Items</field>
+        <field name="res_model">rss.item</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <record id="rss_feed_action" model="ir.actions.act_window">
+        <field name="name">Feeds</field>
+        <field name="res_model">rss.feed</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_rss_root"
+        name="Feed Reader"
+        sequence="55"
+        web_icon="rss,static/description/icon.svg"
+    />
+    <menuitem
+        id="menu_rss_items"
+        name="Items"
+        parent="menu_rss_root"
+        action="rss_item_action"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_rss_feeds"
+        name="Feeds"
+        parent="menu_rss_root"
+        action="rss_feed_action"
+        sequence="20"
+    />
+</odoo>

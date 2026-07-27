@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_queue_job_form" model="ir.ui.view">
+        <field name="name">queue.job.form.trace</field>
+        <field name="model">queue.job</field>
+        <field name="inherit_id" ref="queue_job.view_queue_job_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="open_trace_jobs"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-share-alt"
+                    invisible="trace_uuid == False"
+                >
+                    <field
+                        name="trace_jobs_count"
+                        widget="statinfo"
+                        string="Trace Jobs"
+                    />
+                </button>
+            </xpath>
+            <field name="graph_uuid" position="after">
+                <field name="trace_uuid" />
+            </field>
+            <xpath expr="//notebook/page[@name='dependencies']" position="after">
+                <page name="trace" string="Trace" invisible="trace_uuid == False">
+                    <field nolabel="1" name="trace_graph" widget="job_directed_graph" />
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_queue_job_search" model="ir.ui.view">
+        <field name="name">queue.job.search.trace</field>
+        <field name="model">queue.job</field>
+        <field name="inherit_id" ref="queue_job.view_queue_job_search" />
+        <field name="arch" type="xml">
+            <field name="graph_uuid" position="after">
+                <field name="trace_uuid" />
+            </field>
+            <filter name="group_by_graph" position="after">
+                <filter
+                    name="group_by_trace"
+                    string="Trace"
+                    context="{'group_by': 'trace_uuid'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

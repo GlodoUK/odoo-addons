@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="ir_cron_poll_rss" model="ir.cron">
+        <field name="name">RSS: Poll feeds</field>
+        <field name="model_id" ref="model_rss_feed" />
+        <field name="state">code</field>
+        <field name="code">model._cron_poll()</field>
+        <field name="interval_number" eval="15" />
+        <field name="interval_type">minutes</field>
+    </record>
+</odoo>

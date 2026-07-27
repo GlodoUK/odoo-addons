@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_autopilot_sale_backend_manager,autopilot_sale.backend manager,model_autopilot_sale_backend,sales_team.group_sale_manager,1,1,1,1
+access_autopilot_sale_backend_user,autopilot_sale.backend user,model_autopilot_sale_backend,sales_team.group_sale_salesman,1,0,0,0
+access_autopilot_sale_order_manager,autopilot_sale.order manager,model_autopilot_sale_order,sales_team.group_sale_manager,1,1,1,1
+access_autopilot_sale_order_user,autopilot_sale.order user,model_autopilot_sale_order,sales_team.group_sale_salesman,1,0,0,0
+access_autopilot_sale_order_line_manager,autopilot_sale.order.line manager,model_autopilot_sale_order_line,sales_team.group_sale_manager,1,1,1,1
+access_autopilot_sale_order_line_user,autopilot_sale.order.line user,model_autopilot_sale_order_line,sales_team.group_sale_salesman,1,0,0,0
+access_autopilot_sale_picking_manager,autopilot_sale.picking manager,model_autopilot_sale_picking,sales_team.group_sale_manager,1,1,1,1
+access_autopilot_sale_picking_user,autopilot_sale.picking user,model_autopilot_sale_picking,sales_team.group_sale_salesman,1,0,0,0
+access_autopilot_sale_invoice_manager,autopilot_sale.invoice manager,model_autopilot_sale_invoice,sales_team.group_sale_manager,1,1,1,1
+access_autopilot_sale_invoice_user,autopilot_sale.invoice user,model_autopilot_sale_invoice,sales_team.group_sale_salesman,1,0,0,0
