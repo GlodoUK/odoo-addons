@@ -16,7 +16,11 @@
                     </group>
 
                     <group invisible="target_model == False">
-                        <field name="trigger" />
+                        <field
+                            name="trigger"
+                            domain="['|', ('model_name', '=', target_model), ('model_name', 'in', [False, ''])]"
+                            options="{'no_create': True}"
+                        />
                         <field name="rule" />
                         <field name="action" />
                         <field
@@ -46,6 +50,13 @@
                         <p
                             colspan="2"
                         >When triggered, which users or groups can release this rule?</p>
+                        <div
+                            class="alert alert-warning"
+                            role="alert"
+                            colspan="2"
+                            invisible="release_users or release_groups"
+                        >
+                            <strong>Note:</strong> No users can bypass this rule!</div>
                         <field
                             name="release_users"
                             widget="many2many_tags"

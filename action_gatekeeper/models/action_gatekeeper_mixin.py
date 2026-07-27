@@ -12,9 +12,6 @@ class ActionGatekeeperMixin(models.AbstractModel):
 
     gatekeeper_rule_lines = fields.Many2many(
         comodel_name="gatekeeper.line",
-        relation="gatekeeper_record_rule_line_rel",
-        column1="record_id",
-        column2="line_id",
         copy=False,
         readonly=True,
     )
@@ -26,11 +23,10 @@ class ActionGatekeeperMixin(models.AbstractModel):
             )
 
     def _get_gatekeeper_rules(self, event=None):
-        # Get the gatekeeper rules for this model, ordered by sequence.
         self.ensure_one()
         domain = [("target_model", "=", self._name)]
         if event:
-            domain.append(("trigger", "=", event))
+            domain.append(("trigger.action", "=", event))
         return self.env["gatekeeper.rule"].search(
             domain,
             order="sequence",
@@ -74,7 +70,7 @@ class ActionGatekeeperMixin(models.AbstractModel):
         self.ensure_one()
         rules = self._get_gatekeeper_rules(event)
         if rules:
-            for rule in rules.filtered(lambda r: r.trigger == event):
+            for rule in rules.filtered(lambda r: r.trigger.action == event):
                 if rule._check_rule(self):
                     if rule.action == "hold":
                         self._action_gatekeeper_hold(rule)

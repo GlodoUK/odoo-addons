@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="gatekeeper_trigger_action_send" model="gatekeeper.trigger">
+        <field name="name">On Send Quotation</field>
+        <field name="model_name">sale.order</field>
+        <field name="action">action_quotation_send</field>
+    </record>
+    <record id="gatekeeper_trigger_action_confirm" model="gatekeeper.trigger">
+        <field name="name">On Confirm</field>
+        <field name="model_name">sale.order</field>
+        <field name="action">action_confirm</field>
+    </record>
+    <record id="gatekeeper_trigger_action_cancel" model="gatekeeper.trigger">
+        <field name="name">On Cancel</field>
+        <field name="model_name">sale.order</field>
+        <field name="action">action_cancel</field>
+    </record>
+    <record id="gatekeeper_trigger_action_draft" model="gatekeeper.trigger">
+        <field name="name">On Return to Draft</field>
+        <field name="model_name">sale.order</field>
+        <field name="action">action_draft</field>
+    </record>
+</odoo>

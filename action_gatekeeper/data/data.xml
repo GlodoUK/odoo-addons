@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="gatekeeper_trigger_create" model="gatekeeper.trigger">
+        <field name="name">On Create</field>
+        <field name="action">action_create</field>
+    </record>
+    <record id="gatekeeper_trigger_write" model="gatekeeper.trigger">
+        <field name="name">On Write</field>
+        <field name="action">action_write</field>
+    </record>
+    <record id="gatekeeper_trigger_unlink" model="gatekeeper.trigger">
+        <field name="name">On Delete</field>
+        <field name="action">action_unlink</field>
+    </record>
+</odoo>

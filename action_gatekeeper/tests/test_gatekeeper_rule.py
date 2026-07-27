@@ -35,7 +35,9 @@ class TestGatekeeperRule(TransactionCase):
         return self.env["gatekeeper.rule"].create(
             {
                 "name": "Test Rule",
-                "trigger": "create",
+                "trigger": self.env.ref(
+                    "action_gatekeeper.gatekeeper_trigger_action_create"
+                ).id,
                 "rule": "always",
                 **values,
             }

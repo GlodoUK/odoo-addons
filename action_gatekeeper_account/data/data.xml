@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="gatekeeper_trigger_action_post" model="gatekeeper.trigger">
+        <field name="name">On Post</field>
+        <field name="model_name">account.move</field>
+        <field name="action">action_post</field>
+    </record>
+    <record id="gatekeeper_trigger_action_cancel" model="gatekeeper.trigger">
+        <field name="name">On Cancel</field>
+        <field name="model_name">account.move</field>
+        <field name="action">button_cancel</field>
+    </record>
+    <record id="gatekeeper_trigger_button_draft" model="gatekeeper.trigger">
+        <field name="name">On Return to Draft</field>
+        <field name="model_name">account.move</field>
+        <field name="action">button_draft</field>
+    </record>
+</odoo>

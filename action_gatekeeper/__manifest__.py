@@ -13,6 +13,7 @@
         "security/ir.model.access.csv",
         "views/gatekeeper_rule_views.xml",
         "views/gatekeeper_line_views.xml",
+        "data/data.xml",
     ],
     "license": "Other proprietary",
 }

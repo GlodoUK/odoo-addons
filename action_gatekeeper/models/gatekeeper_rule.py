@@ -22,12 +22,8 @@ class GatekeeperRule(models.Model):
     name = fields.Char(required=True)
     target_model = fields.Selection([])
 
-    trigger = fields.Selection(
-        [
-            ("create", "On Create"),
-            ("write", "On Write"),
-            ("unlink", "On Delete"),
-        ],
+    trigger = fields.Many2one(
+        "gatekeeper.trigger",
         required=True,
     )
 

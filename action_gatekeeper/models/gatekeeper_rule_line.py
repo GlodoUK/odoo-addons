@@ -19,7 +19,7 @@ class GatekeeperRuleLine(models.Model):
         related="rule_id.action",
         store=True,
     )
-    trigger = fields.Selection(
+    trigger = fields.Many2one(
         related="rule_id.trigger",
         store=True,
     )
