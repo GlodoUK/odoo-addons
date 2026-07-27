@@ -127,6 +127,7 @@
                             name="order_import_processed_path"
                             placeholder="/in/processed"
                             invisible="not supports_import_order"
+                            required="supports_import_order"
                         />
                         <field
                             name="ack_export_path"

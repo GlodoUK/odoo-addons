@@ -147,8 +147,8 @@ class AutopilotSaleBackend(models.Model):
         string="Orders Processed Path",
         help="Absolute folder the claimed files are moved into so a poll does "
         "not re-read them, e.g. /in/ypo/processed/{datetime:%Y}/{datetime:%m}. "
-        "May use {datetime:...} tokens. Empty archives to a 'processed' "
-        "subfolder of the source.",
+        "May use {datetime:...} tokens. Required once a source is set: where "
+        "claimed files go is not something to infer from a glob.",
     )
     ack_export_path = fields.Char(
         string="Acknowledgement Path",
@@ -264,6 +264,22 @@ class AutopilotSaleBackend(models.Model):
                     )
                 ) from exc
 
+    @api.constrains("order_import_path", "order_import_processed_path")
+    def _check_order_import_paths(self):
+        """A source to poll needs somewhere to put what it claims. Required
+        rather than derived: :func:`~odoo.addons.autopilot.tools.files.archive`
+        moves a file *out* of the polled folder, and the destination for that is
+        a decision, not something to guess from the source glob."""
+        for backend in self:
+            if backend.order_import_path and not backend.order_import_processed_path:
+                raise ValidationError(
+                    self.env._(
+                        "Backend %s has an Orders Source Path, so it needs an "
+                        "Orders Processed Path.",
+                        backend.name,
+                    )
+                )
+
     def _fs(self):
         """The single fsspec filesystem for this backend's provider. fsspec
         unifies local/SFTP/object stores behind one API, so every flow stays
@@ -290,21 +306,25 @@ class AutopilotSaleBackend(models.Model):
         return (template or "").format(datetime=fields.Datetime.now(), record=record)
 
     def _sweep_orders(self):
-        """Claim every ``*.csv`` on the order source by moving it into the
+        """Claim every file matching the order source glob by moving it into the
         processed folder, and return the archived paths. Moving is the claim: a
         file is taken out of the scanned folder the moment it is picked up, so an
         overlapping poll can never read it twice. This is the engine's whole
         contribution to import - the dialect reads and parses the returned
         paths itself. Both source and processed paths are rendered
-        (:meth:`_render_path`), so the processed folder can be date-partitioned."""
+        (:meth:`_render_path`), so either can be date-scoped; both are required
+        config (:meth:`_check_order_import_paths`), so neither is inferred
+        here."""
         self.ensure_one()
         if self.provider == _TRANSPORT_DISABLED:
             return []
         if not self.order_import_path:
             return []
-        fs = self._fs()
-        processed = self._render_path(self.order_import_processed_path)
-        return etl.files.sweep(fs, f"{processed}/*.csv")
+        return etl.files.sweep(
+            self._fs(),
+            self._render_path(self.order_import_path),
+            self._render_path(self.order_import_processed_path),
+        )
 
     @contextmanager
     def _place(self, template, record=None):

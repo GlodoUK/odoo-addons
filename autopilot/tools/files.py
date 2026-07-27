@@ -53,6 +53,8 @@ def archive(fs, src, directory):
     date-stamped destination (``.../2026/07/22``) before calling, keeping this
     helper clock-free and therefore deterministic to test.
     """
+    if not directory:
+        raise ValueError(f"archive() needs a destination directory, got {directory}")
     directory = directory.rstrip("/")
     fs.makedirs(directory, exist_ok=True)
     dst = f"{directory}/{posixpath.basename(src)}"
