@@ -14,7 +14,9 @@ class TestStockPickingGatekeeper(TransactionCase):
             {
                 "name": "Sale Confirm Hold",
                 "target_model": "sale.order",
-                "trigger": "action_confirm",
+                "trigger": cls.env.ref(
+                    "action_gatekeeper_sale.gatekeeper_trigger_action_confirm"
+                ).id,
                 "rule": "always",
                 "action": "hold",
             }

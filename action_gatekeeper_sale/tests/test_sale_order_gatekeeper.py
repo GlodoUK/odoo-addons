@@ -16,12 +16,18 @@ class TestSaleOrderGatekeeper(TransactionCase):
         cls.other_partner = cls.env["res.partner"].create({"name": "Other Partner"})
         cls.product = cls.env["product.product"].create({"name": "Gatekeeper Product"})
 
-    def _make_rule(self, action, trigger="create", rule="always", **extra):
+        cls.trigger_create = cls.env.ref("action_gatekeeper.gatekeeper_trigger_create")
+        cls.trigger_write = cls.env.ref("action_gatekeeper.gatekeeper_trigger_write")
+        cls.trigger_confirm = cls.env.ref(
+            "action_gatekeeper_sale.gatekeeper_trigger_action_confirm"
+        )
+
+    def _make_rule(self, action, trigger=None, rule="always", **extra):
         return self.GatekeeperRule.create(
             {
                 "name": "Sale Gatekeeper Rule",
                 "target_model": "sale.order",
-                "trigger": trigger,
+                "trigger": (trigger or self.trigger_create).id,
                 "rule": rule,
                 "action": action,
                 **extra,
@@ -60,7 +66,7 @@ class TestSaleOrderGatekeeper(TransactionCase):
         self.assertFalse(order.gatekeeper_hold)
 
     def test_no_matching_rule_does_not_hold_or_block(self):
-        self._make_rule(action="block", trigger="write")
+        self._make_rule(action="block", trigger=self.trigger_write)
         order = self._make_order()
         self.assertFalse(order.gatekeeper_hold)
 
@@ -96,7 +102,7 @@ class TestSaleOrderGatekeeper(TransactionCase):
         self._make_order(partner=self.other_partner)
 
     def test_action_confirm_trigger_holds_on_confirm_not_create(self):
-        self._make_rule(action="hold", trigger="action_confirm")
+        self._make_rule(action="hold", trigger=self.trigger_confirm)
         order = self._make_order()
         self.assertFalse(order.gatekeeper_hold)
         order.action_confirm()

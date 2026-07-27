@@ -2,14 +2,14 @@
 <odoo>
     <record id="gatekeeper_trigger_create" model="gatekeeper.trigger">
         <field name="name">On Create</field>
-        <field name="action">action_create</field>
+        <field name="action">create</field>
     </record>
     <record id="gatekeeper_trigger_write" model="gatekeeper.trigger">
         <field name="name">On Write</field>
-        <field name="action">action_write</field>
+        <field name="action">write</field>
     </record>
     <record id="gatekeeper_trigger_unlink" model="gatekeeper.trigger">
         <field name="name">On Delete</field>
-        <field name="action">action_unlink</field>
+        <field name="action">unlink</field>
     </record>
 </odoo>
