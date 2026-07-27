@@ -66,9 +66,9 @@ class ActionGatekeeperMixin(models.AbstractModel):
                         }
                     )
                     lines |= line
-            record.with_context(skip_gatekeeper_sync=True).write(
-                {"gatekeeper_rule_lines": [(6, 0, lines.ids)]}
-            )
+            record.with_context(
+                skip_gatekeeper_sync=True, skip_gatekeeper_check=True
+            ).write({"gatekeeper_rule_lines": [(6, 0, lines.ids)]})
 
     def _check_gatekeeper_rules(self, event):
         self.ensure_one()
@@ -103,8 +103,9 @@ class ActionGatekeeperMixin(models.AbstractModel):
     def write(self, vals):
         res = super().write(vals)
         self._sync_gatekeeper_lines()
-        for record in self:
-            record._check_gatekeeper_rules("write")
+        if not self.env.context.get("skip_gatekeeper_check"):
+            for record in self:
+                record._check_gatekeeper_rules("write")
         return res
 
     def unlink(self):
