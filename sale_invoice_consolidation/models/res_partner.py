@@ -83,6 +83,9 @@ class ResPartner(models.Model):
         we only look at the (company, invoice partner) pairs that actually have
         something to invoice, then skip those whose schedule is not yet due.
 
+        Whether credit notes may be raised by the run is controlled per company
+        by ``res.company.sale_auto_invoice_credit_notes``.
+
         Progress is reported through ``ir.cron._commit_progress`` so each pair
         is committed as it completes: a timed-out run resumes where it left off
         instead of redoing everything, and a failure rolls back only the pair
@@ -112,15 +115,32 @@ class ResPartner(models.Model):
                 if from_cron and not self.env["ir.cron"]._commit_progress(processed=1):
                     break
                 continue
+            # `final` is what makes Odoo invoice negative pending quantities and
+            # switch the resulting negative moves to credit notes, so the company
+            # setting is exactly the "raise credit notes automatically" switch.
+            final = company.sale_auto_invoice_credit_notes
+            company_orders = company_orders.with_company(company)
+            if not final:
+                # Without `final`, negative quantities are not invoiceable: an
+                # order left with nothing else would make _create_invoices raise
+                # "nothing to invoice" and stall this customer's schedule
+                # forever. Drop those orders and let them wait for a manual
+                # credit note.
+                company_orders = company_orders.filtered(
+                    lambda o: any(
+                        not line.display_type
+                        for line in o._get_invoiceable_lines(final=False)
+                    )
+                )
             try:
                 # Safe to combine with _commit_progress because
                 # the commit happens at the end of the loop body, after the
                 # savepoint has already been released - it never spans a
                 # _commit_progress call...
                 with self.env.cr.savepoint():
-                    moves = company_orders.with_company(company)._create_invoices(
-                        final=True,
-                    )
+                    moves = self.env["account.move"]
+                    if company_orders:
+                        moves = company_orders._create_invoices(final=final)
                     partner.sale_auto_invoice_next_date = (
                         partner._sale_auto_invoice_advance()
                     )

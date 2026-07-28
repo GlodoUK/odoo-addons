@@ -21,7 +21,7 @@ class TestSaleAutoInvoice(TransactionCase):
             }
         )
 
-    def _confirmed_order(self):
+    def _confirmed_order(self, qty=1):
         order = self.env["sale.order"].create(
             {
                 "partner_id": self.partner.id,
@@ -31,7 +31,7 @@ class TestSaleAutoInvoice(TransactionCase):
                         0,
                         {
                             "product_id": self.product.id,
-                            "product_uom_qty": 1,
+                            "product_uom_qty": qty,
                         },
                     )
                 ],
@@ -40,8 +40,25 @@ class TestSaleAutoInvoice(TransactionCase):
         order.action_confirm()
         return order
 
+    def _credit_pending_order(self):
+        """
+        Return an order whose pending quantity is negative.
+
+        Invoiced in full, then reduced: the only thing left to raise for it is a
+        credit note, which Odoo only does when invoiced with ``final``.
+        """
+        order = self._confirmed_order(qty=2)
+        order._create_invoices()
+        order.order_line.product_uom_qty = 1
+        self.assertEqual(order.order_line.qty_to_invoice, -1)
+        self.assertEqual(order.invoice_status, "to invoice")
+        return order
+
     def _run_cron(self):
         self.env["res.partner"]._cron_auto_create_invoices()
+
+    def _partner_moves(self):
+        return self.env["account.move"].search([("partner_id", "=", self.partner.id)])
 
     @freeze_time("2026-06-03")
     def test_advance_rolls_one_period(self):
@@ -171,6 +188,57 @@ class TestSaleAutoInvoice(TransactionCase):
         )
 
     @freeze_time("2026-06-03")
+    def test_cron_raises_credit_note_when_company_allows_it(self):
+        self.env.company.sale_auto_invoice_credit_notes = True
+        self.partner.sale_auto_invoice_frequency = "monthly"
+        self.partner.sale_auto_invoice_next_date = datetime(2026, 5, 1)
+        order = self._credit_pending_order()
+        before = self._partner_moves()
+
+        self._run_cron()
+
+        created = self._partner_moves() - before
+        self.assertEqual(created.mapped("move_type"), ["out_refund"])
+        self.assertEqual(order.invoice_status, "invoiced")
+        self.assertEqual(self.partner.sale_auto_invoice_next_date, datetime(2026, 7, 1))
+
+    @freeze_time("2026-06-03")
+    def test_cron_skips_credit_note_when_company_disallows_it(self):
+        self.env.company.sale_auto_invoice_credit_notes = False
+        self.partner.sale_auto_invoice_frequency = "monthly"
+        self.partner.sale_auto_invoice_next_date = datetime(2026, 5, 1)
+        order = self._credit_pending_order()
+        before = self._partner_moves()
+
+        self._run_cron()
+
+        self.assertFalse(self._partner_moves() - before)
+        # Left pending, to be credited by hand.
+        self.assertEqual(order.invoice_status, "to invoice")
+        # The schedule still rolls forward: an order the run cannot invoice must
+        # not stall the customer's cadence.
+        self.assertEqual(self.partner.sale_auto_invoice_next_date, datetime(2026, 7, 1))
+
+    @freeze_time("2026-06-03")
+    def test_cron_still_invoices_positive_orders_when_credit_notes_disallowed(self):
+        # Turning credit notes off must only drop the orders that need one.
+        self.env.company.sale_auto_invoice_credit_notes = False
+        self.partner.sale_invoice_consolidation = "grouped"
+        self.partner.sale_auto_invoice_frequency = "monthly"
+        self.partner.sale_auto_invoice_next_date = datetime(2026, 5, 1)
+        credit_order = self._credit_pending_order()
+        self._confirmed_order()
+        before = self._partner_moves()
+
+        self._run_cron()
+
+        created = self._partner_moves() - before
+        self.assertEqual(created.mapped("move_type"), ["out_invoice"])
+        # Only the positive order made it onto the invoice.
+        self.assertEqual(created.invoice_line_ids.quantity, 1)
+        self.assertEqual(credit_order.invoice_status, "to invoice")
+
+    @freeze_time("2026-06-03")
     def test_cron_skips_when_disabled(self):
         # Due moment passed but no frequency => auto-invoicing disabled.
         self.partner.sale_auto_invoice_next_date = datetime(2026, 1, 1)
@@ -185,3 +253,34 @@ class TestSaleAutoInvoice(TransactionCase):
                 ]
             )
         )
+
+    def test_order_mirrors_partner_auto_invoice_setting(self):
+        order = self._confirmed_order()
+        self.assertFalse(order.sale_auto_invoice_enabled)
+
+        self.partner.sale_auto_invoice_frequency = "monthly"
+        self.assertTrue(order.sale_auto_invoice_enabled)
+
+        self.partner.sale_auto_invoice_frequency = False
+        self.assertFalse(order.sale_auto_invoice_enabled)
+
+    def test_order_mirrors_invoice_address_not_commercial_entity(self):
+        # Same contract as the cron: the setting is read from the invoice
+        # address itself, not inherited from the customer it belongs to.
+        invoice_contact = self.env["res.partner"].create(
+            {
+                "name": "Auto Invoice Billing",
+                "type": "invoice",
+                "parent_id": self.partner.id,
+            }
+        )
+        order = self._confirmed_order()
+        self.assertEqual(order.partner_invoice_id, invoice_contact)
+        self.assertFalse(order.sale_auto_invoice_enabled)
+
+        invoice_contact.sale_auto_invoice_frequency = "weekly"
+        self.assertTrue(order.sale_auto_invoice_enabled)
+
+        invoice_contact.sale_auto_invoice_frequency = False
+        self.partner.sale_auto_invoice_frequency = "weekly"
+        self.assertFalse(order.sale_auto_invoice_enabled)

@@ -1,9 +1,26 @@
-from odoo import models
+from odoo import api, fields, models
 from odoo.exceptions import AccessError
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+
+    sale_auto_invoice_enabled = fields.Boolean(
+        string="Automatic Invoicing",
+        compute="_compute_sale_auto_invoice_enabled",
+        help="Whether the scheduled action will invoice this order. Mirrors the "
+        "Auto-Invoice Frequency of the order's invoice address, read in this "
+        "order's company - a frequency is what enables automatic invoicing.",
+    )
+
+    @api.depends("company_id", "partner_invoice_id.sale_auto_invoice_frequency")
+    def _compute_sale_auto_invoice_enabled(self):
+        # Read from the invoice address in the order's company, matching what
+        # the cron does: the settings are not inherited from the commercial
+        # entity, and they are company_dependent.
+        for order in self:
+            partner = order.partner_invoice_id.with_company(order.company_id)
+            order.sale_auto_invoice_enabled = bool(partner.sale_auto_invoice_frequency)
 
     def _create_invoices(self, grouped=False, final=False, date=None):
         # Preserve the caller's value: the local `grouped` is reused below as an
