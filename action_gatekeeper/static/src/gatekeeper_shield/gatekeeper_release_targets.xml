@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="action_gatekeeper.GatekeeperReleaseTargets">
+        <div
+            t-if="state.users.length"
+            class="o_gatekeeper_release_targets d-inline-flex align-items-center"
+            t-on-click.stop="onClick"
+        >
+            <img
+                t-foreach="visibleUsers"
+                t-as="user"
+                t-key="user.id"
+                class="o_gatekeeper_release_target_avatar rounded-circle"
+                t-att-src="avatarUrl(user)"
+                t-att-title="user.name"
+            />
+            <span
+                t-if="extraCount"
+                class="o_gatekeeper_release_target_more rounded-circle bg-secondary"
+            >+<t t-esc="extraCount" /></span>
+        </div>
+    </t>
+
+    <t t-name="action_gatekeeper.GatekeeperReleaseTargetsPopover">
+        <div class="o_gatekeeper_release_targets_popover">
+            <div
+                t-foreach="props.users"
+                t-as="user"
+                t-key="user.id"
+                class="d-flex align-items-center gap-2 py-1"
+            >
+                <img
+                    class="o_gatekeeper_release_target_avatar rounded-circle"
+                    t-att-src="avatarUrl(user)"
+                />
+                <span t-esc="user.name" />
+            </div>
+        </div>
+    </t>
+</templates>

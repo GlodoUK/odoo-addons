@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="action_gatekeeper.GatekeeperShieldPopover">
+        <div class="o_gatekeeper_shield_popover">
+            <div
+                t-if="!props.state.lines.length"
+                class="text-muted p-2"
+            >No gatekeeper rules apply.</div>
+            <table t-else="" class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>Rule</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th />
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="props.state.lines" t-as="line" t-key="line.id">
+                        <td>
+                            <span t-esc="line.rule_name" />
+                        </td>
+                        <td>
+                            <span t-esc="line.action" />
+                        </td>
+                        <td>
+                            <span t-if="line.is_released" class="text-success">
+                                Released
+                            </span>
+                            <span t-else="" class="text-danger">
+                                <t t-esc="line.release_count" />/<t
+                                t-esc="line.release_count_required"
+                            /> released
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex align-items-center gap-2">
+                                <button
+                                    t-if="!line.is_released and line.can_release and !line.user_has_released"
+                                    type="button"
+                                    class="btn btn-sm btn-primary"
+                                    t-on-click="() => this.onRelease(line)"
+                                >Release</button>
+                                <button
+                                    t-if="!line.is_released and !(line.can_release and !line.user_has_released)"
+                                    type="button"
+                                    class="btn btn-sm btn-secondary d-inline-flex align-items-center gap-1"
+                                    t-on-click="() => this.onRequestRelease(line)"
+                                >
+                                    <span>Request Release</span>
+                                    <GatekeeperReleaseTargets
+                                        t-if="!line.is_released"
+                                        userIds="line.release_request_target_ids"
+                                    />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</templates>

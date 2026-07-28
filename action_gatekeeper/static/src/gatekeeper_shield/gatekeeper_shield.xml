@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="action_gatekeeper.GatekeeperShield">
+        <button
+            type="button"
+            t-if="state.lines.length"
+            t-attf-class="o_gatekeeper_shield o_gatekeeper_shield-{{ status }}"
+            t-on-click="onClick"
+            title="Gatekeeper Rules"
+        >
+            <i class="fa fa-shield" />
+        </button>
+    </t>
+</templates>

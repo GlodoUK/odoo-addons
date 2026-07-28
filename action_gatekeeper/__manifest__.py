@@ -15,5 +15,10 @@
         "views/gatekeeper_line_views.xml",
         "data/data.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "action_gatekeeper/static/src/gatekeeper_shield/*",
+        ],
+    },
     "license": "Other proprietary",
 }

@@ -125,5 +125,5 @@ class ActionGatekeeperMixin(models.AbstractModel):
 
     def _reset_gatekeeper_rules(self):
         self.ensure_one()
-        self.gatekeeper_rule_lines = [(5, 0, 0)]
+        self.gatekeeper_rule_lines.sudo().unlink()
         self.gatekeeper_hold = False

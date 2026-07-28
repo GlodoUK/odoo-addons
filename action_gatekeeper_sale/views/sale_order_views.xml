@@ -6,25 +6,13 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="after">
+                <widget name="gatekeeper_shield" />
                 <widget
                     name="web_ribbon"
                     title="Sale Held"
                     bg_color="text-bg-danger"
                     invisible="not gatekeeper_hold"
                 />
-            </xpath>
-            <xpath expr="//notebook" position="inside">
-                <page
-                    name="gatekeeper"
-                    string="Gatekeeper"
-                    invisible="not gatekeeper_rule_lines"
-                >
-                    <field
-                        name="gatekeeper_rule_lines"
-                        widget="one2many_list"
-                        nolabel="1"
-                    />
-                </page>
             </xpath>
         </field>
     </record>

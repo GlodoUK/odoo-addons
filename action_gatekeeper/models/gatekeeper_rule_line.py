@@ -53,12 +53,27 @@ class GatekeeperRuleLine(models.Model):
     user_has_released = fields.Boolean(
         compute="_compute_release_count",
     )
+    release_request_target_ids = fields.Many2many(
+        comodel_name="res.users",
+        compute="_compute_release_request_target_ids",
+        string="Users To Notify",
+    )
 
     @api.depends("released_user_ids", "rule_id.release_count_required")
     def _compute_release_count(self):
         for line in self:
             line.release_count = len(line.released_user_ids)
             line.user_has_released = self.env.user in line.released_user_ids
+
+    @api.depends(
+        "rule_id.release_users", "rule_id.release_groups.user_ids", "released_user_ids"
+    )
+    def _compute_release_request_target_ids(self):
+        for line in self:
+            users = line.rule_id.release_users | line.rule_id.release_groups.user_ids
+            users -= line.released_user_ids
+            users -= self.env.user
+            line.release_request_target_ids = users
 
     def _compute_can_release(self):
         for line in self:

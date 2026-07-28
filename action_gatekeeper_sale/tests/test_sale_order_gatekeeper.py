@@ -143,3 +143,17 @@ class TestSaleOrderGatekeeper(TransactionCase):
         self.assertFalse(order.gatekeeper_hold)
         order.action_confirm()
         self.assertTrue(order.gatekeeper_hold)
+
+    def test_cancel_and_redo_does_not_accumulate_lines(self):
+        self._make_rule(action="hold", trigger=self.trigger_confirm)
+        order = self._make_order()
+
+        for _ in range(3):
+            order.action_confirm()
+            order.action_cancel()
+            order.action_draft()
+
+        total = self.env["gatekeeper.line"].search_count(
+            [("res_model", "=", "sale.order"), ("res_id", "=", order.id)]
+        )
+        self.assertEqual(total, 1)
