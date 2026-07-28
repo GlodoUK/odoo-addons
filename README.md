@@ -57,8 +57,10 @@ addon | version | maintainers | summary
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
+[sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.0.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
+[sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
-[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.1.0 |  | Invoicing policy
+[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.2.0 |  | Invoicing policy
 [sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
 [sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
 [sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
