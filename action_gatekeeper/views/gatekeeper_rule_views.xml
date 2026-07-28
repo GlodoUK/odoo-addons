@@ -24,12 +24,6 @@
                         <field name="rule" />
                         <field name="action" />
                         <field
-                            name="partner_domain"
-                            widget="domain"
-                            options="{'model': 'res.partner'}"
-                            invisible="rule != 'partner_domain'"
-                        />
-                        <field
                             name="record_domain"
                             widget="domain"
                             options="{'model': 'target_model'}"

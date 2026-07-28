@@ -104,12 +104,6 @@ class ActionGatekeeperMixin(models.AbstractModel):
                 record._check_gatekeeper_rules("write")
         return res
 
-    def unlink(self):
-        self._sync_gatekeeper_lines()
-        for record in self:
-            record._check_gatekeeper_rules("unlink")
-        return super().unlink()
-
     def _action_gatekeeper_hold(self, rule_id):
         self.ensure_one()
         self.gatekeeper_hold = True

@@ -6,7 +6,7 @@ class TestGatekeeperRule(TransactionCase):
     """gatekeeper.rule and gatekeeper.line permission logic.
 
     The record-matching branches of ``_check_rule`` (record_domain,
-    partner_domain, code) need a concrete model that inherits
+    code) need a concrete model that inherits
     ``gatekeeper.mixin``; ``action_gatekeeper`` itself has none, so those
     are covered downstream in ``action_gatekeeper_sale`` (via sale.order).
     """

@@ -120,22 +120,3 @@ class TestAccountMoveGatekeeper(AccountTestInvoicingCommon):
         line.action_release()
         self.assertTrue(line.is_released)
         self.assertFalse(invoice.gatekeeper_hold)
-
-    def test_partner_domain_rule_matches_partner(self):
-        self._make_rule(
-            action="block",
-            target_move_type="all",
-            rule="partner_domain",
-            partner_domain=f"[('id', '=', {self.partner_a.id})]",
-        )
-        invoice = self._create_invoice(
-            move_type="out_invoice", partner_id=self.partner_a.id
-        )
-        with self.assertRaises(ValidationError):
-            invoice.action_post()
-
-        other_invoice = self._create_invoice(
-            move_type="out_invoice", partner_id=self.partner_b.id
-        )
-        other_invoice.action_post()
-        self.assertFalse(other_invoice.gatekeeper_hold)

@@ -70,17 +70,6 @@ class TestSaleOrderGatekeeper(TransactionCase):
         order = self._make_order()
         self.assertFalse(order.gatekeeper_hold)
 
-    def test_partner_domain_rule_matches_partner(self):
-        self._make_rule(
-            action="block",
-            rule="partner_domain",
-            partner_domain=f"[('id', '=', {self.partner.id})]",
-        )
-        with self.assertRaises(ValidationError):
-            self._make_order(partner=self.partner)
-        # A different partner does not match the domain.
-        self._make_order(partner=self.other_partner)
-
     def test_record_domain_rule_matches_record(self):
         self._make_rule(
             action="block",

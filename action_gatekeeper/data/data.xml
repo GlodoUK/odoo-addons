@@ -8,8 +8,4 @@
         <field name="name">On Write</field>
         <field name="action">write</field>
     </record>
-    <record id="gatekeeper_trigger_unlink" model="gatekeeper.trigger">
-        <field name="name">On Delete</field>
-        <field name="action">unlink</field>
-    </record>
 </odoo>

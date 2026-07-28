@@ -31,15 +31,10 @@ class GatekeeperRule(models.Model):
         selection=[
             ("always", "Always"),
             ("record_domain", "Record Matches Custom Filter"),
-            ("partner_domain", "Partner Matches Custom Filter"),
             ("code", "Python Code"),
         ],
         required=True,
         string="Condition",
-    )
-
-    partner_domain = fields.Char(
-        default="[]",
     )
 
     record_domain = fields.Char(
@@ -101,16 +96,6 @@ trigger_rule = False
             domain = safe_eval(self.record_domain)
             result = record.filtered_domain(domain)
             return bool(result)
-        elif self.rule == "partner_domain":
-            if not getattr(record, "partner_id", None):
-                return False
-            domain = safe_eval(self.partner_domain)
-            partner = getattr(record, "partner_id", None)
-            if partner:
-                partner = partner.filtered_domain(domain)
-                if partner:
-                    return True
-            return False
         elif self.rule == "code":
             eval_context = {
                 "rule_id": self,
