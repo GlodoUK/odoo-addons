@@ -10,7 +10,6 @@
     "depends": ["action_gatekeeper", "account"],
     "data": [
         "views/account_move_views.xml",
-        "views/gatekeeper_rule_views.xml",
         "data/data.xml",
     ],
     "license": "Other proprietary",

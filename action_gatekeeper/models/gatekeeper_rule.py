@@ -1,7 +1,7 @@
 import base64
 import re
 
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import safe_eval as safe_eval_module
 from odoo.tools.safe_eval import safe_eval, wrap_module
@@ -21,6 +21,14 @@ class GatekeeperRule(models.Model):
 
     name = fields.Char(required=True)
     target_model = fields.Selection([])
+    target_domain = fields.Char(
+        default="[]",
+        string="Target Filter",
+        help=(
+            "Only target records matching this filter."
+            "\ne.g. 'Only target customer invoices'"
+        ),
+    )
 
     trigger = fields.Many2one(
         "gatekeeper.trigger",
@@ -39,6 +47,10 @@ class GatekeeperRule(models.Model):
 
     record_domain = fields.Char(
         default="[]",
+        help=(
+            "Additional filter for record matching."
+            "\ne.g. 'Only for X customer when invoice value is greater than 1000'"
+        ),
     )
 
     action = fields.Selection(
@@ -82,6 +94,43 @@ trigger_rule = False
         "res.groups",
         help="Members of these groups are allowed to release/bypass this rule.",
     )
+
+    release_count_required = fields.Integer(
+        default=1,
+        help="Number of separate users required to release this rule.",
+        min=1,
+    )
+
+    enough_users_can_release = fields.Boolean(
+        compute="_compute_enough_users_can_release",
+        store=True,
+        help="True if enough users can release this rule, False otherwise.",
+    )
+
+    block_message = fields.Text(
+        default="This action is blocked by a gatekeeper rule.",
+        help="Message to display when this rule blocks an action.",
+    )
+
+    def write(self, vals):
+        res = super().write(vals)
+        for rule in self:
+            if rule.release_count_required < 1:
+                raise ValidationError(
+                    self.env._(
+                        "Release Count Required must be at least 1 for rule %s",
+                        rule.name,
+                    )
+                )
+        return res
+
+    @api.depends("release_users", "release_groups", "release_count_required")
+    def _compute_enough_users_can_release(self):
+        for rule in self:
+            users = set(rule.release_users)
+            for group in rule.release_groups:
+                users.update(group.users)
+            rule.enough_users_can_release = len(users) >= rule.release_count_required
 
     def _check_rule(self, record) -> bool:
         # Return True if the rule triggers, False otherwise.

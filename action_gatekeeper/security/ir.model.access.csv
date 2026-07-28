@@ -1,4 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_gatekeeper_rule,access_gatekeeper_rule,model_gatekeeper_rule,base.group_system,1,1,1,1
+access_gatekeeper_rule_user,access_gatekeeper_rule_user,model_gatekeeper_rule,base.group_user,1,0,0,0
 access_gatekeeper_line,access_gatekeeper_line,model_gatekeeper_line,base.group_system,1,1,1,1
+access_gatekeeper_line_user,access_gatekeeper_line_user,model_gatekeeper_line,base.group_user,1,1,0,0
 access_gatekeeper_trigger,access_gatekeeper_trigger,model_gatekeeper_trigger,base.group_system,1,0,0,0
+access_gatekeeper_trigger_user,access_gatekeeper_trigger_user,model_gatekeeper_trigger,base.group_user,1,0,0,0

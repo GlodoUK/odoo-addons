@@ -1,5 +1,6 @@
 from odoo import fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools.safe_eval import safe_eval
 
 
 class ActionGatekeeperMixin(models.AbstractModel):
@@ -27,10 +28,16 @@ class ActionGatekeeperMixin(models.AbstractModel):
         domain = [("target_model", "=", self._name)]
         if event:
             domain.append(("trigger.action", "=", event))
-        return self.env["gatekeeper.rule"].search(
+        rules = self.env["gatekeeper.rule"].search(
             domain,
             order="sequence",
         )
+        for rule in rules:
+            if rule.target_domain:
+                domain = safe_eval(rule.target_domain)
+                if not self.filtered_domain(domain):
+                    rules -= rule
+        return rules
 
     def _sync_gatekeeper_lines(self):
         if self.env.context.get("skip_gatekeeper_sync"):
@@ -76,12 +83,16 @@ class ActionGatekeeperMixin(models.AbstractModel):
                         self._action_gatekeeper_hold(rule)
                     else:
                         record_name = getattr(self, "name", "")
+                        block_message = rule.block_message or self.env._(
+                            "Blocked by Gatekeeper Rule!"
+                        )
                         raise ValidationError(
                             self.env._(
-                                "Blocked by Gatekeeper Rule!"
-                                "\nModel: %(model_name)s,"
+                                "%(block_message)s"
+                                "\nModel: %(model_name)s "
                                 "ID: %(record_id)s%(record_name)s"
                                 "\nRule: %(rule_name)s",
+                                block_message=block_message,
                                 model_name=self._name,
                                 record_id=self.id,
                                 record_name="\n" + record_name if record_name else "",

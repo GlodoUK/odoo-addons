@@ -7,33 +7,45 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name" />
-                        <field name="target_model" />
+                        <field name="name" string="Rule Name" />
+                        <field name="target_model" string="Target records of type..." />
                         <p
                             invisible="target_model"
                             colspan="2"
                         >If no Target Models are available, you need to install an addon module to add support.</p>
                     </group>
-
-                    <group invisible="target_model == False">
+                    <group string="Rule Logic" invisible="target_model == False">
+                        <field
+                            name="target_domain"
+                            widget="domain"
+                            options="{'model': 'target_model'}"
+                            string="Target records where..."
+                        />
                         <field
                             name="trigger"
                             domain="['|', ('model_name', '=', target_model), ('model_name', 'in', [False, ''])]"
                             options="{'no_create': True}"
                         />
                         <field name="rule" />
-                        <field name="action" />
                         <field
                             name="record_domain"
                             widget="domain"
                             options="{'model': 'target_model'}"
                             invisible="rule != 'record_domain'"
+                            string="Only when the record matches this filter..."
                         />
                         <field
                             name="code"
                             widget="code"
                             options="{'mode': 'python'}"
                             invisible="rule != 'code'"
+                        />
+                        <field name="action" />
+                        <field
+                            name="block_message"
+                            string="Block Message"
+                            placeholder="Optional message to display when blocking a record."
+                            invisible="action != 'block'"
                         />
                     </group>
 
@@ -45,12 +57,13 @@
                             colspan="2"
                         >When triggered, which users or groups can release this rule?</p>
                         <div
-                            class="alert alert-warning"
+                            class="alert alert-danger"
                             role="alert"
                             colspan="2"
-                            invisible="release_users or release_groups"
+                            invisible="enough_users_can_release"
                         >
-                            <strong>Note:</strong> No users can bypass this rule!</div>
+                            <strong
+                        >Note:</strong> Not enough users can release this rule to satisfy the Release Count Required!</div>
                         <field
                             name="release_users"
                             widget="many2many_tags"
@@ -60,6 +73,10 @@
                             name="release_groups"
                             widget="many2many_tags"
                             string="Release Groups"
+                        />
+                        <field
+                            name="release_count_required"
+                            string="Release Count Required"
                         />
                     </group>
                 </sheet>

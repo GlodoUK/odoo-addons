@@ -7,17 +7,44 @@
             <list decoration-muted="is_released">
                 <field name="rule_name" />
                 <field name="action" />
+                <field name="release_count_required" />
+                <field name="released_user_ids" />
                 <field name="is_released" />
-                <field name="released_by" />
                 <field name="released_on" />
                 <button
                     name="action_release"
                     type="object"
                     string="Release"
                     icon="fa-unlock"
-                    invisible="is_released or not can_release"
+                    invisible="is_released or not can_release or user_has_released"
+                />
+                <button
+                    name="action_request_release"
+                    type="object"
+                    string="Request Release"
+                    icon="fa-envelope"
+                    invisible="is_released or (can_release and not user_has_released)"
                 />
             </list>
+        </field>
+    </record>
+    <record id="gatekeeper_line_form" model="ir.ui.view">
+        <field name="name">gatekeeper_line_form</field>
+        <field name="model">gatekeeper.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="rule_name" readonly="1" />
+                        <field name="action" readonly="1" />
+                        <field name="release_count_required" readonly="1" />
+                        <field name="release_count" readonly="1" />
+                        <field name="is_released" readonly="1" />
+                        <field name="released_user_ids" readonly="1" />
+                        <field name="released_on" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>
