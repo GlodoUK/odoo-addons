@@ -1,3 +1,4 @@
+from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase, tagged
 
 
@@ -58,3 +59,28 @@ class TestGatekeeperRule(TransactionCase):
         rule = self._make_rule()
         self.assertFalse(rule._check_can_release(self.user_a))
         self.assertFalse(rule._check_can_release(self.user_b))
+
+    def test_release_count_required_must_be_positive(self):
+        rule = self._make_rule()
+        with self.assertRaises(ValidationError):
+            rule.release_count_required = 0
+
+    def test_enough_users_can_release_direct_users(self):
+        rule = self._make_rule(
+            release_users=[(6, 0, [self.user_a.id])],
+            release_count_required=2,
+        )
+        self.assertFalse(rule.enough_users_can_release)
+        rule.release_users = [(4, self.user_b.id)]
+        self.assertTrue(rule.enough_users_can_release)
+
+    def test_enough_users_can_release_counts_group_members_once(self):
+        self.group.user_ids = [(4, self.user_a.id)]
+        rule = self._make_rule(
+            release_users=[(6, 0, [self.user_a.id])],
+            release_groups=[(6, 0, [self.group.id])],
+            release_count_required=2,
+        )
+        # user_a is both a direct release user and a group member, so they
+        # only count once towards release_count_required.
+        self.assertFalse(rule.enough_users_can_release)

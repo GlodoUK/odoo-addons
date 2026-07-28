@@ -69,7 +69,8 @@ class GatekeeperRuleLine(models.Model):
 
     def action_release(self):
         for line in self:
-            line.rule_id._check_can_release(self.env.user)
+            if not line.rule_id._check_can_release(self.env.user):
+                return
             line.released_user_ids = [(4, self.env.user.id)]
             if line.release_count >= line.rule_id.release_count_required:
                 line.is_released = True

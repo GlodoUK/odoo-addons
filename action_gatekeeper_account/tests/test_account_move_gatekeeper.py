@@ -73,11 +73,18 @@ class TestAccountMoveGatekeeper(AccountTestInvoicingCommon):
             invoice.button_cancel()
 
     def test_releasing_all_lines_clears_hold(self):
-        self._make_rule(action="hold")
+        # Releasing requires acting as an active user: the default
+        # TransactionCase user (OdooBot, the technical superuser) is
+        # inactive, and released_user_ids is a Many2many to res.users,
+        # which silently drops inactive members on read. base.user_admin
+        # isn't scoped to the test company here, so reuse the env's own
+        # (active, correctly-scoped) user instead.
+        releaser = self.env.user
+        self._make_rule(action="hold", release_users=[(6, 0, [releaser.id])])
         invoice = self._create_invoice(move_type="out_invoice")
         invoice.action_post()
 
         line = invoice.gatekeeper_rule_lines
-        line.action_release()
+        line.with_user(releaser).action_release()
         self.assertTrue(line.is_released)
         self.assertFalse(invoice.gatekeeper_hold)

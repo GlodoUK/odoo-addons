@@ -10,6 +10,12 @@ class TestStockPickingGatekeeper(TransactionCase):
 
         cls.partner = cls.env["res.partner"].create({"name": "Gatekeeper Partner"})
 
+        # Releasing requires acting as an active user: the default
+        # TransactionCase user (OdooBot, the technical superuser) is
+        # inactive, and released_user_ids is a Many2many to res.users,
+        # which silently drops inactive members on read.
+        cls.releaser = cls.env.ref("base.user_admin")
+
         cls.rule = cls.env["gatekeeper.rule"].create(
             {
                 "name": "Sale Confirm Hold",
@@ -19,6 +25,7 @@ class TestStockPickingGatekeeper(TransactionCase):
                 ).id,
                 "rule": "always",
                 "action": "hold",
+                "release_users": [(6, 0, [cls.releaser.id])],
             }
         )
 
@@ -45,7 +52,7 @@ class TestStockPickingGatekeeper(TransactionCase):
     def test_releasing_hold_releases_pickings(self):
         order, picking = self._make_order_with_picking()
         order.action_confirm()
-        order.gatekeeper_rule_lines.action_release()
+        order.gatekeeper_rule_lines.with_user(self.releaser).action_release()
         self.assertFalse(order.gatekeeper_hold)
         self.assertFalse(picking.gatekeeper_hold)
         self.assertFalse(picking.hold)

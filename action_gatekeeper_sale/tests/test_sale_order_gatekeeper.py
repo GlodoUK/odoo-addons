@@ -16,6 +16,20 @@ class TestSaleOrderGatekeeper(TransactionCase):
         cls.other_partner = cls.env["res.partner"].create({"name": "Other Partner"})
         cls.product = cls.env["product.product"].create({"name": "Gatekeeper Product"})
 
+        # Releasing requires acting as an active user: the default
+        # TransactionCase user (OdooBot, the technical superuser) is
+        # inactive, and released_user_ids is a Many2many to res.users,
+        # which silently drops inactive members on read.
+        cls.releaser_a = cls.env.ref("base.user_admin")
+        cls.releaser_b = cls.env["res.users"].create(
+            {
+                "name": "Gatekeeper Releaser B",
+                "login": "gatekeeper_releaser_b",
+                "email": "gatekeeper_releaser_b@example.com",
+                "group_ids": [(4, cls.env.ref("sales_team.group_sale_manager").id)],
+            }
+        )
+
         cls.trigger_create = cls.env.ref("action_gatekeeper.gatekeeper_trigger_create")
         cls.trigger_write = cls.env.ref("action_gatekeeper.gatekeeper_trigger_write")
         cls.trigger_confirm = cls.env.ref(
@@ -58,12 +72,45 @@ class TestSaleOrderGatekeeper(TransactionCase):
         self.assertEqual(order.gatekeeper_rule_lines.rule_id, rule)
 
     def test_releasing_all_lines_clears_hold(self):
-        self._make_rule(action="hold")
+        self._make_rule(action="hold", release_users=[(6, 0, [self.releaser_a.id])])
         order = self._make_order()
         line = order.gatekeeper_rule_lines
-        line.action_release()
+        line.with_user(self.releaser_a).action_release()
         self.assertTrue(line.is_released)
         self.assertFalse(order.gatekeeper_hold)
+
+    def test_release_requires_all_configured_users(self):
+        self._make_rule(
+            action="hold",
+            release_users=[(6, 0, [self.releaser_a.id, self.releaser_b.id])],
+            release_count_required=2,
+        )
+        order = self._make_order()
+        line = order.gatekeeper_rule_lines
+
+        line.with_user(self.releaser_a).action_release()
+        self.assertFalse(line.is_released)
+        self.assertTrue(order.gatekeeper_hold)
+        self.assertEqual(line.release_count, 1)
+
+        line.with_user(self.releaser_b).action_release()
+        self.assertTrue(line.is_released)
+        self.assertFalse(order.gatekeeper_hold)
+        self.assertEqual(line.release_count, 2)
+
+    def test_target_domain_restricts_matching_records(self):
+        self._make_rule(
+            action="block",
+            target_domain=f"[('partner_id', '=', {self.other_partner.id})]",
+        )
+        self._make_order(partner=self.partner)
+        with self.assertRaises(ValidationError):
+            self._make_order(partner=self.other_partner)
+
+    def test_block_message_included_in_error(self):
+        self._make_rule(action="block", block_message="Custom block message")
+        with self.assertRaisesRegex(ValidationError, "Custom block message"):
+            self._make_order()
 
     def test_no_matching_rule_does_not_hold_or_block(self):
         self._make_rule(action="block", trigger=self.trigger_write)

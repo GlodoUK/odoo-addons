@@ -129,7 +129,7 @@ trigger_rule = False
         for rule in self:
             users = set(rule.release_users)
             for group in rule.release_groups:
-                users.update(group.users)
+                users.update(group.user_ids)
             rule.enough_users_can_release = len(users) >= rule.release_count_required
 
     def _check_rule(self, record) -> bool:
