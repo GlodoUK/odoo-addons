@@ -98,7 +98,6 @@ trigger_rule = False
     release_count_required = fields.Integer(
         default=1,
         help="Number of separate users required to release this rule.",
-        min=1,
     )
 
     enough_users_can_release = fields.Boolean(
