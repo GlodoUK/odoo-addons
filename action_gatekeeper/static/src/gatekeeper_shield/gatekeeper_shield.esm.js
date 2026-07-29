@@ -19,7 +19,10 @@ const LINE_FIELDS = [
 
 export class GatekeeperShield extends Component {
     static template = "action_gatekeeper.GatekeeperShield";
-    static props = {...standardWidgetProps};
+    static props = {
+        ...standardWidgetProps,
+        inline: {type: Boolean, optional: true},
+    };
 
     setup() {
         this.orm = useService("orm");
@@ -94,6 +97,9 @@ export class GatekeeperShield extends Component {
 
 export const gatekeeperShieldWidget = {
     component: GatekeeperShield,
+    extractProps: ({options}) => ({
+        inline: Boolean(options.inline),
+    }),
 };
 
 registry.category("view_widgets").add("gatekeeper_shield", gatekeeperShieldWidget);

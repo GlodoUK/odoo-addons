@@ -4,7 +4,7 @@
         <button
             type="button"
             t-if="state.lines.length"
-            t-attf-class="o_gatekeeper_shield o_gatekeeper_shield-{{ status }}"
+            t-attf-class="o_gatekeeper_shield o_gatekeeper_shield-{{ status }} {{ props.inline ? 'o_gatekeeper_shield-inline' : '' }}"
             t-on-click="onClick"
             title="Gatekeeper Rules"
         >

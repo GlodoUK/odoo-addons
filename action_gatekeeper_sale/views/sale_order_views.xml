@@ -17,6 +17,17 @@
         </field>
     </record>
 
+    <record id="sale_order_list_gatekeeper" model="ir.ui.view">
+        <field name="name">sale.order.list.gatekeeper</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <widget name="gatekeeper_shield" options="{'inline': True}" />
+            </xpath>
+        </field>
+    </record>
+
     <record id="gatekeeper_rule_action_window" model="ir.actions.act_window">
         <field name="name">Gatekeeper Rules</field>
         <field name="res_model">gatekeeper.rule</field>
