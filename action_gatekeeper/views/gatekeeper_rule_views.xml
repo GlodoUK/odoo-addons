@@ -6,7 +6,14 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
                     <group>
+                        <field name="active" invisible="1" />
                         <field name="name" string="Rule Name" />
                         <field name="target_model" string="Target records of type..." />
                         <p
@@ -93,6 +100,34 @@
                 <field name="name" />
                 <field name="target_model" />
             </list>
+        </field>
+    </record>
+
+    <record id="gatekeeper_rule_search" model="ir.ui.view">
+        <field name="name">gatekeeper_rule_search</field>
+        <field name="model">gatekeeper.rule</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="target_model" />
+                <filter
+                    name="active"
+                    string="Active"
+                    domain="[('active', '=', True)]"
+                />
+                <filter
+                    name="inactive"
+                    string="Inactive"
+                    domain="[('active', '=', False)]"
+                />
+                <group>
+                    <filter
+                        name="target_model_group"
+                        string="Target Model"
+                        context="{'group_by': 'target_model'}"
+                    />
+                </group>
+            </search>
         </field>
     </record>
 

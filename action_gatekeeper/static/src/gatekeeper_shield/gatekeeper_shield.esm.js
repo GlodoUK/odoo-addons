@@ -1,8 +1,9 @@
-import {Component, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 import {GatekeeperShieldPopover} from "./gatekeeper_shield_popover.esm";
 import {registry} from "@web/core/registry";
 import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 import {usePopover} from "@web/core/popover/popover_hook";
+import {useRecordObserver} from "@web/model/relational_model/utils";
 import {useService} from "@web/core/utils/hooks";
 
 const LINE_FIELDS = [
@@ -30,13 +31,7 @@ export class GatekeeperShield extends Component {
         this.popover = usePopover(GatekeeperShieldPopover, {
             position: "bottom-start",
         });
-
-        onWillStart(() => this.loadLines());
-        onWillUpdateProps((nextProps) => {
-            if (nextProps.record.resId !== this.props.record.resId) {
-                return this.loadLines(nextProps.record);
-            }
-        });
+        useRecordObserver((record) => this.loadLines(record));
     }
 
     async loadLines(record = this.props.record) {
@@ -44,16 +39,12 @@ export class GatekeeperShield extends Component {
             this.state.lines = [];
             return;
         }
-        // Read the record's own gatekeeper_rule_lines relation rather than
-        // searching gatekeeper.line by res_model/res_id directly, so stale
-        // lines that were unlinked from the record (but not yet cleaned up
-        // in the database) never show up here.
         const [data] = await this.orm.read(
             record.resModel,
             [record.resId],
             ["gatekeeper_rule_lines"]
         );
-        const ids = data.gatekeeper_rule_lines;
+        const ids = data ? data.gatekeeper_rule_lines : [];
         this.state.lines = ids.length
             ? await this.orm.read("gatekeeper.line", ids, LINE_FIELDS)
             : [];
@@ -79,14 +70,7 @@ export class GatekeeperShield extends Component {
             this.popover.close();
             return;
         }
-        // Ev.currentTarget is nulled out once the event finishes
-        // dispatching, so it must be captured before the await below,
-        // not read afterwards.
         const target = ev.currentTarget;
-        // The widget isn't guaranteed to re-render (and thus reload) when
-        // the record is saved/reloaded elsewhere on the form (e.g. via a
-        // statusbar button such as Cancel or Reset to Quotation), so
-        // always fetch fresh data at the moment the user opens this.
         await this.loadLines();
         this.popover.open(target, {
             state: this.state,
