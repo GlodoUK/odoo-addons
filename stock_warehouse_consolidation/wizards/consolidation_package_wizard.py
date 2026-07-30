@@ -16,12 +16,10 @@ class ConsolidationPackageWizard(models.TransientModel):
     product_id = fields.Many2one(
         "product.product",
         compute="_compute_product_id",
-        string="Product",
     )
 
     target_package_id = fields.Many2one(
         "stock.package",
-        string="Target Package",
         required=True,
         domain="[('id', 'in', package_ids)]",
         help="The package the others will be merged into.",

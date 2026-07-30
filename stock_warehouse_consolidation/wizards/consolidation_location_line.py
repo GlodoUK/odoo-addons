@@ -9,7 +9,6 @@ class ConsolidationLocationLine(models.TransientModel):
 
     package_id = fields.Many2one(
         "stock.package",
-        string="Package",
         required=True,
         readonly=True,
     )
@@ -22,7 +21,6 @@ class ConsolidationLocationLine(models.TransientModel):
 
     product_id = fields.Many2one(
         "product.product",
-        string="Product",
         readonly=True,
     )
 

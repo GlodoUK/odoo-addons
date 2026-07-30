@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <odoo>
     <record id="consolidation_location_wizard_view_form" model="ir.ui.view">
         <field name="name">consolidation.location.wizard.form</field>
@@ -6,20 +6,25 @@
         <field name="arch" type="xml">
             <form string="Relocate Packages">
                 <group>
-                    <field name="allowed_dest_location_ids" invisible="1"/>
-                    <field name="dest_location_id"/>
+                    <field name="allowed_dest_location_ids" invisible="1" />
+                    <field name="dest_location_id" />
                 </group>
-                <separator string="Packages to relocate"/>
+                <separator string="Packages to relocate" />
                 <field name="package_ids">
                     <list>
-                        <field name="name"/>
-                        <field name="package_product_id"/>
-                        <field name="content_qty"/>
-                        <field name="location_id"/>
+                        <field name="name" />
+                        <field name="package_product_id" />
+                        <field name="content_qty" />
+                        <field name="location_id" />
                     </list>
                 </field>
                 <footer>
-                    <button name="action_relocate" type="object" string="Relocate" class="btn-primary"/>
+                    <button
+                        name="action_relocate"
+                        type="object"
+                        string="Relocate"
+                        class="btn-primary"
+                    />
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

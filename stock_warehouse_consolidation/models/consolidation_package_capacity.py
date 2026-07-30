@@ -8,14 +8,12 @@ class ConsolidationPackageCapacity(models.Model):
 
     product_id = fields.Many2one(
         "product.product",
-        string="Product",
         required=True,
         index=True,
         ondelete="cascade",
     )
     package_type_id = fields.Many2one(
         "stock.package.type",
-        string="Package Type",
         required=True,
         ondelete="cascade",
         domain="[('can_be_consolidated', '=', True)]",
