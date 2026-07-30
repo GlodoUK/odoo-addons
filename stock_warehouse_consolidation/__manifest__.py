@@ -2,7 +2,7 @@
     "name": "stock_warehouse_consolidation",
     "summary": "Package capacity, real-time levels and stock consolidation",
     "author": "Glo Networks",
-    "website": "https://www.glo.systems/",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Inventory",
     "version": "19.0.1.0.0",
     "depends": [

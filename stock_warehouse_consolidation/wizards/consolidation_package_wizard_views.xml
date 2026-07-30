@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="consolidation_package_wizard_view_form" model="ir.ui.view">
         <field name="name">consolidation.package.wizard.form</field>
@@ -10,7 +10,7 @@
                     <field name="target_package_id" />
                     <field name="dest_location_id" />
                 </group>
-                <separator string="Packages to merge"/>
+                <separator string="Packages to merge" />
                 <field name="package_ids">
                     <list>
                         <field name="name" />
@@ -25,7 +25,7 @@
                         string="Consolidate"
                         class="btn-primary"
                     />
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
             </form>
         </field>

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="stock_package_view_form" model="ir.ui.view">
         <field name="name">stock.package.form.package</field>
@@ -12,7 +12,11 @@
                 <field name="content_qty" invisible="not can_be_consolidated" />
                 <field name="reserved_qty" invisible="not can_be_consolidated" />
                 <field name="remaining_qty" invisible="not can_be_consolidated" />
-                <field name="fill_pct" widget="progressbar" invisible="not can_be_consolidated" />
+                <field
+                    name="fill_pct"
+                    widget="progressbar"
+                    invisible="not can_be_consolidated"
+                />
             </xpath>
         </field>
     </record>
@@ -37,10 +41,22 @@
         <field name="inherit_id" ref="stock.stock_package_view_search" />
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <filter name="can_be_consolidated" string="Can Be Consolidated" domain="[('can_be_consolidated', '=', True)]" />
+                <filter
+                    name="can_be_consolidated"
+                    string="Can Be Consolidated"
+                    domain="[('can_be_consolidated', '=', True)]"
+                />
                 <group>
-                    <filter name="group_product" string="Product" context="{'group_by': 'package_product_id'}" />
-                    <filter name="group_location" string="Location" context="{'group_by': 'location_id'}" />
+                    <filter
+                        name="group_product"
+                        string="Product"
+                        context="{'group_by': 'package_product_id'}"
+                    />
+                    <filter
+                        name="group_location"
+                        string="Location"
+                        context="{'group_by': 'location_id'}"
+                    />
                 </group>
             </xpath>
         </field>
