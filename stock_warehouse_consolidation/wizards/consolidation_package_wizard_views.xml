@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="consolidation_package_wizard_view_form" model="ir.ui.view">
+        <field name="name">consolidation.package.wizard.form</field>
+        <field name="model">consolidation.package.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Consolidate Packages">
+                <group>
+                    <field name="product_id"/>
+                    <field name="target_package_id"/>
+                    <field name="dest_location_id"/>
+                </group>
+                <separator string="Packages to merge"/>
+                <field name="package_ids">
+                    <list>
+                        <field name="name"/>
+                        <field name="content_qty"/>
+                        <field name="reserved_qty"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_consolidate" type="object" string="Consolidate" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
