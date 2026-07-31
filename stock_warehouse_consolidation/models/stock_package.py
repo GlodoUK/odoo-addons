@@ -123,7 +123,7 @@ class StockPackage(models.Model):
 
     @api.model
     def _find_consolidation_candidates(self):
-        stock_locations = self.env["stock.warehouse"].search([]).lot_stock_id
+        warehouses = self.env["stock.warehouse"].search_fetch([], ["lot_stock_id"])
 
         packages = self.search(
             [
@@ -131,7 +131,7 @@ class StockPackage(models.Model):
                 ("content_qty", ">", 0),
                 ("package_product_id", "!=", False),
                 ("package_type_id", "!=", False),
-                ("location_id", "child_of", stock_locations.ids),
+                ("location_id", "child_of", warehouses.lot_stock_id.ids),
             ]
         )
 
