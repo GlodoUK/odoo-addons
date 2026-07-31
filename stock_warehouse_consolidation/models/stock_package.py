@@ -138,13 +138,15 @@ class StockPackage(models.Model):
         # A full package has no room to absorb another one.
         packages = packages.filtered(
             lambda p: (
-                float_compare(
-                    p.remaining_qty,
-                    0.0,
-                    precision_rounding=p.package_product_id.uom_id.rounding,
+                (
+                    float_compare(
+                        p.remaining_qty,
+                        0.0,
+                        precision_rounding=p.package_product_id.uom_id.rounding,
+                    )
                 )
+                > 0
             )
-            > 0
         )
 
         groups = {}
