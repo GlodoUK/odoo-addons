@@ -5,6 +5,7 @@
         name="Consolidation"
         parent="stock.menu_stock_warehouse_mgmt"
         sequence="75"
+        groups="stock.group_tracking_lot"
     />
 
     <menuitem
@@ -13,6 +14,7 @@
         parent="menu_consolidation"
         action="action_open_packages_to_consolidate"
         sequence="10"
+        groups="stock.group_tracking_lot"
     />
 
     <menuitem
@@ -21,6 +23,7 @@
         parent="menu_consolidation"
         action="action_open_locations_to_consolidate"
         sequence="20"
+        groups="stock.group_tracking_lot"
     />
 
     <menuitem
@@ -29,6 +32,7 @@
         parent="stock.menu_stock_inventory_control"
         action="package_action"
         sequence="90"
+        groups="stock.group_tracking_lot"
     />
 
     <menuitem
@@ -37,5 +41,6 @@
         parent="stock.menu_product_in_config_stock"
         action="consolidation_package_capacity_action"
         sequence="90"
+        groups="stock.group_tracking_lot"
     />
 </odoo>

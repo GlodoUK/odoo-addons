@@ -123,8 +123,26 @@ class StockPackage(models.Model):
 
     @api.model
     def _find_consolidation_candidates(self):
+        stock_locations = self.env["stock.warehouse"].search([]).lot_stock_id
+
         packages = self.search(
-            [("can_be_consolidated", "=", True), ("content_qty", ">", 0)]
+            [
+                ("can_be_consolidated", "=", True),
+                ("content_qty", ">", 0),
+                ("package_product_id", "!=", False),
+                ("package_type_id", "!=", False),
+                ("location_id", "child_of", stock_locations.ids),
+            ]
+        )
+
+        # A full package has no room to absorb another one.
+        packages = packages.filtered(
+            lambda p: float_compare(
+                p.remaining_qty,
+                0.0,
+                precision_rounding=p.package_product_id.uom_id.rounding,
+            )
+            > 0
         )
 
         groups = {}
@@ -135,9 +153,6 @@ class StockPackage(models.Model):
                 package.package_type_id.id,
                 package.location_id.warehouse_id.id,
             )
-
-            if not all(key):
-                continue
 
             groups.setdefault(key, self.browse())
             groups[key] |= package
