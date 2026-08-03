@@ -86,6 +86,7 @@ addon | version | maintainers | summary
 [stock_picking_merge](stock_picking_merge/) | 19.0.1.0.0 |  | Adds the ability to merge stock.picking records
 [stock_reception_steps_one_point_five](stock_reception_steps_one_point_five/) | 19.0.1.0.0 |  | Receive into a landing area (Input) and store to Stock manually
 [stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
+[stock_warehouse_consolidation](stock_warehouse_consolidation/) | 19.0.1.0.0 |  | Package capacity, real-time levels and stock consolidation
 [web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
 [website_category_heirarchy_search](website_category_heirarchy_search/) | 19.0.1.0.0 |  | Website snippet: cascading dropdowns to search products by category hierarchy
 
