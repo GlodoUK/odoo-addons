@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="consolidation_location_line_view_list" model="ir.ui.view">
+        <field name="name">consolidation.location.line.list</field>
+        <field name="model">consolidation.location.line</field>
+        <field name="arch" type="xml">
+            <list
+                string="Locations to Consolidate"
+                expand="1"
+                create="0"
+                export_xlsx="0"
+            >
+                <header>
+                    <button
+                        name="action_relocate"
+                        type="object"
+                        string="Relocate Selected"
+                        class="btn-primary"
+                    />
+                </header>
+                <field name="package_id" />
+                <field name="product_id" column_invisible="True" />
+                <field name="content_qty" />
+                <field name="package_location_id" />
+                <field name="location_package_count" />
+                <field name="location_package_capacity" />
+                <groupby name="product_id">
+                    <button
+                        type="object"
+                        name="action_relocate_group"
+                        string="Relocate All"
+                        class="btn-primary"
+                    />
+                </groupby>
+            </list>
+        </field>
+    </record>
+
+    <!-- The menu runs this so candidates are computed fresh on every open. -->
+    <record id="action_open_locations_to_consolidate" model="ir.actions.server">
+        <field name="name">Locations to Consolidate</field>
+        <field name="model_id" ref="model_consolidation_location_line" />
+        <field name="state">code</field>
+        <field name="code">action = model.action_open()</field>
+    </record>
+</odoo>
