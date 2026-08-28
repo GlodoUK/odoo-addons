@@ -67,6 +67,7 @@ addon | version | maintainers | summary
 [res_partner_utm](res_partner_utm/) | 19.0.1.0.0 |  | Adds UTM information to Contact record
 [res_partner_work_phone](res_partner_work_phone/) | 19.0.1.0.0 |  | Adds an additional 'work_number' and 'extension' field to contact
 [rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
+[sale_action_confirm_send](sale_action_confirm_send/) | 19.0.1.0.0 |  | sale_action_confirm_send
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
 [sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.0.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
 [sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
