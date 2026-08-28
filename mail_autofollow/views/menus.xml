@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem
+        id="menu_mail_autofollow_rule"
+        name="Auto Follow Rules"
+        parent="mail.menu_configuration"
+        action="action_mail_autofollow_rule"
+        groups="mail_autofollow.group_mail_autofollow_manager"
+        sequence="30"
+    />
+    <menuitem
+        id="menu_mail_autofollow_rule_technical"
+        name="Auto Follow Rules"
+        parent="base.menu_email"
+        action="action_mail_autofollow_rule"
+        groups="mail_autofollow.group_mail_autofollow_manager"
+        sequence="30"
+    />
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mail_autofollow_rule_manager,mail_autofollow.rule manager,model_mail_autofollow_rule,mail_autofollow.group_mail_autofollow_manager,1,1,1,1
+access_ir_model_mail_autofollow_manager,ir.model mail_autofollow manager,base.model_ir_model,mail_autofollow.group_mail_autofollow_manager,1,0,0,0
+access_ir_model_fields_mail_autofollow_manager,ir.model.fields mail_autofollow manager,base.model_ir_model_fields,mail_autofollow.group_mail_autofollow_manager,1,0,0,0
