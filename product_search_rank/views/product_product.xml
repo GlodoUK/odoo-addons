@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_search_form_view_search_rank" model="ir.ui.view">
+        <field name="name">product.product.search.search.rank</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="search_rank" string="Product (Ranked by Relevance)" />
+            </field>
+        </field>
+    </record>
+</odoo>
