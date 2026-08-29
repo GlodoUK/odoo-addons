@@ -2,6 +2,7 @@
 cryptography
 feedparser
 fsspec
+idna
 manifestoo_core
 openpyxl
 requests
