@@ -21,7 +21,7 @@ services:
       - filestore:/var/lib/odoo:z
 
   db:
-    image: postgres:17
+    image: postgres:18
     environment:
       - POSTGRES_DB=odoo
       - POSTGRES_USER=odoo
