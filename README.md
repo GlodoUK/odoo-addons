@@ -58,6 +58,7 @@ addon | version | maintainers | summary
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [queue_job_trace](queue_job_trace/) | 19.0.1.0.0 |  | Correlate jobs spawned from the same origin with a trace id
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
+[res_partner_compute_display_name_ref](res_partner_compute_display_name_ref/) | 19.0.1.0.0 |  | Prefix the partner display name with the internal reference
 [res_partner_decision_maker](res_partner_decision_maker/) | 19.0.1.0.0 |  | Adds decision maker field to Contact record
 [res_partner_eori](res_partner_eori/) | 19.0.1.0.0 |  | res_partner_eori
 [res_partner_mobile](res_partner_mobile/) | 19.0.1.0.0 |  | Resurrects the mobile field into 19.0+
