@@ -8,6 +8,14 @@
         >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 
+    <record id="rule_autopilot_sale_order_file_company" model="ir.rule">
+        <field name="name">Sale EDI Order File: multi-company</field>
+        <field name="model_id" ref="model_autopilot_sale_order_file" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
     <record id="rule_autopilot_sale_order_company" model="ir.rule">
         <field name="name">Sale EDI Order Binding: multi-company</field>
         <field name="model_id" ref="model_autopilot_sale_order" />
@@ -53,6 +61,14 @@
         <field
             name="domain_force"
         >['|', ('restrict_group_ids', '=', False), ('restrict_group_ids', 'in', user.all_group_ids.ids)]</field>
+    </record>
+
+    <record id="rule_autopilot_sale_order_file_access" model="ir.rule">
+        <field name="name">Sale EDI Order File: access groups</field>
+        <field name="model_id" ref="model_autopilot_sale_order_file" />
+        <field
+            name="domain_force"
+        >['|', ('backend_id.restrict_group_ids', '=', False), ('backend_id.restrict_group_ids', 'in', user.all_group_ids.ids)]</field>
     </record>
 
     <record id="rule_autopilot_sale_order_access" model="ir.rule">

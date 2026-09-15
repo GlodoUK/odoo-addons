@@ -1,4 +1,5 @@
 from . import autopilot_sale_backend
+from . import autopilot_sale_order_file
 from . import autopilot_sale_order
 from . import autopilot_sale_order_line
 from . import autopilot_sale_picking

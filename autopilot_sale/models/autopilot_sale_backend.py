@@ -110,6 +110,10 @@ class AutopilotSaleBackend(models.Model):
     asn_cron_id = fields.Many2one("ir.cron", copy=False, readonly=True)
     invoice_cron_id = fields.Many2one("ir.cron", copy=False, readonly=True)
 
+    order_file_ids = fields.One2many(
+        "autopilot_sale.order.file", "backend_id", string="Order Files"
+    )
+    order_file_count = fields.Integer(compute="_compute_counts")
     order_binding_ids = fields.One2many(
         "autopilot_sale.order", "backend_id", string="Orders"
     )
@@ -206,6 +210,7 @@ class AutopilotSaleBackend(models.Model):
 
     def _compute_counts(self):
         for model, field in (
+            ("autopilot_sale.order.file", "order_file_count"),
             ("autopilot_sale.order", "order_count"),
             ("autopilot_sale.picking", "picking_count"),
             ("autopilot_sale.invoice", "invoice_count"),
@@ -360,22 +365,18 @@ class AutopilotSaleBackend(models.Model):
     def _import_orders(self):
         """Claim inbound files and hand each to the dialect as its own queued
         job. Claiming (the fsspec move) happens here in the cron transaction;
-        reading/parsing/creating is the dialect's ``_<dialect>_import_orders(path)``,
-        one job per file so each retries independently."""
-        self.ensure_one()
-        for path in self._sweep_orders():
-            self.with_delay(identity_key=identity_exact)._import_order(path)
+        reading/parsing/creating is the dialect's ``_<dialect>_import_orders(path)``.
 
-    def _import_order(self, path):
+        Each claimed file becomes an ``autopilot_sale.order.file`` *before* it
+        is queued, and that record - not the backend - is what gets delayed.
+        That makes the file the job's origin record, so its state/error land
+        on the file (via stored related fields) where a sales user can see a
+        failure and pull it out of the queue, rather than only in the
+        technical Job Queue."""
         self.ensure_one()
-        if not self.supports_import_order:
-            _logger.info(
-                "Sale EDI %s: dialect %r imports no orders; skipping.",
-                self.name,
-                self.dialect,
-            )
-            return
-        return getattr(self, f"_{self.dialect}_import_order")(path)
+        File = self.env["autopilot_sale.order.file"]
+        for path in self._sweep_orders():
+            File.create({"backend_id": self.id, "path": path})._enqueue()
 
     @cron(
         "asn_cron_id",
@@ -511,6 +512,9 @@ class AutopilotSaleBackend(models.Model):
             "domain": [("backend_id", "=", self.id)],
             "context": {"default_backend_id": self.id},
         }
+
+    def action_view_files(self):
+        return self._action_view(self.env._("Order Files"), "autopilot_sale.order.file")
 
     def action_view_orders(self):
         return self._action_view(self.env._("Orders"), "autopilot_sale.order")

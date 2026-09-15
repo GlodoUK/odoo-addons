@@ -32,6 +32,18 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button
+                            name="action_view_files"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-o"
+                        >
+                            <field
+                                name="order_file_count"
+                                widget="statinfo"
+                                string="Files"
+                            />
+                        </button>
+                        <button
                             name="action_view_orders"
                             type="object"
                             class="oe_stat_button"
@@ -160,6 +172,7 @@
                 <field name="dialect" />
                 <field name="company_id" groups="base.group_multi_company" />
                 <field name="partner_id" />
+                <field name="order_file_count" />
                 <field name="order_count" />
                 <field name="picking_count" />
                 <field name="invoice_count" />

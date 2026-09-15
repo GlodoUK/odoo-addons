@@ -1,5 +1,123 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <!-- ============================= Order file ============================= -->
+    <record id="autopilot_sale_order_file_view_list" model="ir.ui.view">
+        <field name="name">autopilot_sale.order.file.list</field>
+        <field name="model">autopilot_sale.order.file</field>
+        <field name="arch" type="xml">
+            <list
+                string="Sale EDI Order Files"
+                decoration-danger="job_state == 'failed'"
+                decoration-muted="job_state in ('done', 'cancelled')"
+            >
+                <field name="backend_id" />
+                <field name="path" />
+                <field name="job_state" />
+                <field name="job_exc_message" />
+                <field name="order_count" />
+                <button
+                    name="action_requeue"
+                    type="object"
+                    string="Retry"
+                    icon="fa-refresh"
+                    invisible="job_state != 'failed'"
+                    groups="sales_team.group_sale_manager"
+                />
+                <button
+                    name="action_remove_from_queue"
+                    type="object"
+                    string="Remove"
+                    icon="fa-times"
+                    invisible="job_state not in ('pending', 'enqueued', 'failed')"
+                    groups="sales_team.group_sale_manager"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_order_file_view_form" model="ir.ui.view">
+        <field name="name">autopilot_sale.order.file.form</field>
+        <field name="model">autopilot_sale.order.file</field>
+        <field name="arch" type="xml">
+            <form string="Sale EDI Order File">
+                <header>
+                    <button
+                        name="action_requeue"
+                        type="object"
+                        string="Retry"
+                        class="btn-primary"
+                        invisible="job_state != 'failed'"
+                        groups="sales_team.group_sale_manager"
+                    />
+                    <button
+                        name="action_remove_from_queue"
+                        type="object"
+                        string="Remove from Queue"
+                        invisible="job_state not in ('pending', 'enqueued', 'failed')"
+                        groups="sales_team.group_sale_manager"
+                    />
+                    <field name="job_state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_orders"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-shopping-cart"
+                        >
+                            <field
+                                name="order_count"
+                                widget="statinfo"
+                                string="Orders"
+                            />
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="path" />
+                        </group>
+                        <group>
+                            <field name="job_exc_message" />
+                        </group>
+                    </group>
+                    <group string="Error Detail" invisible="not job_exc_info">
+                        <field name="job_exc_info" nolabel="1" widget="text" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_order_file_view_search" model="ir.ui.view">
+        <field name="name">autopilot_sale.order.file.search</field>
+        <field name="model">autopilot_sale.order.file</field>
+        <field name="arch" type="xml">
+            <search string="Sale EDI Order Files">
+                <field name="backend_id" />
+                <field name="path" />
+                <filter
+                    name="failed"
+                    string="Failed"
+                    domain="[('job_state', '=', 'failed')]"
+                />
+                <group>
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                    <filter
+                        name="group_state"
+                        string="Status"
+                        context="{'group_by': 'job_state'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- =========================== Order binding =========================== -->
     <record id="autopilot_sale_order_view_list" model="ir.ui.view">
         <field name="name">autopilot_sale.order.list</field>
@@ -9,6 +127,7 @@
                 <field name="display_name" />
                 <field name="backend_id" />
                 <field name="odoo_id" />
+                <field name="file_id" />
                 <field name="external_ref" />
             </list>
         </field>
@@ -24,6 +143,7 @@
                         <group>
                             <field name="backend_id" />
                             <field name="odoo_id" />
+                            <field name="file_id" />
                         </group>
                         <group>
                             <field name="external_ref" />

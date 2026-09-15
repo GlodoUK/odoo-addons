@@ -36,6 +36,16 @@ class AutopilotSaleOrder(models.Model):
         ondelete="cascade",
         index=True,
     )
+    file_id = fields.Many2one(
+        "autopilot_sale.order.file",
+        string="Source File",
+        ondelete="set null",
+        index=True,
+        copy=False,
+        help="The inbound file this order was imported from. Filled "
+        "automatically (default_file_id in context) when a dialect creates "
+        "this binding during an import job; blank otherwise.",
+    )
     company_id = fields.Many2one(
         related="backend_id.company_id", store=True, index=True
     )
