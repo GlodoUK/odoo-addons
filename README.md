@@ -68,6 +68,7 @@ addon | version | maintainers | summary
 [res_partner_decision_maker](res_partner_decision_maker/) | 19.0.1.0.0 |  | Adds decision maker field to Contact record
 [res_partner_eori](res_partner_eori/) | 19.0.1.0.0 |  | res_partner_eori
 [res_partner_mobile](res_partner_mobile/) | 19.0.1.0.0 |  | Resurrects the mobile field into 19.0+
+[res_partner_ref_sequence](res_partner_ref_sequence/) | 19.0.1.0.0 |  | Assign partner references from rule-selected sequences
 [res_partner_relationship_manager](res_partner_relationship_manager/) | 19.0.1.0.0 |  | res_partner_relationship_manager
 [res_partner_since](res_partner_since/) | 19.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
@@ -78,6 +79,7 @@ addon | version | maintainers | summary
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
 [sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.0.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
 [sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
+[sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.0 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
 [sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.2.0 |  | Invoicing policy
 [sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
