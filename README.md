@@ -21,6 +21,7 @@ addon | version | maintainers | summary
 [automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
 [autopilot](autopilot/) | 19.0.1.0.0 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
 [autopilot_sale](autopilot_sale/) | 19.0.1.0.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
+[base_search_rank](base_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching via pg_trgm word similarity
 [concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
 [cpq_banding](cpq_banding/) | 19.0.1.0.0 |  | Banding/Fabric Custom Values
@@ -52,11 +53,16 @@ addon | version | maintainers | summary
 [product_fsc](product_fsc/) | 19.0.1.0.0 |  | FSC certification classification for products
 [product_fsc_sale](product_fsc_sale/) | 19.0.1.0.0 |  | FSC claim on sale orders and invoices
 [product_fsc_stock](product_fsc_stock/) | 19.0.1.0.0 |  | FSC claim on delivery documents
+[product_search_rank](product_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching for products
+[product_search_rank_account](product_search_rank_account/) | 19.0.1.0.0 |  | Ranked product searching in invoice line dropdowns
+[product_search_rank_purchase](product_search_rank_purchase/) | 19.0.1.0.0 |  | Ranked product searching in purchase order line dropdowns
+[product_search_rank_sale](product_search_rank_sale/) | 19.0.1.0.0 |  | Ranked product searching in sale order line dropdowns
 [project_task_category](project_task_category/) | 19.0.1.0.0 |  | Project Task Category
 [purchase_moq](purchase_moq/) | 19.0.1.0.0 |  | Purchase Minimum Order Quantities
 [purchase_mov](purchase_mov/) | 19.0.1.0.0 |  | Purchase Minimum Order Values
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [queue_job_trace](queue_job_trace/) | 19.0.1.0.0 |  | Correlate jobs spawned from the same origin with a trace id
+[res_partner_autolink_by_domain](res_partner_autolink_by_domain/) | 19.0.1.0.0 |  | File contacts emailing in under the contact owning their domain
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_compute_display_name_ref](res_partner_compute_display_name_ref/) | 19.0.1.0.0 |  | Prefix the partner display name with the internal reference
 [res_partner_decision_maker](res_partner_decision_maker/) | 19.0.1.0.0 |  | Adds decision maker field to Contact record
