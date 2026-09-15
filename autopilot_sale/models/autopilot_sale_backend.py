@@ -363,7 +363,7 @@ class AutopilotSaleBackend(models.Model):
         reading/parsing/creating is the dialect's ``_<dialect>_import_orders(path)``,
         one job per file so each retries independently."""
         self.ensure_one()
-        for path in self.with_delay()._sweep_orders():
+        for path in self._sweep_orders():
             self.with_delay(identity_key=identity_exact)._import_order(path)
 
     def _import_order(self, path):
