@@ -33,18 +33,26 @@ class TestCheckProductPricelist(SaleCommon):
             }
         )
 
+    def _line(self, order, product):
+        """The order's line for `product`.
+
+        Other modules add lines of their own - sale_delivery_auto puts a
+        shipping cost line on anything physical - so never read `order_line` as
+        a single record.
+        """
+        return order.order_line.filtered(lambda line: line.product_id == product)
+
     def test_default_behaviour_ignores_pricelist(self):
         """The Odoo default sells anything, priced on the pricelist or not."""
         self.assertEqual(self.pricelist.check_sale_behaviour, "default")
         order = self._create_order(self.unpriced_product)
+        line = self._line(order, self.unpriced_product)
 
         # 'default' is permissive precisely because nothing implements it: the
         # dispatch reads a missing hook as "no check".
-        self.assertFalse(
-            hasattr(order.order_line, "_pricelist_check_sale_behaviour_default")
-        )
-        self.assertFalse(order.order_line.pricelist_item_id)
-        self.assertTrue(order.order_line._pricelist_check_sale_behaviour())
+        self.assertFalse(hasattr(line, "_pricelist_check_sale_behaviour_default"))
+        self.assertFalse(line.pricelist_item_id)
+        self.assertTrue(line._pricelist_check_sale_behaviour())
         self.assertFalse(order._confirmation_error_message())
 
         order.action_confirm()
@@ -54,8 +62,9 @@ class TestCheckProductPricelist(SaleCommon):
         """Under 'explicit', a product with no matching rule blocks confirmation."""
         self.pricelist.check_sale_behaviour = "explicit"
         order = self._create_order(self.unpriced_product)
+        line = self._line(order, self.unpriced_product)
 
-        self.assertFalse(order.order_line._pricelist_check_sale_behaviour())
+        self.assertFalse(line._pricelist_check_sale_behaviour())
         self.assertIn(
             self.unpriced_product.display_name,
             order._confirmation_error_message(),
@@ -68,9 +77,10 @@ class TestCheckProductPricelist(SaleCommon):
         """Under 'explicit', a product matched by a rule confirms as normal."""
         self.pricelist.check_sale_behaviour = "explicit"
         order = self._create_order(self.priced_product)
+        line = self._line(order, self.priced_product)
 
-        self.assertTrue(order.order_line.pricelist_item_id)
-        self.assertTrue(order.order_line._pricelist_check_sale_behaviour())
+        self.assertTrue(line.pricelist_item_id)
+        self.assertTrue(line._pricelist_check_sale_behaviour())
         self.assertFalse(order._confirmation_error_message())
 
         order.action_confirm()

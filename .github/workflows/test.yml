@@ -12,7 +12,7 @@ env:
   # "Rebel" modules: addons that must be tested in isolation. Comma separated.
   # Each gets its own database/run and is excluded from the main run.
   # To add one, append its technical name to the list, e.g. "foo,bar".
-  REBEL_MODULES: "sale_delivery_required,sale_invoice_consolidation"
+  REBEL_MODULES: "sale_delivery_required,sale_delivery_auto,sale_invoice_consolidation"
 
 jobs:
   pre-commit:
