@@ -38,7 +38,10 @@ class SaleOrderLine(models.Model):
                 lines_to_return |= line
                 continue
             components = line.product_id._get_sale_mrp_phantom_explode_components(
-                bom, line.product_uom_qty, uom=line.product_uom_id
+                bom,
+                line.product_uom_qty,
+                uom=line.product_uom_id,
+                never_attribute_values=line.product_no_variant_attribute_value_ids,
             )
             if not components:
                 lines_to_return |= line

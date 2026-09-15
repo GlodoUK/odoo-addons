@@ -38,6 +38,12 @@ patch(SaleOrderLineProductField.prototype, {
             [this.props.record.data.product_id.id, quantity],
             {
                 context: this.context,
+                // No_variant attribute values selected on the line: bom lines
+                // using "Apply on Variants" with such values are kept/skipped
+                // based on these.
+                never_attribute_value_ids: this._getNoVariantPtavIds(
+                    this.props.record.data
+                ),
             }
         );
 
