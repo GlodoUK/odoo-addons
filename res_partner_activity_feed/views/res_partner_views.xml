@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.activity.feed</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="is_commercial_partner" invisible="1" />
+                <button
+                    name="action_activity_feed"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-list-alt"
+                    invisible="not is_commercial_partner"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Activity Feed</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mail_message_view_kanban_activity_feed" model="ir.ui.view">
+        <field name="name">mail.message.kanban.activity.feed</field>
+        <field name="model">mail.message</field>
+        <field name="arch" type="xml">
+            <kanban
+                class="o_activity_feed_kanban"
+                action="action_open_document"
+                type="object"
+                create="false"
+                edit="false"
+                delete="false"
+                import="false"
+                default_order="date desc, id desc"
+            >
+                <field name="author_id" />
+                <field name="email_from" />
+                <field name="record_name" />
+                <field name="activity_feed_is_note" />
+                <field name="activity_feed_icon" />
+                <field name="activity_feed_summary" />
+                <field name="message_type" />
+                <field name="subtype_id" />
+                <field name="body" />
+                <templates>
+                    <t t-name="card" class="o_activity_feed_card">
+                        <div
+                            t-att-class="'o_activity_feed_bubble' + (record.activity_feed_is_note.raw_value ? ' o_activity_feed_bubble_note' : '')"
+                        >
+                            <i
+                                t-attf-class="fa #{record.activity_feed_icon.raw_value}"
+                                role="img"
+                                aria-label="Activity type"
+                            />
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <img
+                                t-if="record.author_id.raw_value"
+                                class="o_activity_feed_avatar rounded-circle"
+                                t-attf-src="/web/image/mail.message/#{record.id.raw_value}/author_avatar"
+                                alt="Avatar"
+                            />
+                            <span class="fw-bold text-truncate">
+                                <t t-if="record.author_id.raw_value">
+                                    <field name="author_id" />
+                                </t>
+                                <t t-else="">
+                                    <field name="email_from" />
+                                </t>
+                            </span>
+                            <span
+                                t-if="record.activity_feed_is_note.raw_value"
+                                class="badge rounded-pill text-bg-warning"
+                            >Internal note</span>
+                            <span
+                                t-if="record.record_name.value"
+                                class="text-muted text-truncate"
+                            >
+                                <field name="record_name" />
+                            </span>
+                            <span
+                                t-if="record.activity_feed_summary.value"
+                                class="badge rounded-pill text-bg-light text-nowrap"
+                            >
+                                <field name="activity_feed_summary" />
+                            </span>
+                            <span class="ms-auto text-muted small text-nowrap">
+                                <field name="date" />
+                            </span>
+                        </div>
+                        <div
+                            t-if="!record.body.value and record.message_type.raw_value === 'notification' and record.subtype_id.value"
+                            class="text-muted fst-italic mt-1"
+                        >
+                            <field name="subtype_id" />
+                        </div>
+                        <div t-if="record.subject.value" class="fw-bold mt-1">
+                            <field name="subject" />
+                        </div>
+                        <div
+                            t-if="record.body.value"
+                            class="o_activity_feed_body mt-1"
+                            t-out="record.body.value"
+                        />
+                        <field
+                            name="attachment_ids"
+                            widget="many2many_tags"
+                            class="mt-1"
+                        />
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="mail_message_view_search_activity_feed" model="ir.ui.view">
+        <field name="name">mail.message.search.activity.feed</field>
+        <field name="model">mail.message</field>
+        <field name="arch" type="xml">
+            <search>
+                <field
+                    name="body"
+                    string="Content"
+                    filter_domain="['|', ('subject', 'ilike', self), ('body', 'ilike', self)]"
+                />
+                <field name="author_id" />
+                <filter
+                    name="source_partner"
+                    string="Contacts"
+                    domain="[('model', '=', 'res.partner')]"
+                />
+                <filter
+                    name="source_crm_lead"
+                    string="Leads"
+                    domain="[('model', '=', 'crm.lead')]"
+                />
+                <filter
+                    name="source_sale_order"
+                    string="Sales"
+                    domain="[('model', '=', 'sale.order')]"
+                />
+                <filter
+                    name="source_purchase_order"
+                    string="Purchases"
+                    domain="[('model', '=', 'purchase.order')]"
+                />
+                <filter
+                    name="source_account_move"
+                    string="Invoices"
+                    domain="[('model', '=', 'account.move')]"
+                />
+                <filter
+                    name="source_stock_picking"
+                    string="Transfers"
+                    domain="[('model', '=', 'stock.picking')]"
+                />
+                <filter
+                    name="source_helpdesk_ticket"
+                    string="Tickets"
+                    domain="[('model', '=', 'helpdesk.ticket')]"
+                />
+                <separator />
+                <filter
+                    name="filter_internal_notes"
+                    string="Internal Notes"
+                    domain="['|', ('is_internal', '=', True), ('subtype_id.internal', '=', True)]"
+                />
+                <separator />
+                <filter name="filter_date" string="Date" date="date" />
+            </search>
+        </field>
+    </record>
+</odoo>
