@@ -30,6 +30,9 @@ class SaleOrderLine(models.Model):
         """
         Return True is sale is OK
         """
+        if self.env.get("skip_sale_check_product_pricelist"):
+            return True
+
         self.ensure_one()
         if not self.product_id:
             return True
