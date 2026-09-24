@@ -30,6 +30,9 @@ class SaleOrderLine(models.Model):
         """
         Return True is sale is OK
         """
+        if self.env.context.get("skip_sale_check_product_pricelist"):
+            return True
+
         self.ensure_one()
         if not self.product_id:
             return True
@@ -40,4 +43,29 @@ class SaleOrderLine(models.Model):
         return method()
 
     def _pricelist_check_sale_behaviour_explicit(self):
-        return bool(self.pricelist_item_id)
+        """A product is on the pricelist when the rule that prices it is.
+
+        A rule computed from another pricelist - a discount or formula with
+        base "pricelist", such as a catch-all onto a parent pricelist - only
+        passes the product on. When that pricelist is itself explicit, the
+        product has to be on it too, so the chain is followed down to the rule
+        that actually prices it.
+        """
+        item = self.pricelist_item_id
+        seen = set()
+        while (
+            item
+            and item.compute_price != "fixed"
+            and item.base == "pricelist"
+            and item.base_pricelist_id.check_sale_behaviour == "explicit"
+            # Odoo refuses recursive pricelists; this only guards the loop
+            and item.base_pricelist_id.id not in seen
+        ):
+            seen.add(item.base_pricelist_id.id)
+            item = self.env["product.pricelist.item"].browse(
+                item.base_pricelist_id._get_product_rule(
+                    product=self.product_id,
+                    **self._get_pricelist_kwargs(),
+                )
+            )
+        return bool(item)
