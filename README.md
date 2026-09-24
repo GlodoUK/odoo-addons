@@ -47,6 +47,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_category](helpdesk_ticket_category/) | 19.0.1.0.0 |  | Helpdesk Ticket Category
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 19.0.1.0.0 |  | Helpdesk Ticket Escalate
 [helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 19.0.1.0.0 |  | Helpdesk Ticket Type Properties
+[mail_autofollow](mail_autofollow/) | 19.0.1.0.0 |  | Automatically subscribe followers to records matching a rule
 [mrp_product_conformity](mrp_product_conformity/) | 19.0.1.0.0 |  | MRP Product Conformity
 [product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
 [product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
@@ -62,6 +63,7 @@ addon | version | maintainers | summary
 [purchase_mov](purchase_mov/) | 19.0.1.0.0 |  | Purchase Minimum Order Values
 [purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
 [queue_job_trace](queue_job_trace/) | 19.0.1.0.0 |  | Correlate jobs spawned from the same origin with a trace id
+[res_partner_activity_feed](res_partner_activity_feed/) | 19.0.1.0.0 |  | HubSpot-style activity feed on the partner form, built on mail.message
 [res_partner_autolink_by_domain](res_partner_autolink_by_domain/) | 19.0.1.0.0 |  | File contacts emailing in under the contact owning their domain
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_compute_display_name_ref](res_partner_compute_display_name_ref/) | 19.0.1.0.0 |  | Prefix the partner display name with the internal reference
@@ -77,7 +79,7 @@ addon | version | maintainers | summary
 [rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
 [sale_action_confirm_send](sale_action_confirm_send/) | 19.0.1.0.0 |  | sale_action_confirm_send
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
-[sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.0.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
+[sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.1.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
 [sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
 [sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.0 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
