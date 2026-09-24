@@ -1,0 +1,84 @@
+.o_activity_feed_kanban {
+    .o_kanban_renderer {
+        flex-direction: column;
+        align-items: center;
+        row-gap: 0.75rem;
+        // reserve space on the left for the timeline rail
+        padding: 1rem 1rem 1rem 4.5rem;
+    }
+
+    .o_kanban_ghost {
+        display: none;
+    }
+
+    .o_kanban_record:not(.o_kanban_ghost) {
+        // the record article carries bootstrap's flex-grow-1 utility class
+        // (kanban_record.js), whose !important beats any plain override
+        flex: 0 0 auto;
+        flex-grow: 0 !important;
+        width: 100%;
+        max-width: 992px; // bootstrap lg
+        margin: 0;
+        border-width: $border-width;
+        border-radius: $border-radius;
+
+        // timeline rail, spanning the row gap between cards
+        &::before {
+            content: "";
+            position: absolute;
+            top: -0.75rem;
+            bottom: -0.75rem;
+            left: calc(-2rem - 1px);
+            border-left: 2px solid $border-color;
+        }
+
+        &:first-of-type::before {
+            top: 0.9rem;
+        }
+
+        &:last-of-type::before {
+            bottom: calc(100% - 0.9rem);
+        }
+
+        &:has(.o_activity_feed_bubble_note) {
+            background-color: rgba($warning, 0.05);
+        }
+    }
+
+    .o_activity_feed_bubble {
+        position: absolute;
+        top: 0.9rem;
+        left: -3rem;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: $border-width solid $border-color;
+        border-radius: 50%;
+        background-color: $o-view-background-color;
+        color: $text-muted;
+        z-index: 1;
+
+        &.o_activity_feed_bubble_note {
+            border-color: rgba($warning, 0.6);
+            color: $warning;
+        }
+    }
+
+    .o_activity_feed_avatar {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .o_activity_feed_body {
+        max-height: 16rem;
+        overflow-y: auto;
+
+        img {
+            max-width: 100%;
+        }
+    }
+}
