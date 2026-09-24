@@ -5,7 +5,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales/Sales",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.0",
     "depends": ["sale"],
     "data": ["views/product_pricelist_views.xml"],
     "installable": True,
