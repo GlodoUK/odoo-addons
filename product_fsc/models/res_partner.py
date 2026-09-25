@@ -4,9 +4,6 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    # The FSC certificate belongs to the certificate holder (the supplier), not
-    # to each product: one certificate covers many products and is renewed as a
-    # unit, so it lives here rather than on product.template.
     fsc_certificate_code = fields.Char(
         string="FSC Certificate Code",
         help="Chain-of-custody certificate code, e.g. XXX-COC-123456.",

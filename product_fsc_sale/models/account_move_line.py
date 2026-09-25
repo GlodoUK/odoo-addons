@@ -4,9 +4,7 @@ from odoo import api, fields, models
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    # Snapshot of the product's FSC claim, frozen when the line is created (or
-    # carried over from the sale order line). Depends only on product_id so a
-    # later reclassification never rewrites an already-issued invoice.
+    # Snapshot: only depends on product_id, so issued documents never change.
     fsc_label = fields.Char(
         string="FSC Claim",
         compute="_compute_fsc_label",
