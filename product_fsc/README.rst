@@ -2,38 +2,29 @@
 product_fsc
 ===========
 
-Records FSC (Forest Stewardship Council) certification data against products and
-their suppliers.
+FSC certification data for products, suppliers and your company.
 
 Features
 ========
 
-* An **FSC** section on the product form (enabled by the *FSC Certified* toggle)
-  capturing the on-product label claim:
-
-  * ``FSC 100%`` / ``FSC Mix`` / ``FSC Recycled`` classification
-  * certified/recycled content percentage (Mix and Recycled only)
-  * the FSC trademark licence code printed on the label
-  * a computed ``FSC Label`` (e.g. *FSC Mix 70%*)
-
-* Supplier certificate details on the partner form: the certificate document,
-  its chain-of-custody code, licence code and expiry date. The certificate
-  belongs to the certificate holder, so it is stored once on the partner rather
-  than duplicated on every product.
-
-* An *FSC Certified* filter and an *FSC Classification* group-by on the product
-  search view.
-
-This module is data-only. To print the FSC claim on business documents, install
-``product_fsc_stock`` (delivery notes) and/or ``product_fsc_sale`` (sale orders
-and invoices).
+* FSC claim on products: *FSC 100%*, *FSC Mix*, *FSC Recycled* or
+  *FSC Controlled Wood*, with a percentage for Mix and Recycled.
+* FSC product types from FSC-STD-40-004a V2-1, shown as ``[code] name``.
+* Supplier certificate, code and expiry on contacts.
+* The claim block printed on documents by ``product_fsc_sale`` and
+  ``product_fsc_stock``.
 
 Configuration
 =============
 
-#. On a product, tick **FSC Certified** and choose the classification. For
-   *FSC Mix* / *FSC Recycled*, enter the percentage.
-#. On a supplier (contact), open the **FSC** tab to attach the certificate and
-   record its code and expiry.
-#. In **Settings > Companies**, set your own **FSC Certificate Code** if this
-   company issues FSC claims on its own documents.
+#. In **Settings > Companies**, set your **FSC Certificate Code**.
+#. On a product, tick **FSC Certified** and choose the claim.
+#. On a supplier, record their certificate on the **FSC** tab.
+
+Future considerations
+=====================
+
+* Claims on lots, falling back to the product.
+* Take the delivery claim from the lot when the transfer is validated.
+* A ``sale_stock`` bridge to take invoice claims from deliveries, and warn when
+  a delivered claim differs from the order.

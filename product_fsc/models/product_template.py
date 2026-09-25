@@ -5,37 +5,32 @@ from odoo.exceptions import ValidationError
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    # Flag that gates the FSC detail page: lets non-FSC products hide the tab
-    # entirely and avoids half-states (classification set on a non-FSC product).
     fsc_certified = fields.Boolean(string="FSC Certified", index=True)
     fsc_type_id = fields.Many2one("product_fsc.type", string="FSC Type")
-    # FSC on-product labels are a fixed standard with three consumer-facing
-    # claims (https://fsc.org/en/label), so a Selection is the right shape here
-    # rather than a free-form model.
+    # Claims are fixed by FSC-STD-40-004.
     fsc_classification = fields.Selection(
         [
             ("fsc_100", "FSC 100%"),
             ("fsc_mix", "FSC Mix"),
             ("fsc_recycled", "FSC Recycled"),
+            ("fsc_controlled_wood", "FSC Controlled Wood"),
         ],
         string="FSC Claim",
         index=True,
         help=(
-            "FSC on-product label claim:\n"
+            "FSC claim stated on sales and delivery documents:\n"
             "- FSC 100%: all material from FSC-certified forests.\n"
             "- FSC Mix: blend of certified, recycled and/or controlled wood "
             "(the certified/recycled share is given by the percentage).\n"
-            "- FSC Recycled: made from reclaimed/recycled material."
+            "- FSC Recycled: made from reclaimed/recycled material.\n"
+            "- FSC Controlled Wood: documents only, never on product labels."
         ),
     )
-    # Only meaningful for Mix (certified + recycled share, min. 70%) and
-    # Recycled (recycled fibre share). FSC 100% is implicitly 100%.
-    # Stored as a 0-1 ratio to suit the `percentage` widget (0.7 renders "70%").
+    # Mix and Recycled only. Stored as 0-1 for the percentage widget.
     fsc_percentage = fields.Float(
         string="FSC Certified Content",
         help="Share of FSC-certified / recycled content shown on the label.",
     )
-    # The FSC trademark licence code printed alongside the label, e.g. "FSC® C123456".
     fsc_license_code = fields.Char(
         string="FSC Licence Code",
         help="FSC trademark licence code shown on the label, e.g. FSC® C123456.",
@@ -44,7 +39,7 @@ class ProductTemplate(models.Model):
         string="FSC Label",
         compute="_compute_fsc_label",
         store=True,
-        help='Rendered on-product claim, e.g. "FSC Mix 70%".',
+        help='Rendered FSC claim, e.g. "FSC Mix 70%".',
     )
 
     @api.depends("fsc_classification", "fsc_percentage")

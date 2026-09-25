@@ -4,10 +4,15 @@
         id="report_delivery_document_fsc"
         inherit_id="stock.report_delivery_document"
     >
-        <xpath expr="//div[hasclass('page')]" position="inside">
-            <t t-call="product_fsc.fsc_claim_block">
-                <t t-set="fsc_lines" t-value="o.move_ids.filtered('fsc_label')" />
-                <t t-set="company" t-value="o.company_id" />
+        <xpath expr="//t[@t-set='backorders']" position="before">
+            <t t-if="o.picking_type_code == 'outgoing'">
+                <t t-call="product_fsc.fsc_claim_block">
+                    <t
+                        t-set="fsc_lines"
+                        t-value="o.move_ids.filtered(lambda m: m.fsc_label and m.state != 'cancel' and (m.quantity if o.state == 'done' else m.product_uom_qty))"
+                    />
+                    <t t-set="company" t-value="o.company_id" />
+                </t>
             </t>
         </xpath>
     </template>

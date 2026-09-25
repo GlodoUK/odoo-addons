@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!--
-        Shared FSC claim block, called from the delivery/sale/invoice reports in
-        the glue modules. Expects two context variables:
-          - fsc_lines: a recordset of document lines (any model exposing
-            `product_id` and a snapshotted `fsc_label`)
-          - company:   the issuing company (for its chain-of-custody code)
-        Uses a table rather than flexbox - wkhtmltopdf's old WebKit ignores flex.
-    -->
     <template id="fsc_claim_block">
         <div t-if="fsc_lines" class="mt-4" name="fsc_claim_block">
-            <strong>FSC® Certified Products</strong>
-            <table class="table o_main_table table-sm table-borderless w-100">
+            <table class="table o_main_table table-borderless" name="fsc_claim_table">
+                <thead>
+                    <tr>
+                        <th name="th_fsc_product" class="text-start">
+                            <span>Product</span>
+                        </th>
+                        <th name="th_fsc_claim" class="text-end">
+                            <span>FSC® Claim</span>
+                        </th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr t-foreach="fsc_lines" t-as="fsc_line">
-                        <td
-                            class="pe-4 py-0"
-                            t-out="fsc_line.product_id.display_name"
-                        >Customizable Desk</td>
-                        <td class="py-0" t-out="fsc_line.fsc_label">FSC Mix 70%</td>
+                        <td name="td_fsc_product">
+                            <span
+                                t-out="fsc_line.product_id.display_name"
+                            >Customizable Desk</span>
+                        </td>
+                        <td name="td_fsc_claim" class="text-end">
+                            <span t-out="fsc_line.fsc_label">FSC Mix 70%</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <p
-                t-if="company and company.fsc_certificate_code"
-                class="small text-muted mb-0"
-            >
-                FSC Chain of Custody certificate:
-                <span t-out="company.fsc_certificate_code">XXX-COC-000000</span>
+            <!--
+                FSC-STD-40-004 requires the certificate code alongside the
+                claims.
+            -->
+            <p name="fsc_certificate_code">
+                FSC® Chain of Custody certificate:
+                <span
+                t-if="company.fsc_certificate_code"
+                class="fw-bold"
+                t-field="company.fsc_certificate_code"
+            >XXX-COC-000000</span>
+                <span t-else="" class="fw-bold text-danger">
+                    Not configured - set the FSC Certificate Code on the company
+                </span>
             </p>
         </div>
     </template>
