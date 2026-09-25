@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hierarchy_type_list" model="ir.ui.view">
+        <field name="name">res.partner.hierarchy.type.list</field>
+        <field name="model">res.partner.hierarchy.type</field>
+        <field name="arch" type="xml">
+            <list string="Hierarchy Types" editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hierarchy_type" model="ir.actions.act_window">
+        <field name="name">Hierarchy Types</field>
+        <field name="res_model">res.partner.hierarchy.type</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a hierarchy type
+            </p>
+            <p>
+                Types label the link between a partner and its hierarchy parent,
+                for example "Subsidiary", "Buying Group" or "Franchisee".
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_hierarchy_type"
+        name="Hierarchy Types"
+        action="action_hierarchy_type"
+        parent="contacts.res_partner_menu_config"
+        sequence="15"
+    />
+</odoo>
