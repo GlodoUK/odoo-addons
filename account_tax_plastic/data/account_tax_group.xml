@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="tax_group_plastic_packaging" model="account.tax.group">
+        <field name="name">Plastic Tax</field>
+        <field name="country_id" ref="base.uk" />
+    </record>
+</odoo>

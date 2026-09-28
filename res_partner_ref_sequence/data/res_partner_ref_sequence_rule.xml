@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <!-- Catch-all, kept last so narrower rules added later win. -->
+    <record id="ref_rule_default" model="res_partner_ref_sequence.rule">
+        <field name="name">Default</field>
+        <field name="sequence" eval="100" />
+        <field name="domain">[]</field>
+        <field name="sequence_id" ref="seq_res_partner_ref" />
+    </record>
+</odoo>

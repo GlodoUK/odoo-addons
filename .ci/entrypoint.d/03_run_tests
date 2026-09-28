@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+unbuffer odoo \
+    -d ${PGDATABASE} \
+    --reinit "${ADDONS}" \
+    --test-enable \
+    --http-interface=0.0.0.0 \
+    --stop-after-init | checklog-odoo -c src/private/.checklog-odoo

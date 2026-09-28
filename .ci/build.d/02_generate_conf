@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+printf "[options]\naddons_path=/opt/odoo/src/odoo/odoo/addons,/opt/odoo/src/odoo/addons,/opt/odoo/src/enterprise,/opt/odoo/src/private\nmax_cron_threads=0\n" > $ODOO_RC

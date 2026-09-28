@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="shoehorn_generate_wizard_form" model="ir.ui.view">
+        <field name="name">shoehorn.generate.wizard.form</field>
+        <field name="model">shoehorn.generate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate shoehorn migration">
+                <group>
+                    <field
+                        name="path"
+                        placeholder="/opt/odoo/custom/src/private/.../bootstrap"
+                    />
+                    <field name="file_type" />
+                    <field name="name" placeholder="add_a_thing" />
+                    <field name="generated_path" invisible="not generated_path" />
+                </group>
+                <footer>
+                    <button
+                        name="action_generate"
+                        type="object"
+                        string="Generate"
+                        class="btn-primary"
+                    />
+                    <button special="cancel" string="Close" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="shoehorn_generate_wizard_action" model="ir.actions.act_window">
+        <field name="name">Generate shoehorn migration</field>
+        <field name="res_model">shoehorn.generate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_shoehorn_generate"
+        name="Generate shoehorn migration"
+        parent="base.menu_custom"
+        action="shoehorn_generate_wizard_action"
+        sequence="100"
+    />
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_project_task_category_list" model="ir.ui.view">
+        <field name="name">project.task.category.list</field>
+        <field name="model">project.task.category</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="project_task_category_action" model="ir.actions.act_window">
+        <field name="name">Task Categories</field>
+        <field name="res_model">project.task.category</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p
+                class="o_view_nocontent_smiling_face"
+            >No task categories found. Let's create one!</p>
+            <p
+            >Use categories to classify your tasks and drive per-category properties.</p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_project_task_category_config"
+        name="Task Categories"
+        action="project_task_category_action"
+        parent="project.menu_project_config"
+        sequence="11"
+    />
+</odoo>

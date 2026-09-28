@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="stock_route_noop" model="stock.route">
+        <field name="name">No-Operation (Procurement handled outside of Odoo)</field>
+        <field name="company_id" />
+        <field name="sequence" eval="99" />
+        <field name="product_selectable" eval="True" />
+        <field name="warehouse_selectable" eval="True" />
+        <field name="warehouse_ids" eval="[(4, ref('stock.warehouse0'))]" />
+    </record>
+    <record id="stock_rule_noop" model="stock.rule">
+        <field name="name">No-Operation (Procurement handled outside of Odoo)</field>
+        <field name="action">noop</field>
+        <field name="route_id" ref="stock_rule_action_noop.stock_route_noop" />
+        <field name="location_dest_id" ref="stock.stock_location_stock" />
+        <field name="picking_type_id" ref="stock.picking_type_in" />
+    </record>
+</odoo>

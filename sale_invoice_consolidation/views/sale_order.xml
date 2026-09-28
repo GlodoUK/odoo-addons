@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sale.invoice.consolidation</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <!--
+                Read-only mirror of the invoice address' Auto-Invoice Frequency,
+                so it is visible from the order whether the scheduled action
+                will invoice it.
+            -->
+            <xpath expr="//group[@name='sale_info']" position="inside">
+                <field name="sale_auto_invoice_enabled" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

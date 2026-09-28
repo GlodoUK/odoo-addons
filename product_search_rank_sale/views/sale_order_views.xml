@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Opt the SO line product dropdowns into ranked name_search.
+         operation="update" (base_view_inheritance_extension) merges into
+         the core context instead of replacing it. -->
+    <record id="view_order_form_search_rank" model="ir.ui.view">
+        <field name="name">sale.order.form.search.rank</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/form//field[@name='product_id']"
+                position="attributes"
+            >
+                <attribute name="context" operation="update">
+                    {"search_rank_enable": True}
+                </attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/list//field[@name='product_id']"
+                position="attributes"
+            >
+                <attribute name="context" operation="update">
+                    {"search_rank_enable": True}
+                </attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/list//field[@name='product_template_id']"
+                position="attributes"
+            >
+                <attribute name="context" operation="update">
+                    {"search_rank_enable": True}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Sale order / quotation (root var is `doc`) -->
+    <template
+        id="report_saleorder_document_fsc"
+        inherit_id="sale.report_saleorder_document"
+    >
+        <xpath expr="//div[@id='total']" position="after">
+            <t t-call="product_fsc.fsc_claim_block">
+                <t t-set="fsc_lines" t-value="doc.order_line.filtered('fsc_label')" />
+                <t t-set="company" t-value="doc.company_id" />
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Customer invoice (root var is `o`) -->
+    <template
+        id="report_invoice_document_fsc"
+        inherit_id="account.report_invoice_document"
+    >
+        <xpath expr="//div[@id='payment_term']" position="before">
+            <div class="clearfix">
+                <t t-call="product_fsc.fsc_claim_block">
+                    <t
+                        t-set="fsc_lines"
+                        t-value="o.invoice_line_ids.filtered('fsc_label')"
+                    />
+                    <t t-set="company" t-value="o.company_id" />
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

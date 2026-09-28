@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--
+    Snippet default template.
+
+    data-root-category : name of the root product.public.category (default "Vehicles")
+    data-level-labels  : comma-separated labels for each dropdown level
+                         e.g. "Make, Model, Year"
+    data-button-label  : button text (default "Find Parts")
+    data-shop-url      : base URL for the results page (default "/shop")
+
+    The CategorySearchWidget OWL component replaces .s_category_search_fields
+    at runtime, so the static HTML only needs the outer shell and an empty
+    fields container with the button (used as builder preview only).
+-->
+    <template id="s_category_search" name="Category Search">
+        <section
+            class="s_category_search o_cc o_cc1 pt-3 pb-3"
+            data-snippet="s_category_search"
+            data-root-category="Vehicles"
+            data-level-labels="Make, Model, Year"
+            data-button-label="Find Parts"
+            data-shop-url="/shop"
+        >
+            <div class="container">
+                <div class="s_category_search_inner">
+                    <div
+                        class="s_category_search_label d-none d-md-flex align-items-center"
+                    >
+                        <span>Find parts for your vehicle</span>
+                    </div>
+                    <!-- OWL component mounts here; static button visible in edit mode -->
+                    <div class="s_category_search_fields">
+                        <button
+                            type="button"
+                            class="s_category_search_btn btn btn-primary"
+                        >
+                            Find Parts
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!--
+    Register in the website builder.
+    1. Add a group card to snippet_groups (the Categories sidebar panel).
+    2. Add the draggable snippet to snippet_structure.
+-->
+    <template
+        id="website_category_heirarchy_search_snippets"
+        inherit_id="website.snippets"
+        name="Category Search Snippet"
+    >
+        <xpath expr="//t[@id='installed_snippets_hook']" position="after">
+            <t
+                snippet-group="category_search"
+                t-snippet="website.s_snippet_group"
+                string="Category Search"
+                t-thumbnail="/website_category_heirarchy_search/static/src/img/snippet_thumb.svg"
+            />
+        </xpath>
+
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t
+                t-snippet="website_category_heirarchy_search.s_category_search"
+                string="Category Search"
+                group="category_search"
+                t-thumbnail="/website_category_heirarchy_search/static/src/img/snippet_thumb.svg"
+            />
+        </xpath>
+    </template>
+</odoo>

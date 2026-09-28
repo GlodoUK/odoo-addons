@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="res_groups_privilege_mail_autofollow" model="res.groups.privilege">
+        <field name="name">Auto Follow Rules</field>
+        <field name="category_id" ref="base.module_category_productivity" />
+        <field
+            name="description"
+        >Who may configure the rules that automatically subscribe followers to records.</field>
+    </record>
+
+    <record id="group_mail_autofollow_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field
+            name="comment"
+        >Create, edit and delete automatic follower rules. A rule's domain is evaluated, and applied to existing records, with elevated privileges: grant this only to users who may already read every model in the database.</field>
+        <field name="privilege_id" ref="res_groups_privilege_mail_autofollow" />
+        <field name="implied_by_ids" eval="[Command.link(ref('base.group_system'))]" />
+    </record>
+
+    <record id="mail_autofollow_company_rule" model="ir.rule">
+        <field name="name">Automatic Follower Rule: multi-company</field>
+        <field name="model_id" ref="model_mail_autofollow_rule" />
+        <field name="global" eval="True" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

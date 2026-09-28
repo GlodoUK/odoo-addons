@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_picking_merge_wizard_form" model="ir.ui.view">
+        <field name="name">stock.picking.merge.wizard.form</field>
+        <field name="model">stock.picking.merge.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Merge Pickings">
+                <div class="alert alert-info" role="alert">
+                    All moves will be consolidated into
+                    <strong>
+                    <field name="target_picking_id" nolabel="1" />
+                </strong>
+                    All other selected pickings will be permanently deleted.
+                </div>
+
+                <group string="Selected Pickings" colspan="2">
+                    <field name="picking_ids" nolabel="1" readonly="1" colspan="12">
+                        <list>
+                            <field name="name" />
+                            <field name="state" />
+                            <field name="picking_type_id" />
+                            <field name="location_id" />
+                            <field name="location_dest_id" />
+                            <field
+                                name="move_ids"
+                                widget="many2many_tags"
+                                string="Moves"
+                                optional="show"
+                            />
+                        </list>
+                    </field>
+                </group>
+                <footer>
+                    <button
+                        name="action_merge"
+                        type="object"
+                        string="Confirm Merge"
+                        class="btn-primary"
+                        confirm="Are you sure? This is not reversible"
+                    />
+                    <button special="cancel" string="Discard" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

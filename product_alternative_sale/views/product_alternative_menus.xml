@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_alternative_action" model="ir.actions.act_window">
+        <field name="name">Product Alternatives</field>
+        <field name="res_model">product.alternative</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a product alternative rule
+            </p>
+            <p>
+                Declare that a product has alternatives to propose them on sale order lines.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="product_alternative_menu"
+        name="Product Alternatives"
+        parent="sale.product_menu_catalog"
+        action="product_alternative_action"
+        sequence="20"
+    />
+</odoo>

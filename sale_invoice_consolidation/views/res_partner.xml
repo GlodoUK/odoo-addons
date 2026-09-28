@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_property_form" model="ir.ui.view">
+        <field name="name">view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form" />
+        <field name="arch" type="xml">
+            <!--
+                Shown on the full "Invoicing" page (companies and root partners).
+                These settings are read from the order's invoice address, which may
+                be a child contact, so they are also added to the child-contact page
+                below - they are no longer delegated to the commercial entity.
+            -->
+            <xpath expr="//group[@id='invoice_send_settings']//field" position="before">
+                <field name="sale_invoice_consolidation" />
+                <field name="sale_auto_invoice_frequency" />
+                <field
+                    name="sale_auto_invoice_next_date"
+                    invisible="not sale_auto_invoice_frequency"
+                    required="sale_auto_invoice_frequency"
+                />
+            </xpath>
+            <!-- Same settings on the stripped-down page child contacts see. -->
+            <xpath expr="//page[@name='accounting_disabled']" position="inside">
+                <group string="Invoicing" name="sale_invoice_consolidation_settings">
+                    <field name="sale_invoice_consolidation" />
+                    <field name="sale_auto_invoice_frequency" />
+                    <field
+                        name="sale_auto_invoice_next_date"
+                        invisible="not sale_auto_invoice_frequency"
+                        required="sale_auto_invoice_frequency"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

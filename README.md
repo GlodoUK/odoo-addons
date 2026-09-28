@@ -1,0 +1,113 @@
+[![Build Status](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml/badge.svg?branch=19.0)](https://github.com/GlodoUK/odoo-addons/actions/workflows/test.yml?query=branch%3A19.0)
+
+# Addons for Odoo
+
+This repository houses addons for many areas of Odoo. It is an amalgamation of multiple previous repositories (GlodoUK/sale, web, etc.).
+
+Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-proprietary](https://github.com/GlodoUK/odoo-addons-proprietary).
+
+<!-- /!\ do not modify below this line -->
+
+<!-- prettier-ignore-start -->
+
+[//]: # (addons)
+
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
+[auth_bcrypt_scheme](auth_bcrypt_scheme/) | 19.0.1.0.0 |  | auth_bcrypt_scheme
+[automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
+[autopilot](autopilot/) | 19.0.1.0.0 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
+[autopilot_sale](autopilot_sale/) | 19.0.1.0.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
+[base_search_rank](base_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching via pg_trgm word similarity
+[concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
+[cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
+[cpq_banding](cpq_banding/) | 19.0.1.0.0 |  | Banding/Fabric Custom Values
+[cpq_mrp](cpq_mrp/) | 19.0.1.0.0 |  | Glue module between CPQ and MRP
+[cpq_sale](cpq_sale/) | 19.0.1.0.0 |  | Glue module between CPQ and Sale
+[cpq_sale_mrp](cpq_sale_mrp/) | 19.0.1.0.0 |  | Glue module for sale_mrp and cpq_mrp
+[delivery_carrier_base_on_code](delivery_carrier_base_on_code/) | 19.0.1.0.0 |  | delivery_carrier_base_on_code
+[delivery_carrier_block_validate](delivery_carrier_block_validate/) | 19.0.1.0.0 |  | delivery_carrier_block_validate
+[delivery_skip_send_to_shipper](delivery_skip_send_to_shipper/) | 19.0.1.0.0 |  | Utility module to skip the send_to_shipper call
+[glodo_client](glodo_client/) | 19.0.1.0.0 |  | Server-wide client for Glodo Cloud remote instance management
+[glodo_server](glodo_server/) | 19.0.1.0.0 |  | Central management server for remote Odoo instances
+[helpdesk_account_move_link](helpdesk_account_move_link/) | 19.0.1.0.0 |  | Helpdesk Account Move Link
+[helpdesk_commercial_partner](helpdesk_commercial_partner/) | 19.0.1.0.0 |  | Helpdesk Ticket Commercial Partner
+[helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 19.0.1.0.0 |  | Helpdesk Portal New Ticket
+[helpdesk_portal_new_ticket_category](helpdesk_portal_new_ticket_category/) | 19.0.1.0.0 |  | helpdesk_portal_new_ticket_category
+[helpdesk_portal_new_ticket_privacy](helpdesk_portal_new_ticket_privacy/) | 19.0.1.0.0 |  | Helpdesk Portal New Ticket Privacy
+[helpdesk_portal_new_ticket_ticket_type_properties](helpdesk_portal_new_ticket_ticket_type_properties/) | 19.0.1.0.0 |  | Website Helpdesk Ticket Create Ticket Type Properties
+[helpdesk_portal_reopen](helpdesk_portal_reopen/) | 19.0.1.0.0 |  | Helpdesk Portal Reopen
+[helpdesk_privacy](helpdesk_privacy/) | 19.0.1.0.0 |  | Helpdesk Privacy
+[helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 19.0.1.0.0 |  | Helpdesk Purchase Order Link
+[helpdesk_sale_order_account_move_link](helpdesk_sale_order_account_move_link/) | 19.0.1.0.0 |  | Helpdesk Sale Order Account Move Link
+[helpdesk_sale_order_link](helpdesk_sale_order_link/) | 19.0.1.0.0 |  | Helpdesk Sale Order Link
+[helpdesk_ticket_category](helpdesk_ticket_category/) | 19.0.1.0.0 |  | Helpdesk Ticket Category
+[helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 19.0.1.0.0 |  | Helpdesk Ticket Escalate
+[helpdesk_ticket_type_properties](helpdesk_ticket_type_properties/) | 19.0.1.0.0 |  | Helpdesk Ticket Type Properties
+[mail_autofollow](mail_autofollow/) | 19.0.1.0.0 |  | Automatically subscribe followers to records matching a rule
+[mrp_product_conformity](mrp_product_conformity/) | 19.0.1.0.0 |  | MRP Product Conformity
+[product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
+[product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
+[product_fsc](product_fsc/) | 19.0.1.0.0 |  | FSC certification classification for products
+[product_fsc_sale](product_fsc_sale/) | 19.0.1.0.0 |  | FSC claim on sale orders and invoices
+[product_fsc_stock](product_fsc_stock/) | 19.0.1.0.0 |  | FSC claim on delivery documents
+[product_search_rank](product_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching for products
+[product_search_rank_account](product_search_rank_account/) | 19.0.1.0.0 |  | Ranked product searching in invoice line dropdowns
+[product_search_rank_purchase](product_search_rank_purchase/) | 19.0.1.0.0 |  | Ranked product searching in purchase order line dropdowns
+[product_search_rank_sale](product_search_rank_sale/) | 19.0.1.0.0 |  | Ranked product searching in sale order line dropdowns
+[project_task_category](project_task_category/) | 19.0.1.0.0 |  | Project Task Category
+[purchase_moq](purchase_moq/) | 19.0.1.0.0 |  | Purchase Minimum Order Quantities
+[purchase_mov](purchase_mov/) | 19.0.1.0.0 |  | Purchase Minimum Order Values
+[purchase_to_invoice_menu](purchase_to_invoice_menu/) | 19.0.1.0.0 |  | Adds a 'Orders To Invoice' menu to the Purchase menu
+[queue_job_trace](queue_job_trace/) | 19.0.1.0.0 |  | Correlate jobs spawned from the same origin with a trace id
+[res_partner_activity_feed](res_partner_activity_feed/) | 19.0.1.0.0 |  | HubSpot-style activity feed on the partner form, built on mail.message
+[res_partner_autolink_by_domain](res_partner_autolink_by_domain/) | 19.0.1.0.0 |  | File contacts emailing in under the contact owning their domain
+[res_partner_bank_display_format](res_partner_bank_display_format/) | 19.0.1.0.0 |  | Customise the format of the partner bank
+[res_partner_compute_display_name_ref](res_partner_compute_display_name_ref/) | 19.0.1.0.0 |  | Prefix the partner display name with the internal reference
+[res_partner_decision_maker](res_partner_decision_maker/) | 19.0.1.0.0 |  | Adds decision maker field to Contact record
+[res_partner_eori](res_partner_eori/) | 19.0.1.0.0 |  | res_partner_eori
+[res_partner_mobile](res_partner_mobile/) | 19.0.1.0.0 |  | Resurrects the mobile field into 19.0+
+[res_partner_ref_sequence](res_partner_ref_sequence/) | 19.0.1.0.0 |  | Assign partner references from rule-selected sequences
+[res_partner_relationship_manager](res_partner_relationship_manager/) | 19.0.1.0.0 |  | res_partner_relationship_manager
+[res_partner_since](res_partner_since/) | 19.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
+[res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
+[res_partner_utm](res_partner_utm/) | 19.0.1.0.0 |  | Adds UTM information to Contact record
+[res_partner_work_phone](res_partner_work_phone/) | 19.0.1.0.0 |  | Adds an additional 'work_number' and 'extension' field to contact
+[rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
+[sale_action_confirm_send](sale_action_confirm_send/) | 19.0.1.0.0 |  | sale_action_confirm_send
+[sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
+[sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.1.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
+[sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
+[sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.0 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
+[sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
+[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.2.0 |  | Invoicing policy
+[sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
+[sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
+[sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
+[sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
+[sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
+[shoehorn](shoehorn/) | 19.0.1.0.0 |  | Repeatedly and safely bootstrap Odoo databases (odoo shoehorn)
+[stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
+[stock_picking_archive](stock_picking_archive/) | 19.0.1.0.0 |  | Allow stock.picking records to be archived
+[stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
+[stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
+[stock_picking_mandatory_packing](stock_picking_mandatory_packing/) | 19.0.1.0.0 |  | Ensure that a picking type must have all items packaged
+[stock_picking_merge](stock_picking_merge/) | 19.0.1.0.0 |  | Adds the ability to merge stock.picking records
+[stock_reception_steps_one_point_five](stock_reception_steps_one_point_five/) | 19.0.1.1.0 |  | Receive into a landing area and store to Stock manually
+[stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
+[stock_warehouse_consolidation](stock_warehouse_consolidation/) | 19.0.1.0.0 |  | Package capacity, real-time levels and stock consolidation
+[web_cmd_search](web_cmd_search/) | 19.0.1.0.0 |  | Adds a global command search to quick access records
+[website_category_heirarchy_search](website_category_heirarchy_search/) | 19.0.1.0.0 |  | Website snippet: cascading dropdowns to search products by category hierarchy
+
+[//]: # (end addons)
+
+<!-- prettier-ignore-end -->
+
+## Licenses
+
+Each module can have a totally different license, as long as they adhere to Glo Networks
+policy. Consult each module's `__manifest__.py` file, which contains a `license` key
+that explains its license.

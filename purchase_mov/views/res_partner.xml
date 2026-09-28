@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_property_form" model="ir.ui.view">
+        <field name="name">res.partner.purchase.mov.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <group name="purchase" position="inside">
+                <!-- purchase_mov_currency_id is what the monetary widget reads
+                     the currency off: the vendor's Supplier Currency, or the
+                     company currency when they have none. -->
+                <field name="purchase_mov_currency_id" invisible="1" />
+                <field
+                    name="property_purchase_mov"
+                    widget="monetary"
+                    options="{'currency_field': 'purchase_mov_currency_id'}"
+                />
+            </group>
+        </field>
+    </record>
+</odoo>

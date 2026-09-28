@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">sale.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="priority" eval="99" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="after">
+                <widget
+                    name="web_ribbon"
+                    title="On Hold"
+                    bg_color="bg-danger"
+                    invisible="not hold"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="vpicktree" model="ir.ui.view">
+        <field name="name">stock.picking.list</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree" />
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-warning">hold</attribute>
+            </xpath>
+
+            <field name="state" position="after">
+                <field name="hold" optional="show" />
+            </field>
+        </field>
+    </record>
+
+    <record id="action_stock_picking_hold" model="ir.actions.server">
+        <field name="name">Hold</field>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="state">code</field>
+        <field name="code">
+records = record.filtered(lambda r: not r.hold)
+if not records:
+    raise UserError("All selected pickings are already on hold!")
+records.action_hold()
+        </field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+
+    <record id="action_stock_picking_unhold" model="ir.actions.server">
+        <field name="name">Release From Hold</field>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="state">code</field>
+        <field name="code">
+records = records.filtered(lambda r: r.hold)
+if not records:
+    raise UserError("No selected pickings are on hold!")
+records.action_unhold()
+        </field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+</odoo>

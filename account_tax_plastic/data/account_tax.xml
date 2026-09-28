@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="tax_plastic_packaging" model="account.tax">
+        <field name="name">Plastic Tax</field>
+        <field name="amount_type">code</field>
+        <field name="formula">product.plastic_weight * quantity * 0.0</field>
+        <field name="amount">0.0</field>
+        <field name="type_tax_use">sale</field>
+        <field name="price_include" eval="False" />
+        <field name="company_id" ref="base.main_company" />
+        <field name="country_id" ref="base.uk" />
+        <field name="tax_group_id" ref="tax_group_plastic_packaging" />
+    </record>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Inherits the sale order report template to add the image of the product in the report-->
+    <template
+        id="report_saleorder_document"
+        inherit_id="sale.report_saleorder_document"
+    >
+        <xpath
+            expr="//t[@t-foreach='lines_to_report']//td[@name='td_product_name']/span"
+            position="after"
+        >
+            <img
+                t-if="doc.pdfs_show_product_image and line[doc.pdfs_show_product_image]"
+                t-att-src="image_data_uri(line[doc.pdfs_show_product_image])"
+                class="d-block py-1"
+                alt=""
+            />
+        </xpath>
+    </template>
+</odoo>

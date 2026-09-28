@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+
+attempts=30
+attempt=0
+echo "Waiting for Postgres at ${PGHOST}:${PGPORT:-5432}..."
+
+until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" >/dev/null 2>&1; do
+  attempt=$((attempt+1))
+  if [ "$attempt" -ge "$attempts" ]; then
+    echo "Timed out waiting for Postgres after ${attempts} attempts!"
+    exit 1
+  fi
+  sleep 2
+done
+
+echo "Postgres is up..."
+
+exit 0

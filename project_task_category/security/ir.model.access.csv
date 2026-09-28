@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_task_category_all,project.task.category.all,model_project_task_category,base.group_user,1,0,0,0
+access_project_task_category_manager,project.task.category.manager,model_project_task_category,project.group_project_manager,1,1,1,1
+access_project_task_category_portal,project.task.category.portal,model_project_task_category,base.group_portal,1,0,0,0

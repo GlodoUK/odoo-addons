@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_consolidation_package_capacity_user,consolidation.package.capacity user,model_consolidation_package_capacity,stock.group_stock_user,1,0,0,0
+access_consolidation_package_capacity_manager,consolidation.package.capacity manager,model_consolidation_package_capacity,stock.group_stock_manager,1,1,1,1
+access_consolidation_package_line_user,consolidation.package.line user,model_consolidation_package_line,stock.group_stock_user,1,1,1,1
+access_consolidation_package_wizard_user,consolidation.package.wizard user,model_consolidation_package_wizard,stock.group_stock_user,1,1,1,1
+access_consolidation_location_line_user,consolidation.location.line user,model_consolidation_location_line,stock.group_stock_user,1,1,1,1
+access_consolidation_location_wizard_user,consolidation.location.wizard user,model_consolidation_location_wizard,stock.group_stock_user,1,1,1,1

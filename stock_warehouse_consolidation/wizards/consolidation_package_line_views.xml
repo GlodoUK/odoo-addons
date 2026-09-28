@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="consolidation_package_line_view_list" model="ir.ui.view">
+        <field name="name">consolidation.package.line.list</field>
+        <field name="model">consolidation.package.line</field>
+        <field name="arch" type="xml">
+            <list
+                string="Packages to Consolidate"
+                expand="1"
+                create="0"
+                export_xlsx="0"
+            >
+                <header>
+                    <button
+                        name="action_consolidate"
+                        type="object"
+                        string="Consolidate Selected"
+                        class="btn-primary"
+                    />
+                </header>
+                <field name="package_id" />
+                <field name="product_id" column_invisible="True" />
+                <field name="warehouse_id" optional="hide" />
+                <field name="location_id" />
+                <field name="content_qty" />
+                <field name="capacity_qty" />
+                <field name="fill_pct" widget="progressbar" />
+                <groupby name="product_id">
+                    <button
+                        type="object"
+                        name="action_consolidate_group"
+                        string="Consolidate All"
+                        class="btn-primary"
+                    />
+                </groupby>
+            </list>
+        </field>
+    </record>
+
+    <!-- The menu runs this so candidates are computed fresh on every open. -->
+    <record id="action_open_packages_to_consolidate" model="ir.actions.server">
+        <field name="name">Packages to Consolidate</field>
+        <field name="model_id" ref="model_consolidation_package_line" />
+        <field name="state">code</field>
+        <field name="code">action = model.action_open()</field>
+    </record>
+</odoo>

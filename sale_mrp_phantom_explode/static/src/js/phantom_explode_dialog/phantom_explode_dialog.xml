@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+    <t t-name="sale_mrp_phantom_explode.PhantomExplodeDialog">
+        <Dialog title="title" size="'md'">
+            <p>
+                You can transform this kit into its individual components.
+                Choose the kit quantity to explode, then confirm to proceed.
+            </p>
+            <div class="d-flex align-items-center gap-3">
+                <label class="fw-bold mb-0">Kit quantity</label>
+                <QuantityButtons
+                    quantity="state.quantity"
+                    setQuantity="(quantity) =&gt; this.setQuantity(quantity)"
+                    isMinusButtonDisabled="state.quantity === 1"
+                    btnClasses="'d-inline-block w-auto'"
+                />
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="confirm">
+                    Explode
+                </button>
+                <button class="btn btn-secondary" t-on-click="cancel">
+                    Leave as-is
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

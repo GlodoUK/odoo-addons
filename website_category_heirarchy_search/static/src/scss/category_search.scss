@@ -1,0 +1,105 @@
+.s_category_search {
+    .s_category_search_inner {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .s_category_search_label {
+        flex: 0 0 auto;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    // -------------------------------------------------------------------------
+    // Fields row – horizontal on desktop, stacked on mobile
+    // -------------------------------------------------------------------------
+    .s_category_search_fields {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1 1 auto;
+        flex-wrap: nowrap;
+
+        .s_category_search_level {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        .s_category_search_level_disabled {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        .s_category_search_btn {
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // SelectMenu styled to match Bootstrap form-select
+    // -------------------------------------------------------------------------
+    .s_category_search_level .o_select_menu {
+        position: relative;
+        width: 100% !important;
+
+        // The caret is a sibling element outside the button — hide it.
+        // We replicate the form-select caret via a background-image on the toggler.
+        .o_select_menu_caret {
+            display: none !important;
+        }
+
+        .o_select_menu_toggler {
+            background-color: var(--bs-body-bg, #fff) !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.75rem center !important;
+            background-size: 16px 12px !important;
+            border-color: var(--bs-border-color, #dee2e6) !important;
+            border-radius: var(--bs-border-radius, 0.375rem) !important;
+            padding: 0.375rem 2.25rem 0.375rem 0.75rem !important;
+            color: var(--bs-body-color) !important;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: start;
+            width: 100% !important;
+
+            &:hover {
+                background-color: var(--bs-body-bg, #fff) !important;
+                border-color: var(--bs-border-color, #dee2e6) !important;
+            }
+
+            &:focus,
+            &:focus-visible {
+                background-color: var(--bs-body-bg, #fff) !important;
+                border-color: #86b7fe !important;
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+                outline: 0;
+            }
+        }
+
+        // Placeholder text colour matches form-select's muted look.
+        .o_select_menu_toggler_slot .text-muted {
+            color: var(--bs-secondary-color, #6c757d) !important;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Responsive – stack vertically on narrow screens
+    // -------------------------------------------------------------------------
+    @include media-breakpoint-down(md) {
+        .s_category_search_fields {
+            flex-direction: column;
+            align-items: stretch;
+
+            .s_category_search_level,
+            .s_category_search_btn {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+        }
+    }
+}

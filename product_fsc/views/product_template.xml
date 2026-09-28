@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product_fsc.product_template_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span name="fsc_option" class="d-inline-flex">
+                    <field name="fsc_certified" />
+                    <label for="fsc_certified" />
+                </span>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='general_information']/group"
+                position="inside"
+            >
+                <group name="fsc" string="FSC" invisible="not fsc_certified">
+                    <label for="fsc_classification" />
+                    <div class="o_row">
+                        <field
+                            name="fsc_classification"
+                            class="oe_inline"
+                            required="fsc_certified"
+                        />
+                        <field
+                            name="fsc_percentage"
+                            widget="percentage"
+                            class="oe_inline"
+                            invisible="fsc_classification not in ('fsc_mix', 'fsc_recycled')"
+                        />
+                    </div>
+                    <field name="fsc_type_id" />
+                    <field name="fsc_license_code" />
+                    <field name="fsc_label" invisible="not fsc_classification" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product_fsc.product_template_search_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <filter name="filter_to_sell" position="after">
+                <separator />
+                <filter
+                    string="FSC Certified"
+                    name="fsc_certified"
+                    domain="[('fsc_certified', '=', True)]"
+                />
+            </filter>
+            <filter name="group_by_categ_id" position="after">
+                <filter
+                    string="FSC Classification"
+                    name="group_by_fsc_classification"
+                    context="{'group_by': 'fsc_classification'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

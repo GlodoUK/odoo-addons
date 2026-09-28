@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_mail_autofollow_rule_list" model="ir.ui.view">
+        <field name="name">mail_autofollow.rule.list</field>
+        <field name="model">mail_autofollow.rule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="model_id" />
+                <field name="trigger" />
+                <field name="partner_ids" widget="many2many_tags" />
+                <field
+                    name="follower_field_ids"
+                    widget="many2many_tags"
+                    optional="show"
+                />
+                <field name="subtype_ids" widget="many2many_tags" optional="hide" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="hide"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mail_autofollow_rule_form" model="ir.ui.view">
+        <field name="name">mail_autofollow.rule.form</field>
+        <field name="model">mail_autofollow.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_apply_to_existing"
+                        type="object"
+                        string="Apply to Existing Records"
+                        class="btn-secondary"
+                        invisible="not partner_ids and not follower_field_ids"
+                        confirm="Subscribe these followers to every existing record matching the domain?"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field
+                                name="name"
+                                placeholder="e.g. Warehouse team follows dropship orders"
+                            />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="model_id" options="{'no_create': True}" />
+                            <field name="model_name" invisible="1" />
+                            <field name="trigger" />
+                            <field name="sequence" groups="base.group_no_one" />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                            <field name="active" invisible="1" />
+                        </group>
+                        <group>
+                            <field
+                                name="partner_ids"
+                                widget="many2many_tags"
+                                placeholder="Contacts to subscribe"
+                            />
+                            <field
+                                name="follower_field_ids"
+                                widget="many2many_tags"
+                                placeholder="e.g. Salesperson, Customer"
+                                options="{'no_create': True}"
+                                context="{'hide_model': 1}"
+                            />
+                            <field
+                                name="subtype_ids"
+                                widget="many2many_tags"
+                                placeholder="Model default subscription"
+                            />
+                        </group>
+                    </group>
+                    <group string="Apply on" invisible="not model_id">
+                        <field
+                            name="filter_domain"
+                            widget="domain"
+                            nolabel="1"
+                            colspan="2"
+                            options="{'model': 'model_name', 'foldable': True, 'allow_expressions': True}"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mail_autofollow_rule_search" model="ir.ui.view">
+        <field name="name">mail_autofollow.rule.search</field>
+        <field name="model">mail_autofollow.rule</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="model_id" />
+                <field name="partner_ids" />
+                <filter
+                    name="filter_inactive"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+                <group>
+                    <filter
+                        name="group_model"
+                        string="Model"
+                        context="{'group_by': 'model_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_mail_autofollow_rule" model="ir.actions.act_window">
+        <field name="name">Auto Follow Rules</field>
+        <field name="res_model">mail_autofollow.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a follower rule</p>
+            <p>
+                Pick a model, narrow it down with a domain, and list the contacts
+                that should follow the matching records. They are subscribed as
+                the records are created.
+            </p>
+        </field>
+    </record>
+</odoo>

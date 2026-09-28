@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_sale_moto_payment" model="ir.actions.client">
+        <field name="name">MOTO Payment</field>
+        <field name="tag">sale_moto_payment.PaymentDialog</field>
+    </record>
+    <record id="view_order_form_moto_payment" model="ir.ui.view">
+        <field name="name">view_order_form_moto_payment</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button
+                    string="MOTO Payment &amp; Confirm"
+                    name="%(sale_moto_payment.action_sale_moto_payment)d"
+                    type="action"
+                    class="btn-primary"
+                    icon="fa-credit-card"
+                    invisible="state not in ('draft', 'sent')"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

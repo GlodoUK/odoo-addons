@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="res_partner_email_domain_ban_view_list" model="ir.ui.view">
+        <field name="name">res.partner.email.domain.ban.list</field>
+        <field name="model">res.partner.email.domain.ban</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name" placeholder="e.g. gmail.com" />
+                <field name="domain_normalized" optional="hide" />
+            </list>
+        </field>
+    </record>
+    <record id="res_partner_email_domain_ban_view_search" model="ir.ui.view">
+        <field name="name">res.partner.email.domain.ban.search</field>
+        <field name="model">res.partner.email.domain.ban</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <filter
+                    name="inactive"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
+    <record id="res_partner_email_domain_ban_action" model="ir.actions.act_window">
+        <field name="name">Banned Email Domains</field>
+        <field name="res_model">res.partner.email.domain.ban</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Ban a shared email domain</p>
+            <p>Domains listed here are never used to identify a contact, because
+                they are shared by senders who have nothing to do with each
+                other: webmail providers, ISPs and disposable address services.</p>
+        </field>
+    </record>
+    <menuitem
+        id="res_partner_email_domain_ban_menu"
+        name="Banned Autolink Email Domains"
+        parent="contacts.res_partner_menu_config"
+        action="res_partner_email_domain_ban_action"
+        sequence="20"
+    />
+</odoo>
