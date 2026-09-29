@@ -11,10 +11,6 @@ Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-
 <!-- prettier-ignore-start -->
 
 [//]: # (addons)
-
-Available addons
-----------------
-
 [//]: # (end addons)
 
 <!-- prettier-ignore-end -->
