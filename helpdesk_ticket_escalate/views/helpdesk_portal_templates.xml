@@ -35,10 +35,10 @@
             </div>
 
             <div
+                id="helpdesk_ticket_escalate_modal"
                 class="modal"
                 tabindex="-1"
                 role="dialog"
-                id="helpdesk_ticket_escalate_modal"
             >
                 <div class="modal-dialog mt-5" role="document">
                     <div class="modal-content">
