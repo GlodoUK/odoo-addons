@@ -1,6 +1,6 @@
 {
     "name": "Helpdesk Purchase Order Link",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Services/Helpdesk",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
