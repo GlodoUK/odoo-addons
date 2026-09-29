@@ -1,4 +1,5 @@
 from odoo import fields, models
+from odoo.tools import SQL
 
 
 class HelpdeskSLAReport(models.Model):
@@ -11,4 +12,4 @@ class HelpdeskSLAReport(models.Model):
     )
 
     def _select(self):
-        return super()._select() + ", T.ticket_categ_id AS ticket_categ_id"
+        return SQL("%s, T.ticket_categ_id AS ticket_categ_id", super()._select())

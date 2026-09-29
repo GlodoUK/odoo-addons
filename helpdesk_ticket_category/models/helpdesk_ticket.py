@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class HelpdeskTicket(models.Model):
@@ -10,10 +10,6 @@ class HelpdeskTicket(models.Model):
         tracking=True,
     )
 
-    @api.model
-    def _sla_reset_trigger(self):
-        return super()._sla_reset_trigger() + ["ticket_categ_id"]
-
     def _sla_find(self):
         result = {}
 
@@ -22,7 +18,7 @@ class HelpdeskTicket(models.Model):
                 lambda s, ticket=ticket: (
                     not s.ticket_categ_ids
                     or (ticket.ticket_categ_id & s.ticket_categ_ids)
-                )  # noqa: B023
+                )
             )
 
         return result
