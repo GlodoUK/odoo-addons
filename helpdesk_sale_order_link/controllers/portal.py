@@ -6,6 +6,13 @@ from odoo.addons.sale.controllers.portal import CustomerPortal
 
 
 class CustomerPortal(CustomerPortal):
+    def _sale_order_get_page_view_values(self, order_sudo, *args, **kwargs):
+        res = super()._sale_order_get_page_view_values(order_sudo, *args, **kwargs)
+        res["has_info_cards"] = res.get("has_info_cards") or bool(
+            order_sudo.helpdesk_tickets_ids
+        )
+        return res
+
     @http.route()
     def portal_quote_accept(
         self,

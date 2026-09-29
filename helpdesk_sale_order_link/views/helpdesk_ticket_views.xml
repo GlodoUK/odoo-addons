@@ -18,7 +18,7 @@
                 </button>
             </xpath>
 
-            <xpath expr="//field[@name='email_cc']" position="after">
+            <xpath expr="//group[field[@name='partner_id']]" position="inside">
                 <field
                     string="Sales"
                     name="so_ids"

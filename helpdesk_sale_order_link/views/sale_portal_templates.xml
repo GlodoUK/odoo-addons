@@ -8,17 +8,21 @@
         <xpath expr="//div[@id='informations']" position="inside">
             <div
                 t-if="sale_order.helpdesk_tickets_ids"
-                class="row mb-4"
-                name="Ticket"
                 id="ticket"
+                class="flex-grow-1 flex-shrink-1 flex-basis-0 min-w-0"
+                name="Ticket"
             >
-                <div class="col-12">
-                    <strong>Linked Helpdesk Tickets</strong>
-                    <p t-foreach="sale_order.helpdesk_tickets_ids" t-as="ticket">
+                <h5 class="mb-0">Linked Helpdesk Tickets</h5>
+                <div class="d-flex flex-column gap-1 mt-2">
+                    <div
+                        t-foreach="sale_order.helpdesk_tickets_ids"
+                        t-as="ticket"
+                        class="py-1"
+                    >
                         <a t-attf-href="/helpdesk/ticket/#{ticket.id}">
                             <t t-out="ticket.ticket_ref" />
                         </a>
-                    </p>
+                    </div>
                 </div>
             </div>
         </xpath>

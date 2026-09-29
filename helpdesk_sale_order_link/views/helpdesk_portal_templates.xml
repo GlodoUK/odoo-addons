@@ -8,9 +8,9 @@
         <xpath expr="//div[@name='description']" position="after">
             <div
                 t-if="ticket.so_ids"
+                id="quotations"
                 class="row mb-4"
                 name="Quotations"
-                id="quotations"
             >
                 <div class="col-12 mt-3">
                     <strong>Linked Quotations/Orders</strong>
