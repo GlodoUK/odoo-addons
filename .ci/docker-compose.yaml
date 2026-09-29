@@ -1,12 +1,10 @@
-version: "3.8"
-
 services:
   odoo:
     build:
       dockerfile: .ci/Dockerfile
       context: ../
       args:
-        ODOO_VERSION: "19.0"
+        ODOO_VERSION: "20.0"
     depends_on:
       db:
         condition: service_healthy

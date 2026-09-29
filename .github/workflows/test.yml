@@ -3,16 +3,16 @@ name: test
 on:
   pull_request:
     branches:
-      - "19.0*"
+      - "20.0*"
   push:
     branches:
-      - "19.0"
+      - "20.0"
 
 env:
   # "Rebel" modules: addons that must be tested in isolation. Comma separated.
   # Each gets its own database/run and is excluded from the main run.
   # To add one, append its technical name to the list, e.g. "foo,bar".
-  REBEL_MODULES: "sale_delivery_required,sale_delivery_auto,sale_invoice_consolidation"
+  REBEL_MODULES: ""
 
 jobs:
   pre-commit:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.14"
+          python-version: "3.12"
       - uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files --show-diff-on-failure --color=always
@@ -49,7 +49,7 @@ jobs:
 
           # Discover all addons (directories containing __manifest__.py).
           all_addons="$(find . -maxdepth 2 -name "__manifest__.py" \
-            | xargs dirname | xargs -n1 basename | sort | tr '\n' ',' | sed 's/,$//')"
+            | xargs -r dirname | xargs -r -n1 basename | sort | tr '\n' ',' | sed 's/,$//')"
 
           # Main run excludes rebels.
           main_addons="$all_addons"
