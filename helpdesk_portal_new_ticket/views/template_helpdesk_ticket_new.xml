@@ -19,11 +19,11 @@
                     <t t-foreach="team_ids" t-as="team_id">
                         <div class="form-check">
                             <input
-                                name="team"
                                 t-attf-id="team_id_{{ team_id.id }}"
+                                class="form-check-input"
+                                name="team"
                                 t-attf-value="{{team_id.id}}"
                                 type="radio"
-                                class="form-check-input"
                                 required="required"
                             />
                             <label
@@ -41,16 +41,16 @@
                     </label>
 
                     <input
-                        type="text"
-                        class="form-control"
                         id="subject"
+                        class="form-control"
+                        type="text"
                         name="subject"
                         placeholder="Subject"
                         aria-describedby="subjectHelpBlock"
                         required="required"
                     />
 
-                    <span class="form-text text-muted" id="subjectHelpBlock">
+                    <span id="subjectHelpBlock" class="form-text text-muted">
                         A brief reference
                     </span>
                 </div>
@@ -61,8 +61,8 @@
                     </label>
 
                     <textarea
-                        class="form-control"
                         id="description"
+                        class="form-control"
                         name="description"
                         cols="40"
                         rows="10"
@@ -70,12 +70,12 @@
                         required="required"
                     />
 
-                    <span class="form-text text-muted" id="descriptionHelpBlock">
+                    <span id="descriptionHelpBlock" class="form-text text-muted">
                         A description of your issue, please include as much as detail as possible
                     </span>
                 </div>
 
-                <div class="my-3" id="div_priority">
+                <div id="div_priority" class="my-3">
                     <label>
                         Priority
                     </label>
@@ -83,9 +83,9 @@
                     <t t-foreach="priorities" t-as="priority">
                         <div class="form-check">
                             <input
-                                type="radio"
-                                class="form-check-input"
                                 t-attf-id="priority_{{ priority[0] }}"
+                                class="form-check-input"
+                                type="radio"
                                 name="priority"
                                 t-attf-value="{{priority[0]}}"
                                 t-att-checked="'checked' if priority[0] == default_priority else False"
