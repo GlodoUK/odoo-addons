@@ -22,7 +22,10 @@ class HelpdeskTicket(models.Model):
 
         res = []
 
-        ticket_type_properties = self.ticket_type_properties
+        # selection properties return their key unless asked for the label
+        ticket_type_properties = self.with_context(
+            property_selection_get_label=True
+        ).ticket_type_properties
 
         if not ticket_type_properties:
             return res
