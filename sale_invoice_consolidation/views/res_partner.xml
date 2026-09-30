@@ -19,6 +19,10 @@
                     invisible="not sale_auto_invoice_frequency"
                     required="sale_auto_invoice_frequency"
                 />
+                <field
+                    name="sale_auto_invoice_action"
+                    invisible="not sale_auto_invoice_frequency"
+                />
             </xpath>
             <!-- Same settings on the stripped-down page child contacts see. -->
             <xpath expr="//page[@name='accounting_disabled']" position="inside">
@@ -29,6 +33,10 @@
                         name="sale_auto_invoice_next_date"
                         invisible="not sale_auto_invoice_frequency"
                         required="sale_auto_invoice_frequency"
+                    />
+                    <field
+                        name="sale_auto_invoice_action"
+                        invisible="not sale_auto_invoice_frequency"
                     />
                 </group>
             </xpath>

@@ -1,7 +1,9 @@
 from datetime import datetime
+from unittest.mock import patch
 
 from freezegun import freeze_time
 
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -59,6 +61,16 @@ class TestSaleAutoInvoice(TransactionCase):
 
     def _partner_moves(self):
         return self.env["account.move"].search([("partner_id", "=", self.partner.id)])
+
+    def _send_cron_triggers(self):
+        return self.env["ir.cron.trigger"].search(
+            [("cron_id", "=", self.env.ref("account.ir_cron_account_move_send").id)]
+        )
+
+    def _due_monthly(self, action=False):
+        self.partner.sale_auto_invoice_frequency = "monthly"
+        self.partner.sale_auto_invoice_next_date = datetime(2026, 5, 1)
+        self.partner.sale_auto_invoice_action = action
 
     @freeze_time("2026-06-03")
     def test_advance_rolls_one_period(self):
@@ -284,3 +296,95 @@ class TestSaleAutoInvoice(TransactionCase):
         invoice_contact.sale_auto_invoice_frequency = False
         self.partner.sale_auto_invoice_frequency = "weekly"
         self.assertFalse(order.sale_auto_invoice_enabled)
+
+    @freeze_time("2026-06-03")
+    def test_cron_leaves_draft_without_action(self):
+        self._due_monthly()
+        self._confirmed_order()
+
+        self._run_cron()
+
+        moves = self._partner_moves()
+        self.assertEqual(moves.mapped("state"), ["draft"])
+        self.assertFalse(moves.sending_data)
+
+    @freeze_time("2026-06-03")
+    def test_cron_posts_with_post_action(self):
+        self._due_monthly("post")
+        self._confirmed_order()
+        triggers = self._send_cron_triggers()
+
+        self._run_cron()
+
+        moves = self._partner_moves()
+        self.assertEqual(moves.mapped("state"), ["posted"])
+        # Posted only: nothing queued for sending.
+        self.assertFalse(moves.sending_data)
+        self.assertEqual(self._send_cron_triggers(), triggers)
+
+    @freeze_time("2026-06-03")
+    def test_cron_posts_and_queues_send_as_salesperson(self):
+        self._due_monthly("post_send")
+        salesperson = self.env["res.users"].create(
+            {
+                "name": "Auto Invoice Salesperson",
+                "login": "auto_invoice_salesperson",
+                "email": "salesperson@example.com",
+                "group_ids": [(4, self.env.ref("sales_team.group_sale_salesman").id)],
+            }
+        )
+        order = self._confirmed_order()
+        order.user_id = salesperson
+        triggers = self._send_cron_triggers()
+
+        self._run_cron()
+
+        moves = self._partner_moves()
+        self.assertEqual(moves.mapped("state"), ["posted"])
+        # Queued for Odoo's asynchronous sender, on behalf of the salesperson.
+        self.assertEqual(
+            moves.sending_data,
+            {
+                "author_user_id": salesperson.id,
+                "author_partner_id": salesperson.partner_id.id,
+            },
+        )
+        self.assertTrue(self._send_cron_triggers() - triggers)
+
+        # And Odoo's sender accepts what was queued: sent, authored by them.
+        # Called the way _cron_account_move_send does, minus its commits.
+        self.partner.email = "billing@example.com"
+        self.env["account.move.send"]._generate_and_send_invoices(moves, from_cron=True)
+        self.assertTrue(moves.is_move_sent)
+        self.assertFalse(moves.sending_data)
+        sent = moves.message_ids.filtered(lambda m: m.message_type == "comment")
+        self.assertEqual(sent.author_id, salesperson.partner_id)
+
+    @freeze_time("2026-06-03")
+    def test_cron_send_falls_back_to_cron_user_without_salesperson(self):
+        self._due_monthly("post_send")
+        order = self._confirmed_order()
+        order.user_id = False
+
+        self._run_cron()
+
+        moves = self._partner_moves()
+        self.assertEqual(moves.sending_data["author_user_id"], self.env.user.id)
+
+    @freeze_time("2026-06-03")
+    def test_cron_keeps_draft_when_posting_fails(self):
+        self._due_monthly("post_send")
+        self._confirmed_order()
+        move_cls = type(self.env["account.move"])
+
+        def action_post(moves):
+            raise UserError(moves.env._("Posting refused"))
+
+        with patch.object(move_cls, "action_post", action_post):
+            self._run_cron()
+
+        moves = self._partner_moves()
+        # The invoice creation is kept; it just stays in draft, unqueued.
+        self.assertEqual(moves.mapped("state"), ["draft"])
+        self.assertFalse(moves.sending_data)
+        self.assertEqual(self.partner.sale_auto_invoice_next_date, datetime(2026, 7, 1))
