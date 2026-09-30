@@ -15,7 +15,8 @@ class ResPartnerBank(models.Model):
         "account for a specific region without making lots of manual changes to invoice"
         "documents.\n\n"
         "You can use python-style string pattern"
-        "(for example, use '%(acc_number)s' to display the field 'account number') plus"
+        "(for example, use '%(account_number)s' to display the field"
+        " 'account number') plus"
         "\n%(bank_name)s: the name of the bank"
         "\n%(bank_bic)s: the bank identifier code",
     )
@@ -27,18 +28,21 @@ class ResPartnerBank(models.Model):
     def _get_custom_display_name_format_values(self):
         self.ensure_one()
         return {
-            "acc_number": self.acc_number or "",
-            "bank_name": self.bank_id.name or "",
+            "account_number": self.account_number or "",
+            # pre-20.0 key names, kept so existing formats keep working
+            "acc_number": self.account_number or "",
+            "bank_name": self.bank_name or "",
             "bank_bic": self.bank_bic or "",
-            "bank_street": self.bank_id.street or "",
-            "bank_street2": self.bank_id.street2 or "",
-            "bank_city": self.bank_id.city or "",
-            "bank_state": self.bank_id.state.name or "",
-            "bank_country": self.bank_id.country.name or "",
-            "bank_country_code": self.bank_id.country.code or "",
-            "bank_zip": self.bank_id.zip or "",
-            "currency_name": self.currency_id.name or "",
-            "currency_full_name": self.currency_id.full_name or "",
+            "bank_street": self.street or "",
+            "bank_street2": self.street2 or "",
+            "bank_city": self.city or "",
+            "bank_state": self.state_id.name or "",
+            "bank_country": self.country_id.name or "",
+            "bank_country_code": self.country_id.code or "",
+            "bank_zip": self.zip or "",
+            # bank accounts no longer have a currency
+            "currency_name": "",
+            "currency_full_name": "",
             "partner_display_name": self.partner_id.display_name or "",
         }
 
@@ -61,18 +65,10 @@ class ResPartnerBank(models.Model):
             self.custom_display_name_format
             % self._get_custom_display_name_format_values()
         )
-        if self.env.context.get("display_account_trust"):
-            trusted_label = (
-                self.env._("trusted")
-                if self.allow_out_payment
-                else self.env._("untrusted")
-            )
-            name = f"{name} {trusted_label}"
         name = re.sub(r"\s\s+", " ", name)
         return name
 
     @api.depends("custom_display_name_format")
-    @api.depends_context("display_account_trust")
     def _compute_display_name(self):
         res = super()._compute_display_name()
 
@@ -81,6 +77,5 @@ class ResPartnerBank(models.Model):
                 record.display_name = record._get_custom_display_name_format()
             except KeyError as e:
                 _logger.warning("Failed to compute custom display name: %s", e)
-                pass
 
         return res
