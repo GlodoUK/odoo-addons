@@ -1,5 +1,4 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
 
 
 class WebCmdSearchProvider(models.Model):
@@ -12,16 +11,10 @@ class WebCmdSearchProvider(models.Model):
     model_name = fields.Char(string="Model Name", related="model_id.model")
     limit = fields.Integer(default=5)
 
-    @api.constrains("model_id")
-    def _model_id_unique(self):
-        for record in self:
-            if self.search_count([("model_id", "=", record.model_id.id)]) > 1:
-                raise ValidationError(
-                    self.env._(
-                        "Only one provider per model is allowed."
-                        " Please update the existing provider."
-                    )
-                )
+    _model_id_uniq = models.Constraint(
+        "UNIQUE(model_id)",
+        "Only one provider per model is allowed. Please update the existing provider.",
+    )
 
     @api.model
     def cmd_search(self, value):

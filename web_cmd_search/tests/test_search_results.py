@@ -1,4 +1,7 @@
+from psycopg2 import IntegrityError
+
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools import mute_logger
 
 
 @tagged("post_install", "-at_install")
@@ -24,9 +27,7 @@ class TestSearchResults(TransactionCase):
         manual_results = self.env["ir.module.module"].name_search("Sales")
         self.assertEqual(
             len(module_results),
-            self.provider.limit
-            if len(manual_results) > self.provider.limit
-            else len(manual_results),
+            min(len(manual_results), self.provider.limit),
             "'Sales' search returns wrong result count",
         )
 
@@ -34,8 +35,12 @@ class TestSearchResults(TransactionCase):
         manual_results = self.env["ir.module.module"].name_search("Discuss")
         self.assertEqual(
             len(module_results),
-            self.provider.limit
-            if len(manual_results) > self.provider.limit
-            else len(manual_results),
+            min(len(manual_results), self.provider.limit),
             "'Discuss' search returns wrong result count",
         )
+
+    def test_one_provider_per_model(self):
+        with self.assertRaises(IntegrityError), mute_logger("odoo.sql_db"):
+            self.env["web.cmd.search.provider"].create(
+                {"model_id": self.provider.model_id.id}
+            )

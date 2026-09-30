@@ -1,5 +1,8 @@
+import {ActionPlugin} from "@web/webclient/actions/action_plugin";
+import {ORM} from "@web/core/orm_plugin";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
+import {usePlugin} from "@odoo/owl";
 
 registry.category("command_setup").add("!", {
     debounceDelay: 200,
@@ -12,16 +15,17 @@ registry.category("command_setup").add("!", {
 
 registry.category("command_provider").add("model", {
     namespace: "!",
-    async provide(env, options) {
+    async provide(options) {
         if (options.searchValue === undefined || options.searchValue.length < 2) {
             return [];
         }
 
-        const data = await env.services.orm.call(
-            "web.cmd.search.provider",
-            "cmd_search",
-            [options.searchValue]
-        );
+        // Plugins must be acquired before any await, while the palette scope is active
+        const orm = usePlugin(ORM);
+        const action = usePlugin(ActionPlugin);
+        const data = await orm.call("web.cmd.search.provider", "cmd_search", [
+            options.searchValue,
+        ]);
         const suggestion = [];
 
         for (const result of data) {
@@ -29,7 +33,7 @@ registry.category("command_provider").add("model", {
                 category: "cmd_search",
                 name: result.name,
                 action() {
-                    env.services.action.doAction({
+                    action.doAction({
                         type: "ir.actions.act_window",
                         res_model: result.model,
                         res_id: result.id,
