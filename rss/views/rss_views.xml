@@ -44,7 +44,7 @@
                             class="oe_stat_button"
                             type="object"
                             name="action_view_items"
-                            icon="fa-list"
+                            icon="format_list_bulleted"
                         >
                             <field name="item_count" widget="statinfo" string="Items" />
                         </button>
@@ -117,10 +117,10 @@
                         <main class="position-relative">
                             <a
                                 t-if="record.link.raw_value"
+                                class="stretched-link"
                                 t-att-href="record.link.raw_value"
                                 target="_blank"
                                 rel="noreferrer noopener"
-                                class="stretched-link"
                                 aria-label="Open source article"
                             />
                             <field name="title" class="fw-bold fs-5" />
@@ -128,7 +128,7 @@
                                 <field name="feed_id" /> · <field name="published" />
                                 <span
                                 t-if="record.category.raw_value"
-                                class="badge bg-secondary rounded-pill smaller o_tag ms-1"
+                                class="badge rounded-pill text-bg-secondary smaller ms-1"
                             >
                                 <field name="category" />
                             </span>
@@ -142,7 +142,7 @@
                                 name="action_archive"
                                 type="object"
                                 string="Archive"
-                                icon="fa-archive"
+                                icon="archive"
                                 class="btn btn-secondary"
                                 invisible="not active"
                             />
@@ -150,7 +150,7 @@
                                 name="action_unarchive"
                                 type="object"
                                 string="Restore"
-                                icon="fa-undo"
+                                icon="undo"
                                 class="btn btn-secondary"
                                 invisible="active"
                             />
@@ -177,14 +177,14 @@
                     name="action_archive"
                     type="object"
                     string="Archive"
-                    icon="fa-archive"
+                    icon="archive"
                     invisible="not active"
                 />
                 <button
                     name="action_unarchive"
                     type="object"
                     string="Restore"
-                    icon="fa-undo"
+                    icon="undo"
                     invisible="active"
                 />
             </list>

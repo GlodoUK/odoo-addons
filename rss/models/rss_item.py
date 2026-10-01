@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class RssItem(models.Model):
     _name = "rss.item"
     _description = "RSS Item"
-    _inherit = ["mail.thread"]
+    _inherit = "mail.thread"
     _order = "published desc, id desc"
 
     feed_id = fields.Many2one("rss.feed", ondelete="cascade", index=True, required=True)

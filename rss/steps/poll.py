@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 import feedparser
 
@@ -38,4 +38,5 @@ def _parse_date(entry):
     parsed = entry.get("published_parsed") or entry.get("updated_parsed")
     if not parsed:
         return False
-    return datetime(*parsed[:6])
+    # feedparser normalises to UTC; Odoo stores naive UTC datetimes.
+    return datetime(*parsed[:6], tzinfo=UTC).replace(tzinfo=None)

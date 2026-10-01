@@ -14,7 +14,7 @@ _USER_AGENT = "odoo-rss/1.0"
 class RssFeed(models.Model):
     _name = "rss.feed"
     _description = "RSS Feed"
-    _inherit = ["mail.thread"]
+    _inherit = "mail.thread"
     _order = "name"
 
     name = fields.Char(required=True, tracking=True)
