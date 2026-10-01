@@ -54,10 +54,10 @@
                                     t-as="partner"
                                 >
                                     <div
-                                        class="d-flex flex-sm-nowrap flex-row align-items-center my-1"
+                                        class="d-flex flex-sm-nowrap flex-row align-items-center gap-2 my-1"
                                     >
                                         <img
-                                            class="o_avatar rounded me-2"
+                                            class="o_avatar rounded flex-shrink-0"
                                             t-att-src="image_data_uri(partner.avatar_128)"
                                             alt="Contact"
                                         />
@@ -67,7 +67,7 @@
                                             role="form"
                                             t-attf-action="/helpdesk/ticket/unfollow/#{ticket.id}"
                                             method="post"
-                                            class="ms-auto"
+                                            class="ms-auto flex-shrink-0"
                                         >
                                             <input
                                                 t-att-value="request.csrf_token()"
