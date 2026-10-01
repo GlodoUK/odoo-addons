@@ -10,13 +10,13 @@
                     <div t-if="ticket.is_private" class="flex-grow-1">
                         <div class="d-grid flex-sm-nowrap pt-2">
                             <a
-                                role="button"
                                 t-if="ticket.is_private"
-                                t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
                                 class="btn btn-light pt-1"
+                                role="button"
+                                t-attf-href="/helpdesk/ticket/privacy/#{ticket.id}"
                                 title="This ticket is currently private and only followers can view it."
                             >
-                        <i class="fa fa-lock me-1" /> Private
+                        <i class="oi oi-filled me-1" data-icon="lock" /> Private
                     </a>
 
                             <small class="d-block text-muted">
@@ -33,7 +33,7 @@
                                 class="btn btn-light pt-1"
                                 title="This ticket is currently public and all members of your company can view it."
                             >
-                        <i class="fa fa-unlock me-1" /> Public
+                        <i class="oi oi-filled me-1" data-icon="lock_open" /> Public
                     </a>
 
                             <small class="d-block text-muted">
@@ -56,16 +56,12 @@
                                     <div
                                         class="d-flex flex-sm-nowrap flex-row align-items-center my-1"
                                     >
-                                        <t t-call="portal.portal_my_contact">
-                                            <t
-                                                t-set="_contactAvatar"
-                                                t-value="image_data_uri(partner.avatar_128)"
-                                            />
-                                            <t
-                                                t-set="_contactName"
-                                                t-value="partner.display_name"
-                                            />
-                                        </t>
+                                        <img
+                                            class="o_avatar rounded me-2"
+                                            t-att-src="image_data_uri(partner.avatar_128)"
+                                            alt="Contact"
+                                        />
+                                        <span t-out="partner.display_name" />
 
                                         <form
                                             role="form"
@@ -87,8 +83,12 @@
 
                                             <button
                                                 type="submit"
-                                                class="btn btn-outline-danger fa fa-trash"
-                                            />
+                                                class="btn btn-sm btn-outline-danger"
+                                                title="Remove follower"
+                                                aria-label="Remove follower"
+                                            >
+                                                <i class="oi" data-icon="delete" />
+                                            </button>
                                         </form>
                                     </div>
                                 </li>
@@ -105,12 +105,16 @@
                                 data-bs-toggle="modal"
                                 data-bs-target="#helpdesk_ticket_followers_modal"
                             >
-                        <i class="fa fa-plus" aria-hidden="true" /> Add Followers
+                        <i
+                                class="oi me-1"
+                                data-icon="person_add"
+                                aria-hidden="true"
+                            /> Add Followers
                     </button>
 
                             <div
-                                class="modal"
                                 id="helpdesk_ticket_followers_modal"
+                                class="modal"
                                 tabindex="-1"
                                 role="dialog"
                             >
@@ -151,10 +155,10 @@
                                                     >
                                                         <div class="form-check mb-1">
                                                             <input
+                                                                t-attf-id="partner_#{partner.id}"
+                                                                class="form-check-input"
                                                                 type="checkbox"
                                                                 name="partner_ids"
-                                                                class="form-check-input"
-                                                                t-attf-id="partner_#{partner.id}"
                                                                 t-att-value="partner.id"
                                                             />
                                                             <label
