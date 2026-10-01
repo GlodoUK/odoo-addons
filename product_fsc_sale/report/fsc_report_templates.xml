@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Sale order / quotation (root var is `doc`) -->
     <template
         id="report_saleorder_document_fsc"
         inherit_id="sale.report_saleorder_document"
@@ -13,13 +12,12 @@
         </xpath>
     </template>
 
-    <!-- Customer invoice (root var is `o`) -->
     <template
         id="report_invoice_document_fsc"
         inherit_id="account.report_invoice_document"
     >
         <xpath expr="//div[@id='payment_term']" position="before">
-            <div class="clearfix">
+            <div t-if="o.is_sale_document()" class="clearfix">
                 <t t-call="product_fsc.fsc_claim_block">
                     <t
                         t-set="fsc_lines"
