@@ -1,16 +1,15 @@
 {
     "name": "product_fsc_sale",
-    "summary": "FSC claim on sale orders and invoices",
+    "summary": "FSC claim on sale orders",
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Uncategorized",
-    "version": "19.0.1.1.0",
-    "depends": ["product_fsc", "sale", "account"],
+    "version": "19.0.1.2.0",
+    "depends": ["product_fsc_account", "sale"],
     "data": [
         "report/fsc_report_templates.xml",
         "views/sale_order.xml",
-        "views/account_move.xml",
     ],
     "license": "LGPL-3",
-    "auto_install": ["product_fsc", "sale"],
+    "auto_install": ["product_fsc_account", "sale"],
 }

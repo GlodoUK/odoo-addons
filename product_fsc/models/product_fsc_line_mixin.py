@@ -1,8 +1,9 @@
 from odoo import api, fields, models
 
 
-class AccountMoveLine(models.Model):
-    _inherit = "account.move.line"
+class ProductFscLineMixin(models.AbstractModel):
+    _name = "product_fsc.line.mixin"
+    _description = "FSC Claim Snapshot on Document Lines"
 
     # Snapshot: only depends on product_id, so issued documents never change.
     fsc_label = fields.Char(
