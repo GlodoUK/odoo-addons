@@ -51,9 +51,9 @@ addon | version | maintainers | summary
 [mrp_product_conformity](mrp_product_conformity/) | 19.0.1.0.0 |  | MRP Product Conformity
 [product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
 [product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
-[product_fsc](product_fsc/) | 19.0.1.0.0 |  | FSC certification classification for products
-[product_fsc_sale](product_fsc_sale/) | 19.0.1.0.0 |  | FSC claim on sale orders and invoices
-[product_fsc_stock](product_fsc_stock/) | 19.0.1.0.0 |  | FSC claim on delivery documents
+[product_fsc](product_fsc/) | 19.0.1.1.0 |  | FSC certification classification for products
+[product_fsc_sale](product_fsc_sale/) | 19.0.1.1.0 |  | FSC claim on sale orders and invoices
+[product_fsc_stock](product_fsc_stock/) | 19.0.1.1.0 |  | FSC claim on delivery documents
 [product_search_rank](product_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching for products
 [product_search_rank_account](product_search_rank_account/) | 19.0.1.0.0 |  | Ranked product searching in invoice line dropdowns
 [product_search_rank_purchase](product_search_rank_purchase/) | 19.0.1.0.0 |  | Ranked product searching in purchase order line dropdowns
