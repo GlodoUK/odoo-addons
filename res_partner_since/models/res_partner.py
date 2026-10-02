@@ -1,5 +1,3 @@
-import datetime
-
 from odoo import api, fields, models
 
 SECONDS_PER_DAY = 24 * 60 * 60  # 86400
@@ -19,6 +17,7 @@ class ResPartner(models.Model):
             if not record.relationship_since:
                 record.relationship_age = False
                 continue
-            age = (datetime.date.today() - record.relationship_since).total_seconds()
+            today = fields.Date.context_today(record)
+            age = (today - record.relationship_since).total_seconds()
 
             record.relationship_age = round(age / SECONDS_PER_YEAR, 1)
