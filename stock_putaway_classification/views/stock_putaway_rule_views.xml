@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_putaway_list" model="ir.ui.view">
+        <field name="name">stock.putaway.classification.putaway.rule.list</field>
+        <field name="model">stock.putaway.rule</field>
+        <field name="inherit_id" ref="stock.stock_putaway_list" />
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+                <field
+                    name="product_classification_id"
+                    readonly="product_id"
+                    placeholder="All Classifications"
+                    optional="show"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

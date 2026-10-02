@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div
+                    class="alert alert-danger"
+                    role="alert"
+                    invisible="not show_warning_resource_calendar"
+                >
+                    <i class="fa fa-warning me-2" />
+                    <span>Deadline is outside the customer's delivery window</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_internal_search" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+        <field name="arch" type="xml">
+            <filter name="late" position="after">
+                <separator />
+                <filter
+                    name="show_warning_resource_calendar"
+                    string="Outside Calendar"
+                    domain="[('show_warning_resource_calendar', '=', True)]"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

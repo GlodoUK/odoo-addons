@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-inherit="stock.StockOrderpointSearchPanel.Regular" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'o_search_panel')]" position="inside">
+            <section class="o_search_panel_section o_search_panel_filter">
+                <header
+                    class="o_search_panel_section_header pt-4 pb-2 text-uppercase cursor-default"
+                >
+                    <i class="fa fa-cogs o_search_panel_section_icon text-muted me-2" />
+                    <b>Scheduler</b>
+                </header>
+                <div
+                    t-if="schedulerLastRun.value"
+                    class="text-muted"
+                    t-att-title="schedulerLastRunExact"
+                >
+                    Last ran <t t-esc="schedulerLastRunRelative" />
+                </div>
+                <div t-else="" class="text-muted">Not run yet</div>
+            </section>
+        </xpath>
+    </t>
+
+</templates>
