@@ -1,4 +1,6 @@
-from odoo import http
+from datetime import UTC, datetime
+
+from odoo import fields, http
 from odoo.http import request
 from odoo.tools import html2plaintext
 
@@ -40,10 +42,10 @@ class CustomerPortal(CustomerPortal):
             .search([("id", "=", int(ticket_type_id))])
         )
 
-        ticket_type_properties = ticket_type_id.ticket_type_properties_definition  # noqa: E501
+        ticket_type_properties = ticket_type_id.ticket_type_properties_definition
 
         rendered = request.env["ir.qweb"]._render(
-            "helpdesk_portal_new_ticket_ticket_type_properties.portal_helpdesk_ticket_create_ticket_type_properties",  # noqa: E501
+            "helpdesk_portal_new_ticket_ticket_type_properties.portal_helpdesk_ticket_create_ticket_type_properties",
             {"ticket_type_properties": ticket_type_properties},
         )
 
@@ -65,14 +67,21 @@ class CustomerPortal(CustomerPortal):
                 kwargs_property_name = kwargs.get(
                     f"ticket_type_property_{prop['name']}"
                 )
+            if prop["type"] == "boolean":
+                # an unticked checkbox is not posted at all
+                values[prop["name"]] = bool(kwargs_property_name)
+                continue
+
             if not kwargs_property_name:
                 continue
 
-            if prop["type"] in ("char", "date", "datetime"):
+            if prop["type"] in ("char", "date"):
                 values[prop["name"]] = kwargs_property_name
 
-            if prop["type"] == "boolean":
-                values[prop["name"]] = bool(kwargs_property_name)
+            if prop["type"] == "datetime":
+                values[prop["name"]] = self._ticket_type_property_to_datetime(
+                    kwargs_property_name
+                )
 
             if prop["type"] == "integer":
                 values[prop["name"]] = int(kwargs_property_name)
@@ -99,3 +108,14 @@ class CustomerPortal(CustomerPortal):
         ticket_id.write({"ticket_type_properties": values})
 
         return res
+
+    def _ticket_type_property_to_datetime(self, value):
+        # <input type="datetime-local"> posts the customer's wall-clock time
+        # ("2026-10-01T14:30"), datetime properties hold UTC server strings
+        try:
+            value = datetime.fromisoformat(value)
+        except ValueError:
+            return False
+        if not value.tzinfo:
+            value = value.replace(tzinfo=request.env.tz)
+        return fields.Datetime.to_string(value.astimezone(UTC).replace(tzinfo=None))

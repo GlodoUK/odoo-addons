@@ -1,46 +1,58 @@
-import publicWidget from "@web/legacy/js/public/public_widget";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 import {rpc} from "@web/core/network/rpc";
 
-publicWidget.registry.PortalTicketTypeEdit = publicWidget.Widget.extend({
-    selector: "#helpdesk_ticket_new",
+export class PortalTicketTypeEdit extends Interaction {
+    static selector = "#helpdesk_ticket_new";
 
-    events: {
-        "change select[name='ticket_categ_id']": "_onTicketCategChange",
-    },
+    dynamicContent = {
+        "select[name='ticket_categ_id']": {"t-on-change": this.onTicketCategChange},
+        "button[name='submit']": {"t-att-disabled": () => this.loading},
+    };
 
-    _onTicketCategChange: function () {
-        const target = $(this.$el.find(".ticket_type_id_container"));
+    setup() {
+        this.loading = false;
+        this.request = null;
+        this.container = this.el.querySelector(".ticket_type_id_container");
+    }
 
-        if (!target) {
+    async onTicketCategChange(ev) {
+        if (!this.container) {
             return;
         }
 
-        const buttonSubmit = $(this.$el).find("button[name='submit']");
-
-        if (buttonSubmit) {
-            buttonSubmit.prop("disabled", true);
-        }
-
-        const $ticketTypeField = $(this.$el).find("select[name='ticket_categ_id']");
-
-        let ticketTypeId = $ticketTypeField.find(":selected").val();
-        ticketTypeId = parseInt(ticketTypeId, 10);
+        const ticketTypeId = parseInt(ev.currentTarget.value, 10);
 
         if (isNaN(ticketTypeId)) {
-            target.html("");
+            this.container.replaceChildren();
             return;
         }
 
-        const params = {
+        // Only the answer to the latest change may replace the fields
+        const request = rpc("/my/tickets/get_ticket_type_info", {
             ticket_type_id: ticketTypeId,
-        };
-
-        rpc("/my/tickets/get_ticket_type_info", params).then((ticketTypeData) => {
-            target.html(ticketTypeData.template);
-
-            if (buttonSubmit) {
-                buttonSubmit.prop("disabled", false);
-            }
         });
-    },
-});
+        this.request = request;
+        this.loading = true;
+        // Async handlers only refresh once they end: disable submit right away
+        this.updateContent();
+
+        try {
+            const {template} = await this.waitFor(request);
+            if (request === this.request) {
+                this.container.innerHTML = template;
+            }
+        } finally {
+            if (request === this.request) {
+                this.loading = false;
+            }
+        }
+    }
+}
+
+registry
+    .category("public.interactions")
+    .add(
+        "helpdesk_portal_new_ticket_ticket_type_properties.portal_ticket_type_edit",
+        PortalTicketTypeEdit
+    );

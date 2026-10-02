@@ -4,8 +4,8 @@
         <div class="row">
             <t t-foreach="ticket_type_properties" t-as="ticket_type_property">
                 <div
-                    class="col-lg-6 my-3"
                     t-if="ticket_type_property['type'] in ('char', 'boolean', 'integer', 'float', 'decimal', 'date', 'datetime', 'selection', 'tags', 'text')"
+                    class="col-lg-6 my-3"
                 >
                     <t t-if="ticket_type_property['type'] == 'char'">
                         <label
@@ -15,9 +15,9 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <input
-                            type="text"
-                            class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-control"
+                            type="text"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-att-value="ticket_type_property.get('default', '')"
                         />
@@ -26,9 +26,9 @@
                     <t t-elif="ticket_type_property['type'] == 'boolean'">
                         <div class="form-check">
                             <input
-                                type="checkbox"
-                                class="form-check-input my-auto"
                                 t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                                class="form-check-input my-auto"
+                                type="checkbox"
                                 t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                                 t-att-checked="ticket_type_property.get('default', False)"
                             />
@@ -49,9 +49,9 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <input
-                            type="number"
-                            class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-control"
+                            type="number"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-att-value="ticket_type_property.get('default', '')"
                         />
@@ -65,10 +65,10 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <input
+                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-control"
                             type="number"
                             step="0.1"
-                            class="form-control"
-                            t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-att-value="ticket_type_property.get('default', '')"
                         />
@@ -82,9 +82,9 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <input
-                            type="date"
-                            class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-control"
+                            type="date"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-att-value="ticket_type_property.get('default', '')"
                         />
@@ -98,9 +98,9 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <input
-                            type="datetime-local"
-                            class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-control"
+                            type="datetime-local"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                             t-att-value="ticket_type_property.get('default', '')"
                         />
@@ -116,8 +116,8 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <select
-                            class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-select"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                         >
                             <option />
@@ -137,9 +137,9 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <select
-                            class="form-control"
-                            multiple="multiple"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-select"
+                            multiple="multiple"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                         >
                             <t t-foreach="ticket_type_property['tags']" t-as="sel">
@@ -156,9 +156,9 @@
                             <t t-out="ticket_type_property['string']" />
                         </label>
                         <textarea
-                            type="text"
-                            class="form-control"
                             t-attf-id="ticket_type_property_{{ ticket_type_property['name'] }}"
+                            class="form-control"
+                            type="text"
                             t-attf-name="ticket_type_property_{{ ticket_type_property['name'] }}"
                         />
                     </t>
@@ -176,12 +176,8 @@
             <div class="ticket_type_id_container my-3">
                 <t
                     t-call="helpdesk_portal_new_ticket_ticket_type_properties.portal_helpdesk_ticket_create_ticket_type_properties"
-                >
-                    <t
-                        t-set="ticket_type_properties"
-                        t-value="ticket_type_properties_initial"
-                    />
-                </t>
+                    ticket_type_properties="ticket_type_properties_initial"
+                />
             </div>
         </div>
     </template>
