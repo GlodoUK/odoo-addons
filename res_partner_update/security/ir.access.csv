@@ -1,0 +1,3 @@
+id,name,model_id,group_id/id,operation,domain
+access_res_partner_update_user,res.partner.update.user,res.partner.update,group_res_partner_update_user,r,
+access_res_partner_update_manager,res.partner.update.manager,res.partner.update,group_res_partner_update_manager,crud,
