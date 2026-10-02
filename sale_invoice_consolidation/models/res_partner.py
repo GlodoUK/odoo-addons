@@ -3,6 +3,7 @@ import logging
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -43,6 +44,19 @@ class ResPartner(models.Model):
         "effect if the scheduled action itself runs at least that often.",
     )
 
+    sale_auto_invoice_action = fields.Selection(
+        [
+            ("post", "Post"),
+            ("post_send", "Post and Send"),
+        ],
+        string="Auto-Invoice Action",
+        company_dependent=True,
+        help="What the scheduled action does with the invoices it raises. "
+        "Post: confirm them. Post and Send: confirm them and queue them for "
+        "sending, using the customer's sending method, on behalf of each "
+        "invoice's salesperson. Leave empty to keep them as drafts.",
+    )
+
     sale_auto_invoice_next_date = fields.Datetime(
         string="Next Auto-Invoice Run",
         company_dependent=True,
@@ -74,6 +88,62 @@ class ResPartner(models.Model):
             next_date += delta
         return next_date
 
+    def _sale_auto_invoice_finalize(self, moves):
+        """
+        Post, and optionally queue for sending, the moves raised for this partner.
+
+        Each move is posted in its own savepoint, so one that cannot be posted
+        (lock date, missing account, ...) stays in draft with the reason logged
+        on it, without holding back the others or undoing their creation.
+
+        Sending goes through Odoo's own asynchronous queue, the same one the
+        batch *Send* wizard uses: filling ``sending_data`` queues the move for
+        ``account.ir_cron_account_move_send``, which renders and sends it in
+        its own transaction and retries what can be retried. The author is the
+        invoice's salesperson (copied from the order's ``user_id``), falling
+        back to the cron user: they get the "Invoices sent" / "Invoices in
+        error" notification, and they are the email's sender unless the mail
+        template sets its own ``email_from`` (the default invoice template also
+        resolves to the salesperson, then the company).
+        """
+        self.ensure_one()
+        action = self.sale_auto_invoice_action
+        if not action or not moves:
+            return
+        posted = self.env["account.move"]
+        for move in moves:
+            try:
+                with self.env.cr.savepoint():
+                    move.action_post()
+                posted |= move
+            except (UserError, ValidationError) as e:
+                move._message_log(
+                    body=self.env._(
+                        "This invoice could not be posted automatically: %(error)s",
+                        error=e,
+                    )
+                )
+        if action != "post_send" or not posted:
+            return
+        for move in posted:
+            author = move.invoice_user_id or self.env.user
+            move.sending_data = {
+                "author_user_id": author.id,
+                "author_partner_id": author.partner_id.id,
+            }
+        send_cron = self.env.ref(
+            "account.ir_cron_account_move_send", raise_if_not_found=False
+        )
+        if send_cron and send_cron.sudo().active:
+            send_cron.sudo()._trigger()
+        else:
+            _logger.warning(
+                "Invoices %s were queued for sending, but the scheduled action "
+                "'Send invoices automatically' is inactive; they will be sent "
+                "once it is re-enabled.",
+                posted.ids,
+            )
+
     @api.model
     def _cron_auto_create_invoices(self):
         """
@@ -84,7 +154,9 @@ class ResPartner(models.Model):
         something to invoice, then skip those whose schedule is not yet due.
 
         Whether credit notes may be raised by the run is controlled per company
-        by ``res.company.sale_auto_invoice_credit_notes``.
+        by ``res.company.sale_auto_invoice_credit_notes``. What happens to the
+        raised moves afterwards (left in draft, posted, or posted and sent) is
+        controlled per partner by ``sale_auto_invoice_action``.
 
         Progress is reported through ``ir.cron._commit_progress`` so each pair
         is committed as it completes: a timed-out run resumes where it left off
@@ -144,6 +216,7 @@ class ResPartner(models.Model):
                     partner.sale_auto_invoice_next_date = (
                         partner._sale_auto_invoice_advance()
                     )
+                    partner._sale_auto_invoice_finalize(moves)
                     if moves:
                         partner._message_log(
                             body=self.env._(

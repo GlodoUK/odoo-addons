@@ -49,6 +49,24 @@ forward.
 All scheduling and consolidation fields are ``company_dependent``, so values can
 differ per company.
 
+Each customer also has an **Auto-Invoice Action** that decides what happens to
+the invoices the scheduled action raises:
+
+* *(empty)* - they are left in draft for review, as before.
+* **Post** - they are posted.
+* **Post and Send** - they are posted and queued for sending through Odoo's
+  asynchronous invoice sender (the *Send invoices automatically* scheduled
+  action, the same queue the batch *Send* wizard uses). Sending follows the
+  customer's own sending method, and is done on behalf of each invoice's
+  salesperson - copied from the sale order - who receives the usual "Invoices
+  sent" / "Invoices in error" notification. Invoices without a salesperson are
+  sent as the scheduled action's user.
+
+Invoices are posted one by one. One that cannot be posted (lock date, missing
+account, ...) stays in draft with the reason logged on it, without affecting the
+others or the customer's schedule. *Send invoices automatically* must be active
+for queued invoices to go out; they wait in the queue until it is.
+
 Sale orders carry a read-only **Automatic Invoicing** mirror
 (``sale.order.sale_auto_invoice_enabled``), shown on the *Other Info* tab, so it
 is visible from the order whether the scheduled action will pick it up. It is
@@ -79,7 +97,7 @@ Configuration
 Set **Auto-Raise Credit Notes** in *Accounting > Configuration > Settings*,
 under *Consolidation*.
 
-Set the preference, frequency and next run on the *Invoicing* tab of the
+Set the preference, frequency, next run and action on the *Invoicing* tab of the
 partner used as the order's invoice address. This may be a company or one of its
 child contacts - the settings are read from the invoice address itself and are
 not inherited from the commercial entity, so configure them on the partner you
