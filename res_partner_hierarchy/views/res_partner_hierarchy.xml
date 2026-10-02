@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_hierarchy" model="ir.ui.view">
+        <field name="name">res.partner.hierarchy</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <hierarchy
+                parent_field="hierarchy_parent_id"
+                child_field="hierarchy_child_ids"
+                draggable="1"
+            >
+                <field name="name" />
+                <field name="function" />
+                <field name="email" />
+                <field name="hierarchy_child_count" />
+                <field name="hierarchy_type_id" />
+                <templates>
+                    <t t-name="hierarchy-box">
+                        <div
+                            class="o_hierarchy_node_header d-flex justify-content-center align-items-center"
+                        >
+                            <field name="name" />
+                        </div>
+                        <div class="o_hierarchy_node_body d-flex flex-column">
+                            <field
+                                name="hierarchy_type_id"
+                                widget="badge"
+                                invisible="not hierarchy_type_id"
+                            />
+                            <field
+                                name="function"
+                                class="text-muted"
+                                invisible="not function"
+                            />
+                            <field name="email" widget="email" invisible="not email" />
+                            <div invisible="not hierarchy_child_count">
+                                <button
+                                    class="btn btn-link p-0"
+                                    type="object"
+                                    name="action_open_hierarchy_children"
+                                >
+                                    <t
+                                    t-out="record.hierarchy_child_count.raw_value"
+                                /> children
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </hierarchy>
+        </field>
+    </record>
+
+    <record id="action_partner_hierarchy" model="ir.actions.act_window">
+        <field name="name">Partner Hierarchy</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">hierarchy,list,form</field>
+        <field
+            name="domain"
+        >[('hierarchy_parent_id', '=', False), ('hierarchy_child_ids', '!=', False)]</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No partner hierarchies yet
+            </p>
+            <p>
+                Set a Hierarchy Parent on the Hierarchy tab of a contact and the
+                tree shows up here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_partner_hierarchy"
+        name="Hierarchy"
+        action="action_partner_hierarchy"
+        parent="contacts.menu_contacts"
+        sequence="4"
+    />
+</odoo>

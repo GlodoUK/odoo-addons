@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.hierarchy</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    type="object"
+                    name="action_open_hierarchy_children"
+                    icon="fa-sitemap"
+                    class="oe_stat_button"
+                    invisible="not hierarchy_child_count"
+                >
+                    <field
+                        name="hierarchy_child_count"
+                        widget="statinfo"
+                        string="Children"
+                    />
+                </button>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Hierarchy" name="partner_hierarchy">
+                    <group>
+                        <group name="hierarchy_group">
+                            <field
+                                name="hierarchy_parent_id"
+                                context="{'hierarchy_show_path': True}"
+                            />
+                            <field
+                                name="hierarchy_type_id"
+                                invisible="not hierarchy_parent_id"
+                            />
+                            <field name="hierarchy_complete_name" />
+                            <field
+                                name="hierarchy_root_id"
+                                invisible="not hierarchy_parent_id"
+                            />
+                        </group>
+                    </group>
+                    <field name="hierarchy_child_ids" nolabel="1">
+                        <list>
+                            <field name="display_name" string="Partner" />
+                            <field name="hierarchy_complete_name" />
+                            <field name="hierarchy_type_id" optional="show" />
+                            <field name="email" optional="show" />
+                            <field name="phone" optional="hide" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter" model="ir.ui.view">
+        <field name="name">res.partner.select.hierarchy</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="hierarchy_parent_id" />
+                <field name="hierarchy_complete_name" string="Hierarchy Path" />
+                <field name="hierarchy_type_id" />
+            </xpath>
+            <xpath expr="//group[@name='group_by']" position="inside">
+                <filter
+                    name="hierarchy_group_parent"
+                    string="Hierarchy Parent"
+                    context="{'group_by': 'hierarchy_parent_id'}"
+                />
+                <filter
+                    name="hierarchy_group_root"
+                    string="Hierarchy Root"
+                    context="{'group_by': 'hierarchy_root_id'}"
+                />
+                <filter
+                    name="hierarchy_group_type"
+                    string="Hierarchy Type"
+                    context="{'group_by': 'hierarchy_type_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
