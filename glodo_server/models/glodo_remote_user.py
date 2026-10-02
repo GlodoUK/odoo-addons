@@ -312,9 +312,5 @@ class GlodoRemoteUser(models.Model):
             try:
                 with self.env.cr.savepoint():
                     user.action_archive_user()
-            except Exception as e:
-                _logger.exception(
-                    "Failed to re-archive remote user %(login)s: %(error)s",
-                    user.login,
-                    error=str(e),
-                )
+            except Exception:
+                _logger.exception("Failed to re-archive remote user %s", user.login)
