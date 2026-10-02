@@ -220,7 +220,7 @@ class GlodoInstanceDatabase(models.Model):
             return NotImplemented
         negate = operator in ("not ilike", "!=")
         sql_op = "ILIKE" if operator in ("ilike", "not ilike") else "="
-        sql_val = f"%{value}%" if operator == "ilike" else value
+        sql_val = f"%{value}%" if sql_op == "ILIKE" else value
         self.env.cr.execute(
             """
             SELECT id
