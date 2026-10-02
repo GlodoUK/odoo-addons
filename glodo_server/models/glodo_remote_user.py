@@ -89,8 +89,8 @@ class GlodoRemoteUser(models.Model):
         """
         Initiate a 'become' action to log into the remote instance as this user.
 
-        Creates a signed request and redirects the admin to the client's
-        become endpoint.
+        Redirects the admin to the server's become_redirect endpoint, which
+        signs the request and logs it.
         """
         self.ensure_one()
 
@@ -103,25 +103,6 @@ class GlodoRemoteUser(models.Model):
         if not instance.active:
             raise UserError(self.env._("Instance is not active."))
 
-        self.env["glodo.action.log"].create(
-            {
-                "instance_id": instance.id,
-                "remote_user_id": self.id,
-                "admin_user_id": self.env.user.id,
-                "action_type": "become",
-                "payload": str(
-                    {
-                        "database": database.name,
-                        "user_id": self.remote_id,
-                        "admin_user": self.env.user.login,
-                        "admin_user_id": self.env.user.id,
-                    }
-                ),
-            }
-        )
-
-        self.last_become_date = fields.Datetime.now()
-
         return {
             "type": "ir.actions.act_url",
             "url": (
@@ -131,6 +112,30 @@ class GlodoRemoteUser(models.Model):
             ),
             "target": "new",
         }
+
+    def _log_become(self, ip_address=None):
+        """Record a become action, called when the signed request is issued."""
+        self.ensure_one()
+
+        self.env["glodo.action.log"].create(
+            {
+                "instance_id": self.instance_id.id,
+                "remote_user_id": self.id,
+                "admin_user_id": self.env.user.id,
+                "action_type": "become",
+                "ip_address": ip_address,
+                "payload": str(
+                    {
+                        "database": self.database_id.name,
+                        "user_id": self.remote_id,
+                        "admin_user": self.env.user.login,
+                        "admin_user_id": self.env.user.id,
+                    }
+                ),
+            }
+        )
+
+        self.last_become_date = fields.Datetime.now()
 
     def action_archive_user(self):
         """Archive this user on the remote instance."""

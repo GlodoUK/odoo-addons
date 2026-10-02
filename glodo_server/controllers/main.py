@@ -48,14 +48,18 @@ class GlodoCloudServer(http.Controller):
         the admin to the client instance.
 
         This is an intermediate endpoint that:
-        1. Validates the admin has access
-        2. Creates a fresh encrypted payload with current timestamp
-        3. Builds a form that POSTs to the client's become endpoint
+        1. Validates the admin is a Glodo Cloud manager
+        2. Logs the become action
+        3. Creates a fresh encrypted payload with current timestamp
+        4. Builds a form that POSTs to the client's become endpoint
 
         Args:
             database_id: ID of the glodo.instance.database record
             user_id: ID of the glodo.remote.user record
         """
+        if not request.env.user.has_group("glodo_server.group_glodo_cloud_manager"):
+            raise Forbidden("Only Glodo Cloud managers can become remote users")
+
         if not database_id or not user_id:
             raise BadRequest("Missing database_id or user_id")
 
@@ -85,6 +89,8 @@ class GlodoCloudServer(http.Controller):
 
         if remote_user.is_archived:
             raise Forbidden("Cannot become an archived user")
+
+        remote_user._log_become(ip_address=request.httprequest.remote_addr)
 
         # Create encrypted payload
         crypto = instance._get_crypto()
