@@ -8,6 +8,7 @@ import json
 import logging
 import time
 
+from markupsafe import escape
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 
 from odoo import http
@@ -100,19 +101,22 @@ class GlodoCloudServer(http.Controller):
         }
         encrypted_data = crypto.encrypt(payload)
 
-        become_url = f"{instance.url.rstrip('/')}/glodo_cloud/become"
+        become_url = escape(f"{instance.url.rstrip('/')}/glodo_cloud/become")
 
-        # Build auto-submit form
-        iv_val = encrypted_data["iv"]
-        ct_val = encrypted_data["ciphertext"]
+        # Build auto-submit form. Logins are synced from the client database,
+        # so every value is escaped before it goes into the page.
+        instance_name = escape(instance.name)
+        login = escape(remote_user.login)
+        iv_val = escape(encrypted_data["iv"])
+        ct_val = escape(encrypted_data["ciphertext"])
         html = f"""
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Redirecting to {instance.name}...</title>
+            <title>Redirecting to {instance_name}...</title>
         </head>
         <body>
-            <p>Redirecting to {instance.name} as {remote_user.login}...</p>
+            <p>Redirecting to {instance_name} as {login}...</p>
             <form id="become_form" method="POST" action="{become_url}">
                 <input type="hidden" name="iv" value="{iv_val}" />
                 <input type="hidden" name="ciphertext" value="{ct_val}" />
