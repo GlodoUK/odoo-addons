@@ -52,7 +52,9 @@ addon | version | maintainers | summary
 [product_alternative](product_alternative/) | 19.0.1.0.0 |  | Define alternative products
 [product_alternative_sale](product_alternative_sale/) | 19.0.1.0.0 |  | Show a product's alternatives on the sale order line in a popup
 [product_fsc](product_fsc/) | 19.0.1.1.0 |  | FSC certification classification for products
-[product_fsc_sale](product_fsc_sale/) | 19.0.1.1.0 |  | FSC claim on sale orders and invoices
+[product_fsc_account](product_fsc_account/) | 19.0.1.0.0 |  | FSC claim on invoices and bills
+[product_fsc_purchase](product_fsc_purchase/) | 19.0.1.0.0 |  | FSC claim on purchase orders and requests for quotation
+[product_fsc_sale](product_fsc_sale/) | 19.0.1.2.0 |  | FSC claim on sale orders
 [product_fsc_stock](product_fsc_stock/) | 19.0.1.1.0 |  | FSC claim on delivery documents
 [product_search_rank](product_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching for products
 [product_search_rank_account](product_search_rank_account/) | 19.0.1.0.0 |  | Ranked product searching in invoice line dropdowns
