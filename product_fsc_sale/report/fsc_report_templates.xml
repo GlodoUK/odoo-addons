@@ -11,21 +11,4 @@
             </t>
         </xpath>
     </template>
-
-    <template
-        id="report_invoice_document_fsc"
-        inherit_id="account.report_invoice_document"
-    >
-        <xpath expr="//div[@id='payment_term']" position="before">
-            <div t-if="o.is_sale_document()" class="clearfix">
-                <t t-call="product_fsc.fsc_claim_block">
-                    <t
-                        t-set="fsc_lines"
-                        t-value="o.invoice_line_ids.filtered('fsc_label')"
-                    />
-                    <t t-set="company" t-value="o.company_id" />
-                </t>
-            </div>
-        </xpath>
-    </template>
 </odoo>
