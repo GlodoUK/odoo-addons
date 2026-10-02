@@ -1,4 +1,4 @@
-from odoo import _, models
+from odoo import models
 
 
 class StockQuant(models.Model):
@@ -10,7 +10,7 @@ class StockQuant(models.Model):
         ctx = dict(self.env.context, default_quant_ids=self.ids)
         view = self.env.ref("stock.stock_inventory_adjustment_name_form_view")
         return {
-            "name": _("Inventory Adjustment"),
+            "name": self.env._("Inventory Adjustment"),
             "type": "ir.actions.act_window",
             "views": [(view.id, "form")],
             "res_model": "stock.inventory.adjustment.name",
