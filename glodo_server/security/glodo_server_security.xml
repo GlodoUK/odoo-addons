@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="module_category_glodo_cloud" model="ir.module.category">
+        <field name="name">Glodo Cloud</field>
+        <field name="description">Manage Glodo Cloud permissions</field>
+        <field name="sequence" eval="100" />
+    </record>
+
+    <record id="privilege_glodo_cloud" model="res.groups.privilege">
+        <field name="name">Glodo Cloud</field>
+        <field name="category_id" ref="module_category_glodo_cloud" />
+    </record>
+
+    <record id="group_glodo_cloud_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="privilege_glodo_cloud" />
+        <field name="comment">Can view managed instances and remote users</field>
+    </record>
+
+    <record id="group_glodo_cloud_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="privilege_glodo_cloud" />
+        <field name="implied_ids" eval="[(4, ref('group_glodo_cloud_user'))]" />
+        <field
+            name="comment"
+        >Can manage instances, sync users, and perform become actions</field>
+    </record>
+
+    <record id="group_glodo_cloud_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="privilege_id" ref="privilege_glodo_cloud" />
+        <field name="implied_ids" eval="[(4, ref('group_glodo_cloud_manager'))]" />
+        <field
+            name="comment"
+        >Full access including key management and enrollment</field>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]" />
+    </record>
+</odoo>
