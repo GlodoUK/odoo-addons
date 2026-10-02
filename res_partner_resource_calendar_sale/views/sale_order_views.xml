@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div
+                    class="alert alert-danger"
+                    role="alert"
+                    invisible="not show_warning_resource_calendar"
+                >
+                    <i class="fa fa-warning me-2" />
+                    <span>Delivery Date is outside the customer's delivery window</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <filter name="my_sale_orders_filter" position="after">
+                <separator />
+                <filter
+                    name="show_warning_resource_calendar"
+                    string="Outside Calendar"
+                    domain="[('show_warning_resource_calendar', '=', True)]"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

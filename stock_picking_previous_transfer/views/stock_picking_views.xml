@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form.previous.transfer</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_next_transfer']" position="before">
+                <button
+                    name="action_previous_transfer"
+                    class="oe_stat_button"
+                    icon="fa-exchange"
+                    type="object"
+                    help="List view of previous transfers"
+                    invisible="not show_previous_pickings"
+                >
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_text">Previous Transfer</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
