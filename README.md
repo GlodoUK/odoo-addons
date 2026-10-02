@@ -92,6 +92,7 @@ addon | version | maintainers | summary
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
 [sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
 [shoehorn](shoehorn/) | 19.0.1.0.0 |  | Repeatedly and safely bootstrap Odoo databases (odoo shoehorn)
+[stock_inventory_reason](stock_inventory_reason/) | 19.0.1.0.0 |  | Always prompt for an inventory adjustment reason when applying a single Physical Inventory line
 [stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
 [stock_picking_archive](stock_picking_archive/) | 19.0.1.0.0 |  | Allow stock.picking records to be archived
 [stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
