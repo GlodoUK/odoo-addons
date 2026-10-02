@@ -14,8 +14,8 @@
             </label>
 
             <select
-                class="form-select"
                 id="ticket_categ_id"
+                class="form-select"
                 name="ticket_categ_id"
                 required="required"
             >
