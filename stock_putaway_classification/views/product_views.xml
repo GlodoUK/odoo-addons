@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">stock.putaway.classification.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
+                <field
+                    name="product_classification_id"
+                    invisible="product_variant_count &gt; 1 and not is_product_variant"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_variant_easy_edit_view" model="ir.ui.view">
+        <field
+            name="name"
+        >stock.putaway.classification.product.product.form.easy</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='weight']" position="inside">
+                <field name="product_classification_id" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
