@@ -19,8 +19,8 @@ addon | version | maintainers | summary
 [account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
 [auth_bcrypt_scheme](auth_bcrypt_scheme/) | 19.0.1.0.0 |  | auth_bcrypt_scheme
 [automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
-[autopilot](autopilot/) | 19.0.1.0.0 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
-[autopilot_sale](autopilot_sale/) | 19.0.1.0.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
+[autopilot](autopilot/) | 19.0.1.1.1 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
+[autopilot_sale](autopilot_sale/) | 19.0.1.1.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
 [base_search_rank](base_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching via pg_trgm word similarity
 [concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
