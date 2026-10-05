@@ -5,7 +5,9 @@ format/protocol-agnostic and unit-testable without an Odoo env:
 
 * :mod:`files` - drive an fsspec filesystem: ``glob``, ``archive``, and
   ``sweep`` (glob + archive, the one-shot "claim the batch" primitive), plus
-  ``fsspec_providers`` for a transport ``Selection``.
+  ``filesystem`` to build one from JSON storage options and ``render_path``
+  for ``{datetime:...}`` / ``{record.*}`` tokens in configured paths.
+* :mod:`ssh` - in-memory SFTP private keys and host-key pinning.
 * :mod:`csv`, :mod:`xls`, :mod:`xlsx` - row codecs (see below).
 * :mod:`batch` - ``batched``, splitting rows into chunks for fan-out.
 
@@ -37,6 +39,7 @@ import posixpath
 from . import batch
 from . import csv
 from . import files
+from . import ssh
 from . import xls
 from . import xlsx
 

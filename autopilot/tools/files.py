@@ -12,16 +12,17 @@ configuring it -- local, SFTP, S3, whatever fsspec exposes -- and these just
 drive it: they import neither fsspec nor Odoo, only calling the standard fsspec
 filesystem methods, so they are duck-typed over the protocol and unit-testable
 against any filesystem (a ``LocalFileSystem`` on a tmp dir, an in-memory one)
-with no Odoo env. ``fsspec_providers`` is the one exception -- it reads fsspec's
-registry to enumerate transports, importing fsspec lazily.
+with no Odoo env. ``filesystem`` is the exception -- it builds one, importing
+fsspec lazily.
 
 Paths are POSIX-style with ``/`` separators, as fsspec normalises them -- so
 ``posixpath`` (not ``os.path``, which follows the platform separator) is the
 right tool when a caller needs the file name of a path.
 """
 
+import datetime
+import json
 import posixpath
-import re
 from contextlib import contextmanager
 
 
@@ -60,129 +61,6 @@ def archive(fs, src, directory):
     dst = f"{directory}/{posixpath.basename(src)}"
     fs.mv(src, dst)
     return dst
-
-
-# fsspec protocols that are not sensible file transports: in-memory/test,
-# cache & wrapper layers, archives/read-only, and VCS/notebook/tracking
-# integrations. A denylist rather than an allowlist, so a newly installed
-# transport (webdav, oci, ...) shows up in fsspec_providers() with no code
-# change here.
-_NON_TRANSPORT_PROTOCOLS = frozenset(
-    {
-        "abstract",
-        "asynclocal",
-        "memory",
-        "data",
-        "cached",
-        "blockcache",
-        "filecache",
-        "simplecache",
-        "dir",
-        "generic",
-        "reference",
-        "root",
-        "tar",
-        "zip",
-        "libarchive",
-        "git",
-        "github",
-        "gist",
-        "dask",
-        "jupyter",
-        "jlab",
-        "hf",
-        "wandb",
-        "dvc",
-        "arrow_hdfs",
-        "async_wrapper",
-        "asyncwrapper",
-        "pyscript",
-    }
-)
-
-# Labels for protocols whose class name does not humanise correctly:
-# ``WebdavFileSystem`` -> "Webdav" rather than "WebDAV", ``LakeFSFileSystem``
-# -> "Lake FS", and http/https sharing one class so both would read "HTTP".
-# Anything absent falls back to the class name, so a newly installed backend
-# gets a readable label with no entry here.
-_PROTOCOL_LABELS = {
-    "adl": "Azure Data Lake",
-    "https": "HTTPS",
-    "lakefs": "LakeFS",
-    "tos": "TOS",
-    "tosfs": "TOS",
-    "webdav": "WebDAV",
-    "webhdfs": "WebHDFS",
-}
-
-# Split a class name into words, keeping acronyms and their trailing digits
-# whole: "AzureBlob" -> Azure Blob, but "SFTP" -> SFTP and "S3" -> S3 rather
-# than "S F T P" and "S 3".
-_CLASS_WORDS = re.compile(r"[A-Z]+(?![a-z])\d*|[A-Z][a-z]+\d*|[a-z]+\d*|\d+")
-
-
-def _humanise(protocol, class_path):
-    """``("sftp", "fsspec.implementations.sftp.SFTPFileSystem")`` ->
-    ``"sftp (SFTP)"``.
-
-    The label is derived from the registered class *name*, which fsspec holds
-    as a dotted string -- so no backend package has to be importable to read
-    it. The protocol leads, because that is the value being stored; the class
-    name follows as the gloss.
-    """
-    label = _PROTOCOL_LABELS.get(protocol)
-    if label is None:
-        name = class_path.rsplit(".", 1)[-1]
-        if name.endswith("FileSystem"):
-            name = name[: -len("FileSystem")]
-        label = " ".join(_CLASS_WORDS.findall(name))
-    return f"{protocol} ({label})" if label else protocol
-
-
-def fsspec_providers():
-    """Return the installed fsspec protocols that are plausible file
-    transports, as sorted ``(value, label)`` pairs ready for a ``Selection``.
-
-    fsspec's registry is filtered against a denylist of protocols that are not
-    real transports -- in-memory and test filesystems, cache/wrapper layers,
-    archives, and VCS/notebook integrations -- so only the likes of ``file``,
-    ``sftp`` and ``s3`` are offered. It is a denylist, not an allowlist, so a
-    newly installed backend appears on its own. Returns ``[]`` if fsspec is
-    unavailable.
-
-    Each label reads ``protocol (Backend)`` -- ``"sftp (SFTP)"``,
-    ``"abfs (Azure Blob)"`` -- humanised from the registered class name (see
-    :func:`_humanise`), with the protocol leading because that is the value
-    stored on the field. Several protocols are aliases of one class and so
-    repeat the same gloss (``s3``/``s3a``, ``file``/``local``,
-    ``sftp``/``ssh``): fsspec discards the protocol string once it has looked
-    up the class, so the alias chosen makes no difference to the filesystem
-    built. Sorted by protocol, matching the order the labels read in.
-
-    The registry is read as ``known_implementations`` rather than via
-    ``available_protocols()`` -- the latter is defined as
-    ``list(known_implementations)``, so this is the same protocol set, and the
-    dict additionally carries the dotted class path the label needs.
-
-    This lists what fsspec *knows*; whether the chosen backend's package is
-    installed is a separate check the consumer makes (e.g. via
-    ``fsspec.get_filesystem_class``) when a protocol is actually used. A model
-    typically prepends its own sentinel::
-
-        protocol = fields.Selection(
-            selection=lambda self: [("disabled", "Disabled")]
-            + autopilot.tools.files.fsspec_providers(),
-        )
-    """
-    try:
-        from fsspec.registry import known_implementations
-    except ImportError:
-        return []
-    return sorted(
-        (protocol, _humanise(protocol, spec.get("class", protocol)))
-        for protocol, spec in known_implementations.items()
-        if protocol not in _NON_TRANSPORT_PROTOCOLS
-    )
 
 
 def sweep(fs, pattern, directory):
@@ -230,3 +108,41 @@ def opened(fs, path, mode="wb", auto_mkdir=True, **kwargs):
             fs.makedirs(directory, exist_ok=True)
     with fs.open(path, mode, **kwargs) as handle:
         yield handle
+
+
+def parse_options(options):
+    """``options`` (a JSON object as text, a dict, or empty) as a dict of
+    fsspec keyword arguments. Raises ``ValueError`` for anything else, so a
+    caller can report a bad value where it was entered."""
+    if not options:
+        return {}
+    if isinstance(options, str):
+        try:
+            options = json.loads(options)
+        except ValueError as exc:
+            raise ValueError(f"Storage options are not valid JSON: {exc}") from exc
+    if not isinstance(options, dict):
+        raise ValueError("Storage options must be a JSON object.")
+    return options
+
+
+def filesystem(protocol, options=None, **extra):
+    """The fsspec filesystem for ``protocol``, built from ``options`` (see
+    :func:`parse_options`) plus ``extra`` keyword arguments, which win - for
+    values that cannot travel as JSON, like an SFTP ``pkey`` or
+    ``host_key_policy`` (see :mod:`autopilot.tools.ssh`)."""
+    import fsspec
+
+    return fsspec.filesystem(protocol, **dict(parse_options(options), **extra))
+
+
+def render_path(template, record=None, now=None):
+    """A configured path ``template`` with its ``str.format`` tokens resolved:
+    ``{datetime:...}`` against ``now`` (default: the current time) and
+    ``{record.*}`` against ``record``, so any path can be date-partitioned or
+    record-scoped - ``/in/processed/{datetime:%Y}/{datetime:%m}`` or
+    ``/out/{record.name}-{datetime:%Y%m%dT%H%M%S}.csv``. Empty for no
+    template."""
+    if now is None:
+        now = datetime.datetime.now().replace(microsecond=0)
+    return (template or "").format(datetime=now, record=record)

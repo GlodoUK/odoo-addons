@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- The connection form every consumer shares: its own form is a primary
+         extension of this one (``mode`` primary, ``inherit_id`` this). -->
+    <record id="autopilot_fsspec_view_form" model="ir.ui.view">
+        <field name="name">autopilot.fsspec.mixin.form</field>
+        <field name="model">autopilot.fsspec.mixin</field>
+        <field name="arch" type="xml">
+            <form string="Connection">
+                <header>
+                    <button
+                        name="action_test_connection"
+                        type="object"
+                        string="Test Connection"
+                        class="btn-primary"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" />
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Partner SFTP" />
+                        </h1>
+                    </div>
+                    <field name="active" invisible="1" />
+                    <field name="password_set" invisible="1" />
+                    <field name="private_key_set" invisible="1" />
+                    <field name="private_key_password_set" invisible="1" />
+                    <field name="s3_secret_access_key_set" invisible="1" />
+                    <field name="service_account_set" invisible="1" />
+                    <field name="azure_account_key_set" invisible="1" />
+                    <field name="azure_connection_string_set" invisible="1" />
+                    <field name="azure_sas_token_set" invisible="1" />
+                    <field name="azure_client_secret_set" invisible="1" />
+                    <field name="http_token_set" invisible="1" />
+                    <group name="general">
+                        <group name="provider">
+                            <field name="protocol" />
+                        </group>
+                        <group name="company">
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page
+                            string="Local Filesystem"
+                            name="provider_file"
+                            invisible="protocol != 'file'"
+                        >
+                            <div
+                                class="alert alert-info"
+                                role="status"
+                            >Paths are on the Odoo server's own filesystem.</div>
+                        </page>
+                        <page
+                            string="FTP"
+                            name="provider_ftp"
+                            invisible="protocol != 'ftp'"
+                        >
+                            <group>
+                                <group string="Settings" name="ftp_settings">
+                                    <field
+                                        name="host"
+                                        placeholder="e.g. ftp.example.com"
+                                        required="protocol == 'ftp'"
+                                    />
+                                    <field name="port" options="{'format': false}" />
+                                    <field name="timeout" />
+                                    <field name="ftp_tls" />
+                                </group>
+                                <group string="Credentials" name="ftp_credentials">
+                                    <field name="username" />
+                                    <label for="ftp_password_input" />
+                                    <div class="o_row">
+                                        <field
+                                            name="password_input"
+                                            id="ftp_password_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not password_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'password'}"
+                                            confirm="Remove the stored password?"
+                                            invisible="not password_set"
+                                        />
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="SFTP"
+                            name="provider_sftp"
+                            invisible="protocol != 'sftp'"
+                        >
+                            <group>
+                                <group string="Settings" name="sftp_settings">
+                                    <field
+                                        name="host"
+                                        placeholder="e.g. sftp.example.com"
+                                        required="protocol == 'sftp'"
+                                    />
+                                    <field name="port" options="{'format': false}" />
+                                    <field name="timeout" />
+                                    <field
+                                        name="host_key"
+                                        placeholder="Pinned on the first Test Connection"
+                                    />
+                                    <div
+                                        colspan="2"
+                                        class="alert alert-warning py-1"
+                                        role="alert"
+                                        invisible="host_key"
+                                    >
+    No host key is pinned, so any server answering at this address is
+    trusted. Test the connection to pin its key.
+</div>
+                                </group>
+                                <group string="Credentials" name="sftp_credentials">
+                                    <field name="username" />
+                                    <label for="sftp_password_input" />
+                                    <div class="o_row">
+                                        <field
+                                            name="password_input"
+                                            id="sftp_password_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not password_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'password'}"
+                                            confirm="Remove the stored password?"
+                                            invisible="not password_set"
+                                        />
+                                    </div>
+                                    <label for="private_key_input" />
+                                    <div>
+                                        <div
+                                            class="o_row"
+                                            invisible="not private_key_set"
+                                        >
+                                            <field
+                                                name="private_key_fingerprint"
+                                                class="font-monospace"
+                                            />
+                                            <button
+                                                name="action_clear_secret"
+                                                type="object"
+                                                icon="fa-trash"
+                                                title="Remove"
+                                                class="btn-link text-danger"
+                                                context="{'secret': ['private_key', 'private_key_password']}"
+                                                confirm="Remove the stored private key?"
+                                            />
+                                        </div>
+                                        <field name="private_key_input" />
+                                    </div>
+                                    <label for="private_key_password_input" />
+                                    <div class="o_row">
+                                        <field
+                                            name="private_key_password_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not private_key_password_set"
+                                        >Stored</span>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="Amazon S3 / S3-compatible"
+                            name="provider_s3"
+                            invisible="protocol != 's3'"
+                        >
+                            <group>
+                                <group string="Settings" name="s3_settings">
+                                    <field
+                                        name="s3_endpoint_url"
+                                        placeholder="Empty for Amazon S3"
+                                    />
+                                    <field
+                                        name="s3_region"
+                                        placeholder="e.g. eu-west-2"
+                                    />
+                                </group>
+                                <group string="Credentials" name="s3_credentials">
+                                    <field name="s3_access_key_id" />
+                                    <label for="s3_secret_access_key_input" />
+                                    <div class="o_row">
+                                        <field
+                                            name="s3_secret_access_key_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not s3_secret_access_key_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 's3_secret_access_key'}"
+                                            confirm="Remove the stored secret access key?"
+                                            invisible="not s3_secret_access_key_set"
+                                        />
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="Google Cloud Storage"
+                            name="provider_gcs"
+                            invisible="protocol != 'gcs'"
+                        >
+                            <group>
+                                <group string="Settings" name="gcs_settings">
+                                    <field
+                                        name="gcs_auth"
+                                        string="Authentication"
+                                        required="protocol == 'gcs'"
+                                    />
+                                    <field name="gcs_project" />
+                                    <field name="read_only" />
+                                </group>
+                                <group
+                                    string="Credentials"
+                                    name="gcs_credentials"
+                                    invisible="gcs_auth != 'service_account'"
+                                >
+                                    <label for="gcs_service_account_input" />
+                                    <div class="o_row">
+                                        <field
+                                            name="service_account_input"
+                                            id="gcs_service_account_input"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not service_account_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'service_account'}"
+                                            confirm="Remove the stored service account key?"
+                                            invisible="not service_account_set"
+                                        />
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="Azure Blob Storage"
+                            name="provider_abfs"
+                            invisible="protocol != 'abfs'"
+                        >
+                            <group>
+                                <group string="Settings" name="abfs_settings">
+                                    <field
+                                        name="azure_auth"
+                                        string="Authentication"
+                                        required="protocol == 'abfs'"
+                                    />
+                                    <field
+                                        name="azure_account_name"
+                                        invisible="azure_auth == 'connection_string'"
+                                        required="protocol == 'abfs' and azure_auth != 'connection_string'"
+                                    />
+                                </group>
+                                <group
+                                    string="Credentials"
+                                    name="abfs_credentials"
+                                    invisible="azure_auth in ('default', 'anon')"
+                                >
+                                    <label
+                                        for="azure_account_key_input"
+                                        invisible="azure_auth != 'account_key'"
+                                    />
+                                    <div
+                                        class="o_row"
+                                        invisible="azure_auth != 'account_key'"
+                                    >
+                                        <field
+                                            name="azure_account_key_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not azure_account_key_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'azure_account_key'}"
+                                            confirm="Remove the stored account key?"
+                                            invisible="not azure_account_key_set"
+                                        />
+                                    </div>
+                                    <label
+                                        for="azure_connection_string_input"
+                                        invisible="azure_auth != 'connection_string'"
+                                    />
+                                    <div
+                                        class="o_row"
+                                        invisible="azure_auth != 'connection_string'"
+                                    >
+                                        <field
+                                            name="azure_connection_string_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not azure_connection_string_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'azure_connection_string'}"
+                                            confirm="Remove the stored connection string?"
+                                            invisible="not azure_connection_string_set"
+                                        />
+                                    </div>
+                                    <label
+                                        for="azure_sas_token_input"
+                                        invisible="azure_auth != 'sas_token'"
+                                    />
+                                    <div
+                                        class="o_row"
+                                        invisible="azure_auth != 'sas_token'"
+                                    >
+                                        <field
+                                            name="azure_sas_token_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not azure_sas_token_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'azure_sas_token'}"
+                                            confirm="Remove the stored SAS token?"
+                                            invisible="not azure_sas_token_set"
+                                        />
+                                    </div>
+                                    <field
+                                        name="azure_tenant_id"
+                                        invisible="azure_auth != 'service_principal'"
+                                        required="protocol == 'abfs' and azure_auth == 'service_principal'"
+                                    />
+                                    <field
+                                        name="azure_client_id"
+                                        invisible="azure_auth != 'service_principal'"
+                                        required="protocol == 'abfs' and azure_auth == 'service_principal'"
+                                    />
+                                    <label
+                                        for="azure_client_secret_input"
+                                        invisible="azure_auth != 'service_principal'"
+                                    />
+                                    <div
+                                        class="o_row"
+                                        invisible="azure_auth != 'service_principal'"
+                                    >
+                                        <field
+                                            name="azure_client_secret_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not azure_client_secret_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'azure_client_secret'}"
+                                            confirm="Remove the stored client secret?"
+                                            invisible="not azure_client_secret_set"
+                                        />
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="HTTP(S)"
+                            name="provider_http"
+                            invisible="protocol != 'http'"
+                        >
+                            <div
+                                class="alert alert-info"
+                                role="status"
+                            >Paths are full URLs. Most web servers only allow reading.</div>
+                            <group>
+                                <group string="Settings" name="http_settings">
+                                    <field
+                                        name="http_auth"
+                                        string="Authentication"
+                                        required="protocol == 'http'"
+                                    />
+                                </group>
+                                <group
+                                    string="Credentials"
+                                    name="http_credentials"
+                                    invisible="http_auth == 'none'"
+                                >
+                                    <field
+                                        name="username"
+                                        invisible="http_auth != 'basic'"
+                                    />
+                                    <label
+                                        for="http_password_input"
+                                        invisible="http_auth != 'basic'"
+                                    />
+                                    <div class="o_row" invisible="http_auth != 'basic'">
+                                        <field
+                                            name="password_input"
+                                            id="http_password_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not password_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'password'}"
+                                            confirm="Remove the stored password?"
+                                            invisible="not password_set"
+                                        />
+                                    </div>
+                                    <label
+                                        for="http_token_input"
+                                        invisible="http_auth != 'bearer'"
+                                    />
+                                    <div
+                                        class="o_row"
+                                        invisible="http_auth != 'bearer'"
+                                    >
+                                        <field
+                                            name="http_token_input"
+                                            widget="password"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not http_token_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'http_token'}"
+                                            confirm="Remove the stored bearer token?"
+                                            invisible="not http_token_set"
+                                        />
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="Google Drive"
+                            name="provider_gdrive"
+                            invisible="protocol != 'gdrive'"
+                        >
+                            <group>
+                                <group string="Settings" name="gdrive_settings">
+                                    <field name="gdrive_root_id" />
+                                    <field name="read_only" />
+                                </group>
+                                <group string="Credentials" name="gdrive_credentials">
+                                    <label for="gdrive_service_account_input" />
+                                    <div class="o_row">
+                                        <field
+                                            name="service_account_input"
+                                            id="gdrive_service_account_input"
+                                        />
+                                        <span
+                                            class="badge rounded-pill text-bg-success"
+                                            invisible="not service_account_set"
+                                        >Stored</span>
+                                        <button
+                                            name="action_clear_secret"
+                                            type="object"
+                                            icon="fa-trash"
+                                            title="Remove"
+                                            class="btn-link text-danger"
+                                            context="{'secret': 'service_account'}"
+                                            confirm="Remove the stored service account key?"
+                                            invisible="not service_account_set"
+                                        />
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page
+                            string="Advanced Options"
+                            name="advanced"
+                            groups="base.group_system"
+                        >
+                            <div class="text-muted mb-2">
+    Any other fsspec argument for this provider, as a JSON object, e.g.
+    {"look_for_keys": false}. The provider's own page wins over the same
+    option here.
+</div>
+                            <field
+                                name="storage_options"
+                                widget="code"
+                                options="{'mode': 'javascript'}"
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

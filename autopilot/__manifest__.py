@@ -5,16 +5,19 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Technical",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.1",
     "icon": "/autopilot/static/description/icon.svg",
     "depends": [
         "base",
         "base_automation",
         "queue_job",
     ],
-    "external_dependencies": {"python": ["openpyxl", "xlrd", "xlwt"]},
+    "external_dependencies": {
+        "python": ["fsspec", "openpyxl", "paramiko", "xlrd", "xlwt"]
+    },
     "data": [
         "views/menus.xml",
+        "views/autopilot_fsspec_views.xml",
     ],
     "assets": {
         "web.assets_backend": [
