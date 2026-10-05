@@ -74,19 +74,25 @@ addon | version | maintainers | summary
 [res_partner_mobile](res_partner_mobile/) | 19.0.1.0.0 |  | Resurrects the mobile field into 19.0+
 [res_partner_ref_sequence](res_partner_ref_sequence/) | 19.0.1.0.0 |  | Assign partner references from rule-selected sequences
 [res_partner_relationship_manager](res_partner_relationship_manager/) | 19.0.1.0.0 |  | res_partner_relationship_manager
+[res_partner_resource_calendar_base](res_partner_resource_calendar_base/) | 19.0.1.0.0 |  | res_partner_resource_calendar_base
+[res_partner_resource_calendar_sale](res_partner_resource_calendar_sale/) | 19.0.1.0.0 |  | res_partner_resource_calendar_sale
+[res_partner_resource_calendar_stock](res_partner_resource_calendar_stock/) | 19.0.1.0.0 |  | res_partner_resource_calendar_stock
 [res_partner_since](res_partner_since/) | 19.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [res_partner_utm](res_partner_utm/) | 19.0.1.0.0 |  | Adds UTM information to Contact record
 [res_partner_work_phone](res_partner_work_phone/) | 19.0.1.0.0 |  | Adds an additional 'work_number' and 'extension' field to contact
 [rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
 [sale_action_confirm_send](sale_action_confirm_send/) | 19.0.1.0.0 |  | sale_action_confirm_send
+[sale_advance_payment_force_invoiced_quantity](sale_advance_payment_force_invoiced_quantity/) | 19.0.1.0.0 |  | Leave quantities invoiced outside Odoo out of an order's residual
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
 [sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.1.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
 [sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
 [sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.0 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
+[sale_force_delivered_quantity](sale_force_delivered_quantity/) | 19.0.1.0.0 |  | Count a quantity as delivered on a sale order line without moving it
 [sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.3.0 |  | Invoicing policy
 [sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
+[sale_mrp_kit_propagate_route](sale_mrp_kit_propagate_route/) | 19.0.1.0.0 |  | Ship a kit sold on a sale order from one place, by the kit's routes
 [sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
 [sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
@@ -94,11 +100,15 @@ addon | version | maintainers | summary
 [shoehorn](shoehorn/) | 19.0.1.0.0 |  | Repeatedly and safely bootstrap Odoo databases (odoo shoehorn)
 [stock_inventory_reason](stock_inventory_reason/) | 19.0.1.0.0 |  | Always prompt for an inventory adjustment reason when applying a single Physical Inventory line
 [stock_location_freeze](stock_location_freeze/) | 19.0.1.0.0 |  | Prevent further movements of stock in a given location
+[stock_orderpoint_scheduler_last_run](stock_orderpoint_scheduler_last_run/) | 19.0.1.0.0 |  | Show when the stock scheduler last ran, in the Replenishment report's side panel
 [stock_picking_archive](stock_picking_archive/) | 19.0.1.0.0 |  | Allow stock.picking records to be archived
 [stock_picking_auto_put_in_pack](stock_picking_auto_put_in_pack/) | 19.0.1.0.0 |  | Automatically put in pack
 [stock_picking_hold](stock_picking_hold/) | 19.0.1.0.0 |  | Adds the ability to put stock pickings on hold
 [stock_picking_mandatory_packing](stock_picking_mandatory_packing/) | 19.0.1.0.0 |  | Ensure that a picking type must have all items packaged
 [stock_picking_merge](stock_picking_merge/) | 19.0.1.0.0 |  | Adds the ability to merge stock.picking records
+[stock_picking_previous_transfer](stock_picking_previous_transfer/) | 19.0.1.0.0 |  | A Previous Transfer smart button on transfers, the mirror of core's Next Transfer
+[stock_picking_state_duration](stock_picking_state_duration/) | 19.0.1.0.0 |  | Show how long a transfer has been in its current state
+[stock_putaway_classification](stock_putaway_classification/) | 19.0.1.0.0 |  | Put-away rules by product classification, one pick face per product
 [stock_reception_steps_one_point_five](stock_reception_steps_one_point_five/) | 19.0.1.1.0 |  | Receive into a landing area and store to Stock manually
 [stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
 [stock_warehouse_consolidation](stock_warehouse_consolidation/) | 19.0.1.0.0 |  | Package capacity, real-time levels and stock consolidation
