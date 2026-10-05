@@ -12,7 +12,14 @@
                         string="Import Orders"
                         class="btn-primary"
                         groups="sales_team.group_sale_manager"
-                        invisible="not supports_import_order or provider == 'disabled'"
+                        invisible="not supports_import_order or not connection_id"
+                    />
+                    <button
+                        name="action_upload_file"
+                        type="object"
+                        string="Upload File"
+                        groups="sales_team.group_sale_manager"
+                        invisible="not supports_import_order"
                     />
                     <button
                         name="action_export_asns"
@@ -91,13 +98,13 @@
                             <field name="name" placeholder="e.g. YPO Production" />
                         </h1>
                     </div>
+                    <field name="active" invisible="1" />
+                    <field name="supports_import_order" invisible="1" />
+                    <field name="supports_ack" invisible="1" />
+                    <field name="supports_asn" invisible="1" />
+                    <field name="supports_invoice" invisible="1" />
                     <group>
                         <group>
-                            <field name="active" invisible="1" />
-                            <field name="supports_import_order" invisible="1" />
-                            <field name="supports_ack" invisible="1" />
-                            <field name="supports_asn" invisible="1" />
-                            <field name="supports_invoice" invisible="1" />
                             <field name="dialect" />
                             <field
                                 name="company_id"
@@ -106,57 +113,114 @@
                         </group>
                         <group>
                             <field name="partner_id" />
-                            <field name="provider" />
                             <field
-                                name="storage_options"
-                                widget="text"
-                                placeholder="{'host': 'sftp.example.com', 'username': 'edi'}"
-                                invisible="provider in ('disabled', 'file')"
+                                name="connection_id"
+                                placeholder="Disabled"
+                                options="{'no_quick_create': True}"
                             />
                         </group>
                     </group>
-                    <group string="Access &amp; Notifications">
-                        <field
-                            name="restrict_group_ids"
-                            widget="many2many_tags"
-                            options="{'no_create': True}"
-                            placeholder="Everyone with access"
-                        />
-                        <field
-                            name="notify_user_ids"
-                            widget="many2many_tags"
-                            options="{'no_create': True}"
-                        />
-                    </group>
-                    <group string="Paths" invisible="provider == 'disabled'">
-                        <field
-                            name="order_import_path"
-                            string="Orders Source"
+                    <notebook>
+                        <page
+                            string="Orders"
+                            name="orders"
                             invisible="not supports_import_order"
-                            required="supports_import_order"
-                        />
-                        <field
-                            name="order_import_processed_path"
-                            placeholder="/in/processed"
-                            invisible="not supports_import_order"
-                            required="supports_import_order"
-                        />
-                        <field
-                            name="ack_export_path"
-                            string="Acknowledgements"
-                            invisible="not supports_ack"
-                        />
-                        <field
-                            name="asn_export_path"
-                            string="Dispatch Notes"
-                            invisible="not supports_asn"
-                        />
-                        <field
-                            name="invoice_export_path"
-                            string="Invoices"
-                            invisible="not supports_invoice"
-                        />
-                    </group>
+                        >
+                            <group>
+                                <group string="Import" name="import">
+                                    <field name="confirm_policy" />
+                                </group>
+                                <group string="Tracking" name="utm">
+                                    <field name="campaign_id" />
+                                    <field name="source_id" />
+                                    <field name="medium_id" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Paths" name="paths" invisible="not connection_id">
+                            <group>
+                                <field
+                                    name="order_import_path"
+                                    string="Orders Source"
+                                    invisible="not supports_import_order"
+                                    required="supports_import_order"
+                                />
+                                <field
+                                    name="order_import_processed_path"
+                                    placeholder="/in/processed"
+                                    invisible="not supports_import_order"
+                                    required="supports_import_order"
+                                />
+                                <field
+                                    name="ack_export_path"
+                                    string="Acknowledgements"
+                                    invisible="not supports_ack"
+                                />
+                                <field
+                                    name="asn_export_path"
+                                    string="Dispatch Notes"
+                                    invisible="not supports_asn"
+                                />
+                                <field
+                                    name="invoice_export_path"
+                                    string="Invoices"
+                                    invisible="not supports_invoice"
+                                />
+                            </group>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group string="Job Channels" name="channels">
+                                    <field
+                                        name="order_import_channel"
+                                        placeholder="root"
+                                        invisible="not supports_import_order"
+                                    />
+                                    <field
+                                        name="ack_channel"
+                                        placeholder="root"
+                                        invisible="not supports_ack"
+                                    />
+                                    <field
+                                        name="asn_channel"
+                                        placeholder="root"
+                                        invisible="not supports_asn"
+                                    />
+                                    <field
+                                        name="invoice_channel"
+                                        placeholder="root"
+                                        invisible="not supports_invoice"
+                                    />
+                                </group>
+                                <group string="Housekeeping" name="housekeeping">
+                                    <field name="cleanup_enabled" />
+                                    <field
+                                        name="cleanup_days"
+                                        invisible="not cleanup_enabled"
+                                        required="cleanup_enabled"
+                                    />
+                                </group>
+                            </group>
+                            <group>
+                                <group
+                                    string="Access &amp; Notifications"
+                                    name="access"
+                                >
+                                    <field
+                                        name="restrict_group_ids"
+                                        widget="many2many_tags"
+                                        options="{'no_create': True}"
+                                        placeholder="Everyone with access"
+                                    />
+                                    <field
+                                        name="notify_user_ids"
+                                        widget="many2many_tags"
+                                        options="{'no_create': True}"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter />
             </form>
@@ -186,12 +250,20 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <!-- Sale EDI > Backends / Connections, inside Integrations & Connections. -->
     <menuitem
-        id="menu_autopilot_sale_backend"
+        id="menu_autopilot_sale"
         name="Sale EDI"
         parent="autopilot.menu_autopilot_connections"
+        sequence="30"
+    />
+
+    <menuitem
+        id="menu_autopilot_sale_backend"
+        name="Backends"
+        parent="menu_autopilot_sale"
         action="action_autopilot_sale_backend"
         groups="sales_team.group_sale_salesman"
-        sequence="20"
+        sequence="10"
     />
 </odoo>

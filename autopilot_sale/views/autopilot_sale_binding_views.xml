@@ -7,28 +7,30 @@
         <field name="arch" type="xml">
             <list
                 string="Sale EDI Order Files"
-                decoration-danger="job_state == 'failed'"
-                decoration-muted="job_state in ('done', 'cancelled')"
+                decoration-danger="state == 'failed'"
+                decoration-muted="state in ('done', 'cancelled')"
             >
                 <field name="backend_id" />
-                <field name="path" />
-                <field name="job_state" />
-                <field name="job_exc_message" />
+                <field name="filename" />
+                <field name="source" />
+                <field name="path" optional="hide" />
+                <field name="state" />
+                <field name="error" />
                 <field name="order_count" />
                 <button
-                    name="action_requeue"
+                    name="action_retry"
                     type="object"
                     string="Retry"
                     icon="fa-refresh"
-                    invisible="job_state != 'failed'"
+                    invisible="state not in ('failed', 'cancelled')"
                     groups="sales_team.group_sale_manager"
                 />
                 <button
-                    name="action_remove_from_queue"
+                    name="action_cancel"
                     type="object"
-                    string="Remove"
+                    string="Cancel"
                     icon="fa-times"
-                    invisible="job_state not in ('pending', 'enqueued', 'failed')"
+                    invisible="state not in ('pending', 'failed')"
                     groups="sales_team.group_sale_manager"
                 />
             </list>
@@ -42,21 +44,25 @@
             <form string="Sale EDI Order File">
                 <header>
                     <button
-                        name="action_requeue"
+                        name="action_retry"
                         type="object"
                         string="Retry"
                         class="btn-primary"
-                        invisible="job_state != 'failed'"
+                        invisible="state not in ('failed', 'cancelled')"
                         groups="sales_team.group_sale_manager"
                     />
                     <button
-                        name="action_remove_from_queue"
+                        name="action_cancel"
                         type="object"
-                        string="Remove from Queue"
-                        invisible="job_state not in ('pending', 'enqueued', 'failed')"
+                        string="Cancel"
+                        invisible="state not in ('pending', 'failed')"
                         groups="sales_team.group_sale_manager"
                     />
-                    <field name="job_state" widget="statusbar" />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="pending,done"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -76,14 +82,17 @@
                     <group>
                         <group>
                             <field name="backend_id" />
-                            <field name="path" />
+                            <field name="source" />
+                            <field name="path" invisible="not path" />
+                            <field name="filename" invisible="1" />
+                            <field name="data" filename="filename" />
                         </group>
                         <group>
-                            <field name="job_exc_message" />
+                            <field name="error" />
                         </group>
                     </group>
-                    <group string="Error Detail" invisible="not job_exc_info">
-                        <field name="job_exc_info" nolabel="1" widget="text" />
+                    <group string="Error Detail" invisible="not error_detail">
+                        <field name="error_detail" nolabel="1" widget="text" />
                     </group>
                 </sheet>
             </form>
@@ -96,11 +105,17 @@
         <field name="arch" type="xml">
             <search string="Sale EDI Order Files">
                 <field name="backend_id" />
+                <field name="filename" />
                 <field name="path" />
+                <filter
+                    name="uploaded"
+                    string="Uploaded"
+                    domain="[('source', '=', 'upload')]"
+                />
                 <filter
                     name="failed"
                     string="Failed"
-                    domain="[('job_state', '=', 'failed')]"
+                    domain="[('state', '=', 'failed')]"
                 />
                 <group>
                     <filter
@@ -111,7 +126,7 @@
                     <filter
                         name="group_state"
                         string="Status"
-                        context="{'group_by': 'job_state'}"
+                        context="{'group_by': 'state'}"
                     />
                 </group>
             </search>
@@ -123,12 +138,34 @@
         <field name="name">autopilot_sale.order.list</field>
         <field name="model">autopilot_sale.order</field>
         <field name="arch" type="xml">
-            <list string="Sale EDI Orders">
+            <list
+                string="Sale EDI Orders"
+                decoration-danger="state == 'failed'"
+                decoration-muted="state == 'cancelled'"
+            >
                 <field name="display_name" />
                 <field name="backend_id" />
                 <field name="odoo_id" />
                 <field name="file_id" />
                 <field name="external_ref" />
+                <field name="state" />
+                <field name="error" optional="show" />
+                <button
+                    name="action_retry"
+                    type="object"
+                    string="Retry"
+                    icon="fa-refresh"
+                    invisible="state not in ('failed', 'cancelled')"
+                    groups="sales_team.group_sale_manager"
+                />
+                <button
+                    name="action_cancel"
+                    type="object"
+                    string="Cancel"
+                    icon="fa-times"
+                    invisible="state not in ('pending', 'failed')"
+                    groups="sales_team.group_sale_manager"
+                />
             </list>
         </field>
     </record>
@@ -138,6 +175,28 @@
         <field name="model">autopilot_sale.order</field>
         <field name="arch" type="xml">
             <form string="Sale EDI Order">
+                <header>
+                    <button
+                        name="action_retry"
+                        type="object"
+                        string="Retry"
+                        class="btn-primary"
+                        invisible="state not in ('failed', 'cancelled')"
+                        groups="sales_team.group_sale_manager"
+                    />
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        invisible="state not in ('pending', 'failed')"
+                        groups="sales_team.group_sale_manager"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="pending,done"
+                    />
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -147,7 +206,12 @@
                         </group>
                         <group>
                             <field name="external_ref" />
+                            <field name="error" invisible="not error" />
+                            <field name="payload" filename="external_ref" />
                         </group>
+                    </group>
+                    <group string="Error Detail" invisible="not error_detail">
+                        <field name="error_detail" nolabel="1" widget="text" />
                     </group>
                     <notebook>
                         <page string="Lines" name="lines">
@@ -162,6 +226,41 @@
                 </sheet>
                 <chatter />
             </form>
+        </field>
+    </record>
+
+    <record id="autopilot_sale_order_view_search" model="ir.ui.view">
+        <field name="name">autopilot_sale.order.search</field>
+        <field name="model">autopilot_sale.order</field>
+        <field name="arch" type="xml">
+            <search string="Sale EDI Orders">
+                <field name="external_ref" />
+                <field name="odoo_id" />
+                <field name="backend_id" />
+                <field name="file_id" />
+                <filter
+                    name="failed"
+                    string="Failed"
+                    domain="[('state', '=', 'failed')]"
+                />
+                <filter
+                    name="pending"
+                    string="Pending"
+                    domain="[('state', '=', 'pending')]"
+                />
+                <group>
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                    <filter
+                        name="group_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"
+                    />
+                </group>
+            </search>
         </field>
     </record>
 

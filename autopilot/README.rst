@@ -130,8 +130,11 @@ Tools
 methods call directly (moved verbatim from the old ``base_etl``):
 
 * ``files`` - drive an fsspec filesystem: ``glob``, ``archive``, ``sweep``
-  (glob + archive, the one-shot "claim the batch" primitive), and
-  ``fsspec_providers`` for a transport ``Selection``.
+  (glob + archive, the one-shot "claim the batch" primitive),
+  ``filesystem(protocol, options)`` to build one from JSON options, and
+  ``render_path(template, record)`` for ``{datetime:...}`` / ``{record.*}``
+  tokens in a configured path.
+* ``ssh`` - SFTP private keys loaded in memory and host-key pinning policies.
 * ``csv`` / ``xls`` / ``xlsx`` - row codecs with one interface,
   ``read_rows(handle)`` / ``write_rows(handle, rows)``; ``codec_for(name)`` picks
   one by file extension.
@@ -150,6 +153,91 @@ Nothing here imports Odoo - the tools *drive* a filesystem the caller builds, an
 are testable on an in-memory handle. Keep them that way: no models, no ``odoo``
 import under ``tools/``.
 
+
+Connections
+===========
+
+``autopilot.fsspec.mixin`` is an **abstract** fsspec endpoint: a provider, its
+settings and credentials. Each connector makes its own concrete model, so it
+owns the access rules, and points its backends at one by ``Many2one`` - one
+connection shared by any number of backends, each with its own paths::
+
+    class NetstockConnection(models.Model):
+        _name = "netstock.connection"
+        _inherit = ["autopilot.fsspec.mixin"]
+        _description = "Netstock Connection"
+
+        # Advanced options opened up from base.group_system to its managers.
+        storage_options = fields.Text(
+            groups="base.group_system,stock.group_stock_manager"
+        )
+
+Its form is a primary extension of the shared
+``autopilot.autopilot_fsspec_view_form`` (a page per provider, shown only for
+the selected one, each split into Settings and Credentials, plus an *Advanced
+Options* page), adding only what is its own - wider groups on the
+``advanced`` page. It works on the endpoint
+through the mixin's wrappers over ``autopilot.tools.files``: ``_glob``,
+``_sweep``, ``_archive``, ``_open`` (read) and ``_opened`` (write, creating the
+folder); ``_fs()`` is there for anything else. fsspec's instance cache means
+each call reuses the open connection.
+
+**Providers** are a fixed list, each with explicit fields and a
+``_fsspec_kwargs_<protocol>`` builder (package in brackets):
+
+* **Local filesystem** - nothing to set (fsspec).
+* **FTP** - host, port, timeout, TLS; *credentials:* username, password
+  (fsspec).
+* **SFTP** - host, port, timeout, pinned host key; *credentials:* username,
+  password, private key file and its password (paramiko).
+* **S3 and S3-compatible** (MinIO, Wasabi, R2, Spaces, ...) - endpoint URL,
+  region; *credentials:* access key ID, secret access key (s3fs).
+* **Google Cloud Storage** - authentication (service account, application
+  default, compute metadata, anonymous), project, read-only; *credentials:*
+  service account key file (gcsfs).
+* **Azure Blob Storage** - authentication (account key, connection string, SAS
+  token, service principal, default credential, anonymous), storage account;
+  *credentials:* tenant and client ID, and the key / string / token / secret
+  for the chosen mode (adlfs).
+* **HTTP(S)** - authentication (none, basic, bearer); *credentials:* username
+  and password, or token (aiohttp).
+* **Google Drive** - root folder ID, read-only; *credentials:* service account
+  key file (gdrive-fsspec).
+
+A provider whose package is missing is refused on save with fsspec's install
+hint. Dropbox is left out: its fsspec backend needs a long-lived access token,
+which Dropbox no longer issues. A module adds a provider with ``selection_add``
+on ``protocol``, a ``_fsspec_kwargs_<protocol>(self, secrets)`` builder and a
+``provider_<protocol>`` page added to the shared form's notebook. A field used
+on several pages gets an ``id`` per page, which its ``<label for>`` names.
+
+**Credentials** are write-only: typed into a ``<name>_input`` password field
+(the SSH private key and Google service account key are uploaded as files, so
+their newlines survive), checked
+(private keys must load with their password, service account keys must be
+one), stored in ``secrets`` (``base.group_system`` only) and never sent back to
+the browser; the form shows a *Stored* badge with a remove button, and the
+private key's fingerprint. A job reads them through ``sudo()``. The private key
+becomes a paramiko key in memory (``tools.ssh``); nothing is written to disk.
+
+**Host-key pinning** (SFTP): with ``host_key`` set, a server presenting any
+other key is refused. fsspec's default trusts any key, so the form warns while
+none is pinned; **Test Connection** pins the server's key on the first
+successful connection, for the person testing to check.
+
+**Advanced Options** (``storage_options``) hold any other fsspec argument as a
+JSON object, in Odoo's code editor, checked on save. The provider's fields
+override the same option here. Credentials belong in their fields, not here.
+
+``_from_legacy(protocol, storage_options, company_id)`` is for a consumer's
+migration off per-backend JSON options: aliases map onto the providers
+(``local`` to ``file``, ``ssh`` to ``sftp``, ...), known options move onto
+their fields and credentials, the rest stay as advanced options, and identical
+credentials collapse into one connection. An unknown protocol fails loudly.
+
+Secrets are still stored in the database in clear, as Odoo's own credentials
+are; the protection is field groups, write-only inputs and never sending them
+to the browser.
 
 The app
 =======

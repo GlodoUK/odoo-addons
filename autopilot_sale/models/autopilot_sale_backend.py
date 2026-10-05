@@ -1,50 +1,37 @@
-import json
 import logging
 from contextlib import contextmanager
-
-import fsspec
+from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
-from odoo.addons.autopilot import cron
-from odoo.addons.autopilot import tools as etl
+from odoo.addons.autopilot import cron, tools
 from odoo.addons.queue_job import identity_exact
 
 _logger = logging.getLogger(__name__)
-
-# The sentinel provider meaning "no external endpoint". A real fsspec protocol
-# is never named this, so a single equality test disables the backend.
-_TRANSPORT_DISABLED = "disabled"
 
 
 class AutopilotSaleBackend(models.Model):
     """A sale-EDI trading endpoint.
 
-    The engine is deliberately thin. It owns only the *mechanism* every sale
-    connector shares: a schedule (three crons), the fsspec transports, and a
-    place to read/write files. Each cron simply **delegates to a dialect
-    method** - ``getattr(self, "_<dialect>_import_orders")`` and friends - and is
-    a no-op (logged) when the dialect does not implement it.
-
-    Everything else is the dialect's job, and it owns it *completely*: a bridge
-    module adds a ``dialect`` selection value and, by ``_inherit``, the
-    ``_<dialect>_*`` methods that read the file(s), create the orders and
-    bindings, and render + place any acknowledgement / dispatch note / invoice.
-    The engine does not create orders, persist bindings, or render anything - it
-    just claims inbound files (``_sweep_orders``) and hands the dialect somewhere
-    to put its output (``_place``). The bindings are plain storage the dialect
-    fills.
-
-    A dialect need not implement every flow: a pure importer defines only
-    ``_<dialect>_import_orders``. Acknowledgement is part of importing (the
-    dialect calls its own ``_<dialect>_export_acks`` from within its import);
-    dispatch notes and invoices are their own crons.
+    The engine owns the *mechanism* every sale connector shares: the schedules
+    (order import, dispatch notes, invoices), the connection, the inbound
+    files and their per-order jobs (``autopilot_sale.order.file`` ->
+    ``autopilot_sale.order``), confirmation, job channels and housekeeping.
+    The **format** is the dialect's: a bridge module adds a ``dialect``
+    selection value and, by ``_inherit``, convention-named methods -
+    ``_<dialect>_import_order(file)`` staging a file's orders,
+    ``autopilot_sale.order._<dialect>_create_order`` building one,
+    ``_<dialect>_acknowledge`` and ``autopilot_sale.picking/invoice.
+    _<dialect>_export`` rendering what goes back. A dialect opts into each
+    flow with ``_<dialect>_compute_supports_<flow>``; the rest stay off.
     """
 
     _name = "autopilot_sale.backend"
     _description = "Sale EDI Backend"
-    _inherit = ["mail.thread", "autopilot.mixin"]
+    # utm.mixin: the campaign / source / medium given to every order imported
+    # here (see autopilot_sale.order._apply_utm).
+    _inherit = ["mail.thread", "autopilot.mixin", "utm.mixin"]
 
     name = fields.Char(required=True, tracking=True)
     company_id = fields.Many2one(
@@ -63,6 +50,32 @@ class AutopilotSaleBackend(models.Model):
         string="Customer",
         tracking=True,
         help="Default customer imported orders are placed against.",
+    )
+    # Housekeeping: how long finished imports keep their stored content.
+    cleanup_enabled = fields.Boolean(
+        string="Clean Up Stored Content",
+        default=True,
+        help="Clear the stored copy of imported files and the staged rows of "
+        "imported orders once they are done and older than the period below. "
+        "Pending, failed and cancelled ones keep theirs, for a retry.",
+    )
+    cleanup_days = fields.Integer(string="Keep For (days)", default=30)
+    confirm_policy = fields.Selection(
+        [
+            ("draft", "Leave as Quotation"),
+            ("confirm", "Confirm, Fail on Error"),
+            ("confirm_or_draft", "Confirm, Keep Quotation on Error"),
+        ],
+        string="Confirmation",
+        default="draft",
+        required=True,
+        tracking=True,
+        help="What happens to each imported order once created. Leave as "
+        "Quotation: nothing. Confirm, Fail on Error: confirm it; if "
+        "confirmation is refused the order fails and nothing is kept, "
+        "ready to retry once the cause is fixed. Confirm, Keep Quotation on "
+        "Error: confirm it; if refused, keep it as a quotation and post the "
+        "reason on it and on this backend.",
     )
 
     # Access & notification. Access is group-based (the only thing record rules
@@ -127,21 +140,18 @@ class AutopilotSaleBackend(models.Model):
     )
     invoice_count = fields.Integer(compute="_compute_counts")
 
-    provider = fields.Selection(
-        selection="_provider_selection",
-        default=_TRANSPORT_DISABLED,
-        required=True,
-        help="The single fsspec endpoint (local/SFTP/object store) this backend "
-        "reads from and writes to. Each flow has its own path on it.",
-    )
-    storage_options = fields.Text(
-        help="Optional JSON passed to fsspec as the provider's keyword arguments "
-        "(e.g. SFTP host/credentials). Empty for a plain local filesystem.",
+    connection_id = fields.Many2one(
+        "autopilot_sale.connection",
+        ondelete="restrict",
+        tracking=True,
+        help="The endpoint (local/SFTP/object store) this backend reads from "
+        "and writes to; each flow has its own path on it. Empty disables every "
+        "transport. Several backends can share one connection.",
     )
 
     order_import_path = fields.Char(
         string="Orders Source Path",
-        help="Glob matching the inbound order files to claim on the provider, "
+        help="Glob matching the inbound order files to claim on the connection, "
         "e.g. /in/ypo/*.csv (** recurses into subfolders). May use "
         "{datetime:%Y} / {datetime:%m} / ... tokens (current time) to scope by "
         "date; no {record.*} token is available here, since files are claimed "
@@ -176,6 +186,37 @@ class AutopilotSaleBackend(models.Model):
         "is written to. Same tokens as the Acknowledgement Path, with "
         "{record.*} being the invoice / account.move (e.g. {record.name}); "
         "include {record.id}/{datetime} to keep it unique.",
+    )
+
+    # Job channels, one per operation, so e.g. importing orders can be
+    # preferred over sending acknowledgements. Empty passes no channel.
+    order_import_channel = fields.Char(
+        string="Orders Channel",
+        help="queue_job channel the order import jobs (the file and each "
+        "order) run on, e.g. root.edi.orders. Empty uses root. A channel "
+        "missing from the queue_job channels config runs under its nearest "
+        "configured parent.",
+    )
+    ack_channel = fields.Char(
+        string="Acknowledgements Channel",
+        help="queue_job channel the acknowledgement jobs run on, e.g. "
+        "root.edi.acks. Empty uses root. A channel missing from the "
+        "queue_job channels config runs under its nearest configured "
+        "parent.",
+    )
+    asn_channel = fields.Char(
+        string="Dispatch Notes Channel",
+        help="queue_job channel the dispatch note jobs run on, e.g. "
+        "root.edi.asns. Empty uses root. A channel missing from the "
+        "queue_job channels config runs under its nearest configured "
+        "parent.",
+    )
+    invoice_channel = fields.Char(
+        string="Invoices Channel",
+        help="queue_job channel the invoice jobs run on, e.g. "
+        "root.edi.invoices. Empty uses root. A channel missing from the "
+        "queue_job channels config runs under its nearest configured "
+        "parent.",
     )
 
     # A dialect opts into a flow by defining ``_<dialect>_compute_supports_<flow>``
@@ -246,28 +287,56 @@ class AutopilotSaleBackend(models.Model):
             if partners:
                 backend.message_subscribe(partner_ids=partners.ids)
 
-    @api.model
-    def _provider_selection(self):
-        return [(_TRANSPORT_DISABLED, "Disabled")] + etl.files.fsspec_providers()
-
-    @api.constrains("provider")
-    def _check_provider(self):
-        """The provider is only usable if fsspec can import its backing package.
-        The selection offers every known protocol, so this is where a pick like
-        SFTP-without-paramiko is rejected with fsspec's install hint."""
+    @api.constrains("cleanup_enabled", "cleanup_days")
+    def _check_cleanup_days(self):
         for backend in self:
-            if backend.provider == _TRANSPORT_DISABLED:
-                continue
-            try:
-                fsspec.get_filesystem_class(backend.provider)
-            except (ImportError, ValueError) as exc:
+            if backend.cleanup_enabled and backend.cleanup_days < 1:
                 raise ValidationError(
                     self.env._(
-                        "The '%(provider)s' provider is not available: %(error)s",
-                        provider=backend.provider,
-                        error=exc,
+                        "Backend %s must keep content for at least a day.", backend.name
                     )
-                ) from exc
+                )
+
+    @api.model
+    def _cron_cleanup(self):
+        """Daily: clean up every backend that has it enabled, archived ones
+        too."""
+        backends = self.with_context(active_test=False).search(
+            [("cleanup_enabled", "=", True)]
+        )
+        for backend in backends:
+            backend._cleanup()
+
+    def _cleanup(self):
+        """Clear the stored content of this backend's finished imports older
+        than its period: each file's copy and each order's payload, once
+        done."""
+        self.ensure_one()
+        cutoff = fields.Datetime.now() - timedelta(days=self.cleanup_days)
+        files = self.env["autopilot_sale.order.file"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("create_date", "<", cutoff),
+                ("data", "!=", False),
+                ("state", "=", "done"),
+            ]
+        )
+        files.data = False
+        orders = self.env["autopilot_sale.order"].search(
+            [
+                ("backend_id", "=", self.id),
+                ("create_date", "<", cutoff),
+                ("state", "=", "done"),
+                ("payload", "!=", False),
+            ]
+        )
+        orders.payload = False
+        _logger.info(
+            "Sale EDI %s: cleared %s file(s) and %s order payload(s).",
+            self.name,
+            len(files),
+            len(orders),
+        )
 
     @api.constrains("order_import_path", "order_import_processed_path")
     def _check_order_import_paths(self):
@@ -285,30 +354,17 @@ class AutopilotSaleBackend(models.Model):
                     )
                 )
 
-    def _fs(self):
-        """The single fsspec filesystem for this backend's provider. fsspec
-        unifies local/SFTP/object stores behind one API, so every flow stays
-        transport-agnostic - they differ only by path."""
+    def _delay(self, records, channel=None):
+        """``records.with_delay(...)``, on ``channel`` (one of this backend's
+        ``*_channel`` fields) when it is set; otherwise no channel is passed, so
+        queue_job's own default applies. Every Sale EDI job is queued through
+        here."""
         self.ensure_one()
-        try:
-            options = json.loads(self.storage_options or "{}")
-        except ValueError as exc:
-            raise UserError(
-                self.env._("Storage Options is not valid JSON: %s", exc)
-            ) from exc
-        if not isinstance(options, dict):
-            raise UserError(self.env._("Storage Options must be a JSON object."))
-        return fsspec.filesystem(self.provider, **options)
-
-    def _render_path(self, template, record=None):
-        """Resolve a configured path ``template`` with ``str.format`` against
-        ``datetime`` (now) and ``record`` (optional), so any configured path can
-        be date-partitioned or record-scoped, e.g.
-        ``/out/{record.type}/{datetime:%Y}/{record.id}.xml`` or an inbound
-        ``/in/{datetime:%Y-%m-%d}``. Shared by the inbound source/processed
-        paths and the outbound _place targets."""
-        self.ensure_one()
-        return (template or "").format(datetime=fields.Datetime.now(), record=record)
+        options = {"identity_key": identity_exact}
+        channel = (channel or "").strip()
+        if channel:
+            options["channel"] = channel
+        return records.with_delay(**options)
 
     def _sweep_orders(self):
         """Claim every file matching the order source glob by moving it into the
@@ -317,27 +373,26 @@ class AutopilotSaleBackend(models.Model):
         overlapping poll can never read it twice. This is the engine's whole
         contribution to import - the dialect reads and parses the returned
         paths itself. Both source and processed paths are rendered
-        (:meth:`_render_path`), so either can be date-scoped; both are required
+        (``tools.files.render_path``), so either can be date-scoped; both are required
         config (:meth:`_check_order_import_paths`), so neither is inferred
         here."""
         self.ensure_one()
-        if self.provider == _TRANSPORT_DISABLED:
+        if not self.connection_id:
             return []
         if not self.order_import_path:
             return []
-        return etl.files.sweep(
-            self._fs(),
-            self._render_path(self.order_import_path),
-            self._render_path(self.order_import_processed_path),
+        return self.connection_id._sweep(
+            tools.files.render_path(self.order_import_path),
+            tools.files.render_path(self.order_import_processed_path),
         )
 
     @contextmanager
     def _place(self, template, record=None):
-        """Open a writable handle at ``template`` on the provider and yield
+        """Open a writable handle at ``template`` on the connection and yield
         ``(handle, target)`` - the handle and the resolved destination path.
 
         ``template`` is the full destination path *including the filename* - one
-        configured value - rendered by :meth:`_render_path` (so it may carry
+        configured value - rendered by ``tools.files.render_path`` (so it may carry
         ``{datetime}`` / ``{record.*}`` tokens). Uniqueness is the template's
         responsibility: include ``{record.id}``/``{datetime}`` or files
         overwrite. ``target`` is handed back so a caller can name an audit copy
@@ -348,8 +403,8 @@ class AutopilotSaleBackend(models.Model):
                 etl.csv.write_rows(fh, rows, fieldnames=FIELDS)
         """
         self.ensure_one()
-        target = self._render_path(template, record)
-        with etl.files.opened(self._fs(), target) as handle:
+        target = tools.files.render_path(template, record)
+        with self.connection_id._opened(target) as handle:
             yield handle, target
 
     @cron(
@@ -357,15 +412,13 @@ class AutopilotSaleBackend(models.Model):
         interval_number=15,
         interval_type="minutes",
         active=lambda backend: (
-            backend.active
-            and backend.supports_import_order
-            and backend.provider != _TRANSPORT_DISABLED
+            backend.active and backend.supports_import_order and backend.connection_id
         ),
     )
     def _import_orders(self):
         """Claim inbound files and hand each to the dialect as its own queued
         job. Claiming (the fsspec move) happens here in the cron transaction;
-        reading/parsing/creating is the dialect's ``_<dialect>_import_orders(path)``.
+        reading/parsing/creating is the dialect's ``_<dialect>_import_order(file)``.
 
         Each claimed file becomes an ``autopilot_sale.order.file`` *before* it
         is queued, and that record - not the backend - is what gets delayed.
@@ -376,16 +429,14 @@ class AutopilotSaleBackend(models.Model):
         self.ensure_one()
         File = self.env["autopilot_sale.order.file"]
         for path in self._sweep_orders():
-            File.create({"backend_id": self.id, "path": path})._enqueue()
+            File.create(File._vals_from_connection(self, path))._enqueue()
 
     @cron(
         "asn_cron_id",
         interval_number=15,
         interval_type="minutes",
         active=lambda backend: (
-            backend.active
-            and backend.supports_asn
-            and backend.provider != _TRANSPORT_DISABLED
+            backend.active and backend.supports_asn and backend.connection_id
         ),
     )
     def _export_asns(self):
@@ -402,9 +453,8 @@ class AutopilotSaleBackend(models.Model):
             return
         Binding = self.env["autopilot_sale.picking"]
         for picking in self.env["stock.picking"].search(self._asn_domain()):
-            Binding.create({"backend_id": self.id, "odoo_id": picking.id}).with_delay(
-                identity_key=identity_exact
-            )._export()
+            binding = Binding.create({"backend_id": self.id, "odoo_id": picking.id})
+            self._delay(binding, self.asn_channel)._export()
 
     def _asn_domain(self):
         """Customer-facing done pickings on an order bound to this backend, not
@@ -423,9 +473,7 @@ class AutopilotSaleBackend(models.Model):
         interval_number=15,
         interval_type="minutes",
         active=lambda backend: (
-            backend.active
-            and backend.supports_invoice
-            and backend.provider != _TRANSPORT_DISABLED
+            backend.active and backend.supports_invoice and backend.connection_id
         ),
     )
     def _export_invoices(self):
@@ -442,9 +490,8 @@ class AutopilotSaleBackend(models.Model):
             return
         Binding = self.env["autopilot_sale.invoice"]
         for move in self.env["account.move"].search(self._invoice_domain()):
-            Binding.create({"backend_id": self.id, "odoo_id": move.id}).with_delay(
-                identity_key=identity_exact
-            )._export()
+            binding = Binding.create({"backend_id": self.id, "odoo_id": move.id})
+            self._delay(binding, self.invoice_channel)._export()
 
     def _invoice_domain(self):
         self.ensure_one()
@@ -466,13 +513,25 @@ class AutopilotSaleBackend(models.Model):
             raise UserError(
                 self.env._("Dialect %r does not import orders.", self.dialect)
             )
-        if self.provider == _TRANSPORT_DISABLED:
-            raise UserError(self.env._("This backend has no provider configured."))
+        if not self.connection_id:
+            raise UserError(self.env._("This backend has no Connection."))
         self._import_orders()
         return self._notify(
             self.env._("Import run"),
             self.env._("Inbound order files have been imported."),
         )
+
+    def action_upload_file(self):
+        """Open the wizard importing a file by hand (no connection needed)."""
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": self.env._("Upload File"),
+            "res_model": "autopilot_sale.upload.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_backend_id": self.id},
+        }
 
     def action_export_asns(self):
         self.ensure_one()

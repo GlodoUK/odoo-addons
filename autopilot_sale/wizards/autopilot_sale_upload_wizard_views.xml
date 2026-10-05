@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="autopilot_sale_upload_wizard_view_form" model="ir.ui.view">
+        <field name="name">autopilot_sale.upload.wizard.form</field>
+        <field name="model">autopilot_sale.upload.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Upload File">
+                <group>
+                    <field name="backend_id" readonly="1" />
+                    <field name="filename" invisible="1" />
+                    <field name="data" filename="filename" />
+                </group>
+                <footer>
+                    <button
+                        name="action_upload"
+                        type="object"
+                        string="Import"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
