@@ -87,7 +87,7 @@ addon | version | maintainers | summary
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
 [sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.1.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
 [sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
-[sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.0 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
+[sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.1 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
 [sale_force_delivered_quantity](sale_force_delivered_quantity/) | 19.0.1.0.0 |  | Count a quantity as delivered on a sale order line without moving it
 [sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.3.0 |  | Invoicing policy
