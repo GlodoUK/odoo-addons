@@ -26,6 +26,7 @@ ORDER_TRIGGERS = frozenset(
         "date_order",
         "delivery_carrier_manual",
         "fiscal_position_id",
+        "incoterm",
         # Lines arriving as one2many commands inside a write on the order - how
         # the form, and most code, saves them - go in with our own context on,
         # so the hooks on sale.order.line stay quiet for them. The order has to
