@@ -3,27 +3,24 @@ import traceback
 
 import psycopg2
 
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ConcurrencyError
 
 from odoo.addons.queue_job.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
 
-# Left to queue_job, which retries the whole job: a concurrent update or a
-# lock is not this record's fault.
+# Left to queue_job to retry: a lock or concurrent update is not this
+# record's fault.
 _RETRYABLE = (RetryableJobError, ConcurrencyError, psycopg2.OperationalError)
 
 
 class AutopilotSaleJobMixin(models.AbstractModel):
-    """A record whose work runs as a queued job, with its outcome kept on the
-    record itself rather than read from ``queue.job`` (which only the Job
-    Queue group can read, and which queue_job vacuums).
+    """A record whose work runs as a queued job, keeping its own outcome.
 
-    ``_queue(method, channel_field)`` queues ``method`` on the record's
-    backend channel; the job calls ``_run(work)``, which does nothing unless
-    the record is still pending (so Cancel stops a queued job), runs ``work``
-    in a savepoint and records ``done``, or ``failed`` with the error.
+    ``queue.job`` is no place for it: only the Job Queue group can read it,
+    and queue_job vacuums it. ``_run`` does nothing unless the record is still
+    pending, so Cancel stops a queued job.
     """
 
     _name = "autopilot_sale.job.mixin"
@@ -73,7 +70,6 @@ class AutopilotSaleJobMixin(models.AbstractModel):
         self.write({"state": "done", "error": False, "error_detail": False})
 
     def _requeue(self):
-        """Queue the record's job again; each model says which."""
         raise NotImplementedError
 
     def action_retry(self):
@@ -81,3 +77,25 @@ class AutopilotSaleJobMixin(models.AbstractModel):
 
     def action_cancel(self):
         self.filtered(lambda r: r.state in ("pending", "failed")).state = "cancelled"
+
+    @api.model
+    def _autopilot_activity_query(self):
+        return self.env["autopilot.activity"]._source_select(
+            self,
+            backend="backend_id",
+            company="company_id",
+            state="state",
+            status={
+                "pending": "pending",
+                "done": "done",
+                "failed": "error",
+                "cancelled": "cancelled",
+            },
+            error="error",
+        )
+
+    def _autopilot_activity_retry(self):
+        return self.action_retry()
+
+    def _autopilot_activity_cancel(self):
+        return self.action_cancel()

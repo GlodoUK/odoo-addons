@@ -5,7 +5,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Sales",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.2.0",
     "depends": [
         "sale_stock",
         "account",
@@ -20,8 +20,8 @@
         "security/ir.model.access.csv",
         "data/autopilot_sale_data.xml",
         "views/autopilot_sale_backend_views.xml",
-        "views/autopilot_sale_connection_views.xml",
         "views/autopilot_sale_binding_views.xml",
+        "views/sale_order_views.xml",
         "wizards/autopilot_sale_upload_wizard_views.xml",
     ],
     "license": "LGPL-3",

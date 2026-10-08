@@ -37,8 +37,7 @@ def _migrate_states(cr):
 
 
 def _migrate_connections(cr):
-    """provider + storage_options on each backend -> a shared
-    autopilot_sale.connection."""
+    """Each backend's provider and storage options become a connection."""
     if not column_exists(cr, "autopilot_sale_backend", "provider"):
         return
     env = api.Environment(cr, SUPERUSER_ID, {})
@@ -50,7 +49,7 @@ def _migrate_connections(cr):
          ORDER BY id
         """
     )
-    Connection = env["autopilot_sale.connection"]
+    Connection = env["autopilot.connection"]
     Backend = env["autopilot_sale.backend"].with_context(active_test=False)
     for backend_id, protocol, options, company_id in cr.fetchall():
         connection = Connection._from_legacy(protocol, options, company_id or False)

@@ -3,9 +3,7 @@ from odoo.exceptions import UserError
 
 
 class AutopilotSaleUploadWizard(models.TransientModel):
-    """Import a file by hand: it becomes an ``autopilot_sale.order.file`` like
-    a claimed one and is queued the same way, so a backend with no connection
-    (a partner who emails their files) still imports."""
+    """For a partner who emails their files: no connection needed."""
 
     _name = "autopilot_sale.upload.wizard"
     _description = "Sale EDI File Upload"

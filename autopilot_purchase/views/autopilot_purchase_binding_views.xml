@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="autopilot_purchase_order_view_list" model="ir.ui.view">
+        <field name="name">autopilot_purchase.order.list</field>
+        <field name="model">autopilot_purchase.order</field>
+        <field name="arch" type="xml">
+            <list
+                string="Purchase EDI Orders"
+                decoration-danger="state == 'failed'"
+                decoration-muted="state == 'cancelled'"
+            >
+                <field name="display_name" />
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="state" />
+                <button
+                    name="action_send_again"
+                    type="object"
+                    string="Send Again"
+                    icon="fa-repeat"
+                    invisible="state in ('to_send', 'pending')"
+                    groups="purchase.group_purchase_manager"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_purchase_order_view_form" model="ir.ui.view">
+        <field name="name">autopilot_purchase.order.form</field>
+        <field name="model">autopilot_purchase.order</field>
+        <field name="arch" type="xml">
+            <form string="Purchase EDI Order">
+                <header>
+                    <button
+                        name="action_send_again"
+                        type="object"
+                        string="Send Again"
+                        invisible="state in ('to_send', 'pending')"
+                        groups="purchase.group_purchase_manager"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="to_send,pending,done"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="odoo_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Files" name="files">
+                            <field name="file_ids">
+                                <list
+                                    decoration-danger="state == 'failed'"
+                                    decoration-muted="state == 'cancelled'"
+                                >
+                                    <field name="filename" />
+                                    <field name="sent_date" />
+                                    <field name="state" />
+                                    <field name="error" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="autopilot_purchase_order_view_search" model="ir.ui.view">
+        <field name="name">autopilot_purchase.order.search</field>
+        <field name="model">autopilot_purchase.order</field>
+        <field name="arch" type="xml">
+            <search string="Purchase EDI Orders">
+                <field name="odoo_id" />
+                <field name="backend_id" />
+                <filter
+                    name="to_send"
+                    string="To Send"
+                    domain="[('state', '=', 'to_send')]"
+                />
+                <filter
+                    name="failed"
+                    string="Failed"
+                    domain="[('state', '=', 'failed')]"
+                />
+                <group>
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                    <filter
+                        name="group_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="autopilot_purchase_order_file_view_list" model="ir.ui.view">
+        <field name="name">autopilot_purchase.order.file.list</field>
+        <field name="model">autopilot_purchase.order.file</field>
+        <field name="arch" type="xml">
+            <list
+                string="Purchase EDI Order Files"
+                decoration-danger="state == 'failed'"
+                decoration-muted="state in ('done', 'cancelled')"
+            >
+                <field name="backend_id" />
+                <field name="purchase_order_ids" widget="many2many_tags" />
+                <field name="filename" />
+                <field name="path" optional="hide" />
+                <field name="sent_date" />
+                <field name="state" />
+                <field name="error" />
+                <button
+                    name="action_retry"
+                    type="object"
+                    string="Retry"
+                    icon="fa-refresh"
+                    invisible="state not in ('failed', 'cancelled')"
+                    groups="purchase.group_purchase_manager"
+                />
+                <button
+                    name="action_cancel"
+                    type="object"
+                    string="Cancel"
+                    icon="fa-times"
+                    invisible="state not in ('pending', 'failed')"
+                    groups="purchase.group_purchase_manager"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_purchase_order_file_view_form" model="ir.ui.view">
+        <field name="name">autopilot_purchase.order.file.form</field>
+        <field name="model">autopilot_purchase.order.file</field>
+        <field name="arch" type="xml">
+            <form string="Purchase EDI Order File">
+                <header>
+                    <button
+                        name="action_retry"
+                        type="object"
+                        string="Retry"
+                        class="btn-primary"
+                        invisible="state not in ('failed', 'cancelled')"
+                        groups="purchase.group_purchase_manager"
+                    />
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        invisible="state not in ('pending', 'failed')"
+                        groups="purchase.group_purchase_manager"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="pending,done"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="purchase_order_ids" widget="many2many_tags" />
+                        </group>
+                        <group>
+                            <field name="sent_date" />
+                            <field name="path" invisible="not path" />
+                            <field name="filename" invisible="1" />
+                            <field name="data" filename="filename" />
+                            <field name="error" invisible="not error" />
+                        </group>
+                    </group>
+                    <group string="Error Detail" invisible="not error_detail">
+                        <field name="error_detail" nolabel="1" widget="text" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="autopilot_purchase_order_file_view_search" model="ir.ui.view">
+        <field name="name">autopilot_purchase.order.file.search</field>
+        <field name="model">autopilot_purchase.order.file</field>
+        <field name="arch" type="xml">
+            <search string="Purchase EDI Order Files">
+                <field
+                    name="order_binding_ids"
+                    string="Purchase Order"
+                    filter_domain="[('order_binding_ids.odoo_id', 'ilike', self)]"
+                />
+                <field name="backend_id" />
+                <field name="filename" />
+                <filter
+                    name="failed"
+                    string="Failed"
+                    domain="[('state', '=', 'failed')]"
+                />
+                <group>
+                    <filter
+                        name="group_backend"
+                        string="Backend"
+                        context="{'group_by': 'backend_id'}"
+                    />
+                    <filter
+                        name="group_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

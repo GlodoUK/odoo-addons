@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_autopilot_connection_user,autopilot.connection user,model_autopilot_connection,base.group_user,1,0,0,0
+access_autopilot_connection_system,autopilot.connection system,model_autopilot_connection,base.group_system,1,1,1,1
+access_autopilot_activity_system,autopilot.activity system,model_autopilot_activity,base.group_system,1,0,0,0

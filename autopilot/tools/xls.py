@@ -1,18 +1,8 @@
-"""XLS codec for ETL steps: a file handle <-> a list of row dicts.
+"""Old Excel ``.xls`` codec, over a binary handle.
 
-The legacy-Excel (BIFF ``.xls``) sibling of :mod:`.xlsx`, with the same
-handle-based, first-row-is-header contract. Reading uses ``xlrd`` and writing
-uses ``xlwt`` (xlrd cannot write) -- both ship with Odoo. Both functions take
-an open **binary** file handle; ``open(..., "rb"/"wb")``,
-``fsspec.open(..., "rb"/"wb")`` and ``io.BytesIO()`` all work, and the caller
-owns opening/closing. Nothing here imports Odoo, so it is unit-testable on an
-in-memory handle.
-
-Legacy ``.xls`` is less typed than ``.xlsx``: xlrd returns every number as a
-``float`` (so ``1`` round-trips as ``1.0``), and the format has no typed null,
-so a ``None`` or missing value is written as a blank cell that reads back as
-``""``. Emit ``.xlsx`` (or ``.csv``) for new files; ``.xls`` is really a
-receive-side format for old systems.
+Watch out: every number reads back as a float (``1`` becomes ``1.0``), and
+``None`` is written as a blank cell that reads back as ``""``. Write ``.xlsx``
+or ``.csv`` for new files; ``.xls`` is for receiving from older systems.
 """
 
 import xlrd
@@ -20,18 +10,8 @@ import xlwt
 
 
 def read_rows(handle, *, sheet=None):
-    """Parse the workbook in ``handle`` into a list of dicts keyed by the
-    header row of ``sheet`` (its name; the first sheet when omitted).
-
-    ``handle`` is a readable binary file object (its bytes are read in full and
-    handed to xlrd, which has no streaming mode). An empty sheet (no header
-    row) yields ``[]``. Numbers come back as ``float`` -- see the module note.
-    The rows are materialised before returning, so the caller's handle can
-    close straight after::
-
-        with fs.open(path, "rb") as handle:
-            rows = read_rows(handle)
-    """
+    """Rows of ``sheet`` (default: the first) keyed by its header row. The
+    whole file is read into memory."""
     workbook = xlrd.open_workbook(file_contents=handle.read())
     try:
         worksheet = (
@@ -45,23 +25,11 @@ def read_rows(handle, *, sheet=None):
             for index in range(1, worksheet.nrows)
         ]
     finally:
-        # Frees xlrd's buffers, not the caller's handle.
         workbook.release_resources()
 
 
 def write_rows(handle, rows, *, fieldnames=None, sheet=None):
-    """Write ``rows`` (an iterable of dicts) to ``handle`` as an ``.xls``
-    workbook with a header row.
-
-    ``handle`` is a writable binary file object. ``fieldnames`` defaults to the
-    keys of the first row, in order; pass it explicitly to fix the column
-    order/subset, or to emit just a header when ``rows`` is empty. ``sheet``
-    names the worksheet (``"Sheet1"`` when omitted). A ``None`` or missing
-    value is written as a blank cell -- see the module note::
-
-        with fs.open(path, "wb") as handle:
-            write_rows(handle, rows)
-    """
+    """Write ``rows`` with a header, as for the CSV codec."""
     rows = list(rows)
     if fieldnames is None:
         fieldnames = list(rows[0].keys()) if rows else []

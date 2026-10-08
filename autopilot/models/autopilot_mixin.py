@@ -5,33 +5,15 @@ from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
-# Context flag guarding against the create/write hooks re-entering sync (the
-# sync itself writes the backing-record field back onto the record). Mirrors
-# the `..._skip_cron_sync` flag the old connector_edi route used.
+# Sync writes the backing record's Many2one back onto the record; this stops
+# that write syncing again.
 _SKIP = "autopilot_skip_sync"
 
 
 class AutopilotMixin(models.AbstractModel):
-    """Mixin that self-manages the ``ir.cron`` / ``base.automation`` declared on
-    a model's methods with ``@cron`` / ``@automation``.
-
-    This is the trigger engine. Surfacing a backend in the Autopilot app is
-    separate - a connector parents its own menu under the app (see the README) -
-    and independent of this mixin. Inherit this whenever a model wants a
-    self-managed schedule or event handler::
-
-        class Thing(models.Model):
-            _inherit = ["autopilot.mixin"]
-
-            cleanup_cron_id = fields.Many2one("ir.cron", copy=False)
-
-            @cron("cleanup_cron_id", interval_number=1, interval_type="days")
-            def _cleanup(self): ...
-
-    On create/write it materialises and keeps in step the backing records
-    (schedule/active read from the fields the decorator names), storing each in
-    the ``Many2one`` the decorator points at, and tears them down on unlink. It
-    stores *no* fields of its own - purely behaviour.
+    """Keeps the ``ir.cron`` and ``base.automation`` records behind a model's
+    ``@cron`` / ``@automation`` methods in step with each record: created and
+    updated on create/write, removed on unlink. Adds no fields. See the README.
     """
 
     _name = "autopilot.mixin"
@@ -41,14 +23,13 @@ class AutopilotMixin(models.AbstractModel):
     # Spec discovery (decorated methods) + per-record value resolution
     # ------------------------------------------------------------------
     def _autopilot_specs(self):
-        """Every decorated trigger on this model, as dicts
-        ``{method, kind, spec}`` - one per decorator."""
+        """``{method, kind, spec}`` for every decorator on this model."""
         specs = []
         cls = type(self)
         for attr_name in dir(cls):
             try:
                 attr = getattr(cls, attr_name)
-            except Exception:  # noqa: BLE001 - defensive over odd descriptors
+            except Exception:  # noqa: BLE001  odd descriptors
                 continue
             for spec in getattr(attr, "_autopilot_crons", ()):
                 specs.append({"method": attr_name, "kind": "cron", "spec": spec})
@@ -57,9 +38,6 @@ class AutopilotMixin(models.AbstractModel):
         return specs
 
     def _autopilot_resolve(self, value):
-        """Resolve a decorator argument against a single record: a callable is
-        called with the record, a field name is read from it, anything else is
-        used literally."""
         self.ensure_one()
         if callable(value):
             return value(self)
@@ -72,8 +50,6 @@ class AutopilotMixin(models.AbstractModel):
         return bool(self.active) if "active" in self._fields else True
 
     def _autopilot_field(self, spec):
-        """The Many2one on this model that stores the spec's backing record,
-        validated to exist."""
         field = spec["field"]
         if field not in self._fields:
             raise ValidationError(
@@ -87,8 +63,6 @@ class AutopilotMixin(models.AbstractModel):
         return field
 
     def _autopilot_watched_fields(self):
-        """Fields whose change should trigger a re-sync: everything a spec
-        reads, plus the usual name/active."""
         watched = {"active", "name"}
         for entry in self._autopilot_specs():
             for key in ("interval_number", "interval_type", "active"):
@@ -98,11 +72,8 @@ class AutopilotMixin(models.AbstractModel):
         return watched
 
     def _autopilot_dynamic(self):
-        """True if any spec carries a callable argument. A lambda is opaque -
-        we cannot introspect which fields it reads - so once one is present any
-        write re-syncs (rather than silently going stale). A model that wants a
-        lambda to react to a specific field only can still name that field in
-        another arg, or keep the value a plain field reference."""
+        """Any callable argument? We can't see which fields a lambda reads, so
+        then every write re-syncs rather than going stale."""
         for entry in self._autopilot_specs():
             if any(callable(value) for value in entry["spec"].values()):
                 return True
@@ -153,8 +124,6 @@ class AutopilotMixin(models.AbstractModel):
                     backing.sudo().unlink()
 
     def _autopilot_store(self, field, record):
-        """Persist a freshly-created backing record onto its Many2one without
-        re-triggering sync."""
         self.with_context(**{_SKIP: True}).write({field: record.id})
 
     # ------------------------------------------------------------------
@@ -164,10 +133,6 @@ class AutopilotMixin(models.AbstractModel):
         return spec.get("name") or f"{self.display_name}: {method}"
 
     def _autopilot_code(self, method, delay, with_records):
-        """The Python the backing ``ir.cron`` / ``base.automation`` runs: a
-        direct call to the decorated method on this record. ``delay`` (truthy)
-        routes it through ``queue_job.with_delay``, forwarding a dict of
-        options; ``with_records`` passes the automation's triggered recordset."""
         target = f"env[{self._name}].browse({self.id})"
         if delay:
             options = delay if isinstance(delay, dict) else {}
@@ -205,9 +170,7 @@ class AutopilotMixin(models.AbstractModel):
         field = self._autopilot_field(spec)
         model_id = self.env["ir.model"]._get_id(spec["model"])
         name = self._autopilot_trigger_name(spec, entry["method"])
-        # A resolved domain may come back as a Python list (e.g. from a lambda
-        # scoping to this record) or already as a string; filter_domain is a
-        # Char, so normalise a list to its string form.
+        # filter_domain is a Char; a lambda may return a list.
         domain = self._autopilot_resolve(spec["domain"])
         if not isinstance(domain, str):
             domain = str(domain)
