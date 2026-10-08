@@ -1,0 +1,7 @@
+// Odoo menus have no separator, so draw one under Connections. Not scoped to
+// the navbar: its dropdowns render in an overlay outside it.
+.dropdown-item[data-menu-xmlid="autopilot.menu_autopilot_connection"] {
+    border-bottom: 1px solid var(--bs-dropdown-divider-bg);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
+}

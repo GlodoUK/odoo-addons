@@ -5,123 +5,151 @@ autopilot_sale
 .. caution::
    **Early Access (Alpha Status)**
 
-   This module is actively under development and is intended primarily for
-   **Glo deployments** while we refine feature stability.
+   This module is under active development, mainly for **Glo deployments**,
+   so it may still change.
 
-   As with any early-stage feature, functionality may evolve.
+   It replaces our ``connector_edi`` suite and is far simpler. We don't expect
+   to remove it. If it does change direction, Glo will help you migrate.
 
-   That said, this module is the intended replacement for our ``connector_edi`` suite
-   of modules and offers a vast simplification - we do not anticipate its removal.
+Sale EDI for trading partners who send orders as files. Their orders arrive
+in their own format, become ordinary Odoo sale orders, and the
+acknowledgements, dispatch notes and invoices go back in that same format.
+No retyping, and the partner gets their documents on time.
 
-   However, Glo stands fully behind our customers: should this module change direction
-   or be phased out, Glo will work with you on a migration path.
+Each partner is a small **dialect**: a few methods that read and write their
+format. Everything else is shared: picking up files, queuing, retries,
+confirmation, sending, housekeeping.
 
-The **sale-EDI-ish engine** for `autopilot` connectors: the common
-import-order / acknowledge / dispatch-note (ASN) / invoice workflow, factored
-out so a trading partner is a thin *dialect* rather than a whole module.
+When to use it
+==============
 
-It is a bespoke connector's shared mechanism, not a configurable engine. The
-connection, claiming and uploading files, the per-file and per-order jobs and
-their states, confirmation, binding eligible pickings/invoices, job channels
-and housekeeping live here, in code; the only per-partner part is the
-**format**, and that is a set of convention-named methods a bridge adds.
+Use it when a partner exchanges sale documents as **files** (SFTP, S3, a local
+folder, or by email) in **their own format**, and the work follows Odoo's
+normal order, delivery and invoice. Public sector buyers like YPO, and most
+B2B feeds, look like this. Once you have a few, the shared plumbing pays for
+itself.
 
-When to use it (and when not)
-=============================
+Don't use it for a live platform integration such as Magento, Shopify or a
+marketplace. Those sync many kinds of record both ways in real time, and need
+their own connector. A one-off partner may also be simpler as its own module.
 
-Use ``autopilot_sale`` when a trading partner **exchanges sale documents as
-files** - they drop order files and expect acknowledgement / dispatch-note /
-invoice files back, in **their own format**, over a file transport
-(SFTP/S3/local) - and the process is Odoo's ordinary **order -> delivery ->
-invoice** lifecycle. That shape (one partner, batch file exchange, one-directional
-lifecycle documents, a format that differs per partner and changes occasionally,
-no live external system to keep in sync) is common enough - YPO, and most
-B2B/public-sector EDI feeds - that the ~95% of plumbing identical between partners
-is not worth rebuilding. A new partner is then just a *dialect*: a handful of
-parse/render methods.
+Rule of thumb: files in a partner's format along the sale lifecycle belong
+here. A live API with two-way sync does not.
 
-Use ``autopilot_sale`` when you have many of the same basic shape. For unique one off
-connectors, it may be worth while avoiding ``autopilot_sale``.
+Setting up
+==========
 
-Do **not** stretch it to cover a live, bidirectional platform integration -
-Magento, Shopify, a marketplace. Those are a different animal: high volume, many
-record types (catalog, stock, price, customers, orders), webhook/real-time,
-stateful two-way sync needing durable external-id bindings. There is no file to
-sweep and no single lifecycle to ride, so forcing them through a file-dialect
-distorts both - they belong in a dedicated API connector, not here.
-Also out of scope: 3PL / warehouse dispatch and anything that is not the sale
-lifecycle.
+Under **Integrations & Connections > Sale EDI**, create a backend:
 
-Rule of thumb: **files + a partner's format + the sale lifecycle -> a dialect here;
-a live API + continuous two-way sync -> its own connector.**
+* **Dialect**: the partner's format.
+* **Customer**: the default partner orders are placed against.
+* **Connection**: a shared connection (SFTP and so on). Leave it empty for a
+  partner who emails their files; managers can then use **Upload File**.
+* **Paths**: where to pick orders up, where to move them once claimed, and
+  where each outgoing document goes. Paths take ``{datetime:%Y}`` style
+  tokens, and outgoing ones also take ``{record.name}`` style tokens.
+* **Confirmation**: see below.
+* **Access Groups** (optional): limit the backend and its records to these
+  groups. **Notified Users** follow it, so they hear about errors.
 
-Dialects (the registry is a naming convention)
-==============================================
+How it works
+============
 
-``autopilot_sale.backend.dialect`` is a ``Selection`` a bridge extends with
-``selection_add``. The engine then delegates to methods named
-``_<dialect>_<verb>`` that the bridge adds by ``_inherit``, and offers each flow
-only when ``_<dialect>_compute_supports_<flow>`` says so — that method-name
-convention *is* the whole registry:
+**Orders.** Every 15 minutes the backend moves new files from the source
+folder into the processed folder. Moving a file is how it is claimed, so it
+is never read twice. Each file becomes an order file record, queued as a job.
 
-* ``_<dialect>_import_order(file)`` - an ``autopilot_sale.order.file`` arrives
-  either from the import cron, which **claims each inbound file** off the
-  connection, or from **Upload File** on the backend (managers; no connection
-  needed - for a partner who emails their files). Either way its bytes are kept
-  on the record (``data``, an attachment) and the file is queued as its own
-  job. The dialect reads it with ``file._open()`` - it never cares where the
-  file came from - and **stages** one ``autopilot_sale.order`` per order -
-  ``external_ref`` plus the order's rows in ``payload`` - and nothing else.
-  Skip references already bound so a retried or re-uploaded file is safe. The
-  file is done once its orders are staged.
+That job only *stages*: the dialect splits the file into one order record per
+order, with its rows kept as ``payload``. Each order is then its own job,
+which creates the sale order, confirms it and queues the acknowledgement. So
+one bad order fails alone, and a retry does not re-read the file.
 
-* ``autopilot_sale.order._<dialect>_create_order()`` — the engine then queues
-  **each staged order as its own job**. The job runs
-  ``_process``: the dialect builds the ``sale.order`` (+ ``.line`` bindings)
-  from ``_read_payload()``; the engine confirms it per the backend's
-  **Confirmation** policy (``_confirm``); then, if the dialect acknowledges,
-  queues ``_acknowledge`` (the dialect's ``_<dialect>_acknowledge()``) as its
-  own job on the acknowledgement channel. It is queued inside the order's
-  transaction, so an ack is never sent for an order whose job rolls back; a
-  backend with no connection (upload only) sends none.
+Files and orders keep their own state (pending, done, failed, cancelled) and
+error, where a sales user can see them. **Retry** queues one again; **Cancel**
+stops a queued one. A failed order is rolled back cleanly.
 
-  Files and orders keep their own ``state`` (pending / done / failed /
-  cancelled) and error, written by their job (``autopilot_sale.job.mixin``):
-  the work runs in a savepoint, and a failure is recorded on the record
-  rather than left only in the technical Job Queue. **Retry** queues it again;
-  **Cancel** marks it so a still-queued job does nothing. Concurrency errors
-  are left to queue_job's own retry. So one bad order fails and is retried
-  alone.
-  **Housekeeping** on the backend (on by default, 30 days): a daily cron
-  (``_cron_cleanup``, for every backend that has it on, archived ones too)
-  clears each file's stored copy once its import is done, and each order's
-  payload once the order is done, when older than the period. Pending,
-  failed and cancelled ones keep theirs for a retry.
+**Confirmation** policies:
 
-  The backend's **Tracking** (UTM campaign, source, medium) is copied onto each
-  new sale order wherever the dialect left it empty.
+* **Leave as Quotation** (default).
+* **Confirm, Fail on Error**: if Odoo refuses to confirm, the order fails and
+  nothing is kept. Fix the cause and retry.
+* **Confirm, Keep Quotation on Error**: if refused, the quotation stays, with
+  the reason posted on it and on the backend.
 
-  Confirmation policies: **Leave as Quotation** (default); **Confirm, Fail on
-  Error** - a refused confirmation fails the order and rolls it back;
-  **Confirm, Keep Quotation on Error** - the confirmation runs in a savepoint,
-  and a refusal leaves the quotation with the reason posted on it and on the
-  backend. Only business refusals (``UserError``/``RedirectWarning``, or
-  ``action_confirm`` returning without confirming) are recovered.
-* ``autopilot_sale.picking._<dialect>_export()`` /
-  ``autopilot_sale.invoice._<dialect>_export()`` — the dispatch-note and invoice
-  crons find the eligible pickings/invoices themselves, bind each (the
-  binding's existence is the "already sent" marker) and queue its export; the
-  dialect renders and ``_place``\ s the file.
+The acknowledgement is queued inside the order's own job, so an order that
+rolls back never sends one.
+
+**Dispatch notes and invoices.** Every 15 minutes the backend finds done
+customer deliveries and posted invoices for its orders, and queues each one
+to be sent. A record is only ever sent once.
+
+**Seeing what happened.** A sale order that came in by EDI has an **EDI**
+button showing whether it was received. Files, orders, dispatch notes and
+invoices all appear in **Integrations & Connections > Activity**, next to
+every other connector, so failures are easy to spot.
+
+Writing a dialect
+=================
+
+A dialect is a bridge module. It adds a ``dialect`` value and methods named
+after it; that naming convention is the whole registry:
+
+.. code-block:: python
+
+    class AutopilotSaleBackend(models.Model):
+        _inherit = "autopilot_sale.backend"
+
+        dialect = fields.Selection(
+            selection_add=[("acme", "Acme")], ondelete={"acme": "cascade"}
+        )
+
+        def _acme_compute_supports_import_order(self):
+            return True
+
+        def _acme_import_order(self, file):
+            Order = self.env["autopilot_sale.order"]
+            with file._open() as handle:
+                rows = etl.csv.read_rows(handle)
+            for ref, order_rows in group_by_ref(rows):
+                Order.create(
+                    {
+                        "backend_id": self.id,
+                        "external_ref": ref,
+                        "payload": Order._encode_payload(order_rows),
+                    }
+                )
+
+The methods:
+
+* ``_<dialect>_compute_supports_<flow>()`` turns a flow on. The flows are
+  ``import_order``, ``ack``, ``asn`` and ``invoice``. Without it, a flow is off.
+* ``backend._<dialect>_import_order(file)`` stages one order record per order.
+  Skip references already staged, so a re-sent file is safe.
+* ``autopilot_sale.order._<dialect>_create_order()`` builds the sale order
+  from ``_read_payload()``.
+* ``autopilot_sale.order._<dialect>_acknowledge()``,
+  ``autopilot_sale.picking._<dialect>_export()`` and
+  ``autopilot_sale.invoice._<dialect>_export()`` render a document and write
+  it with ``backend._place(path, record=...)``.
+
+Partner references with no column of their own go in ``external_values``.
 
 Job channels
 ============
 
-Every Sale EDI job is queued through ``backend._delay(records, channel)``, with
-one channel field per operation on the backend: **Orders** (the file job and
-each order's job), **Acknowledgements**, **Dispatch Notes** and **Invoices** -
-so, say, importing orders can be preferred over sending acks. An empty field
-passes no channel (queue_job's default, ``root``). A channel that is not in
-the queue_job ``channels`` config runs under its nearest configured parent, so
-set capacities there, keeping the orders channel at capacity 1 (a file's
-orders find-or-create addresses and would race), e.g.
-``channels = root:1,root.edi.orders:1,root.edi.acks:1``.
+Each flow has its own job channel field on the backend: **Orders**,
+**Acknowledgements**, **Dispatch Notes** and **Invoices**, so imports can be
+preferred over sending. Empty means queue_job's ``root``. An unconfigured
+channel runs under its nearest configured parent.
+
+Keep the orders channel at capacity 1: orders find or create delivery
+addresses, and parallel jobs would race. For example::
+
+    channels = root:1,root.edi.orders:1,root.edi.acks:1
+
+Housekeeping
+============
+
+A daily job clears the stored file and each order's payload once done and
+older than the backend's **Keep For** period (30 days by default). Anything
+not done keeps its copy, ready for a retry.

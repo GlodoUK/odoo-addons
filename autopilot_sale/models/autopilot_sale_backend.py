@@ -12,25 +12,23 @@ _logger = logging.getLogger(__name__)
 
 
 class AutopilotSaleBackend(models.Model):
-    """A sale-EDI trading endpoint.
+    """A trading partner exchanging sale documents as files.
 
-    The engine owns the *mechanism* every sale connector shares: the schedules
-    (order import, dispatch notes, invoices), the connection, the inbound
-    files and their per-order jobs (``autopilot_sale.order.file`` ->
-    ``autopilot_sale.order``), confirmation, job channels and housekeeping.
-    The **format** is the dialect's: a bridge module adds a ``dialect``
-    selection value and, by ``_inherit``, convention-named methods -
-    ``_<dialect>_import_order(file)`` staging a file's orders,
-    ``autopilot_sale.order._<dialect>_create_order`` building one,
-    ``_<dialect>_acknowledge`` and ``autopilot_sale.picking/invoice.
-    _<dialect>_export`` rendering what goes back. A dialect opts into each
-    flow with ``_<dialect>_compute_supports_<flow>``; the rest stay off.
+    The engine is the mechanism. The format belongs to a dialect, which adds a
+    ``dialect`` value and, by ``_inherit``:
+
+    * ``_<dialect>_import_order(file)``: stages a file's orders.
+    * ``autopilot_sale.order._<dialect>_create_order()``: builds one.
+    * ``autopilot_sale.order._<dialect>_acknowledge()``
+    * ``autopilot_sale.picking._<dialect>_export()`` and
+      ``autopilot_sale.invoice._<dialect>_export()``
+    * ``_<dialect>_compute_supports_<flow>()``: opts into a flow. Without it,
+      the flow is off.
     """
 
     _name = "autopilot_sale.backend"
     _description = "Sale EDI Backend"
-    # utm.mixin: the campaign / source / medium given to every order imported
-    # here (see autopilot_sale.order._apply_utm).
+    # utm.mixin: given to every imported order (autopilot_sale.order._apply_utm).
     _inherit = ["mail.thread", "autopilot.mixin", "utm.mixin"]
 
     name = fields.Char(required=True, tracking=True)
@@ -43,21 +41,17 @@ class AutopilotSaleBackend(models.Model):
     )
     active = fields.Boolean(default=True, tracking=True)
 
-    # Default customer imported orders are placed/billed against. A dialect may
-    # resolve a different partner per file; this is the fallback.
     partner_id = fields.Many2one(
         "res.partner",
         string="Customer",
         tracking=True,
-        help="Default customer imported orders are placed against.",
+        help="Default customer for imported orders.",
     )
-    # Housekeeping: how long finished imports keep their stored content.
     cleanup_enabled = fields.Boolean(
         string="Clean Up Stored Content",
         default=True,
-        help="Clear the stored copy of imported files and the staged rows of "
-        "imported orders once they are done and older than the period below. "
-        "Pending, failed and cancelled ones keep theirs, for a retry.",
+        help="Clear the stored copy of finished imports once older than the "
+        "period below. Anything not done keeps its copy, for a retry.",
     )
     cleanup_days = fields.Integer(string="Keep For (days)", default=30)
     confirm_policy = fields.Selection(
@@ -70,19 +64,13 @@ class AutopilotSaleBackend(models.Model):
         default="draft",
         required=True,
         tracking=True,
-        help="What happens to each imported order once created. Leave as "
-        "Quotation: nothing. Confirm, Fail on Error: confirm it; if "
-        "confirmation is refused the order fails and nothing is kept, "
-        "ready to retry once the cause is fixed. Confirm, Keep Quotation on "
-        "Error: confirm it; if refused, keep it as a quotation and post the "
-        "reason on it and on this backend.",
+        help="Fail on Error: a refused confirmation fails the order and keeps "
+        "nothing, ready to retry. Keep Quotation on Error: a refusal leaves a "
+        "quotation, with the reason posted on it and on this backend.",
     )
 
-    # Access & notification. Access is group-based (the only thing record rules
-    # can key off): empty ``restrict_group_ids`` leaves the normal ACLs in
-    # force, listing groups narrows the backend *and its bindings* to their
-    # members. ``notify_user_ids`` are people (followers can only be partners,
-    # not groups), auto-subscribed so the backend's chatter reaches them.
+    # Groups, not users: record rules can only key off groups. Users, not
+    # groups, to notify: followers are partners.
     restrict_group_ids = fields.Many2many(
         "res.groups",
         "autopilot_sale_backend_group_rel",
@@ -98,27 +86,24 @@ class AutopilotSaleBackend(models.Model):
         "backend_id",
         "user_id",
         string="Notified Users",
-        help="Users subscribed as followers of this backend, so they receive "
-        "its chatter notifications (imports, errors, documents sent).",
+        help="Followers of this backend: they hear about imports, errors and "
+        "documents sent.",
     )
 
     dialect = fields.Selection(
         selection=[],
         required=True,
         tracking=True,
-        help="The trading partner's document format. Provided by a bridge module",
+        help="The trading partner's document format.",
     )
 
-    # Which flows the selected dialect supports - an explicit per-dialect opt-in
-    # (``_<dialect>_compute_supports_<flow>``, defaulting to False when absent),
-    # used to gate the crons, buttons and transport pages directly.
     supports_import_order = fields.Boolean(compute="_compute_supports_import_order")
     supports_ack = fields.Boolean(compute="_compute_supports_ack")
     supports_asn = fields.Boolean(compute="_compute_supports_asn")
     supports_invoice = fields.Boolean(compute="_compute_supports_invoice")
 
-    # Backing cron records, created and kept in step by autopilot. (Ack has no
-    # cron - it rides the import.)
+    # Kept in step by autopilot.mixin. Acks have no cron; the order job queues
+    # them.
     order_import_cron_id = fields.Many2one("ir.cron", copy=False, readonly=True)
     asn_cron_id = fields.Many2one("ir.cron", copy=False, readonly=True)
     invoice_cron_id = fields.Many2one("ir.cron", copy=False, readonly=True)
@@ -141,86 +126,57 @@ class AutopilotSaleBackend(models.Model):
     invoice_count = fields.Integer(compute="_compute_counts")
 
     connection_id = fields.Many2one(
-        "autopilot_sale.connection",
+        "autopilot.connection",
         ondelete="restrict",
         tracking=True,
-        help="The endpoint (local/SFTP/object store) this backend reads from "
-        "and writes to; each flow has its own path on it. Empty disables every "
-        "transport. Several backends can share one connection.",
+        help="Where files are read and written; each flow has its own path. "
+        "Empty turns every transfer off.",
     )
 
     order_import_path = fields.Char(
         string="Orders Source Path",
-        help="Glob matching the inbound order files to claim on the connection, "
-        "e.g. /in/ypo/*.csv (** recurses into subfolders). May use "
-        "{datetime:%Y} / {datetime:%m} / ... tokens (current time) to scope by "
-        "date; no {record.*} token is available here, since files are claimed "
-        "before any order exists.",
+        help="Glob of the order files to pick up, e.g. /in/ypo/*.csv (** "
+        "recurses). May use {datetime:%Y}-style tokens; not {record.*}.",
     )
     order_import_processed_path = fields.Char(
         string="Orders Processed Path",
-        help="Absolute folder the claimed files are moved into so a poll does "
-        "not re-read them, e.g. /in/ypo/processed/{datetime:%Y}/{datetime:%m}. "
-        "May use {datetime:...} tokens. Required once a source is set: where "
-        "claimed files go is not something to infer from a glob.",
+        help="Folder picked-up files are moved into, so they are read once, "
+        "e.g. /in/ypo/processed/{datetime:%Y}/{datetime:%m}.",
     )
     ack_export_path = fields.Char(
         string="Acknowledgement Path",
-        help="Absolute destination path, INCLUDING the filename, each "
-        "acknowledgement is written to. Supports template tokens: "
-        "{datetime:FORMAT} - current time, e.g. {datetime:%Y-%m-%dT%H-%M-%S} - "
-        "and {record.FIELD} - here the sale order, e.g. {record.name}. Make it "
-        "unique per document (include {record.id} or {datetime}) or files "
+        help="Full path, filename included. {record.*} is the sale order, "
+        "{datetime:FORMAT} the current time; keep it unique or files "
         "overwrite. E.g. /out/ypo/ack/{record.name}-{datetime:%Y%m%dT%H%M%S}.csv",
     )
     asn_export_path = fields.Char(
         string="Dispatch Note Path",
-        help="Absolute destination path (including the filename) each dispatch "
-        "note is written to. Same tokens as the Acknowledgement Path, with "
-        "{record.*} being the picking (e.g. {record.name}); include "
-        "{record.id}/{datetime} to keep it unique.",
+        help="As the Acknowledgement Path, with {record.*} the picking.",
     )
     invoice_export_path = fields.Char(
         string="Invoice Path",
-        help="Absolute destination path (including the filename) each invoice "
-        "is written to. Same tokens as the Acknowledgement Path, with "
-        "{record.*} being the invoice / account.move (e.g. {record.name}); "
-        "include {record.id}/{datetime} to keep it unique.",
+        help="As the Acknowledgement Path, with {record.*} the invoice.",
     )
 
-    # Job channels, one per operation, so e.g. importing orders can be
-    # preferred over sending acknowledgements. Empty passes no channel.
+    # One channel per flow, so e.g. imports can be preferred over acks.
     order_import_channel = fields.Char(
         string="Orders Channel",
-        help="queue_job channel the order import jobs (the file and each "
-        "order) run on, e.g. root.edi.orders. Empty uses root. A channel "
-        "missing from the queue_job channels config runs under its nearest "
-        "configured parent.",
+        help="Job channel for files and orders, e.g. root.edi.orders. Empty "
+        "uses root; an unconfigured channel runs under its nearest parent.",
     )
     ack_channel = fields.Char(
         string="Acknowledgements Channel",
-        help="queue_job channel the acknowledgement jobs run on, e.g. "
-        "root.edi.acks. Empty uses root. A channel missing from the "
-        "queue_job channels config runs under its nearest configured "
-        "parent.",
+        help="Job channel for acknowledgements, e.g. root.edi.acks.",
     )
     asn_channel = fields.Char(
         string="Dispatch Notes Channel",
-        help="queue_job channel the dispatch note jobs run on, e.g. "
-        "root.edi.asns. Empty uses root. A channel missing from the "
-        "queue_job channels config runs under its nearest configured "
-        "parent.",
+        help="Job channel for dispatch notes, e.g. root.edi.asns.",
     )
     invoice_channel = fields.Char(
         string="Invoices Channel",
-        help="queue_job channel the invoice jobs run on, e.g. "
-        "root.edi.invoices. Empty uses root. A channel missing from the "
-        "queue_job channels config runs under its nearest configured "
-        "parent.",
+        help="Job channel for invoices, e.g. root.edi.invoices.",
     )
 
-    # A dialect opts into a flow by defining ``_<dialect>_compute_supports_<flow>``
-    # (returning truthy); absent that method the flow is off.
     @api.depends("dialect")
     def _compute_supports_import_order(self):
         for backend in self:
@@ -279,9 +235,6 @@ class AutopilotSaleBackend(models.Model):
         return result
 
     def _subscribe_notified_users(self):
-        """Keep the notified users as followers so the backend's chatter reaches
-        them. Called on create and whenever the set changes; message_subscribe
-        is idempotent, so re-running it after a write is safe."""
         for backend in self:
             partners = backend.notify_user_ids.partner_id
             if partners:
@@ -299,8 +252,7 @@ class AutopilotSaleBackend(models.Model):
 
     @api.model
     def _cron_cleanup(self):
-        """Daily: clean up every backend that has it enabled, archived ones
-        too."""
+        """Archived backends too."""
         backends = self.with_context(active_test=False).search(
             [("cleanup_enabled", "=", True)]
         )
@@ -308,9 +260,6 @@ class AutopilotSaleBackend(models.Model):
             backend._cleanup()
 
     def _cleanup(self):
-        """Clear the stored content of this backend's finished imports older
-        than its period: each file's copy and each order's payload, once
-        done."""
         self.ensure_one()
         cutoff = fields.Datetime.now() - timedelta(days=self.cleanup_days)
         files = self.env["autopilot_sale.order.file"].search(
@@ -340,10 +289,8 @@ class AutopilotSaleBackend(models.Model):
 
     @api.constrains("order_import_path", "order_import_processed_path")
     def _check_order_import_paths(self):
-        """A source to poll needs somewhere to put what it claims. Required
-        rather than derived: :func:`~odoo.addons.autopilot.tools.files.archive`
-        moves a file *out* of the polled folder, and the destination for that is
-        a decision, not something to guess from the source glob."""
+        """Required, not derived from the glob: where picked-up files go is a
+        decision."""
         for backend in self:
             if backend.order_import_path and not backend.order_import_processed_path:
                 raise ValidationError(
@@ -355,10 +302,7 @@ class AutopilotSaleBackend(models.Model):
                 )
 
     def _delay(self, records, channel=None):
-        """``records.with_delay(...)``, on ``channel`` (one of this backend's
-        ``*_channel`` fields) when it is set; otherwise no channel is passed, so
-        queue_job's own default applies. Every Sale EDI job is queued through
-        here."""
+        """Every Sale EDI job is queued through here."""
         self.ensure_one()
         options = {"identity_key": identity_exact}
         channel = (channel or "").strip()
@@ -367,15 +311,9 @@ class AutopilotSaleBackend(models.Model):
         return records.with_delay(**options)
 
     def _sweep_orders(self):
-        """Claim every file matching the order source glob by moving it into the
-        processed folder, and return the archived paths. Moving is the claim: a
-        file is taken out of the scanned folder the moment it is picked up, so an
-        overlapping poll can never read it twice. This is the engine's whole
-        contribution to import - the dialect reads and parses the returned
-        paths itself. Both source and processed paths are rendered
-        (``tools.files.render_path``), so either can be date-scoped; both are required
-        config (:meth:`_check_order_import_paths`), so neither is inferred
-        here."""
+        """Move the matching files into the processed folder and return their
+        new paths. The move is the claim, so an overlapping poll never reads a
+        file twice."""
         self.ensure_one()
         if not self.connection_id:
             return []
@@ -388,18 +326,13 @@ class AutopilotSaleBackend(models.Model):
 
     @contextmanager
     def _place(self, template, record=None):
-        """Open a writable handle at ``template`` on the connection and yield
-        ``(handle, target)`` - the handle and the resolved destination path.
+        """Yield ``(handle, target)`` to write at the rendered ``template``.
+        ``target`` is the path written, for naming an audit copy::
 
-        ``template`` is the full destination path *including the filename* - one
-        configured value - rendered by ``tools.files.render_path`` (so it may carry
-        ``{datetime}`` / ``{record.*}`` tokens). Uniqueness is the template's
-        responsibility: include ``{record.id}``/``{datetime}`` or files
-        overwrite. ``target`` is handed back so a caller can name an audit copy
-        after the file actually written.
-
-            path = backend.asn_export_path
-            with backend._place(path, record=picking) as (fh, target):
+            with backend._place(backend.asn_export_path, record=picking) as (
+                fh,
+                target,
+            ):
                 etl.csv.write_rows(fh, rows, fieldnames=FIELDS)
         """
         self.ensure_one()
@@ -416,16 +349,8 @@ class AutopilotSaleBackend(models.Model):
         ),
     )
     def _import_orders(self):
-        """Claim inbound files and hand each to the dialect as its own queued
-        job. Claiming (the fsspec move) happens here in the cron transaction;
-        reading/parsing/creating is the dialect's ``_<dialect>_import_order(file)``.
-
-        Each claimed file becomes an ``autopilot_sale.order.file`` *before* it
-        is queued, and that record - not the backend - is what gets delayed.
-        That makes the file the job's origin record, so its state/error land
-        on the file (via stored related fields) where a sales user can see a
-        failure and pull it out of the queue, rather than only in the
-        technical Job Queue."""
+        """The file record, not the backend, is queued, so a failure shows on
+        the file where a sales user can retry it."""
         self.ensure_one()
         File = self.env["autopilot_sale.order.file"]
         for path in self._sweep_orders():
@@ -440,9 +365,6 @@ class AutopilotSaleBackend(models.Model):
         ),
     )
     def _export_asns(self):
-        """Bind every not-yet-bound customer-facing done picking on a bound
-        order and export its dispatch note. Eligibility is generic; the render
-        is the dialect's ``autopilot_sale.picking._<dialect>_export``."""
         self.ensure_one()
         if not self.supports_asn:
             _logger.info(
@@ -457,8 +379,7 @@ class AutopilotSaleBackend(models.Model):
             self._delay(binding, self.asn_channel)._export()
 
     def _asn_domain(self):
-        """Customer-facing done pickings on an order bound to this backend, not
-        yet bound themselves (the binding's existence is the sent marker)."""
+        """A picking's binding is its sent marker."""
         self.ensure_one()
         return [
             ("state", "=", "done"),
@@ -477,9 +398,6 @@ class AutopilotSaleBackend(models.Model):
         ),
     )
     def _export_invoices(self):
-        """Bind every not-yet-bound posted customer invoice on a bound order and
-        export it. Eligibility is generic; the render is the dialect's
-        ``autopilot_sale.invoice._<dialect>_export``."""
         self.ensure_one()
         if not self.supports_invoice:
             _logger.info(
@@ -522,7 +440,6 @@ class AutopilotSaleBackend(models.Model):
         )
 
     def action_upload_file(self):
-        """Open the wizard importing a file by hand (no connection needed)."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- The connection form every consumer shares: its own form is a primary
-         extension of this one (``mode`` primary, ``inherit_id`` this). -->
-    <record id="autopilot_fsspec_view_form" model="ir.ui.view">
-        <field name="name">autopilot.fsspec.mixin.form</field>
-        <field name="model">autopilot.fsspec.mixin</field>
+    <record id="autopilot_connection_view_form" model="ir.ui.view">
+        <field name="name">autopilot.connection.form</field>
+        <field name="model">autopilot.connection</field>
         <field name="arch" type="xml">
             <form string="Connection">
                 <header>
@@ -559,4 +557,54 @@
             </form>
         </field>
     </record>
+
+    <record id="autopilot_connection_view_list" model="ir.ui.view">
+        <field name="name">autopilot.connection.list</field>
+        <field name="model">autopilot.connection</field>
+        <field name="arch" type="xml">
+            <list string="Connections">
+                <field name="name" />
+                <field name="protocol" />
+                <field name="company_id" groups="base.group_multi_company" />
+            </list>
+        </field>
+    </record>
+
+    <record id="autopilot_connection_view_search" model="ir.ui.view">
+        <field name="name">autopilot.connection.search</field>
+        <field name="model">autopilot.connection</field>
+        <field name="arch" type="xml">
+            <search string="Connections">
+                <field name="name" />
+                <field name="protocol" />
+                <filter
+                    name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+                <group>
+                    <filter
+                        name="group_protocol"
+                        string="Provider"
+                        context="{'group_by': 'protocol'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_autopilot_connection" model="ir.actions.act_window">
+        <field name="name">Connections</field>
+        <field name="res_model">autopilot.connection</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_autopilot_connection"
+        name="Connections"
+        parent="menu_autopilot_connections"
+        action="action_autopilot_connection"
+        groups="base.group_system"
+        sequence="2"
+    />
 </odoo>

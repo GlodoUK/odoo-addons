@@ -1,5 +1,4 @@
 from . import autopilot_sale_job_mixin
-from . import autopilot_sale_connection
 from . import autopilot_sale_backend
 from . import autopilot_sale_order_file
 from . import autopilot_sale_order
