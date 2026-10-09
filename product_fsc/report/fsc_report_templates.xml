@@ -31,13 +31,16 @@
                 claims.
             -->
             <p name="fsc_certificate_code">
-                FSC® Chain of Custody certificate:
-                <span
+                <img
+                t-if="company.fsc_logo"
+                t-attf-src="data:image/png;base64,#{company.fsc_logo}"
+                style="max-height: 64px; max-width: 64px; margin: 8px;"
+            /> FSC® Chain of Custody certificate: <span
                 t-if="company.fsc_certificate_code"
                 class="fw-bold"
                 t-field="company.fsc_certificate_code"
             >XXX-COC-000000</span>
-                <span t-else="" class="fw-bold text-danger">
+            <span t-else="" class="fw-bold text-danger">
                     Not configured - set the FSC Certificate Code on the company
                 </span>
             </p>
