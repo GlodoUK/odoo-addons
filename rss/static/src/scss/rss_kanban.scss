@@ -1,0 +1,10 @@
+.o_rss_item_kanban {
+    .o_rss_summary {
+        overflow: hidden;
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
