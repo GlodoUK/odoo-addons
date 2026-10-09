@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="fsc_claim_block">
         <div t-if="fsc_lines" class="mt-4" name="fsc_claim_block">
@@ -31,14 +31,15 @@
                 claims.
             -->
             <p name="fsc_certificate_code">
-                <img t-if="company.fsc_logo"
-                    t-attf-src="data:image/png;base64,#{company.fsc_logo}"
-                    style="max-height: 64px; max-width: 64px; margin: 8px;"
-                /> FSC® Chain of Custody certificate: <span
-                    t-if="company.fsc_certificate_code"
-                    class="fw-bold"
-                    t-field="company.fsc_certificate_code"
-                >XXX-COC-000000</span>
+                <img
+                t-if="company.fsc_logo"
+                t-attf-src="data:image/png;base64,#{company.fsc_logo}"
+                style="max-height: 64px; max-width: 64px; margin: 8px;"
+            /> FSC® Chain of Custody certificate: <span
+                t-if="company.fsc_certificate_code"
+                class="fw-bold"
+                t-field="company.fsc_certificate_code"
+            >XXX-COC-000000</span>
             <span t-else="" class="fw-bold text-danger">
                     Not configured - set the FSC Certificate Code on the company
                 </span>
