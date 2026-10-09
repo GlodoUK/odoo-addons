@@ -8,6 +8,7 @@
             <xpath expr="//field[@name='company_registry']" position="after">
                 <field name="fsc_certificate_code" />
                 <field name="fsc_license_code" />
+                <field name="fsc_logo" />
             </xpath>
         </field>
     </record>

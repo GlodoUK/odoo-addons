@@ -12,3 +12,8 @@ class ResCompany(models.Model):
         string="FSC Licence Code",
         help="FSC trademark licence code, e.g. FSC® C123456.",
     )
+    fsc_logo = fields.Image(
+        string="FSC Logo",
+        help="Upload the FSC logo associated with the company's certification.",
+        attachment=True,
+    )
