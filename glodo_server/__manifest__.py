@@ -1,0 +1,28 @@
+{
+    "name": "Glodo Cloud Server",
+    "summary": "Central management server for remote Odoo instances",
+    "author": "Glo Networks",
+    "website": "https://github.com/GlodoUK/odoo-addons",
+    "category": "Technical",
+    "version": "20.0.1.0.0",
+    "depends": ["base", "web", "mail", "helpdesk"],
+    "data": [
+        "data/ir_cron_data.xml",
+        "security/glodo_server_security.xml",
+        "security/ir.access.csv",
+        "wizards/glodo_remote_user_unarchive_wizard_views.xml",
+        "views/glodo_instance_views.xml",
+        "views/glodo_instance_tag_views.xml",
+        "views/glodo_instance_host_views.xml",
+        "views/glodo_instance_database_views.xml",
+        "views/glodo_remote_user_views.xml",
+        "views/glodo_action_log_views.xml",
+        "views/menus.xml",
+        "views/res_partner.xml",
+        "views/helpdesk_ticket.xml",
+    ],
+    "external_dependencies": {
+        "python": ["cryptography"],
+    },
+    "license": "Other proprietary",
+}
