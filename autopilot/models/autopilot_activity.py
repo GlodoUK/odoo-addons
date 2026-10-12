@@ -65,7 +65,7 @@ class AutopilotActivity(models.Model):
     record = fields.Reference(selection="_selection_res_model", readonly=True)
     backend = fields.Reference(selection="_selection_backend", readonly=True)
     company_id = fields.Many2one("res.company", readonly=True)
-    state = fields.Char(readonly=True)
+    state = fields.Char(string="State Code", readonly=True)
     status = fields.Selection(STATUSES, readonly=True)
     error = fields.Text(readonly=True)
     date = fields.Datetime(readonly=True)
