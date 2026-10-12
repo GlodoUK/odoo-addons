@@ -135,6 +135,16 @@ class SaleOrder(models.Model):
             if line:
                 self._remove_delivery_line()
             return
+        if (
+            line.product_id == self.carrier_id.product_id
+            and line.currency_id.compare_amounts(
+                line.technical_price_unit, line.price_unit
+            )
+        ):
+            # Typed in by hand (`sale`'s own test), so it stands until the
+            # carrier changes. "Update shipping cost" replaces the line, which
+            # hands the price back to us.
+            return
         rate = self.carrier_id.rate_shipment(self)
         if not rate.get("success"):
             _logger.info(
