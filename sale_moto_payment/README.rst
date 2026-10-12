@@ -1,15 +1,14 @@
 Sale MOTO Payment
 =================
 
-Adds a **Take MOTO Payment** button to confirmed sale orders, allowing staff
-to take a Mail Order / Telephone Order (MOTO) card payment on behalf of a
-customer without leaving the back-end.
+Adds a **MOTO Payment & Confirm** button to quotations, allowing staff to take
+a Mail Order / Telephone Order (MOTO) card payment on behalf of a customer
+without leaving the back-end.
 
 Usage
 -----
 
-On any sale order with outstanding amount to invoice, click **Take MOTO
-Payment** (visible only when ``invoice_status = 'to invoice'``). A dialog
+On a draft or sent quotation, click **MOTO Payment & Confirm**. A dialog
 opens with an **Open Payment Window** button.
 
 Clicking it launches a native browser popup containing the standard Odoo
@@ -27,8 +26,29 @@ Behaviour
 - Transactions are flagged ``is_moto = True`` on ``payment.transaction``.
 - Customer-facing emails (order confirmation, payment succeeded notification)
   are suppressed for MOTO transactions.
-- Invoicing is forced on payment regardless of the ``sale.automatic_invoice``
-  system parameter, so orders with a *delivered quantity* invoicing policy are
-  invoiced immediately on full payment.
+- No invoice is raised on payment: the order is invoiced the usual way (or on
+  payment if ``sale.automatic_invoice`` is on, as for any online payment).
+  See *Prepayments* below.
 - Draft or sent quotations are confirmed automatically when the payment amount
   meets or exceeds the required confirmation amount.
+
+Prepayments
+-----------
+
+On its own, a MOTO payment is booked to the customer's account but isn't tied
+to the order it paid for. Until the order is invoiced, it looks like the
+customer is in credit, and nothing matches the payment to the invoice when it
+arrives.
+
+Install these alongside this module to fix that:
+
+- ``sale_advance_payment`` (OCA ``sale-workflow``): records payments against a
+  sale order, shows the order's advance payment status and remaining balance,
+  and reconciles those payments against the order's invoice when it is posted.
+- ``sale_advance_payment_transaction``: links the payment from a settled
+  transaction to its sale order, so ``sale_advance_payment`` picks it up. It
+  installs automatically with ``sale_advance_payment``, and covers every
+  online payment for a single order (portal, website), not only MOTO ones.
+
+This module doesn't depend on either, so it works without them. Payments then
+stay on account and are matched to invoices by hand.
