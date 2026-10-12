@@ -136,6 +136,56 @@ class TestSaleAutoInvoice(TransactionCase):
         # Rolled forward onto the next future grid point.
         self.assertEqual(self.partner.sale_auto_invoice_next_date, datetime(2026, 7, 1))
 
+    def test_consolidated_merges_across_delivery_addresses(self):
+        self.partner.sale_invoice_consolidation = "grouped"
+        sites = self.env["res.partner"].create(
+            [
+                {"name": "Site A", "type": "delivery", "parent_id": self.partner.id},
+                {"name": "Site B", "type": "delivery", "parent_id": self.partner.id},
+            ]
+        )
+        orders = self._confirmed_order() | self._confirmed_order()
+        for order, site in zip(orders, sites, strict=True):
+            order.partner_shipping_id = site
+
+        invoice = orders._create_invoices()
+
+        self.assertEqual(len(invoice), 1)
+        # Mixed delivery addresses: none of them stands for the whole invoice.
+        self.assertEqual(invoice.partner_shipping_id, self.partner)
+
+    def test_consolidated_per_delivery_address_splits_by_site(self):
+        self.partner.sale_invoice_consolidation = "grouped_delivery"
+        sites = self.env["res.partner"].create(
+            [
+                {"name": "Site A", "type": "delivery", "parent_id": self.partner.id},
+                {"name": "Site B", "type": "delivery", "parent_id": self.partner.id},
+            ]
+        )
+        orders = (
+            self._confirmed_order() | self._confirmed_order() | self._confirmed_order()
+        )
+        for order, site in zip(orders, sites + sites[0], strict=True):
+            order.partner_shipping_id = site
+
+        invoices = orders._create_invoices()
+
+        self.assertEqual(len(invoices), 2)
+        self.assertEqual(invoices.partner_shipping_id, sites)
+
+    def test_consolidated_keeps_shared_delivery_address(self):
+        self.partner.sale_invoice_consolidation = "grouped"
+        site = self.env["res.partner"].create(
+            {"name": "Site A", "type": "delivery", "parent_id": self.partner.id}
+        )
+        orders = self._confirmed_order() | self._confirmed_order()
+        orders.partner_shipping_id = site
+
+        invoice = orders._create_invoices()
+
+        self.assertEqual(len(invoice), 1)
+        self.assertEqual(invoice.partner_shipping_id, site)
+
     @freeze_time("2026-06-03")
     def test_cron_invoices_due_unconsolidated(self):
         self.partner.sale_invoice_consolidation = "ungrouped"

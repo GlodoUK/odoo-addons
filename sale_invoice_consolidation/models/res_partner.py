@@ -22,6 +22,7 @@ class ResPartner(models.Model):
     sale_invoice_consolidation = fields.Selection(
         [
             ("grouped", "Consolidated"),
+            ("grouped_delivery", "Consolidated per Delivery Address"),
             ("ungrouped", "Individual"),
         ],
         company_dependent=True,
