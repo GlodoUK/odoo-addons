@@ -133,7 +133,7 @@ class AutopilotMixin(models.AbstractModel):
         return spec.get("name") or f"{self.display_name}: {method}"
 
     def _autopilot_code(self, method, delay, with_records):
-        target = f"env[{self._name}].browse({self.id})"
+        target = f"env[{self._name!r}].browse({self.id})"
         if delay:
             options = delay if isinstance(delay, dict) else {}
             kwargs = ", ".join(f"{k}={v!r}" for k, v in options.items())

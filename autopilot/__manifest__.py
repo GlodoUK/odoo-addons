@@ -5,7 +5,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Technical",
-    "version": "19.0.1.2.0",
+    "version": "19.0.1.2.1",
     "icon": "/autopilot/static/description/icon.svg",
     "depends": [
         "base",
