@@ -5,7 +5,7 @@
     "author": "Glo Networks",
     "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Inventory/Delivery",
-    "version": "19.0.1.0.1",
+    "version": "19.0.1.0.2",
     "depends": ["sale", "delivery"],
     # Each of these answers the same question its own way, and two answers is
     # worse than either: the OCA pair assigns and re-rates on their own terms,

@@ -324,6 +324,20 @@ class TestSaleDeliveryAuto(TransactionCase):
         order.order_line.filtered(lambda line: not line.is_delivery).product_uom_qty = 4
         self.assertEqual(self._delivery_line(order).price_unit, 20.0)
 
+    def test_typed_price_stands_until_the_carrier_changes(self):
+        order = self._make_order(qty=3)
+        delivery_index = list(order.order_line).index(self._delivery_line(order))
+        with Form(order) as form:
+            with form.order_line.edit(delivery_index) as line:
+                line.price_unit = 50.0
+        goods = order.order_line.filtered(lambda line: not line.is_delivery)
+        goods.product_uom_qty = 10
+        self.assertEqual(self._delivery_line(order).price_unit, 50.0)
+        self.carrier_first.country_ids = [Command.set(self.fr.ids)]
+        goods.product_uom_qty = 4
+        self.assertEqual(order.carrier_id, self.carrier_second)
+        self.assertEqual(self._delivery_line(order).price_unit, 20.0)
+
     def test_only_ever_one_delivery_line(self):
         order = self._make_order(qty=3)
         self._choose_carrier(order, self.carrier_second)
