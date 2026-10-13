@@ -9,6 +9,7 @@
                 <field name="fsc_certificate_code" />
                 <field name="fsc_license_code" />
                 <field name="fsc_logo" />
+                <field name="fsc_statement" />
             </xpath>
         </field>
     </record>
