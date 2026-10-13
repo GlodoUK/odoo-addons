@@ -2,24 +2,19 @@
 sale_mrp_phantom_explode
 ========================
 
-Optionally explode a kit into it's component parts on a sale order, rather than
+Optionally explode a kit into its component parts on a sale order, rather than
 waiting for the confirmation of a sale.
 
-Each phantom/kit BoM has an "Explode on Sale Orders" mode:
-
-- *(empty)*: never explode on sale orders (the default)
-- *Ask*: when the kit is picked on a sale order line, offer to explode it via a
-  dialog where the quantity can be adjusted
-- *Always*: explode automatically when the kit is picked, with a notification
-
-The exploded components are housed under a section line named after the kit.
+Kit lines on a draft/sent order get an "Explode kit into components" button.
+Pressing it saves the order and replaces the kit line, in place, by a section
+named after the kit followed by one line per storable component.
 
 For background / programmatic order entry,
-``sale.order.line.action_sale_mrp_phantom_explode()`` works like
-``stock.move.action_explode()``: it replaces any explodable kit lines with a
-section line and their component lines, and returns the resulting lines. It ignores the
-Ask/Always distinction - calling it is the consent - but lines whose BoM has no
-explode mode set are left untouched.
+``sale.order.line.action_sale_mrp_phantom_explode()`` does the same and works
+like ``stock.move.action_explode()``. Non-kit lines are left untouched.
+
+Sections own every line below them up to the next section, so lines that sat
+below the kit line end up under the kit's section.
 
 This is a lighter/alternative to:
 

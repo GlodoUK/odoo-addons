@@ -23,9 +23,9 @@ class TestSaleMrpPhantomExplode(TransactionCase):
 
     @classmethod
     def _create_kit(cls, name, attribute_create_variant):
-        """Kit template with a 2-value attribute, phantom BoM flagged for sale
-        explosion: 1 common component plus one component restricted to each
-        attribute value via Apply on Variants."""
+        """Kit template with a 2-value attribute and a phantom BoM: 1 common
+        component plus one component restricted to each attribute value via
+        Apply on Variants."""
         attribute = cls.env["product.attribute"].create(
             {
                 "name": f"{name} Option",
@@ -55,7 +55,6 @@ class TestSaleMrpPhantomExplode(TransactionCase):
             {
                 "product_tmpl_id": template.id,
                 "type": "phantom",
-                "sale_explode": "always",
                 "bom_line_ids": [
                     Command.create(
                         {
@@ -140,10 +139,35 @@ class TestSaleMrpPhantomExplode(TransactionCase):
             self.component_common | self.component_a,
         )
 
-    def test_component_count_no_variant_attribute(self):
-        """The client-facing count matches what the explosion would produce."""
-        template, ptav_a, _ptav_b = self._create_kit("Kit Count", "no_variant")
-        result = template.product_variant_id.sale_mrp_phantom_explode(
-            1, never_attribute_value_ids=ptav_a.ids
+    def test_explode_in_place(self):
+        """The section and components take the kit line's position."""
+        template, ptav_a, _ptav_b = self._create_kit("Kit Pos", "no_variant")
+        order = self.env["sale.order"].create(
+            {
+                "partner_id": self.partner.id,
+                "order_line": [
+                    Command.create({"product_id": self.component_a.id}),
+                    Command.create(
+                        {
+                            "product_id": template.product_variant_id.id,
+                            "product_no_variant_attribute_value_ids": [
+                                Command.set(ptav_a.ids)
+                            ],
+                        }
+                    ),
+                    Command.create({"product_id": self.component_b.id}),
+                ],
+            }
         )
-        self.assertEqual(result["component_count"], 2)
+        order.order_line.action_sale_mrp_phantom_explode()
+
+        self.assertEqual(
+            [line.display_type or line.product_id for line in order.order_line],
+            [
+                self.component_a,
+                "line_section",
+                self.component_common,
+                self.component_a,
+                self.component_b,
+            ],
+        )
