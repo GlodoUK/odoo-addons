@@ -22,6 +22,30 @@ class SaleOrder(models.Model):
             partner = order.partner_invoice_id.with_company(order.company_id)
             order.sale_auto_invoice_enabled = bool(partner.sale_auto_invoice_frequency)
 
+    def _get_invoice_grouping_keys(self):
+        keys = super()._get_invoice_grouping_keys()
+        if self.env.context.get("sale_invoice_consolidation"):
+            # Consolidated customers get one invoice across all their delivery
+            # addresses. Fiscal position stays a key, so taxes are never mixed.
+            keys = [key for key in keys if key != "partner_shipping_id"]
+        return keys
+
+    def _create_account_invoices(self, invoice_vals_list, final):
+        if self.env.context.get("sale_invoice_consolidation"):
+            for vals in invoice_vals_list:
+                line_ids = [
+                    command[1]
+                    for line in vals["invoice_line_ids"]
+                    for command in line[2].get("sale_line_ids", [])
+                ]
+                orders = self.env["sale.order.line"].browse(line_ids).order_id
+                # A merged invoice would otherwise print the first order's
+                # delivery address as if it covered every line. Set in the vals,
+                # not afterwards: writing it would recompute the fiscal position.
+                if len(orders.partner_shipping_id) > 1:
+                    vals["partner_shipping_id"] = vals["partner_id"]
+        return super()._create_account_invoices(invoice_vals_list, final)
+
     def _create_invoices(self, grouped=False, final=False, date=None):
         # Preserve the caller's value: the local `grouped` is reused below as an
         # account.move accumulator, shadowing the parameter.
@@ -33,27 +57,30 @@ class SaleOrder(models.Model):
             except AccessError:
                 return self.env["account.move"]
 
-        partners_to_group = self.mapped("partner_invoice_id").filtered(
-            lambda p: p.sale_invoice_consolidation == "grouped"
-        )
+        def preference(order):
+            return order.partner_invoice_id.sale_invoice_consolidation
 
-        partners_to_split = self.mapped("partner_invoice_id").filtered(
-            lambda p: p.sale_invoice_consolidation == "ungrouped"
+        grouped_ids = self.filtered(lambda o: preference(o) == "grouped")
+        grouped_delivery_ids = self.filtered(
+            lambda o: preference(o) == "grouped_delivery"
         )
-
-        grouped_ids = self.filtered(lambda x: x.partner_invoice_id in partners_to_group)
-        ungrouped_ids = self.filtered(
-            lambda x: x.partner_invoice_id in partners_to_split
-        )
-        other_ids = self - grouped_ids - ungrouped_ids
+        ungrouped_ids = self.filtered(lambda o: preference(o) == "ungrouped")
+        other_ids = self - grouped_ids - grouped_delivery_ids - ungrouped_ids
 
         grouped = self.env["account.move"]
+        grouped_delivery = self.env["account.move"]
         ungrouped = self.env["account.move"]
         others = self.env["account.move"]
         if grouped_ids:
             # Consolidated: merge all of a partner's orders into one invoice.
-            # In Odoo grouped=False means "group by partner/shipping/currency".
-            grouped = super(SaleOrder, grouped_ids)._create_invoices(
+            # In Odoo grouped=False means "group by _get_invoice_grouping_keys".
+            # The context also drops the delivery address from the grouping keys.
+            grouped = super(
+                SaleOrder, grouped_ids.with_context(sale_invoice_consolidation=True)
+            )._create_invoices(grouped=False, final=final, date=date)
+        if grouped_delivery_ids:
+            # Consolidated per delivery address: Odoo's standard grouping.
+            grouped_delivery = super(SaleOrder, grouped_delivery_ids)._create_invoices(
                 grouped=False, final=final, date=date
             )
         if ungrouped_ids:
@@ -66,4 +93,4 @@ class SaleOrder(models.Model):
             others = super(SaleOrder, other_ids)._create_invoices(
                 grouped=grouped_param, final=final, date=date
             )
-        return others + grouped + ungrouped
+        return others + grouped + grouped_delivery + ungrouped

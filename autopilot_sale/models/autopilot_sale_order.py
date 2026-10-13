@@ -9,25 +9,12 @@ _logger = logging.getLogger(__name__)
 
 
 class AutopilotSaleOrder(models.Model):
-    """Per-(backend, sale order) binding: one order from an inbound file, from
-    the moment it is staged until its sale order exists.
+    """One imported order, from staging until its sale order exists.
 
-    Import is two jobs. The file job (``autopilot_sale.order.file``) has the
-    dialect split the file into orders, staging one binding per order with its
-    source rows in ``payload``; the engine then queues each binding as its own
-    job (``_process``). So one bad order fails alone, and it can be retried
-    alone, without re-reading the file.
-
-    ``_process`` is create -> confirm -> queue the acknowledgement: the
-    dialect's ``_<dialect>_create_order`` builds the sale order from the
-    payload, the engine confirms it per the backend's ``confirm_policy``
-    (``_confirm``), then queues ``_acknowledge`` as its own job on the ack
-    channel. That job is created in the order job's transaction, so an ack is
-    never sent for an order whose job rolls back.
-
-    Generic references live in ``external_values`` (a ``fields.Serialized``
-    catch-all); a bridge adds a typed column by ``_inherit`` for anything it
-    lists/searches on.
+    Its job builds the order (``_<dialect>_create_order``), confirms it per the
+    backend's policy, then queues the acknowledgement. A dialect adds a typed
+    column for any reference it lists or searches on; the rest go in
+    ``external_values``.
     """
 
     _name = "autopilot_sale.order"
@@ -41,7 +28,7 @@ class AutopilotSaleOrder(models.Model):
         ondelete="cascade",
         index=True,
     )
-    # Empty while staged: the order job creates the sale order.
+    # Empty while staged.
     odoo_id = fields.Many2one(
         "sale.order",
         string="Sale Order",
@@ -54,9 +41,7 @@ class AutopilotSaleOrder(models.Model):
         ondelete="set null",
         index=True,
         copy=False,
-        help="The inbound file this order was imported from. Filled "
-        "automatically (default_file_id in context) when a dialect creates "
-        "this binding during an import job; blank otherwise.",
+        help="The file this order was imported from.",
     )
     company_id = fields.Many2one(
         related="backend_id.company_id", store=True, index=True
@@ -71,14 +56,13 @@ class AutopilotSaleOrder(models.Model):
         help="The trading partner's identifier for this order.",
     )
     external_values = fields.Serialized(
-        help="Dialect-specific captured values that have no dedicated column.",
+        help="Partner values with no column of their own.",
     )
     payload = fields.Binary(
         attachment=True,
         copy=False,
-        help="This order's rows from the inbound file (JSON), staged by the "
-        "file import and read by the order job. Cleared once the order is "
-        "done and older than its backend's clean-up period.",
+        help="This order's rows from the file, as JSON. Cleared after the "
+        "backend's clean-up period once done.",
     )
 
     _unique_binding = models.Constraint(
@@ -94,13 +78,8 @@ class AutopilotSaleOrder(models.Model):
                 f"{binding.odoo_id.name or binding.external_ref or '?'}"
             )
 
-    # ------------------------------------------------------------------
-    # Payload
-    # ------------------------------------------------------------------
     @api.model
     def _encode_payload(self, data):
-        """``data`` (anything JSON-serialisable, typically the order's rows)
-        as a ``payload`` value."""
         return base64.b64encode(json.dumps(data).encode())
 
     def _read_payload(self):
@@ -112,24 +91,17 @@ class AutopilotSaleOrder(models.Model):
             )
         return json.loads(base64.b64decode(raw))
 
-    # ------------------------------------------------------------------
-    # Processing
-    # ------------------------------------------------------------------
     def _enqueue(self):
-        """Queue each binding's order job (see ``autopilot_sale.job.mixin``)."""
         self._queue("_process", "order_import_channel")
 
     def _requeue(self):
         self._enqueue()
 
     def _process(self):
-        """The order job: see :meth:`_build`."""
         self._run(self._build)
 
     def _build(self):
-        """Create -> confirm -> queue the ack for one staged order (see the
-        class docstring). Re-running it on a binding that already has its order
-        skips the create."""
+        """A retry skips the create once the order exists."""
         self.ensure_one()
         if not self.odoo_id:
             dialect = self.backend_id.dialect
@@ -141,14 +113,12 @@ class AutopilotSaleOrder(models.Model):
         self._confirm()
         backend = self.backend_id
         if backend.supports_ack and backend.connection_id:
-            # Its own job, on its own channel. Queued in this transaction, so
-            # it is rolled back with the order if this job fails. Without a
-            # connection (an upload-only backend) there is nowhere to send it.
+            # Queued in this transaction, so no ack goes out for an order whose
+            # job rolls back.
             backend._delay(self, backend.ack_channel)._acknowledge()
 
     def _apply_utm(self):
-        """The backend's UTM values on the new sale order, wherever the dialect
-        left them empty."""
+        """Only where the dialect left them empty."""
         order, backend = self.odoo_id, self.backend_id
         vals = {
             name: backend[name].id
@@ -159,18 +129,10 @@ class AutopilotSaleOrder(models.Model):
             order.write(vals)
 
     def _confirm(self):
-        """Confirm each quotation per its backend's ``confirm_policy``:
-
-        * ``draft`` - leave it.
-        * ``confirm`` - confirm; a refusal fails the order, rolling it back
-          (retry once the cause is fixed).
-        * ``confirm_or_draft`` - confirm inside a savepoint; a refusal rolls
-          back only the confirmation and leaves a quotation with a note.
-
-        Only business refusals (``UserError``/``RedirectWarning``) are
-        recovered; anything else (e.g. a serialization failure) reaches
-        queue_job for its own retry. ``action_confirm`` can also refuse
-        without raising (returning a wizard), so the state is checked after."""
+        """Only business refusals (``UserError``, ``RedirectWarning``) are
+        recovered. Anything else, such as a serialisation failure, is left to
+        queue_job to retry. ``action_confirm`` can also refuse by returning a
+        wizard, so the state is checked after."""
         for binding in self:
             order = binding.odoo_id
             policy = binding.backend_id.confirm_policy
@@ -195,8 +157,7 @@ class AutopilotSaleOrder(models.Model):
             )
 
     def _on_confirm_failed(self, exc):
-        """Note a recovered confirmation failure where people will see it: on
-        the quotation, and on the backend (whose Notified Users follow it)."""
+        """Posted on the backend too, so its Notified Users hear of it."""
         self.ensure_one()
         reason = exc.args[0] if exc.args else str(exc)
         body = self.env._(
@@ -210,10 +171,6 @@ class AutopilotSaleOrder(models.Model):
         self.backend_id.message_post(body=body)
 
     def _acknowledge(self):
-        """Acknowledge each order via its dialect's ``_<dialect>_acknowledge``
-        (a no-op, logged, for a dialect that does not acknowledge - e.g. a pure
-        importer). The dialect renders and places the file, reaching the ack
-        path through ``self.backend_id._place(backend.ack_export_path, ...)``."""
         for binding in self:
             method = getattr(
                 binding, f"_{binding.backend_id.dialect}_acknowledge", None

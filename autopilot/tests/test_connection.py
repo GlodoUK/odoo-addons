@@ -37,7 +37,7 @@ class TestConnection(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.Connection = cls.env["autopilot_sale.connection"]
+        cls.Connection = cls.env["autopilot.connection"]
         cls.connection = cls.Connection.create({"name": "SFTP", "protocol": "sftp"})
 
     def _captured_options(self, connection):

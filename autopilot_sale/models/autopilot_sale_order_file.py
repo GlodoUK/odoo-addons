@@ -10,19 +10,11 @@ _logger = logging.getLogger(__name__)
 
 
 class AutopilotSaleOrderFile(models.Model):
-    """One inbound order file and the queued job importing it.
+    """One inbound order file and the job importing it.
 
-    A file is claimed from the backend's connection by the import cron, or
-    uploaded by hand (``autopilot_sale.upload.wizard``); either way its bytes
-    are kept on the record (``data``) and the dialect reads them through
-    :meth:`_open`, so it never cares where the file came from. Its job's
-    outcome is kept on the record too (``autopilot_sale.job.mixin``), where a
-    sales user can see a failure and retry or cancel it.
-
-    The file's job only *stages*: the dialect splits the file into one
-    ``autopilot_sale.order`` binding per order (rows in its ``payload``), and
-    the file is done once they exist. Each binding is then its own queued job
-    with its own state, so a bad order fails without taking the file with it.
+    The job only stages: the dialect splits the file into one
+    ``autopilot_sale.order`` per order, with its rows in ``payload``. Each
+    order is then its own job, so a bad order fails alone.
     """
 
     _name = "autopilot_sale.order.file"
@@ -47,8 +39,7 @@ class AutopilotSaleOrderFile(models.Model):
     )
     path = fields.Char(
         readonly=True,
-        help="Where the file was claimed from on the backend's connection. "
-        "Empty for an upload.",
+        help="Where the file was picked up. Empty for an upload.",
     )
     filename = fields.Char(readonly=True)
     data = fields.Binary(
@@ -56,8 +47,8 @@ class AutopilotSaleOrderFile(models.Model):
         attachment=True,
         readonly=True,
         copy=False,
-        help="The file as imported. Cleared once its import is done and older "
-        "than its backend's clean-up period.",
+        help="The file as imported. Cleared after the backend's clean-up "
+        "period once done.",
     )
 
     order_binding_ids = fields.One2many(
@@ -77,9 +68,7 @@ class AutopilotSaleOrderFile(models.Model):
             file.display_name = f"{file.backend_id.name or '?'}/{name}"
 
     def _open(self):
-        """A binary handle on the file's content, for the dialect to read:
-        ``with file._open() as handle``. Files claimed before content was kept
-        on the record are read from the connection instead."""
+        """``with file._open() as handle``, wherever the file came from."""
         self.ensure_one()
         data = self.with_context(bin_size=False).data
         if data:
@@ -90,9 +79,8 @@ class AutopilotSaleOrderFile(models.Model):
 
     @api.model
     def _vals_from_connection(self, backend, path):
-        """Create values for a file claimed at ``path``, keeping a copy of its
-        bytes. The file is already moved aside, so a failed read must not lose
-        it: the record is made without the copy and its job reads the path."""
+        """The file is already moved aside, so a failed copy must not lose it:
+        the record is made without one and its job reads the path."""
         vals = {
             "backend_id": backend.id,
             "source": "connection",
@@ -111,24 +99,17 @@ class AutopilotSaleOrderFile(models.Model):
         return vals
 
     def _enqueue(self):
-        """Queue this file's import (see ``autopilot_sale.job.mixin``)."""
         self._queue("_import", "order_import_channel")
 
     def _requeue(self):
         self._enqueue()
 
     def _import(self):
-        """The file job: see :meth:`_stage`."""
         self._run(self._stage)
 
     def _stage(self):
-        """Have the backend's dialect stage this file's orders
-        (``_<dialect>_import_order(file)``), then queue each one.
-
-        Runs with ``default_file_id`` in context so any ``autopilot_sale.order``
-        the dialect creates is linked back to this file, per Odoo's usual
-        ``default_<field>`` convention - which is also how the staged bindings
-        are found to queue."""
+        """``default_file_id`` links the orders the dialect stages back to this
+        file, which is how they are found to queue."""
         self.ensure_one()
         backend = self.backend_id.with_context(default_file_id=self.id)
         method = getattr(backend, f"_{backend.dialect}_import_order", None)

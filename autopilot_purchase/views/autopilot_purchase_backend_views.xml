@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="autopilot_purchase_backend_view_form" model="ir.ui.view">
+        <field name="name">autopilot_purchase.backend.form</field>
+        <field name="model">autopilot_purchase.backend</field>
+        <field name="arch" type="xml">
+            <form string="Purchase EDI Backend">
+                <header>
+                    <button
+                        name="action_export_orders"
+                        type="object"
+                        string="Export Orders"
+                        class="btn-primary"
+                        groups="purchase.group_purchase_manager"
+                        invisible="not connection_id"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_orders"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-shopping-cart"
+                        >
+                            <field
+                                name="order_count"
+                                widget="statinfo"
+                                string="Orders"
+                            />
+                        </button>
+                        <button
+                            name="action_view_files"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-o"
+                        >
+                            <field
+                                name="order_file_count"
+                                widget="statinfo"
+                                string="Files"
+                            />
+                        </button>
+                    </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. YPO Production" />
+                        </h1>
+                    </div>
+                    <field name="active" invisible="1" />
+                    <group>
+                        <group>
+                            <field name="dialect" />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                            <field name="partner_id" />
+                        </group>
+                        <group>
+                            <field
+                                name="connection_id"
+                                placeholder="Disabled"
+                                options="{'no_quick_create': True}"
+                            />
+                            <field
+                                name="order_export_path"
+                                invisible="not connection_id"
+                                required="connection_id"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group string="Job Channels" name="channels">
+                                    <field
+                                        name="order_export_channel"
+                                        placeholder="root"
+                                    />
+                                </group>
+                                <group
+                                    string="Access &amp; Notifications"
+                                    name="access"
+                                >
+                                    <field
+                                        name="restrict_group_ids"
+                                        widget="many2many_tags"
+                                        options="{'no_create': True}"
+                                        placeholder="Everyone with access"
+                                    />
+                                    <field
+                                        name="notify_user_ids"
+                                        widget="many2many_tags"
+                                        options="{'no_create': True}"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="autopilot_purchase_backend_view_list" model="ir.ui.view">
+        <field name="name">autopilot_purchase.backend.list</field>
+        <field name="model">autopilot_purchase.backend</field>
+        <field name="arch" type="xml">
+            <list string="Purchase EDI Backends">
+                <field name="name" />
+                <field name="dialect" />
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="partner_id" />
+                <field name="order_count" />
+                <field name="order_file_count" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_autopilot_purchase_backend" model="ir.actions.act_window">
+        <field name="name">Purchase EDI Backends</field>
+        <field name="res_model">autopilot_purchase.backend</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_autopilot_purchase"
+        name="Purchase EDI"
+        parent="autopilot.menu_autopilot_connections"
+        sequence="31"
+        action="action_autopilot_purchase_backend"
+        groups="purchase.group_purchase_user"
+    />
+</odoo>

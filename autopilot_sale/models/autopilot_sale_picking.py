@@ -1,19 +1,14 @@
 import logging
 
 from odoo import api, fields, models
+from odoo.tools import SQL
 
 _logger = logging.getLogger(__name__)
 
 
 class AutopilotSalePicking(models.Model):
-    """Per-(backend, picking) binding: one picking's dispatch note.
-
-    The engine's ASN cron creates this for each eligible picking then calls
-    ``_export``; existence is the "already sent" marker. ``_export`` delegates
-    the render + place to the dialect's ``_<dialect>_export`` on this model, so
-    a dispatch note is the picking binding's own job. ``sent_date`` /
-    ``attachment_id`` are audit the dialect fills.
-    """
+    """A picking's dispatch note. Its existence is the sent marker; the
+    dialect fills ``sent_date`` and ``attachment_id``."""
 
     _name = "autopilot_sale.picking"
     _description = "Sale EDI Dispatch Note Binding"
@@ -59,8 +54,6 @@ class AutopilotSalePicking(models.Model):
             )
 
     def _export(self):
-        """Send each dispatch note via its dialect's ``_<dialect>_export``
-        (a no-op, logged, if the dialect defines none)."""
         for binding in self:
             method = getattr(binding, f"_{binding.backend_id.dialect}_export", None)
             if not method:
@@ -71,3 +64,16 @@ class AutopilotSalePicking(models.Model):
                 )
                 continue
             method()
+
+    @api.model
+    def _autopilot_activity_query(self):
+        return self.env["autopilot.activity"]._source_select(
+            self,
+            backend="backend_id",
+            company="company_id",
+            state=SQL("CASE WHEN src.sent_date IS NULL THEN 'to_send' ELSE 'sent' END"),
+            status={"to_send": "pending", "sent": "done"},
+        )
+
+    def _autopilot_activity_state_labels(self):
+        return {"to_send": self.env._("To Send"), "sent": self.env._("Sent")}

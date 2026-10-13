@@ -2,9 +2,8 @@ from odoo import api, fields, models
 
 
 class AutopilotSaleOrderLine(models.Model):
-    """Per-order-line binding: the trading partner's line-level references for
-    one ``sale.order.line``, in a ``fields.Serialized`` catch-all (a bridge adds
-    typed columns for any it lists/searches on)."""
+    """The partner's references for one order line. A dialect adds a typed
+    column for any it lists or searches on."""
 
     _name = "autopilot_sale.order.line"
     _description = "Sale EDI Order Line Binding"

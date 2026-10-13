@@ -1,17 +1,8 @@
-"""SSH credentials for fsspec's SFTP filesystem, held in memory.
+"""SFTP keys, kept in memory.
 
-Two things an SFTP connection needs that cannot travel as JSON storage options:
-
-* a **private key** - paramiko wants a ``PKey``, and its own loaders read from
-  a file path. :func:`load_private_key` builds one from the key text instead,
-  so key material never touches the disk.
-* a **pinned host key** - fsspec's default policy (``auto_add``) trusts
-  whatever key a server presents, so a man-in-the-middle could collect the
-  credentials. :class:`PinnedHostKeyPolicy` accepts only the pinned key.
-
-Both are passed to :func:`autopilot.tools.files.filesystem` as ``pkey`` /
-``host_key_policy``. paramiko and cryptography are imported lazily, so the
-rest of ``tools`` works without them.
+fsspec trusts any key a server presents, which lets an impostor server collect
+the credentials. ``pinned_host_key_policy`` accepts only the pinned key.
+paramiko is imported lazily, so the rest of ``tools`` works without it.
 """
 
 import base64
@@ -20,17 +11,14 @@ import io
 
 
 def load_private_key(text, password=None):
-    """A paramiko ``PKey`` from private key ``text`` (OpenSSH or PEM; RSA,
-    ECDSA or Ed25519), decrypted with ``password`` if given. Raises
-    ``ValueError`` when the key is unreadable, of an unsupported type, or the
-    password is wrong."""
+    """A paramiko key from OpenSSH or PEM text (RSA, ECDSA or Ed25519), never
+    written to disk. ``ValueError`` if unreadable or the password is wrong."""
     import paramiko
     from cryptography.hazmat.primitives import serialization
     from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa
 
     data = (text or "").strip().encode() + b"\n"
     secret = password.encode() if password else None
-    # Detect the type the way paramiko.PKey.from_path does, minus the file.
     try:
         try:
             loaded = serialization.load_ssh_private_key(data, password=secret)
@@ -48,8 +36,7 @@ def load_private_key(text, password=None):
         key_class = paramiko.ECDSAKey
     else:
         raise ValueError(f"Unsupported private key type: {type(loaded).__name__}")
-    # paramiko's loaders don't read every format cryptography does (PKCS#8),
-    # so hand it the decoded key re-encoded as OpenSSH, in memory only.
+    # paramiko can't read PKCS#8, so re-encode as OpenSSH.
     openssh = loaded.private_bytes(
         serialization.Encoding.PEM,
         serialization.PrivateFormat.OpenSSH,
@@ -70,8 +57,8 @@ def host_key_line(key):
 
 
 def parse_host_key_line(line):
-    """``(type, base64)`` from a ``<type> <base64>`` line (a known_hosts
-    entry's host field, if present, is ignored). Raises ``ValueError``."""
+    """``(type, base64)`` from ``<type> <base64>``. A known_hosts host field
+    is ignored."""
     parts = (line or "").split()
     if len(parts) == 3:
         parts = parts[1:]
@@ -87,17 +74,15 @@ def parse_host_key_line(line):
 
 
 def pinned_host_key_policy(line):
-    """A paramiko ``MissingHostKeyPolicy`` accepting only the host key in
-    ``line`` (see :func:`parse_host_key_line`). fsspec's SFTP client loads no
-    known_hosts, so every connection consults it."""
+    """A paramiko policy accepting only the host key in ``line``."""
     import paramiko
 
     expected = parse_host_key_line(line)
 
     class PinnedHostKeyPolicy(paramiko.MissingHostKeyPolicy):
         def __repr__(self):
-            # Stable, so fsspec's instance cache (keyed on str() of the
-            # arguments) reuses the connection; a new pin is a new one.
+            # fsspec caches connections by str() of their arguments: keep
+            # this stable or every call opens a new one.
             return f"PinnedHostKeyPolicy({expected[0]} {expected[1]})"
 
         def missing_host_key(self, client, hostname, key):
@@ -111,8 +96,8 @@ def pinned_host_key_policy(line):
 
 
 def recording_host_key_policy():
-    """A paramiko policy that accepts and remembers the presented key on
-    ``policy.key`` - for pinning a server's key on an explicit, first test."""
+    """Accepts any key and keeps it on ``policy.key``, for pinning on a first
+    test."""
     import paramiko
 
     class RecordingHostKeyPolicy(paramiko.MissingHostKeyPolicy):

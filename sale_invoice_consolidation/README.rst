@@ -14,8 +14,15 @@ Consolidation preference
 A customer (``res.partner``) can be set to one of:
 
 * **Consolidated** - all of the customer's invoiceable orders are merged into a
-  single invoice per ``_get_invoice_grouping_keys`` (company, partner, shipping
-  address, currency, fiscal position).
+  single invoice, whatever their delivery addresses. Orders are still split by
+  the rest of ``_get_invoice_grouping_keys`` (company, invoice address, currency,
+  fiscal position), so orders delivered somewhere with a different fiscal
+  position get their own invoice. When the merged orders went to more than one
+  delivery address, the invoice's delivery address is set to the invoice
+  address, so the printed invoice doesn't claim a single delivery address for
+  every line.
+* **Consolidated per Delivery Address** - Odoo's standard grouping: one invoice
+  per delivery address (and fiscal position), each keeping its delivery address.
 * **Individual** - one invoice per sale order.
 
 The preference overrides the ``grouped`` argument on

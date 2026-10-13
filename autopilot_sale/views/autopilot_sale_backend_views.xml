@@ -250,20 +250,12 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Sale EDI > Backends / Connections, inside Integrations & Connections. -->
     <menuitem
         id="menu_autopilot_sale"
         name="Sale EDI"
         parent="autopilot.menu_autopilot_connections"
         sequence="30"
-    />
-
-    <menuitem
-        id="menu_autopilot_sale_backend"
-        name="Backends"
-        parent="menu_autopilot_sale"
         action="action_autopilot_sale_backend"
         groups="sales_team.group_sale_salesman"
-        sequence="10"
     />
 </odoo>

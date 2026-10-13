@@ -8,10 +8,8 @@ from odoo.tools import SQL
 
 from .. import tools
 
-# The providers a connection can use. Each has its fields on this mixin, a
-# section on the shared form, and a ``_fsspec_kwargs_<protocol>`` builder
-# turning those fields into fsspec keyword arguments. A module adds one with
-# ``selection_add`` plus its own builder and view extension.
+# A module adds a provider with ``selection_add``, a
+# ``_fsspec_kwargs_<protocol>`` builder and a page on the form.
 PROTOCOLS = [
     ("file", "Local Filesystem"),
     ("ftp", "FTP"),
@@ -23,8 +21,7 @@ PROTOCOLS = [
     ("gdrive", "Google Drive"),
 ]
 
-# fsspec aliases of the providers above, for options written before the list
-# was fixed (see ``_from_legacy``).
+# fsspec aliases, for ``_from_legacy``.
 LEGACY_ALIASES = {
     "local": "file",
     "ssh": "sftp",
@@ -35,9 +32,8 @@ LEGACY_ALIASES = {
     "https": "http",
 }
 
-# Write-only credentials: kept in ``secrets`` (system-only), set through their
-# ``<name>_input`` field and never read back to the browser; ``<name>_set``
-# says whether one is stored.
+# Write-only: set through ``<name>_input``, kept in admin-only ``secrets``,
+# never sent to the browser. ``<name>_set`` says one is stored.
 SECRETS = (
     "password",
     "private_key",
@@ -51,12 +47,10 @@ SECRETS = (
     "http_token",
 )
 
-# Multi-line credentials, uploaded as files: a password input would flatten
-# their newlines, and a text one would show them.
+# Uploaded as files: a password input would lose their newlines.
 UPLOADED_SECRETS = ("private_key", "service_account")
 
-# Old storage options moved onto the explicit fields by ``_from_legacy``:
-# option -> field, or ("secret", name).
+# For ``_from_legacy``: option -> field, or ("secret", name).
 LEGACY_FIELDS = {
     "ftp": {
         "host": "host",
@@ -108,8 +102,7 @@ def _secret_set():
 
 
 def _merge(base, override):
-    """``base`` updated with ``override``, merging nested dicts (e.g. an
-    explicit region into advanced ``client_kwargs``)."""
+    """Deep merge, e.g. a region into advanced ``client_kwargs``."""
     result = dict(base)
     for key, value in override.items():
         if isinstance(value, dict) and isinstance(result.get(key), dict):
@@ -119,26 +112,16 @@ def _merge(base, override):
     return result
 
 
-class AutopilotFsspecMixin(models.AbstractModel):
-    """An fsspec endpoint: a provider, its settings and credentials, plus the
-    ``autopilot.tools.files`` operations applied to it (``_glob``,
-    ``_sweep``, ``_archive``, ``_open``, ``_opened``), so a consumer never
-    handles the filesystem itself.
+class AutopilotConnection(models.Model):
+    """A file endpoint shared by every connector. Backends point at one and
+    keep their own paths. Work through ``_glob``, ``_sweep``, ``_archive``,
+    ``_open`` and ``_opened`` rather than the filesystem.
 
-    Abstract, so each connector owns its concrete model (``netstock.connection``,
-    ``autopilot_sale.connection``, ...) with its own access rules, and its
-    backends point at one by ``Many2one``. The form is shared too: a consumer's
-    form is a primary extension of ``autopilot.autopilot_fsspec_view_form``.
-
-    Each provider's settings are explicit fields; anything else fsspec takes
-    goes in ``storage_options`` ("Advanced Options"), which explicit fields
-    override. Credentials are write-only (see ``SECRETS``); the advanced
-    options are ``base.group_system`` only, which a consumer loosens by
-    redefining ``storage_options`` with wider ``groups``.
+    The provider's fields override the same option in ``storage_options``.
     """
 
-    _name = "autopilot.fsspec.mixin"
-    _description = "Autopilot fsspec Endpoint"
+    _name = "autopilot.connection"
+    _description = "Connection"
     _order = "name"
 
     name = fields.Char(required=True)
@@ -156,15 +139,15 @@ class AutopilotFsspecMixin(models.AbstractModel):
         string="Advanced Options",
         groups="base.group_system",
         copy=False,
-        help="Further fsspec keyword arguments for this provider. The fields "
-        "above take precedence over the same option here.",
+        help="Any other settings for this provider, as JSON. The fields above "
+        "win over the same setting here.",
     )
 
     # FTP / SFTP (username also for HTTP basic auth)
     host = fields.Char(help="The server's name or address.")
     port = fields.Integer(help="Empty for the protocol's default (FTP 21, SFTP 22).")
     username = fields.Char()
-    timeout = fields.Integer(string="Timeout (s)", help="Connection timeout.")
+    timeout = fields.Integer(string="Timeout (s)")
     ftp_tls = fields.Boolean(string="Use TLS (FTPS)")
     host_key = fields.Char(
         copy=False,
@@ -226,8 +209,7 @@ class AutopilotFsspecMixin(models.AbstractModel):
         default="none",
     )
 
-    # Credentials. Never shown: written through the *_input fields, read only
-    # via sudo().
+    # Never shown: written through the *_input fields, read with sudo().
     secrets = fields.Json(groups="base.group_system", copy=False, prefetch=False)
     password_input = _secret_input("Password")
     password_set = _secret_set()
@@ -303,7 +285,7 @@ class AutopilotFsspecMixin(models.AbstractModel):
         self.ensure_one()
         stored = self.sudo()
         secrets = dict(stored.secrets or {})
-        # Passwords are kept exactly as typed; key material is trimmed.
+        # Never trim a password: spaces can be part of it.
         secrets.update(
             {
                 name: value.strip()
@@ -371,8 +353,8 @@ class AutopilotFsspecMixin(models.AbstractModel):
         )
 
     def action_clear_secret(self):
-        """Forget the stored credential(s) named by the ``secret`` context key
-        (a name or a list of names, from ``SECRETS``)."""
+        """Clears the credentials named in context ``secret`` (one or a
+        list)."""
         self.check_access("write")
         names = self.env.context.get("secret") or ()
         if isinstance(names, str):
@@ -391,8 +373,6 @@ class AutopilotFsspecMixin(models.AbstractModel):
     # ------------------------------------------------------------------
     @api.constrains("protocol")
     def _check_protocol(self):
-        """Each provider needs its fsspec backend installed (s3fs, gcsfs,
-        adlfs, ...); this says which, with fsspec's install hint."""
         import fsspec
 
         for connection in self:
@@ -409,10 +389,8 @@ class AutopilotFsspecMixin(models.AbstractModel):
 
     @api.constrains("active")
     def _check_archive_unused(self):
-        """An archived connection would still be used by whatever points at
-        it, so it can't be archived while anything active does. "Anything" is
-        every stored Many2one to this model - each consumer's backend fields -
-        found in the registry, so no consumer has to declare them."""
+        """Users are found from every stored Many2one to this model in the
+        registry, so connectors declare nothing."""
         archived = self.filtered(lambda connection: not connection.active)
         if not archived:
             return
@@ -463,13 +441,10 @@ class AutopilotFsspecMixin(models.AbstractModel):
     # The filesystem
     # ------------------------------------------------------------------
     def _fs(self, **extra):
-        """The fsspec filesystem for this connection: the advanced options,
-        overridden by the provider's fields (``_fsspec_kwargs_<protocol>``,
-        whose ``None`` values are left out), overridden by ``extra``.
-        Credentials are read through ``sudo()``, so a job running as any user
-        can connect without that user being able to read them. fsspec caches
-        the instance, so calling this per operation reuses the open
-        connection."""
+        """Advanced options, overridden by the provider's fields (``None``
+        dropped), overridden by ``extra``. Credentials are read with
+        ``sudo()``, so a job connects whoever runs it. fsspec caches the
+        instance by its arguments, so calling this per operation is cheap."""
         if not self:
             raise UserError(self.env._("No %s is configured.", self._description))
         self.ensure_one()
@@ -592,35 +567,32 @@ class AutopilotFsspecMixin(models.AbstractModel):
     # autopilot.tools.files on this endpoint
     # ------------------------------------------------------------------
     def _glob(self, pattern, **kwargs):
-        """Sorted files matching ``pattern`` (see ``tools.files.glob``)."""
+        """See ``tools.files.glob``."""
         return tools.files.glob(self._fs(), pattern, **kwargs)
 
     def _sweep(self, pattern, directory):
-        """Claim every file matching ``pattern`` by moving it into
-        ``directory``; the claimed paths (see ``tools.files.sweep``)."""
+        """Claims the matching files by moving them into ``directory``.
+        Returns their new paths."""
         return tools.files.sweep(self._fs(), pattern, directory)
 
     def _archive(self, path, directory):
-        """Move ``path`` into ``directory``; its new path (see
-        ``tools.files.archive``)."""
+        """See ``tools.files.archive``."""
         return tools.files.archive(self._fs(), path, directory)
 
     def _open(self, path, mode="rb", **kwargs):
-        """``fs.open``, for reading: ``with connection._open(path) as fh``."""
+        """For reading: ``with connection._open(path) as fh``."""
         return self._fs().open(path, mode, **kwargs)
 
     def _opened(self, path, mode="wb", **kwargs):
-        """A handle for writing ``path``, creating its folder (see
-        ``tools.files.opened``): ``with connection._opened(path) as fh``."""
+        """For writing. Creates the folder, which SFTP won't."""
         return tools.files.opened(self._fs(), path, mode, **kwargs)
 
     # ------------------------------------------------------------------
     # Actions
     # ------------------------------------------------------------------
     def action_test_connection(self):
-        """Connect afresh and list the root. On SFTP with no host key pinned
-        yet, pin the one the server presented - an explicit trust-on-first-use
-        by someone who can edit the connection."""
+        """On SFTP with no host key yet, pins the one presented: trust on
+        first use, by someone who can edit the connection."""
         self.ensure_one()
         self.check_access("write")
         recorder = None
@@ -633,7 +605,7 @@ class AutopilotFsspecMixin(models.AbstractModel):
             path = self._fsspec_test_path(fs)
             if path is not None:
                 fs.ls(path)
-        except Exception as exc:  # noqa: BLE001 - reported, not handled
+        except Exception as exc:  # noqa: BLE001  shown to the user
             return self._connection_notification(
                 "danger", self.env._("Connection failed"), str(exc)
             )
@@ -651,9 +623,9 @@ class AutopilotFsspecMixin(models.AbstractModel):
         )
 
     def _fsspec_test_path(self, fs):
-        """What Test Connection lists, or None to only build the filesystem.
-        SFTP connects (and authenticates) on construction but has an empty
-        root marker, so its login directory; HTTP has nothing to list."""
+        """None only builds the filesystem. SFTP logs in on construction but
+        has no root marker, so list its login folder. HTTP has nothing to
+        list."""
         if self.protocol == "sftp":
             return "."
         if self.protocol == "http":
@@ -675,13 +647,10 @@ class AutopilotFsspecMixin(models.AbstractModel):
     # ------------------------------------------------------------------
     @api.model
     def _from_legacy(self, protocol, storage_options, company_id=False):
-        """The connection for a pre-connection ``(protocol, storage_options)``
-        pair, for a consumer's migration. Aliases map onto the fixed providers;
-        known options move onto their fields and credentials into
-        ``secrets``; the rest stay as advanced options. An identical
-        connection already made is reused, so backends that shared
-        credentials share a connection. Options that do not parse are kept
-        verbatim (bypassing the check) for the widget to show as text."""
+        """For a connector's migration off ``(protocol, storage_options)``:
+        known options move onto fields and ``secrets``, the rest stay as
+        advanced options. An identical connection is reused. Options that
+        don't parse are kept as they are, bypassing the check."""
         protocol = LEGACY_ALIASES.get(protocol, protocol)
         if protocol not in dict(PROTOCOLS):
             raise UserError(
@@ -729,7 +698,7 @@ class AutopilotFsspecMixin(models.AbstractModel):
 
     @api.model
     def _legacy_split(self, protocol, options):
-        """Pop ``options`` known to the provider into ``(vals, secrets)``."""
+        """Pops the options the provider knows into ``(vals, secrets)``."""
         vals, secrets = {}, {}
         for option, target in LEGACY_FIELDS.get(protocol, {}).items():
             if option not in options:
