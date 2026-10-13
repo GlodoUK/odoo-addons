@@ -95,7 +95,7 @@ addon | version | maintainers | summary
 [sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.4.0 |  | Invoicing policy
 [sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
 [sale_mrp_kit_propagate_route](sale_mrp_kit_propagate_route/) | 19.0.1.0.0 |  | Ship a kit sold on a sale order from one place, by the kit's routes
-[sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
+[sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.2.0.0 |  | Allow a phantom kit to explode on a sale order
 [sale_order_line_product_image](sale_order_line_product_image/) | 19.0.1.0.0 |  | Add an related product image to the sale order line
 [sale_pricelist_customer_ref](sale_pricelist_customer_ref/) | 19.0.1.0.0 |  | Adds customer ref field to pricelist item.
 [sale_product_quotation_only](sale_product_quotation_only/) | 19.0.1.0.0 |  | Sale Product Quotation Only
