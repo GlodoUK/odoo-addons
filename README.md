@@ -19,8 +19,9 @@ addon | version | maintainers | summary
 [account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
 [auth_bcrypt_scheme](auth_bcrypt_scheme/) | 19.0.1.0.0 |  | auth_bcrypt_scheme
 [automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
-[autopilot](autopilot/) | 19.0.1.1.1 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
-[autopilot_sale](autopilot_sale/) | 19.0.1.1.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
+[autopilot](autopilot/) | 19.0.1.2.1 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
+[autopilot_purchase](autopilot_purchase/) | 19.0.1.1.0 |  | Generic purchase-EDI engine (export purchase orders) for autopilot connectors
+[autopilot_sale](autopilot_sale/) | 19.0.1.2.0 |  | Generic sale-EDI engine (import order / acknowledge / dispatch / invoice) for autopilot connectors
 [base_search_rank](base_search_rank/) | 19.0.1.0.0 |  | Ranked substring + fuzzy searching via pg_trgm word similarity
 [concurrency_warning](concurrency_warning/) | 19.0.1.0.0 |  | Issue a visual warning and reload the page content if a user has left a model open, and it been altered in the meantime.
 [cpq](cpq/) | 19.0.1.0.0 |  | Dynamic Configure-Price-Quote-style generation of products
@@ -84,13 +85,14 @@ addon | version | maintainers | summary
 [rss](rss/) | 19.0.2.0.0 |  | RSS and Atom feed reader.
 [sale_action_confirm_send](sale_action_confirm_send/) | 19.0.1.0.0 |  | sale_action_confirm_send
 [sale_advance_payment_force_invoiced_quantity](sale_advance_payment_force_invoiced_quantity/) | 19.0.1.0.0 |  | Leave quantities invoiced outside Odoo out of an order's residual
+[sale_advance_payment_transaction](sale_advance_payment_transaction/) | 19.0.1.0.0 |  | Link payments from online transactions to their sale order
 [sale_amount_company_currency](sale_amount_company_currency/) | 19.0.1.0.0 |  | Sale Amount Company Currency
 [sale_check_product_pricelist](sale_check_product_pricelist/) | 19.0.1.1.0 |  | Optionally restrict a sales order to products explicitly priced on its pricelist
 [sale_check_product_pricelist_delivery](sale_check_product_pricelist_delivery/) | 19.0.1.0.0 |  | Exempt delivery cost lines from the pricelist sellability check
 [sale_delivery_auto](sale_delivery_auto/) | 19.0.1.0.2 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
 [sale_force_delivered_quantity](sale_force_delivered_quantity/) | 19.0.1.0.0 |  | Count a quantity as delivered on a sale order line without moving it
-[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.3.0 |  | Invoicing policy
+[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.4.0 |  | Invoicing policy
 [sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
 [sale_mrp_kit_propagate_route](sale_mrp_kit_propagate_route/) | 19.0.1.0.0 |  | Ship a kit sold on a sale order from one place, by the kit's routes
 [sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.1.0.0 |  | Allow a phantom kit to explode on a sale order
