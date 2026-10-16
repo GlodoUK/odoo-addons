@@ -16,7 +16,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[account_tax_plastic](account_tax_plastic/) | 19.0.1.0.0 |  | Plastic tax calculated from product plastic weight
+[account_tax_plastic](account_tax_plastic/) | 19.0.1.2.0 |  | Plastic tax calculated from product plastic weight or shipment weight
 [auth_bcrypt_scheme](auth_bcrypt_scheme/) | 19.0.1.0.0 |  | auth_bcrypt_scheme
 [automated_export_from_template](automated_export_from_template/) | 19.0.1.0.0 |  | Scheduled export of records using a saved export template
 [autopilot](autopilot/) | 19.0.1.2.1 |  | Declarative cron/automation helpers and ETL tools for building lightweight connectors
