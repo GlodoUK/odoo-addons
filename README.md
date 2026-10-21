@@ -11,6 +11,25 @@ Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-
 <!-- prettier-ignore-start -->
 
 [//]: # (addons)
+
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[auth_bcrypt_scheme](auth_bcrypt_scheme/) | 20.0.1.0.0 |  | auth_bcrypt_scheme
+[helpdesk_account_move_link](helpdesk_account_move_link/) | 20.0.1.0.0 |  | Helpdesk Account Move Link
+[helpdesk_commercial_partner](helpdesk_commercial_partner/) | 20.0.1.0.0 |  | Helpdesk Ticket Commercial Partner
+[helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 20.0.1.0.0 |  | Helpdesk Portal New Ticket
+[helpdesk_portal_reopen](helpdesk_portal_reopen/) | 20.0.1.0.0 |  | Helpdesk Portal Reopen
+[helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 20.0.1.0.0 |  | Helpdesk Purchase Order Link
+[helpdesk_sale_order_link](helpdesk_sale_order_link/) | 20.0.1.0.0 |  | Helpdesk Sale Order Link
+[helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 20.0.1.0.0 |  | Helpdesk Ticket Escalate
+[res_partner_bank_display_format](res_partner_bank_display_format/) | 20.0.1.0.0 |  | Customise the format of the partner bank
+[res_partner_decision_maker](res_partner_decision_maker/) | 20.0.1.0.0 |  | Adds decision maker field to Contact record
+[res_partner_relationship_manager](res_partner_relationship_manager/) | 20.0.1.0.0 |  | res_partner_relationship_manager
+[res_partner_since](res_partner_since/) | 20.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
+[web_cmd_search](web_cmd_search/) | 20.0.1.0.0 |  | Adds a global command search to quick access records
+
 [//]: # (end addons)
 
 <!-- prettier-ignore-end -->
