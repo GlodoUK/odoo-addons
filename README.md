@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 20.0.1.0.0 |  | Helpdesk Ticket Escalate
 [res_partner_bank_display_format](res_partner_bank_display_format/) | 20.0.1.0.0 |  | Customise the format of the partner bank
 [res_partner_decision_maker](res_partner_decision_maker/) | 20.0.1.0.0 |  | Adds decision maker field to Contact record
+[res_partner_relationship_manager](res_partner_relationship_manager/) | 20.0.1.0.0 |  | res_partner_relationship_manager
 [res_partner_since](res_partner_since/) | 20.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
 
 [//]: # (end addons)
