@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template
+        id="sale_order_portal_content"
+        inherit_id="sale.sale_order_portal_content"
+        priority="75"
+    >
+        <xpath expr="//div[@id='informations']" position="inside">
+            <div
+                t-if="sale_order.helpdesk_tickets_ids"
+                id="ticket"
+                class="flex-grow-1 flex-shrink-1 flex-basis-0 min-w-0"
+                name="Ticket"
+            >
+                <h5 class="mb-0">Linked Helpdesk Tickets</h5>
+                <div class="d-flex flex-column gap-1 mt-2">
+                    <div
+                        t-foreach="sale_order.helpdesk_tickets_ids"
+                        t-as="ticket"
+                        class="py-1"
+                    >
+                        <a t-attf-href="/helpdesk/ticket/#{ticket.id}">
+                            <t t-out="ticket.ticket_ref" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
