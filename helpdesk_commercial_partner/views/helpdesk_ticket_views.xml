@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='priority'][@context]" position="after">
+                <filter
+                    name="commercial_partner"
+                    string="Customer Entity"
+                    context="{'group_by': 'commercial_partner_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
