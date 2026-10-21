@@ -16,6 +16,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 20.0.1.0.0 |  | Helpdesk Purchase Order Link
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 20.0.1.0.0 |  | Helpdesk Sale Order Link
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 20.0.1.0.0 |  | Helpdesk Ticket Escalate
 [res_partner_since](res_partner_since/) | 20.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
