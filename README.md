@@ -16,6 +16,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[helpdesk_portal_new_ticket](helpdesk_portal_new_ticket/) | 20.0.1.0.0 |  | Helpdesk Portal New Ticket
 [helpdesk_purchase_order_link](helpdesk_purchase_order_link/) | 20.0.1.0.0 |  | Helpdesk Purchase Order Link
 [helpdesk_sale_order_link](helpdesk_sale_order_link/) | 20.0.1.0.0 |  | Helpdesk Sale Order Link
 [helpdesk_ticket_escalate](helpdesk_ticket_escalate/) | 20.0.1.0.0 |  | Helpdesk Ticket Escalate
