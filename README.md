@@ -11,6 +11,13 @@ Please see our sibling repository for proprietary modules: [GlodoUK/odoo-addons-
 <!-- prettier-ignore-start -->
 
 [//]: # (addons)
+
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[res_partner_since](res_partner_since/) | 20.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
+
 [//]: # (end addons)
 
 <!-- prettier-ignore-end -->
