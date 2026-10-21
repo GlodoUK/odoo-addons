@@ -1,0 +1,7 @@
+id,name,model_id,group_id/id,operation,domain
+access_rss_feed_user,rss.feed user,rss.feed,base.group_user,crud,
+access_rss_feed_filter_user,rss.feed.filter user,rss.feed.filter,base.group_user,crud,
+access_rss_item_user,rss.item user,rss.item,base.group_user,crud,
+rss_feed_company_rule,RSS Feed: multi-company,rss.feed,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rss_item_company_rule,RSS Item: multi-company,rss.item,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+rss_feed_filter_company_rule,RSS Feed Filter: multi-company,rss.feed.filter,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
