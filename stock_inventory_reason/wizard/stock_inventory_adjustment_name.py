@@ -7,7 +7,6 @@ class StockInventoryAdjustmentName(models.TransientModel):
 
     reason_id = fields.Many2one(
         "stock.inventory.adjustment.reason",
-        string="Reason",
         domain="[('company_id', 'in', [False, company_id])]",
     )
     company_id = fields.Many2one(
