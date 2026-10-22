@@ -23,6 +23,7 @@ addon | version | maintainers | summary
 [account_payment_better_matching](account_payment_better_matching/) | 15.0.1.1.0 |  | A better interface for bulk, but manual payment matching
 [account_payment_better_matching_queued](account_payment_better_matching_queued/) | 15.0.1.0.0 |  | Adds queued support to account_payment_better_matching
 [auth_signup_optional_notify](auth_signup_optional_notify/) | 15.0.1.0.0 |  | Optionally disable the notification on user login
+[automated_export_from_template](automated_export_from_template/) | 15.0.1.0.0 |  | Scheduled export of records using a saved export template
 [brands](brands/) | 15.0.2.0.0 |  | Allows a sale order and product to be associated with a brand
 [brands_crm](brands_crm/) | 15.0.0.1.0 |  | Allows a CRM entry to be associated with a brand
 [brands_sale_stock](brands_sale_stock/) | 15.0.0.1.0 |  | Integrates sale_stock with brands
