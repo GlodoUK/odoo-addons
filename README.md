@@ -79,6 +79,7 @@ addon | version | maintainers | summary
 [res_partner_resource_calendar_sale](res_partner_resource_calendar_sale/) | 19.0.1.0.0 |  | res_partner_resource_calendar_sale
 [res_partner_resource_calendar_stock](res_partner_resource_calendar_stock/) | 19.0.1.0.0 |  | res_partner_resource_calendar_stock
 [res_partner_since](res_partner_since/) | 19.0.1.0.0 |  | Adds a 'relationship since' field to the Contact record
+[res_partner_state_from_zip](res_partner_state_from_zip/) | 19.0.1.0.0 |  | Fill a contact's blank state from its zip, by longest prefix
 [res_partner_update](res_partner_update/) | 19.0.1.0.0 |  | res_partner_update
 [res_partner_utm](res_partner_utm/) | 19.0.1.0.0 |  | Adds UTM information to Contact record
 [res_partner_work_phone](res_partner_work_phone/) | 19.0.1.0.0 |  | Adds an additional 'work_number' and 'extension' field to contact
