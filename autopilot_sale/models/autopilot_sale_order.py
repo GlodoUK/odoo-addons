@@ -105,11 +105,11 @@ class AutopilotSaleOrder(models.Model):
         self.ensure_one()
         if not self.odoo_id:
             dialect = self.backend_id.dialect
-            method = getattr(self, f"_{dialect}_create_order", None)
+            binding = self.with_context(**self._utm_defaults())
+            method = getattr(binding, f"_{dialect}_create_order", None)
             if not method:
                 raise UserError(self.env._("Dialect %r cannot create orders.", dialect))
             method()
-            self._apply_utm()
         self._confirm()
         backend = self.backend_id
         if backend.supports_ack and backend.connection_id:
@@ -117,16 +117,16 @@ class AutopilotSaleOrder(models.Model):
             # job rolls back.
             backend._delay(self, backend.ack_channel)._acknowledge()
 
-    def _apply_utm(self):
-        """Only where the dialect left them empty."""
-        order, backend = self.odoo_id, self.backend_id
-        vals = {
-            name: backend[name].id
+    def _utm_defaults(self):
+        """The backend's UTM as context defaults, so a dialect's own values
+        win and they beat ir.default. They reach every record the dialect
+        creates, so keep its other creates off utm fields."""
+        backend = self.backend_id
+        return {
+            f"default_{name}": backend[name].id
             for _param, name, _cookie in self.env["utm.mixin"].tracking_fields()
-            if backend[name] and not order[name]
+            if backend[name]
         }
-        if vals:
-            order.write(vals)
 
     def _confirm(self):
         """Only business refusals (``UserError``, ``RedirectWarning``) are
