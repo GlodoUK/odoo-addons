@@ -28,7 +28,7 @@ class AutopilotSaleBackend(models.Model):
 
     _name = "autopilot_sale.backend"
     _description = "Sale EDI Backend"
-    # utm.mixin: given to every imported order (autopilot_sale.order._apply_utm).
+    # utm.mixin: given to every imported order (autopilot_sale.order._utm_defaults).
     _inherit = ["mail.thread", "autopilot.mixin", "utm.mixin"]
 
     name = fields.Char(required=True, tracking=True)
