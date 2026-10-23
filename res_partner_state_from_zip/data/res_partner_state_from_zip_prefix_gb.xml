@@ -1,0 +1,3844 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Postcode area/district to former postal county, generated from Wikipedia's List of postcode districts in the United Kingdom. -->
+<odoo noupdate="1">
+    <record id="zip_prefix_gb_ab" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB</field>
+        <field name="state_id" ref="base.state_uk1" />
+    </record>
+    <record id="zip_prefix_gb_ab30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB30</field>
+        <field name="state_id" ref="base.state_uk70" />
+    </record>
+    <record id="zip_prefix_gb_ab31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB31</field>
+        <field name="state_id" ref="base.state_uk70" />
+    </record>
+    <record id="zip_prefix_gb_ab37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB37</field>
+        <field name="state_id" ref="base.state_uk6" />
+    </record>
+    <record id="zip_prefix_gb_ab38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB38</field>
+        <field name="state_id" ref="base.state_uk6" />
+    </record>
+    <record id="zip_prefix_gb_ab39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB39</field>
+        <field name="state_id" ref="base.state_uk70" />
+    </record>
+    <record id="zip_prefix_gb_ab44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB44</field>
+        <field name="state_id" ref="base.state_uk6" />
+    </record>
+    <record id="zip_prefix_gb_ab45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB45</field>
+        <field name="state_id" ref="base.state_uk6" />
+    </record>
+    <record id="zip_prefix_gb_ab55" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB55</field>
+        <field name="state_id" ref="base.state_uk6" />
+    </record>
+    <record id="zip_prefix_gb_ab56" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AB56</field>
+        <field name="state_id" ref="base.state_uk6" />
+    </record>
+    <record id="zip_prefix_gb_al" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">AL</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_b" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_b49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B49</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_b50" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B50</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_b60" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B60</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_b61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B61</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_b77" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B77</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_b78" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B78</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_b79" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B79</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_b80" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B80</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_b95" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B95</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_b96" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B96</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_b97" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B97</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_b98" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">B98</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_ba" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_ba1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA1</field>
+        <field name="state_id" ref="base.state_uk4" />
+    </record>
+    <record id="zip_prefix_gb_ba2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA2</field>
+        <field name="state_id" ref="base.state_uk4" />
+    </record>
+    <record id="zip_prefix_gb_ba3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA3</field>
+        <field name="state_id" ref="base.state_uk4" />
+    </record>
+    <record id="zip_prefix_gb_ba10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA10</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_ba11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA11</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_ba12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA12</field>
+        <field name="state_id" ref="base.state_uk112" />
+    </record>
+    <record id="zip_prefix_gb_ba13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA13</field>
+        <field name="state_id" ref="base.state_uk112" />
+    </record>
+    <record id="zip_prefix_gb_ba14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA14</field>
+        <field name="state_id" ref="base.state_uk112" />
+    </record>
+    <record id="zip_prefix_gb_ba15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA15</field>
+        <field name="state_id" ref="base.state_uk112" />
+    </record>
+    <record id="zip_prefix_gb_ba16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA16</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_ba20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA20</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_ba21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA21</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_ba22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BA22</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_bb" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BB</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_bd" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BD</field>
+        <field name="state_id" ref="base.state_uk110" />
+    </record>
+    <record id="zip_prefix_gb_bd23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BD23</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_bd24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BD24</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_bh" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BH</field>
+        <field name="state_id" ref="base.state_uk29" />
+    </record>
+    <record id="zip_prefix_gb_bh24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BH24</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_bh25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BH25</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_bl" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BL</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_bn" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_bn5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN5</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN6</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN11</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN12</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN13</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN14</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN15</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN16</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN17</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN18</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN43</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN44</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn50" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN50</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_bn51" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN51</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_bn52" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN52</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_bn91" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN91</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_bn99" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BN99</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_br" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BR</field>
+        <field name="state_id" ref="base.state_uk69" />
+    </record>
+    <record id="zip_prefix_gb_bs" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BS</field>
+        <field name="state_id" ref="base.state_uk4" />
+    </record>
+    <record id="zip_prefix_gb_bs26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BS26</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_bs27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BS27</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_bs28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BS28</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_bt" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT</field>
+        <field name="state_id" ref="base.state_uk18" />
+    </record>
+    <record id="zip_prefix_gb_bt18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT18</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT19</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT20</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT21</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT22</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT23</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT24</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT25</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT26</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT30</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT31</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT32</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT33</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT34</field>
+        <field name="state_id" ref="base.state_uk20" />
+    </record>
+    <record id="zip_prefix_gb_bt35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT35</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT45</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT46</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT47</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT48</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT49</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt51" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT51</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt52" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT52</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt55" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT55</field>
+        <field name="state_id" ref="base.state_uk23" />
+    </record>
+    <record id="zip_prefix_gb_bt60" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT60</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT61</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt62" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT62</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT63</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt64" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT64</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt65" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT65</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt66" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT66</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt67" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT67</field>
+        <field name="state_id" ref="base.state_uk19" />
+    </record>
+    <record id="zip_prefix_gb_bt68" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT68</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt69" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT69</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt70" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT70</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt71" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT71</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt74" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT74</field>
+        <field name="state_id" ref="base.state_uk22" />
+    </record>
+    <record id="zip_prefix_gb_bt75" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT75</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt76" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT76</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt77" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT77</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt78" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT78</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt79" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT79</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt80" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT80</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt81" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT81</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt82" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT82</field>
+        <field name="state_id" ref="base.state_uk24" />
+    </record>
+    <record id="zip_prefix_gb_bt92" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT92</field>
+        <field name="state_id" ref="base.state_uk22" />
+    </record>
+    <record id="zip_prefix_gb_bt93" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT93</field>
+        <field name="state_id" ref="base.state_uk22" />
+    </record>
+    <record id="zip_prefix_gb_bt94" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">BT94</field>
+        <field name="state_id" ref="base.state_uk22" />
+    </record>
+    <record id="zip_prefix_gb_ca" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CA</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_cb" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CB</field>
+        <field name="state_id" ref="base.state_uk12" />
+    </record>
+    <record id="zip_prefix_gb_cb8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CB8</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_cb9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CB9</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_cb10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CB10</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_cb11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CB11</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_cf" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF3</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF5</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF10</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF11</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF14</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF15</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF23</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF24</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF30</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF31</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF32</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF33</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF34</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF35</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF36</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF37</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF38</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF39</field>
+        <field name="state_id" ref="base.state_uk77" />
+    </record>
+    <record id="zip_prefix_gb_cf61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF61</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf62" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF62</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF63</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf64" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF64</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf71" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF71</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf91" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF91</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf95" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF95</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_cf99" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CF99</field>
+        <field name="state_id" ref="base.state_uk96" />
+    </record>
+    <record id="zip_prefix_gb_ch" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH1</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_ch2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH2</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_ch3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH3</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_ch4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH4</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_ch5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH5</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ch6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH6</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ch7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH7</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ch8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH8</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ch25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH25</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH26</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH27</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH28</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH29</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH30</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH31</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH32</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH33</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH34</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH41</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH42</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH43</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH44</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH45</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH46</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH47</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH48</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH49</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch60" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH60</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH61</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch62" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH62</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH63</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch64" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH64</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch65" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH65</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch66" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH66</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_ch70" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH70</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_ch88" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH88</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_ch99" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CH99</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_cm" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CM</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_cm21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CM21</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_cm22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CM22</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_cm23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CM23</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_co" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CO</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_co8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CO8</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_co10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CO10</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_cr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CR</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_ct" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CT</field>
+        <field name="state_id" ref="base.state_uk69" />
+    </record>
+    <record id="zip_prefix_gb_cv" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV1</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV2</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV3</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV4</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV5</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV6</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV7</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_cv10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV10</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV11</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV12</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV13</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV21</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV22</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV23</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV31</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV32</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV33</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV34</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV35</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV36</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV37</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cv47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CV47</field>
+        <field name="state_id" ref="base.state_uk105" />
+    </record>
+    <record id="zip_prefix_gb_cw" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">CW</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_da" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DA</field>
+        <field name="state_id" ref="base.state_uk69" />
+    </record>
+    <record id="zip_prefix_gb_dd" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DD</field>
+        <field name="state_id" ref="base.state_uk2" />
+    </record>
+    <record id="zip_prefix_gb_dd6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DD6</field>
+        <field name="state_id" ref="base.state_uk36" />
+    </record>
+    <record id="zip_prefix_gb_de" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DE</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_de13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DE13</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_de14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DE14</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_de15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DE15</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_dg" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DG</field>
+        <field name="state_id" ref="base.state_uk30" />
+    </record>
+    <record id="zip_prefix_gb_dg5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DG5</field>
+        <field name="state_id" ref="base.state_uk72" />
+    </record>
+    <record id="zip_prefix_gb_dg6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DG6</field>
+        <field name="state_id" ref="base.state_uk72" />
+    </record>
+    <record id="zip_prefix_gb_dg7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DG7</field>
+        <field name="state_id" ref="base.state_uk72" />
+    </record>
+    <record id="zip_prefix_gb_dg8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DG8</field>
+        <field name="state_id" ref="base.state_uk111" />
+    </record>
+    <record id="zip_prefix_gb_dg9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DG9</field>
+        <field name="state_id" ref="base.state_uk111" />
+    </record>
+    <record id="zip_prefix_gb_dh" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DH</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_dh4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DH4</field>
+        <field name="state_id" ref="base.state_uk104" />
+    </record>
+    <record id="zip_prefix_gb_dh5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DH5</field>
+        <field name="state_id" ref="base.state_uk104" />
+    </record>
+    <record id="zip_prefix_gb_dl" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_dl6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL6</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_dl7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL7</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_dl8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL8</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_dl9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL9</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_dl10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL10</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_dl11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL11</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_dl98" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DL98</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_dn" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN1</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN2</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN3</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN4</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN5</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN6</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN7</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN8</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN9</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN10</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN11</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN12</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dn14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN14</field>
+        <field name="state_id" ref="base.state_uk81" />
+    </record>
+    <record id="zip_prefix_gb_dn15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN15</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN16</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN17</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN18</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN19</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN20</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN21</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_dn22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN22</field>
+        <field name="state_id" ref="base.state_uk85" />
+    </record>
+    <record id="zip_prefix_gb_dn31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN31</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN32</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN33</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN34</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN35</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN36</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN37</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN38</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN39</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN40</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN41</field>
+        <field name="state_id" ref="base.state_uk97" />
+    </record>
+    <record id="zip_prefix_gb_dn55" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DN55</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_dt" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DT</field>
+        <field name="state_id" ref="base.state_uk29" />
+    </record>
+    <record id="zip_prefix_gb_dy" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DY</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_dy10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DY10</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_dy11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DY11</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_dy12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DY12</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_dy13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DY13</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_dy14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">DY14</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_e" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">E</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_ec" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EC</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_eh" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH</field>
+        <field name="state_id" ref="base.state_uk118" />
+    </record>
+    <record id="zip_prefix_gb_eh29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH29</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH30</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH31</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH32</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH33</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH34</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH35</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH36</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH39</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH40</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH41</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH42</field>
+        <field name="state_id" ref="base.state_uk33" />
+    </record>
+    <record id="zip_prefix_gb_eh43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH43</field>
+        <field name="state_id" ref="base.state_uk87" />
+    </record>
+    <record id="zip_prefix_gb_eh44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH44</field>
+        <field name="state_id" ref="base.state_uk87" />
+    </record>
+    <record id="zip_prefix_gb_eh45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH45</field>
+        <field name="state_id" ref="base.state_uk87" />
+    </record>
+    <record id="zip_prefix_gb_eh46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH46</field>
+        <field name="state_id" ref="base.state_uk87" />
+    </record>
+    <record id="zip_prefix_gb_eh47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH47</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH48</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH49</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh51" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH51</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh52" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH52</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh53" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH53</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh54" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH54</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_eh55" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EH55</field>
+        <field name="state_id" ref="base.state_uk107" />
+    </record>
+    <record id="zip_prefix_gb_en" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_en1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN1</field>
+        <field name="state_id" ref="base.state_uk78" />
+    </record>
+    <record id="zip_prefix_gb_en2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN2</field>
+        <field name="state_id" ref="base.state_uk78" />
+    </record>
+    <record id="zip_prefix_gb_en3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN3</field>
+        <field name="state_id" ref="base.state_uk78" />
+    </record>
+    <record id="zip_prefix_gb_en9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN9</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_en10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN10</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_en11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EN11</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_ex" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EX</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_ex23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">EX23</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_fk" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK</field>
+        <field name="state_id" ref="base.state_uk100" />
+    </record>
+    <record id="zip_prefix_gb_fk10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK10</field>
+        <field name="state_id" ref="base.state_uk15" />
+    </record>
+    <record id="zip_prefix_gb_fk11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK11</field>
+        <field name="state_id" ref="base.state_uk15" />
+    </record>
+    <record id="zip_prefix_gb_fk12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK12</field>
+        <field name="state_id" ref="base.state_uk15" />
+    </record>
+    <record id="zip_prefix_gb_fk13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK13</field>
+        <field name="state_id" ref="base.state_uk15" />
+    </record>
+    <record id="zip_prefix_gb_fk14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK14</field>
+        <field name="state_id" ref="base.state_uk15" />
+    </record>
+    <record id="zip_prefix_gb_fk15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK15</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fk16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK16</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fk17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK17</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fk18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK18</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fk19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK19</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fk20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK20</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fk21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FK21</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_fy" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">FY</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_g" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">G</field>
+        <field name="state_id" ref="base.state_uk116" />
+    </record>
+    <record id="zip_prefix_gb_g81" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">G81</field>
+        <field name="state_id" ref="base.state_uk31" />
+    </record>
+    <record id="zip_prefix_gb_g82" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">G82</field>
+        <field name="state_id" ref="base.state_uk31" />
+    </record>
+    <record id="zip_prefix_gb_g83" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">G83</field>
+        <field name="state_id" ref="base.state_uk31" />
+    </record>
+    <record id="zip_prefix_gb_g84" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">G84</field>
+        <field name="state_id" ref="base.state_uk31" />
+    </record>
+    <record id="zip_prefix_gb_gl" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GL</field>
+        <field name="state_id" ref="base.state_uk37" />
+    </record>
+    <record id="zip_prefix_gb_gl9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GL9</field>
+        <field name="state_id" ref="base.state_uk4" />
+    </record>
+    <record id="zip_prefix_gb_gu" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_gu11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU11</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU12</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU14</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU17</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU28</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_gu29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU29</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_gu30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU30</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU31</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU32</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU33</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU34</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU35</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU46</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU47</field>
+        <field name="state_id" ref="base.state_uk8" />
+    </record>
+    <record id="zip_prefix_gb_gu51" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU51</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gu52" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GU52</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_gy" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">GY</field>
+        <field name="state_id" ref="base.state_uk13" />
+    </record>
+    <record id="zip_prefix_gb_ha" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HA</field>
+        <field name="state_id" ref="base.state_uk78" />
+    </record>
+    <record id="zip_prefix_gb_hd" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HD</field>
+        <field name="state_id" ref="base.state_uk110" />
+    </record>
+    <record id="zip_prefix_gb_hg" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HG</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_hp" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP1</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_hp2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP2</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_hp3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP3</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_hp4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP4</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_hp10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP10</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP11</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP12</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP13</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP14</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP15</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP16</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP17</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP18</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP19</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP20</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP21</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP22</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hp23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP23</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_hp27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HP27</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_hr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HR</field>
+        <field name="state_id" ref="base.state_uk41" />
+    </record>
+    <record id="zip_prefix_gb_hs" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS</field>
+        <field name="state_id" ref="base.state_uk58" />
+    </record>
+    <record id="zip_prefix_gb_hs3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS3</field>
+        <field name="state_id" ref="base.state_uk54" />
+    </record>
+    <record id="zip_prefix_gb_hs4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS4</field>
+        <field name="state_id" ref="base.state_uk63" />
+    </record>
+    <record id="zip_prefix_gb_hs5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS5</field>
+        <field name="state_id" ref="base.state_uk54" />
+    </record>
+    <record id="zip_prefix_gb_hs6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS6</field>
+        <field name="state_id" ref="base.state_uk61" />
+    </record>
+    <record id="zip_prefix_gb_hs7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS7</field>
+        <field name="state_id" ref="base.state_uk46" />
+    </record>
+    <record id="zip_prefix_gb_hs8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS8</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_hs9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HS9</field>
+        <field name="state_id" ref="base.state_uk45" />
+    </record>
+    <record id="zip_prefix_gb_hu" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HU</field>
+        <field name="state_id" ref="base.state_uk81" />
+    </record>
+    <record id="zip_prefix_gb_hx" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">HX</field>
+        <field name="state_id" ref="base.state_uk110" />
+    </record>
+    <record id="zip_prefix_gb_ig" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IG</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_im" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IM</field>
+        <field name="state_id" ref="base.state_uk59" />
+    </record>
+    <record id="zip_prefix_gb_ip" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_ip20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP20</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_ip21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP21</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_ip22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP22</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_ip24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP24</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_ip25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP25</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_ip26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP26</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_ip98" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IP98</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_iv" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV1</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV2</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV3</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV4</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV5</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV10</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV11</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV12</field>
+        <field name="state_id" ref="base.state_uk80" />
+    </record>
+    <record id="zip_prefix_gb_iv13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV13</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV14</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV15</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV16</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV17</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV18</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV19</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV20</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV21</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV22</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV23</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV24</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_iv25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV25</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_iv26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV26</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV27</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_iv28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV28</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_iv30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV30</field>
+        <field name="state_id" ref="base.state_uk79" />
+    </record>
+    <record id="zip_prefix_gb_iv31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV31</field>
+        <field name="state_id" ref="base.state_uk79" />
+    </record>
+    <record id="zip_prefix_gb_iv32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV32</field>
+        <field name="state_id" ref="base.state_uk79" />
+    </record>
+    <record id="zip_prefix_gb_iv36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV36</field>
+        <field name="state_id" ref="base.state_uk79" />
+    </record>
+    <record id="zip_prefix_gb_iv40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV40</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV41</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV42</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV43</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV44</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV45</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV46</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV47</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV48</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV49</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv51" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV51</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv52" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV52</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv53" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV53</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv54" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV54</field>
+        <field name="state_id" ref="base.state_uk91" />
+    </record>
+    <record id="zip_prefix_gb_iv55" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV55</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv56" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV56</field>
+        <field name="state_id" ref="base.state_uk65" />
+    </record>
+    <record id="zip_prefix_gb_iv63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV63</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_iv99" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">IV99</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_je" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">JE</field>
+        <field name="state_id" ref="base.state_uk13" />
+    </record>
+    <record id="zip_prefix_gb_ka" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KA</field>
+        <field name="state_id" ref="base.state_uk5" />
+    </record>
+    <record id="zip_prefix_gb_ka27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KA27</field>
+        <field name="state_id" ref="base.state_uk44" />
+    </record>
+    <record id="zip_prefix_gb_ka28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KA28</field>
+        <field name="state_id" ref="base.state_uk51" />
+    </record>
+    <record id="zip_prefix_gb_kt" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KT</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_kw" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW</field>
+        <field name="state_id" ref="base.state_uk11" />
+    </record>
+    <record id="zip_prefix_gb_kw8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW8</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_kw9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW9</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_kw10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW10</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_kw11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW11</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_kw13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW13</field>
+        <field name="state_id" ref="base.state_uk103" />
+    </record>
+    <record id="zip_prefix_gb_kw15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW15</field>
+        <field name="state_id" ref="base.state_uk114" />
+    </record>
+    <record id="zip_prefix_gb_kw16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW16</field>
+        <field name="state_id" ref="base.state_uk114" />
+    </record>
+    <record id="zip_prefix_gb_kw17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KW17</field>
+        <field name="state_id" ref="base.state_uk114" />
+    </record>
+    <record id="zip_prefix_gb_ky" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KY</field>
+        <field name="state_id" ref="base.state_uk36" />
+    </record>
+    <record id="zip_prefix_gb_ky13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">KY13</field>
+        <field name="state_id" ref="base.state_uk71" />
+    </record>
+    <record id="zip_prefix_gb_l" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">L</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_l39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">L39</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_l40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">L40</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA1</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA2</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA3</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA4</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA5</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA6</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_la10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA10</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA11</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA12</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA13</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA14</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA15</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA16</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA17</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA18</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA19</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA20</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA21</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA22</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_la23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LA23</field>
+        <field name="state_id" ref="base.state_uk26" />
+    </record>
+    <record id="zip_prefix_gb_ld" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LD</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_le" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LE</field>
+        <field name="state_id" ref="base.state_uk74" />
+    </record>
+    <record id="zip_prefix_gb_ll" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL</field>
+        <field name="state_id" ref="base.state_uk39" />
+    </record>
+    <record id="zip_prefix_gb_ll11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL11</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL12</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL13</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL14</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL15</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL16</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL17</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL18</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL19</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL20</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL21</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL22</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL28</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ll29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LL29</field>
+        <field name="state_id" ref="base.state_uk17" />
+    </record>
+    <record id="zip_prefix_gb_ln" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LN</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_ls" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LS</field>
+        <field name="state_id" ref="base.state_uk110" />
+    </record>
+    <record id="zip_prefix_gb_ls24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LS24</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_lu" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">LU</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_m" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">M</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_m33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">M33</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_me" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">ME</field>
+        <field name="state_id" ref="base.state_uk69" />
+    </record>
+    <record id="zip_prefix_gb_mk" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_mk40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK40</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_mk41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK41</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_mk42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK42</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_mk43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK43</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_mk44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK44</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_mk45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">MK45</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_ml" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">ML</field>
+        <field name="state_id" ref="base.state_uk116" />
+    </record>
+    <record id="zip_prefix_gb_n" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">N</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_ne" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE</field>
+        <field name="state_id" ref="base.state_uk104" />
+    </record>
+    <record id="zip_prefix_gb_ne22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE22</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE23</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE24</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE41</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE42</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE43</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE44</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE45</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE46</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE47</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE48</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE49</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE61</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne62" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE62</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE63</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne64" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE64</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne65" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE65</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne66" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE66</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne67" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE67</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne68" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE68</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne69" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE69</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne70" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE70</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ne71" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NE71</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_ng" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NG</field>
+        <field name="state_id" ref="base.state_uk85" />
+    </record>
+    <record id="zip_prefix_gb_ng31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NG31</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_ng32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NG32</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_ng33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NG33</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_ng34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NG34</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_nn" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NN</field>
+        <field name="state_id" ref="base.state_uk83" />
+    </record>
+    <record id="zip_prefix_gb_np" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NP</field>
+        <field name="state_id" ref="base.state_uk38" />
+    </record>
+    <record id="zip_prefix_gb_np8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NP8</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_nr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NR</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_nr32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NR32</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_nr33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NR33</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_nr34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NR34</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_nr35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NR35</field>
+        <field name="state_id" ref="base.state_uk101" />
+    </record>
+    <record id="zip_prefix_gb_nw" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">NW</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_ol" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">OL</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_ox" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">OX</field>
+        <field name="state_id" ref="base.state_uk86" />
+    </record>
+    <record id="zip_prefix_gb_pa" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA1</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA2</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA3</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA4</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA5</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA6</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA7</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA8</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA9</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA10</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA11</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA12</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA13</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA14</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA15</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA16</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA17</field>
+        <field name="state_id" ref="base.state_uk5" />
+    </record>
+    <record id="zip_prefix_gb_pa18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA18</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA19</field>
+        <field name="state_id" ref="base.state_uk90" />
+    </record>
+    <record id="zip_prefix_gb_pa20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA20</field>
+        <field name="state_id" ref="base.state_uk47" />
+    </record>
+    <record id="zip_prefix_gb_pa21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA21</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA22</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA23</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA24</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA25</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA26</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA27</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA28</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA29</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA30</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA31</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA32</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA33</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA34</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA35</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA36</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA37</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA38</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pa41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA41</field>
+        <field name="state_id" ref="base.state_uk53" />
+    </record>
+    <record id="zip_prefix_gb_pa42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA42</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA43</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA44</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA45</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA46</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA47</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA48</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA49</field>
+        <field name="state_id" ref="base.state_uk56" />
+    </record>
+    <record id="zip_prefix_gb_pa60" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA60</field>
+        <field name="state_id" ref="base.state_uk57" />
+    </record>
+    <record id="zip_prefix_gb_pa61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA61</field>
+        <field name="state_id" ref="base.state_uk50" />
+    </record>
+    <record id="zip_prefix_gb_pa62" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA62</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA63</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa64" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA64</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa65" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA65</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa66" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA66</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa67" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA67</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa68" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA68</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa69" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA69</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa70" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA70</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa71" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA71</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa72" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA72</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa73" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA73</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa74" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA74</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa75" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA75</field>
+        <field name="state_id" ref="base.state_uk60" />
+    </record>
+    <record id="zip_prefix_gb_pa76" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA76</field>
+        <field name="state_id" ref="base.state_uk55" />
+    </record>
+    <record id="zip_prefix_gb_pa77" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA77</field>
+        <field name="state_id" ref="base.state_uk67" />
+    </record>
+    <record id="zip_prefix_gb_pa78" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA78</field>
+        <field name="state_id" ref="base.state_uk49" />
+    </record>
+    <record id="zip_prefix_gb_pa80" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PA80</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pe" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE</field>
+        <field name="state_id" ref="base.state_uk12" />
+    </record>
+    <record id="zip_prefix_gb_pe9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE9</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE10</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE11</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE12</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE20</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE21</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE22</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE23</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE24</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE25</field>
+        <field name="state_id" ref="base.state_uk75" />
+    </record>
+    <record id="zip_prefix_gb_pe30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE30</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE31</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE32</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE33</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE34</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE35</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE36</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE37</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE38</field>
+        <field name="state_id" ref="base.state_uk119" />
+    </record>
+    <record id="zip_prefix_gb_pe99" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PE99</field>
+        <field name="state_id" ref="base.state_uk12" />
+    </record>
+    <record id="zip_prefix_gb_ph" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH</field>
+        <field name="state_id" ref="base.state_uk88" />
+    </record>
+    <record id="zip_prefix_gb_ph19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH19</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH20</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH21</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH22</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH23</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH24</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH25</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH26</field>
+        <field name="state_id" ref="base.state_uk79" />
+    </record>
+    <record id="zip_prefix_gb_ph30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH30</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH31</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH32</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH33</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH34</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH35</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH36</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_ph37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH37</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH38</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH39</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH40</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH41</field>
+        <field name="state_id" ref="base.state_uk43" />
+    </record>
+    <record id="zip_prefix_gb_ph42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH42</field>
+        <field name="state_id" ref="base.state_uk52" />
+    </record>
+    <record id="zip_prefix_gb_ph43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH43</field>
+        <field name="state_id" ref="base.state_uk62" />
+    </record>
+    <record id="zip_prefix_gb_ph44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH44</field>
+        <field name="state_id" ref="base.state_uk48" />
+    </record>
+    <record id="zip_prefix_gb_ph49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH49</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_ph50" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PH50</field>
+        <field name="state_id" ref="base.state_uk3" />
+    </record>
+    <record id="zip_prefix_gb_pl" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL1</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL2</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL3</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL4</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL5</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL6</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL7</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL8</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL9</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL10</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL11</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL12</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL13</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL14</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL15</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL16</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL17</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL18</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL19</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL20</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL21</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_pl22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL22</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL23</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL24</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL25</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL26</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL27</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL28</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL29</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL30</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL31</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL32</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL33</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL34</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL35</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_pl95" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PL95</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_po" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_po18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO18</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_po19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO19</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_po20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO20</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_po21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO21</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_po22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO22</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_po30" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO30</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO31</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO32</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO33</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO34</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO35</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO36</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO37</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO38</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO39</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO40</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_po41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PO41</field>
+        <field name="state_id" ref="base.state_uk68" />
+    </record>
+    <record id="zip_prefix_gb_pr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PR</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_pr8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PR8</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_pr9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">PR9</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_rg" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG</field>
+        <field name="state_id" ref="base.state_uk8" />
+    </record>
+    <record id="zip_prefix_gb_rg9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG9</field>
+        <field name="state_id" ref="base.state_uk86" />
+    </record>
+    <record id="zip_prefix_gb_rg21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG21</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG22</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG23</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG24</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG25</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg26" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG26</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg27" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG27</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG28</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rg29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RG29</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_rh" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH1</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH2</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH3</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH4</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH5</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH6</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH7</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH8</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH9</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_rh10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH10</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH11</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH12</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH13</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH14</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH15</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH16</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH17</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH18</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_rh19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH19</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH20</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rh77" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RH77</field>
+        <field name="state_id" ref="base.state_uk109" />
+    </record>
+    <record id="zip_prefix_gb_rm" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">RM</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_s" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S</field>
+        <field name="state_id" ref="base.state_uk98" />
+    </record>
+    <record id="zip_prefix_gb_s18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S18</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S32</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S33</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S40</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S41</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S42</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S43</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S44</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S45</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s49" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S49</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_s80" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S80</field>
+        <field name="state_id" ref="base.state_uk85" />
+    </record>
+    <record id="zip_prefix_gb_s81" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">S81</field>
+        <field name="state_id" ref="base.state_uk85" />
+    </record>
+    <record id="zip_prefix_gb_sa" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA1</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa2" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA2</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa3" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA3</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa4" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA4</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA5</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA6</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA7</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA8</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA9</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA10</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA11</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA12</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA13</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA14</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA15</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA16</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA17</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA18</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA19</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA20</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA31</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA32</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA33</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA34</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA35</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA36</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA37</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA38</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA39</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA40</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa41" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA41</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa42" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA42</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa43" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA43</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa44" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA44</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa45" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA45</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa46" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA46</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa47" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA47</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa48" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA48</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa61" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA61</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa62" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA62</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa63" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA63</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa64" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA64</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa65" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA65</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa66" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA66</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa67" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA67</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa68" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA68</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa69" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA69</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa70" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA70</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa71" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA71</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa72" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA72</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa73" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA73</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sa80" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA80</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_sa99" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SA99</field>
+        <field name="state_id" ref="base.state_uk106" />
+    </record>
+    <record id="zip_prefix_gb_se" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SE</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_sg" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SG</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_sg15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SG15</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_sg16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SG16</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_sg17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SG17</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_sg18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SG18</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_sg19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SG19</field>
+        <field name="state_id" ref="base.state_uk7" />
+    </record>
+    <record id="zip_prefix_gb_sk" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SK</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_sk13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SK13</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_sk17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SK17</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_sk22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SK22</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_sk23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SK23</field>
+        <field name="state_id" ref="base.state_uk27" />
+    </record>
+    <record id="zip_prefix_gb_sl" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SL</field>
+        <field name="state_id" ref="base.state_uk8" />
+    </record>
+    <record id="zip_prefix_gb_sl0" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SL0</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_sl7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SL7</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_sl8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SL8</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_sl9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SL9</field>
+        <field name="state_id" ref="base.state_uk10" />
+    </record>
+    <record id="zip_prefix_gb_sl95" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SL95</field>
+        <field name="state_id" ref="base.state_uk8" />
+    </record>
+    <record id="zip_prefix_gb_sm" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SM</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_sn" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SN</field>
+        <field name="state_id" ref="base.state_uk112" />
+    </record>
+    <record id="zip_prefix_gb_sn7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SN7</field>
+        <field name="state_id" ref="base.state_uk86" />
+    </record>
+    <record id="zip_prefix_gb_so" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SO</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_sp" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SP</field>
+        <field name="state_id" ref="base.state_uk112" />
+    </record>
+    <record id="zip_prefix_gb_sp6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SP6</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_sp7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SP7</field>
+        <field name="state_id" ref="base.state_uk29" />
+    </record>
+    <record id="zip_prefix_gb_sp8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SP8</field>
+        <field name="state_id" ref="base.state_uk29" />
+    </record>
+    <record id="zip_prefix_gb_sp10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SP10</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_sp11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SP11</field>
+        <field name="state_id" ref="base.state_uk40" />
+    </record>
+    <record id="zip_prefix_gb_sr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SR</field>
+        <field name="state_id" ref="base.state_uk104" />
+    </record>
+    <record id="zip_prefix_gb_sr7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SR7</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_sr8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SR8</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_ss" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SS</field>
+        <field name="state_id" ref="base.state_uk35" />
+    </record>
+    <record id="zip_prefix_gb_st" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">ST</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_sw" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SW</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_sy" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY</field>
+        <field name="state_id" ref="base.state_uk94" />
+    </record>
+    <record id="zip_prefix_gb_sy14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY14</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_sy15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY15</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY16</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy17" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY17</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy18" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY18</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY19</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY20</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY21</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY22</field>
+        <field name="state_id" ref="base.state_uk89" />
+    </record>
+    <record id="zip_prefix_gb_sy23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY23</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sy24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY24</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_sy25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">SY25</field>
+        <field name="state_id" ref="base.state_uk32" />
+    </record>
+    <record id="zip_prefix_gb_ta" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TA</field>
+        <field name="state_id" ref="base.state_uk95" />
+    </record>
+    <record id="zip_prefix_gb_td" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD</field>
+        <field name="state_id" ref="base.state_uk9" />
+    </record>
+    <record id="zip_prefix_gb_td1" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD1</field>
+        <field name="state_id" ref="base.state_uk93" />
+    </record>
+    <record id="zip_prefix_gb_td5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD5</field>
+        <field name="state_id" ref="base.state_uk92" />
+    </record>
+    <record id="zip_prefix_gb_td6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD6</field>
+        <field name="state_id" ref="base.state_uk92" />
+    </record>
+    <record id="zip_prefix_gb_td7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD7</field>
+        <field name="state_id" ref="base.state_uk93" />
+    </record>
+    <record id="zip_prefix_gb_td8" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD8</field>
+        <field name="state_id" ref="base.state_uk92" />
+    </record>
+    <record id="zip_prefix_gb_td9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD9</field>
+        <field name="state_id" ref="base.state_uk92" />
+    </record>
+    <record id="zip_prefix_gb_td10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD10</field>
+        <field name="state_id" ref="base.state_uk9" />
+    </record>
+    <record id="zip_prefix_gb_td11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD11</field>
+        <field name="state_id" ref="base.state_uk9" />
+    </record>
+    <record id="zip_prefix_gb_td12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD12</field>
+        <field name="state_id" ref="base.state_uk9" />
+    </record>
+    <record id="zip_prefix_gb_td13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD13</field>
+        <field name="state_id" ref="base.state_uk9" />
+    </record>
+    <record id="zip_prefix_gb_td14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD14</field>
+        <field name="state_id" ref="base.state_uk9" />
+    </record>
+    <record id="zip_prefix_gb_td15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TD15</field>
+        <field name="state_id" ref="base.state_uk84" />
+    </record>
+    <record id="zip_prefix_gb_tf" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TF</field>
+        <field name="state_id" ref="base.state_uk94" />
+    </record>
+    <record id="zip_prefix_gb_tn" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN</field>
+        <field name="state_id" ref="base.state_uk69" />
+    </record>
+    <record id="zip_prefix_gb_tn5" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN5</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn6" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN6</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN7</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn19" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN19</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN20</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN21</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN22</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn31" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN31</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn32" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN32</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn33" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN33</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn34" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN34</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn35" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN35</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn36" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN36</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn37" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN37</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn38" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN38</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn39" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN39</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tn40" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TN40</field>
+        <field name="state_id" ref="base.state_uk34" />
+    </record>
+    <record id="zip_prefix_gb_tq" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TQ</field>
+        <field name="state_id" ref="base.state_uk28" />
+    </record>
+    <record id="zip_prefix_gb_tr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TR</field>
+        <field name="state_id" ref="base.state_uk25" />
+    </record>
+    <record id="zip_prefix_gb_tr21" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TR21</field>
+        <field name="state_id" ref="base.state_uk115" />
+    </record>
+    <record id="zip_prefix_gb_tr22" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TR22</field>
+        <field name="state_id" ref="base.state_uk115" />
+    </record>
+    <record id="zip_prefix_gb_tr23" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TR23</field>
+        <field name="state_id" ref="base.state_uk115" />
+    </record>
+    <record id="zip_prefix_gb_tr24" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TR24</field>
+        <field name="state_id" ref="base.state_uk115" />
+    </record>
+    <record id="zip_prefix_gb_tr25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TR25</field>
+        <field name="state_id" ref="base.state_uk115" />
+    </record>
+    <record id="zip_prefix_gb_ts" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TS</field>
+        <field name="state_id" ref="base.state_uk16" />
+    </record>
+    <record id="zip_prefix_gb_ts28" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TS28</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_ts29" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TS29</field>
+        <field name="state_id" ref="base.state_uk21" />
+    </record>
+    <record id="zip_prefix_gb_tw" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TW</field>
+        <field name="state_id" ref="base.state_uk78" />
+    </record>
+    <record id="zip_prefix_gb_tw9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TW9</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_tw10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TW10</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_tw20" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">TW20</field>
+        <field name="state_id" ref="base.state_uk102" />
+    </record>
+    <record id="zip_prefix_gb_ub" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">UB</field>
+        <field name="state_id" ref="base.state_uk78" />
+    </record>
+    <record id="zip_prefix_gb_w" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">W</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_wa" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WA</field>
+        <field name="state_id" ref="base.state_uk14" />
+    </record>
+    <record id="zip_prefix_gb_wa9" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WA9</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_wa10" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WA10</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_wa11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WA11</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_wa12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WA12</field>
+        <field name="state_id" ref="base.state_uk76" />
+    </record>
+    <record id="zip_prefix_gb_wc" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WC</field>
+        <field name="state_id" ref="base.state_uk117" />
+    </record>
+    <record id="zip_prefix_gb_wd" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WD</field>
+        <field name="state_id" ref="base.state_uk42" />
+    </record>
+    <record id="zip_prefix_gb_wf" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WF</field>
+        <field name="state_id" ref="base.state_uk110" />
+    </record>
+    <record id="zip_prefix_gb_wn" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WN</field>
+        <field name="state_id" ref="base.state_uk73" />
+    </record>
+    <record id="zip_prefix_gb_wr" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WR</field>
+        <field name="state_id" ref="base.state_uk113" />
+    </record>
+    <record id="zip_prefix_gb_ws" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_ws7" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS7</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_ws11" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS11</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_ws12" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS12</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_ws13" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS13</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_ws14" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS14</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_ws15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WS15</field>
+        <field name="state_id" ref="base.state_uk99" />
+    </record>
+    <record id="zip_prefix_gb_wv" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WV</field>
+        <field name="state_id" ref="base.state_uk108" />
+    </record>
+    <record id="zip_prefix_gb_wv15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WV15</field>
+        <field name="state_id" ref="base.state_uk94" />
+    </record>
+    <record id="zip_prefix_gb_wv16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">WV16</field>
+        <field name="state_id" ref="base.state_uk94" />
+    </record>
+    <record id="zip_prefix_gb_yo" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">YO</field>
+        <field name="state_id" ref="base.state_uk82" />
+    </record>
+    <record id="zip_prefix_gb_yo15" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">YO15</field>
+        <field name="state_id" ref="base.state_uk81" />
+    </record>
+    <record id="zip_prefix_gb_yo16" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">YO16</field>
+        <field name="state_id" ref="base.state_uk81" />
+    </record>
+    <record id="zip_prefix_gb_yo25" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">YO25</field>
+        <field name="state_id" ref="base.state_uk81" />
+    </record>
+    <record id="zip_prefix_gb_ze" model="res_partner_state_from_zip.prefix">
+        <field name="prefix">ZE</field>
+        <field name="state_id" ref="base.state_uk64" />
+    </record>
+</odoo>
