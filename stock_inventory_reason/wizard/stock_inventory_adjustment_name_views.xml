@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_inventory_adjustment_name_form_view" model="ir.ui.view">
+        <field name="name">stock.inventory.adjustment.name.form.reason</field>
+        <field name="model">stock.inventory.adjustment.name</field>
+        <field
+            name="inherit_id"
+            ref="stock.stock_inventory_adjustment_name_form_view"
+        />
+        <field name="arch" type="xml">
+            <field name="inventory_adjustment_name" position="before">
+                <field name="company_id" invisible="1" />
+                <field name="use_fixed_reason" invisible="1" />
+                <field name="require_reason" invisible="1" />
+                <field
+                    name="reason_id"
+                    invisible="not use_fixed_reason"
+                    required="use_fixed_reason and require_reason"
+                    options="{'no_create': True, 'no_open': True}"
+                />
+            </field>
+            <field name="inventory_adjustment_name" position="attributes">
+                <attribute name="invisible">use_fixed_reason</attribute>
+                <attribute
+                    name="required"
+                >require_reason and not use_fixed_reason</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
