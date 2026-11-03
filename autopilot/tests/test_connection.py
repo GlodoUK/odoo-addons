@@ -173,6 +173,34 @@ class TestConnection(TransactionCase):
         with local._open(claimed[0]) as handle:
             self.assertEqual(handle.read(), b"a,b\n")
 
+    def test_collect_deletes_only_after_commit(self):
+        local = self.Connection.create({"name": "Local", "protocol": "file"})
+        root = tempfile.mkdtemp()
+        source = os.path.join(root, "orders.csv")
+        with local._opened(source) as handle:
+            handle.write(b"a,b\n")
+
+        collected = local._collect(os.path.join(root, "*.csv"))
+        self.assertEqual(collected, [(source, b"a,b\n")])
+        local._remove_after_commit(collected)
+        self.assertTrue(os.path.exists(source))  # not committed yet
+        self.env.cr.postcommit.run()
+        self.assertFalse(os.path.exists(source))
+
+    def test_collect_keeps_a_file_rewritten_since(self):
+        local = self.Connection.create({"name": "Local", "protocol": "file"})
+        root = tempfile.mkdtemp()
+        source = os.path.join(root, "orders.csv")
+        with local._opened(source) as handle:
+            handle.write(b"a,b\n")
+
+        collected = local._collect(os.path.join(root, "*.csv"))
+        with local._opened(source, "ab") as handle:  # partner appends
+            handle.write(b"c,d\n")
+        local._remove_after_commit(collected)
+        self.env.cr.postcommit.run()
+        self.assertTrue(os.path.exists(source))
+
     def test_no_connection_raises(self):
         with self.assertRaises(UserError):
             self.Connection.browse()._open("/tmp/x")

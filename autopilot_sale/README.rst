@@ -59,6 +59,14 @@ How it works
 folder into the processed folder. Moving a file is how it is claimed, so it
 is never read twice. Each file becomes an order file record, queued as a job.
 
+Where the partner's folder can't hold a processed folder, set **After
+Pick-up** to *Delete*. Each file is copied into its order file record and
+deleted from the folder once that record is saved. A file changed after it
+was read is left for the next poll. Nothing is skipped as already seen, so a
+failed delete or an overlapping poll imports a file twice; the dialect's own
+order reference check is the guard. The record's copy is then the only one,
+and clean-up clears it after the clean-up period.
+
 That job only *stages*: the dialect splits the file into one order record per
 order, with its rows kept as ``payload``. Each order is then its own job,
 which creates the sale order, confirms it and queues the acknowledgement. So

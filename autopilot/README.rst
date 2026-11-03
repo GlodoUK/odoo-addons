@@ -91,7 +91,10 @@ Tools
 file. Keep it that way.
 
 * ``files``: ``glob``, ``archive``, ``sweep`` (claim a batch by moving it
-  aside), ``opened`` (write, creating the folder) and ``render_path`` for
+  aside), ``collect`` and ``remove_collected`` (read a batch in place, delete
+  what's unchanged after; for folders you can't move files out of), ``opened``
+  (write, creating the
+  folder) and ``render_path`` for
   ``{datetime:%Y}`` and ``{record.name}`` tokens in a configured path.
 * ``csv``, ``xls``, ``xlsx``: ``read_rows(handle)`` and
   ``write_rows(handle, rows)``. ``codec_for(path)`` picks one by extension.
@@ -114,6 +117,19 @@ backend points at one and keeps its own paths:
         for path in self.connection_id._sweep("/in/*.csv", "/in/done"):
             with self.connection_id._open(path) as handle:
                 rows = tools.codec_for(path).read_rows(handle)
+
+Where a folder can't be added, read the files in place and delete them once
+the records made from them are committed. Nothing claims them, so a failed
+delete or an overlapping poll brings one back; make importing twice harmless
+or accept it. A file rewritten after it was read isn't deleted; the next poll
+reads it again.
+
+.. code-block:: python
+
+    collected = self.connection_id._collect("/in/*.csv")
+    for path, data in collected:
+        self._stage(path, data)
+    self.connection_id._remove_after_commit(collected)
 
 Administrators manage them under **Integrations & Connections > Connections**.
 Everyone else can read them. A connection still in use can't be archived.

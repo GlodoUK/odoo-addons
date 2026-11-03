@@ -7,8 +7,11 @@ reach for ``posixpath``, not ``os.path``.
 
 import datetime
 import json
+import logging
 import posixpath
 from contextlib import contextmanager
+
+_logger = logging.getLogger(__name__)
 
 
 def glob(fs, pattern, *, files_only=True):
@@ -41,6 +44,43 @@ def sweep(fs, pattern, directory):
     ``pattern`` to one folder unless names are unique.
     """
     return [archive(fs, path, directory) for path in glob(fs, pattern)]
+
+
+def collect(fs, pattern):
+    """Read a poll's files where they are, for a folder you can't move files
+    out of: ``[(path, bytes)]``, sorted. Nothing claims them, so the caller
+    must skip any it already has, then ``remove_collected``. A file that
+    won't read is logged and left for the next poll, as is an empty one: it
+    is likely still being written."""
+    collected = []
+    for path in glob(fs, pattern):
+        try:
+            data = fs.cat_file(path)
+        except Exception:
+            _logger.exception("Could not read %s; leaving it for the next poll.", path)
+            continue
+        if data:
+            collected.append((path, data))
+    return collected
+
+
+def remove_collected(fs, collected):
+    """Delete each ``(path, bytes)`` from ``collect`` whose file still holds
+    those bytes. One rewritten since, as when a partner overwrites or appends
+    to a fixed name, is left for the next poll. Never raises: a failure is
+    logged and the file stays. Returns the paths left."""
+    left = []
+    for path, data in collected:
+        try:
+            if fs.cat_file(path) != data:
+                _logger.info("%s changed since it was read; leaving it.", path)
+                left.append(path)
+                continue
+            fs.rm_file(path)
+        except Exception:
+            _logger.exception("Could not delete %s.", path)
+            left.append(path)
+    return left
 
 
 @contextmanager
