@@ -146,10 +146,14 @@
                                     required="supports_import_order"
                                 />
                                 <field
+                                    name="order_import_after"
+                                    invisible="not supports_import_order"
+                                />
+                                <field
                                     name="order_import_processed_path"
                                     placeholder="/in/processed"
-                                    invisible="not supports_import_order"
-                                    required="supports_import_order"
+                                    invisible="not supports_import_order or order_import_after != 'move'"
+                                    required="supports_import_order and order_import_after == 'move'"
                                 />
                                 <field
                                     name="ack_export_path"

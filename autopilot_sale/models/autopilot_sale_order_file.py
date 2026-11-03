@@ -98,6 +98,16 @@ class AutopilotSaleOrderFile(models.Model):
             )
         return vals
 
+    def _vals_from_data(self, backend, path, data):
+        """For a file already read, which will be deleted from ``path``."""
+        return {
+            "backend_id": backend.id,
+            "source": "connection",
+            "path": path,
+            "filename": posixpath.basename(path),
+            "data": base64.b64encode(data),
+        }
+
     def _enqueue(self):
         self._queue("_import", "order_import_channel")
 

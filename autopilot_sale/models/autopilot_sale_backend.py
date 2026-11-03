@@ -138,6 +138,15 @@ class AutopilotSaleBackend(models.Model):
         help="Glob of the order files to pick up, e.g. /in/ypo/*.csv (** "
         "recurses). May use {datetime:%Y}-style tokens; not {record.*}.",
     )
+    order_import_after = fields.Selection(
+        [("move", "Move to Processed Path"), ("delete", "Delete")],
+        string="After Pick-up",
+        default="move",
+        required=True,
+        help="Move: picked-up files go to the Orders Processed Path. Delete: "
+        "for folders that can't hold one; each file is copied into Odoo and "
+        "deleted once that is saved.",
+    )
     order_import_processed_path = fields.Char(
         string="Orders Processed Path",
         help="Folder picked-up files are moved into, so they are read once, "
@@ -287,12 +296,18 @@ class AutopilotSaleBackend(models.Model):
             len(orders),
         )
 
-    @api.constrains("order_import_path", "order_import_processed_path")
+    @api.constrains(
+        "order_import_path", "order_import_after", "order_import_processed_path"
+    )
     def _check_order_import_paths(self):
         """Required, not derived from the glob: where picked-up files go is a
         decision."""
         for backend in self:
-            if backend.order_import_path and not backend.order_import_processed_path:
+            if (
+                backend.order_import_path
+                and backend.order_import_after == "move"
+                and not backend.order_import_processed_path
+            ):
                 raise ValidationError(
                     self.env._(
                         "Backend %s has an Orders Source Path, so it needs an "
@@ -353,8 +368,27 @@ class AutopilotSaleBackend(models.Model):
         the file where a sales user can retry it."""
         self.ensure_one()
         File = self.env["autopilot_sale.order.file"]
+        if self.order_import_after == "delete":
+            self._collect_orders()
+            return
         for path in self._sweep_orders():
             File.create(File._vals_from_connection(self, path))._enqueue()
+
+    def _collect_orders(self):
+        """Delete mode: copy each file into Odoo, delete it once that's
+        committed. Nothing is skipped: a delete that fails or a poll that
+        overlaps imports a file twice, a cost accepted over a check that
+        would drop a partner's reused filename."""
+        self.ensure_one()
+        if not (self.connection_id and self.order_import_path):
+            return
+        File = self.env["autopilot_sale.order.file"]
+        collected = self.connection_id._collect(
+            tools.files.render_path(self.order_import_path)
+        )
+        for path, data in collected:
+            File.create(File._vals_from_data(self, path, data))._enqueue()
+        self.connection_id._remove_after_commit(collected)
 
     @cron(
         "asn_cron_id",

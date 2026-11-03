@@ -114,8 +114,9 @@ def _merge(base, override):
 
 class AutopilotConnection(models.Model):
     """A file endpoint shared by every connector. Backends point at one and
-    keep their own paths. Work through ``_glob``, ``_sweep``, ``_archive``,
-    ``_open`` and ``_opened`` rather than the filesystem.
+    keep their own paths. Work through ``_glob``, ``_sweep``, ``_collect``,
+    ``_remove_after_commit``, ``_archive``, ``_open`` and ``_opened`` rather
+    than the filesystem.
 
     The provider's fields override the same option in ``storage_options``.
     """
@@ -574,6 +575,22 @@ class AutopilotConnection(models.Model):
         """Claims the matching files by moving them into ``directory``.
         Returns their new paths."""
         return tools.files.sweep(self._fs(), pattern, directory)
+
+    def _collect(self, pattern):
+        """Reads the matching files without moving them: ``[(path, bytes)]``.
+        Then ``_remove_after_commit``. See ``tools.files.collect``."""
+        return tools.files.collect(self._fs(), pattern)
+
+    def _remove_after_commit(self, collected):
+        """Deletes ``_collect``'s ``(path, bytes)`` once this transaction
+        commits, so a rollback keeps the files for the next poll. A file
+        changed since it was read, or that won't delete, stays and comes back
+        next poll. See ``tools.files.remove_collected``."""
+        if not collected:
+            return
+        fs = self._fs()
+        collected = list(collected)
+        self.env.cr.postcommit.add(lambda: tools.files.remove_collected(fs, collected))
 
     def _archive(self, path, directory):
         """See ``tools.files.archive``."""
