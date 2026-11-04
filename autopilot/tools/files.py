@@ -85,15 +85,21 @@ def remove_collected(fs, collected):
 
 @contextmanager
 def opened(fs, path, mode="wb", auto_mkdir=True, **kwargs):
-    """``fs.open``, creating the parent folder first when writing. Most
-    transports don't: fsspec's local filesystem won't by default and SFTP
-    can't, so a write into a new dated folder would fail. ``kwargs`` go to
-    ``fs.open``."""
-    if auto_mkdir and any(flag in mode for flag in ("w", "a", "x")):
+    """``fs.open``, creating the parent folder when writing into one that's
+    missing, such as a new dated folder: fsspec's local filesystem won't by
+    default and SFTP can't. Only on a missing folder: SFTP's ``makedirs``
+    walks every parent, which a server confining us to one folder may answer
+    by dropping the session. ``kwargs`` go to ``fs.open``."""
+    try:
+        handle = fs.open(path, mode, **kwargs)
+    except FileNotFoundError:
         directory = posixpath.dirname(path)
-        if directory:
-            fs.makedirs(directory, exist_ok=True)
-    with fs.open(path, mode, **kwargs) as handle:
+        writing = any(flag in mode for flag in ("w", "a", "x"))
+        if not (auto_mkdir and writing and directory):
+            raise
+        fs.makedirs(directory, exist_ok=True)
+        handle = fs.open(path, mode, **kwargs)
+    with handle:
         yield handle
 
 
