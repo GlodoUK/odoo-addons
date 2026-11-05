@@ -119,11 +119,43 @@ def parse_options(options):
 
 
 def filesystem(protocol, options=None, **extra):
-    """The fsspec filesystem for ``protocol``. ``extra`` wins over
-    ``options``; use it for values JSON can't carry, like an SFTP ``pkey``."""
+    """A new fsspec filesystem for ``protocol``, never fsspec's cached one: a
+    cached FTP or SFTP session outlives the server's idle timeout and fails
+    on its dead socket. ``extra`` wins over ``options``; use it for values
+    JSON can't carry, like an SFTP ``pkey``. Prefer ``session``, which logs
+    out."""
     import fsspec
 
-    return fsspec.filesystem(protocol, **dict(parse_options(options), **extra))
+    kwargs = {**parse_options(options), **extra, "skip_instance_cache": True}
+    return fsspec.filesystem(protocol, **kwargs)
+
+
+# What holds the socket, by protocol, as fsspec has no ``fs.close()``.
+# SFTP's ``ftp`` channel runs over ``client``, so it goes first.
+CONNECTIONS = {"ftp": ("ftp",), "sftp": ("ftp", "client")}
+
+
+def close(fs, protocol):
+    """Logs ``fs`` out, if ``protocol`` holds a connection. Never raises."""
+    for attribute in CONNECTIONS.get(protocol, ()):
+        connection = getattr(fs, attribute, None)
+        if connection is None:
+            continue
+        try:
+            connection.close()
+        except Exception:
+            _logger.debug("Could not close %s %s.", protocol, attribute, exc_info=True)
+
+
+@contextmanager
+def session(protocol, options=None, **extra):
+    """``with session(...) as fs``: ``filesystem``, logged out on exit. Close
+    any file opened on it first."""
+    fs = filesystem(protocol, options, **extra)
+    try:
+        yield fs
+    finally:
+        close(fs, protocol)
 
 
 def render_path(template, record=None, now=None):
