@@ -2,7 +2,8 @@ import base64
 import json
 import os
 import tempfile
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ed25519
@@ -41,14 +42,16 @@ class TestConnection(TransactionCase):
         cls.connection = cls.Connection.create({"name": "SFTP", "protocol": "sftp"})
 
     def _captured_options(self, connection):
-        captured = {}
+        return connection._fs_options()
 
-        def fake_filesystem(protocol, options=None, **extra):
-            captured.update(options)
-
-        with patch.object(tools.files, "filesystem", fake_filesystem):
-            connection._fs()
-        return captured
+    def test_session_logs_out(self):
+        fs = SimpleNamespace(ftp=Mock(), client=Mock())
+        with patch.object(tools.files, "filesystem", return_value=fs):
+            with self.connection._fs() as opened:
+                self.assertIs(opened, fs)
+                fs.client.close.assert_not_called()
+        fs.ftp.close.assert_called_once()
+        fs.client.close.assert_called_once()
 
     def test_private_key_wrong_password_rejected(self):
         with self.assertRaises(ValidationError):

@@ -80,11 +80,6 @@ def pinned_host_key_policy(line):
     expected = parse_host_key_line(line)
 
     class PinnedHostKeyPolicy(paramiko.MissingHostKeyPolicy):
-        def __repr__(self):
-            # fsspec caches connections by str() of their arguments: keep
-            # this stable or every call opens a new one.
-            return f"PinnedHostKeyPolicy({expected[0]} {expected[1]})"
-
         def missing_host_key(self, client, hostname, key):
             if (key.get_name(), key.get_base64()) != expected:
                 raise paramiko.SSHException(

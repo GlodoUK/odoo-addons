@@ -1,12 +1,16 @@
 import base64
 import binascii
 import json
+import logging
+from contextlib import contextmanager
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import SQL
 
 from .. import tools
+
+_logger = logging.getLogger(__name__)
 
 # A module adds a provider with ``selection_add``, a
 # ``_fsspec_kwargs_<protocol>`` builder and a page on the form.
@@ -110,6 +114,14 @@ def _merge(base, override):
         else:
             result[key] = value
     return result
+
+
+@contextmanager
+def _handle(session, open_handle):
+    """``open_handle(fs)``'s file, closed before ``session``. Takes the session
+    built, so a missing connection raises before the ``with``."""
+    with session as fs, open_handle(fs) as handle:
+        yield handle
 
 
 class AutopilotConnection(models.Model):
@@ -442,10 +454,14 @@ class AutopilotConnection(models.Model):
     # The filesystem
     # ------------------------------------------------------------------
     def _fs(self, **extra):
+        """``with connection._fs() as fs``: a session of its own, logged out
+        on exit. Options are read now, so a bad configuration raises here."""
+        return tools.files.session(self.protocol, self._fs_options(**extra))
+
+    def _fs_options(self, **extra):
         """Advanced options, overridden by the provider's fields (``None``
         dropped), overridden by ``extra``. Credentials are read with
-        ``sudo()``, so a job connects whoever runs it. fsspec caches the
-        instance by its arguments, so calling this per operation is cheap."""
+        ``sudo()``, so a job connects whoever runs it."""
         if not self:
             raise UserError(self.env._("No %s is configured.", self._description))
         self.ensure_one()
@@ -467,7 +483,7 @@ class AutopilotConnection(models.Model):
             provided = {k: v for k, v in provided.items() if v is not None}
             options = _merge(options, provided)
         options.update(extra)
-        return tools.files.filesystem(self.protocol, options)
+        return options
 
     def _fsspec_kwargs_file(self, secrets):
         return {}
@@ -567,19 +583,24 @@ class AutopilotConnection(models.Model):
     # ------------------------------------------------------------------
     # autopilot.tools.files on this endpoint
     # ------------------------------------------------------------------
+    # Each opens and closes a session of its own. For several steps on one,
+    # ``with connection._fs() as fs`` and call ``tools.files`` on ``fs``.
     def _glob(self, pattern, **kwargs):
         """See ``tools.files.glob``."""
-        return tools.files.glob(self._fs(), pattern, **kwargs)
+        with self._fs() as fs:
+            return tools.files.glob(fs, pattern, **kwargs)
 
     def _sweep(self, pattern, directory):
         """Claims the matching files by moving them into ``directory``.
         Returns their new paths."""
-        return tools.files.sweep(self._fs(), pattern, directory)
+        with self._fs() as fs:
+            return tools.files.sweep(fs, pattern, directory)
 
     def _collect(self, pattern):
         """Reads the matching files without moving them: ``[(path, bytes)]``.
         Then ``_remove_after_commit``. See ``tools.files.collect``."""
-        return tools.files.collect(self._fs(), pattern)
+        with self._fs() as fs:
+            return tools.files.collect(fs, pattern)
 
     def _remove_after_commit(self, collected):
         """Deletes ``_collect``'s ``(path, bytes)`` once this transaction
@@ -588,21 +609,35 @@ class AutopilotConnection(models.Model):
         next poll. See ``tools.files.remove_collected``."""
         if not collected:
             return
-        fs = self._fs()
+        # Options now, while the transaction is open; the session after, so
+        # none waits on the commit.
+        protocol, options, name = self.protocol, self._fs_options(), self.name
         collected = list(collected)
-        self.env.cr.postcommit.add(lambda: tools.files.remove_collected(fs, collected))
+
+        def remove():
+            try:
+                with tools.files.session(protocol, options) as fs:
+                    tools.files.remove_collected(fs, collected)
+            except Exception:
+                # Past the commit, nothing can roll back: the files stay.
+                _logger.exception("%s: could not connect to delete files.", name)
+
+        self.env.cr.postcommit.add(remove)
 
     def _archive(self, path, directory):
         """See ``tools.files.archive``."""
-        return tools.files.archive(self._fs(), path, directory)
+        with self._fs() as fs:
+            return tools.files.archive(fs, path, directory)
 
     def _open(self, path, mode="rb", **kwargs):
         """For reading: ``with connection._open(path) as fh``."""
-        return self._fs().open(path, mode, **kwargs)
+        return _handle(self._fs(), lambda fs: fs.open(path, mode, **kwargs))
 
     def _opened(self, path, mode="wb", **kwargs):
         """For writing. Creates the folder, which SFTP won't."""
-        return tools.files.opened(self._fs(), path, mode, **kwargs)
+        return _handle(
+            self._fs(), lambda fs: tools.files.opened(fs, path, mode, **kwargs)
+        )
 
     # ------------------------------------------------------------------
     # Actions
@@ -613,15 +648,15 @@ class AutopilotConnection(models.Model):
         self.ensure_one()
         self.check_access("write")
         recorder = None
-        extra = {"skip_instance_cache": True}
+        extra = {}
         if self.protocol == "sftp" and not self.host_key:
             recorder = tools.ssh.recording_host_key_policy()
             extra["host_key_policy"] = recorder
         try:
-            fs = self._fs(**extra)
-            path = self._fsspec_test_path(fs)
-            if path is not None:
-                fs.ls(path)
+            with self._fs(**extra) as fs:
+                path = self._fsspec_test_path(fs)
+                if path is not None:
+                    fs.ls(path)
         except Exception as exc:  # noqa: BLE001  shown to the user
             return self._connection_notification(
                 "danger", self.env._("Connection failed"), str(exc)
