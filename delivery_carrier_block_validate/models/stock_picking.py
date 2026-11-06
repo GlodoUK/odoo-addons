@@ -7,7 +7,11 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         block_picking_ids = self.filtered(
-            lambda p: p.carrier_id.block_validate and p.state != "done"
+            lambda p: (
+                p.carrier_id.block_validate
+                and p.picking_type_code == "outgoing"
+                and p.state != "done"
+            )
         )
 
         if block_picking_ids:
