@@ -241,6 +241,63 @@ class TestSaleDeliveryAuto(TransactionCase):
         order.order_line[0].product_uom_qty = 4
         self.assertEqual(order.carrier_id, self.carrier_second)
 
+    def _always_use_partner_carrier(self):
+        self.env["ir.config_parameter"].sudo().set_param(
+            "sale_delivery_auto.always_use_partner_carrier", "True"
+        )
+
+    def test_partner_carrier_ignored_without_the_parameter(self):
+        self.partner.property_delivery_carrier_id = self.carrier_second
+        order = self._make_order()
+        self.assertEqual(order.carrier_id, self.carrier_first)
+
+    def test_partner_carrier_wins_with_the_parameter(self):
+        self._always_use_partner_carrier()
+        self.partner.property_delivery_carrier_id = self.carrier_second
+        order = self._make_order()
+        self.assertEqual(order.carrier_id, self.carrier_second)
+        self.assertFalse(order.delivery_carrier_manual)
+
+    def test_partner_carrier_wins_even_when_unavailable(self):
+        self._always_use_partner_carrier()
+        self.carrier_second.country_ids = [Command.set(self.fr.ids)]
+        self.partner.property_delivery_carrier_id = self.carrier_second
+        order = self._make_order()
+        self.assertEqual(order.carrier_id, self.carrier_second)
+
+    def test_partner_carrier_read_from_the_customer(self):
+        # The delivery address has none of its own, so the customer's stands.
+        self._always_use_partner_carrier()
+        self.partner.property_delivery_carrier_id = self.carrier_second
+        address = self.env["res.partner"].create(
+            {
+                "name": "sale_delivery_auto elsewhere",
+                "country_id": self.uk.id,
+                "zip": "LS2 2AA",
+            }
+        )
+        order = self._make_order(partner_shipping_id=address.id)
+        self.assertEqual(order.carrier_id, self.carrier_second)
+
+    def test_delivery_address_carrier_beats_the_customer(self):
+        self._always_use_partner_carrier()
+        self.partner.property_delivery_carrier_id = self.carrier_first
+        address = self.env["res.partner"].create(
+            {
+                "name": "sale_delivery_auto elsewhere",
+                "country_id": self.uk.id,
+                "zip": "LS2 2AA",
+                "property_delivery_carrier_id": self.carrier_second.id,
+            }
+        )
+        order = self._make_order(partner_shipping_id=address.id)
+        self.assertEqual(order.carrier_id, self.carrier_second)
+
+    def test_partner_carrier_falls_back_to_the_selection(self):
+        self._always_use_partner_carrier()
+        order = self._make_order()
+        self.assertEqual(order.carrier_id, self.carrier_first)
+
     def test_manual_carrier_is_never_replaced(self):
         order = self._make_order()
         self._choose_carrier(order, self.carrier_second)
