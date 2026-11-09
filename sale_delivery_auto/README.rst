@@ -25,6 +25,16 @@ shipping cost line needs a real ``order_id`` to exist at all, so an onchange
 could only ever do half the job, and the "Add shipping" wizard works from a
 saved order regardless.
 
+Customer's delivery method
+--------------------------
+
+Set the system parameter ``sale_delivery_auto.always_use_partner_carrier`` to
+``True`` and the delivery method on the customer
+(``property_delivery_carrier_id``, read from the delivery address, then the
+order's customer, then its commercial partner) is always used, even when it is not available for the order. Customers without one fall
+back to the normal selection. A carrier that cannot rate the order is still
+assigned; the shipping cost is then flagged as under *Shipping cost*.
+
 Because the selection is re-run rather than done once, an order always carries
 the first carrier that is genuinely available for it - if a change puts the
 order over a carrier's weight limit, the next one down the list takes over.

@@ -1,6 +1,7 @@
 import logging
 
 from odoo import api, fields, models
+from odoo.tools import str2bool
 
 _logger = logging.getLogger(__name__)
 
@@ -15,6 +16,9 @@ SKIP = "skip_delivery_auto"
 # a shipping cost line deleted this way is still somebody deleting it, and the
 # line hook has to be able to tell that from our own tidying up.
 IN_ORDER_WRITE = "delivery_auto_in_order_write"
+
+# When true, the customer's own delivery method wins outright, available or not.
+PARTNER_CARRIER_PARAM = "sale_delivery_auto.always_use_partner_carrier"
 
 # Order fields whose change makes the carrier choice, or the shipping cost,
 # stale. In code on purpose: this is not something to hand to a user.
@@ -71,8 +75,29 @@ class SaleOrder(models.Model):
             )
         )
 
+    def _delivery_auto_partner_carrier(self):
+        """The delivery method set on the customer: the delivery address first,
+        then the customer, then the company behind them."""
+        self.ensure_one()
+        order = self.with_company(self.company_id)
+        partners = (
+            order.partner_shipping_id
+            | order.partner_id
+            | order.partner_id.commercial_partner_id
+        )
+        for partner in partners:
+            carrier = partner.property_delivery_carrier_id.filtered("active")
+            if carrier:
+                return carrier
+        return self.env["delivery.carrier"]
+
     def _delivery_auto_pick_carrier(self):
         self.ensure_one()
+        param = self.env["ir.config_parameter"].sudo().get_param(PARTNER_CARRIER_PARAM)
+        if str2bool(param or "0", False):
+            carrier = self._delivery_auto_partner_carrier()
+            if carrier:
+                return carrier
         order = self.with_company(self.company_id)
         model = self.env["delivery.carrier"]
         # delivery.carrier is ordered by sequence, so "the first available one"
