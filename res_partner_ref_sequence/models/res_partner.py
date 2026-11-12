@@ -1,9 +1,18 @@
-from odoo import models
+from odoo import fields, models
 from odoo.exceptions import UserError
 
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
+
+    ref_sequence_rule_matched = fields.Boolean(
+        compute="_compute_ref_sequence_rule_matched",
+    )
+
+    def _compute_ref_sequence_rule_matched(self):
+        rules = self.env["res_partner_ref_sequence.rule"]
+        for partner in self:
+            partner.ref_sequence_rule_matched = bool(rules._resolve(partner))
 
     def action_generate_ref(self):
         rules = self.env["res_partner_ref_sequence.rule"]
@@ -18,11 +27,6 @@ class ResPartner(models.Model):
                 )
             rule = rules._resolve(partner)
             if not rule:
-                raise UserError(
-                    self.env._(
-                        "No partner reference rule matches %(partner)s.",
-                        partner=partner.display_name,
-                    )
-                )
+                continue
             partner.ref = rule.sequence_id.next_by_id()
         return True
