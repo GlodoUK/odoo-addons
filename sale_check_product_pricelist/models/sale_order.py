@@ -1,17 +1,52 @@
-from odoo import models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+
+    pricelist_check_warning = fields.Text(
+        compute="_compute_pricelist_check_warning",
+    )
+
+    @api.depends(
+        "state",
+        "pricelist_id.check_sale_behaviour",
+        "order_line.product_id",
+        "order_line.pricelist_item_id",
+    )
+    def _compute_pricelist_check_warning(self):
+        """Warn while the quotation is being built, rather than only when it
+        is confirmed, so it is not sent to the customer with lines that will
+        never confirm."""
+        for order in self:
+            invalid = (
+                order.state in ("draft", "sent")
+                and order._pricelist_check_invalid_lines()
+            )
+            order.pricelist_check_warning = (
+                self.env._(
+                    "This quotation cannot be confirmed: the following products"
+                    " are not available on the pricelist %(pricelist)s:\n"
+                    "%(products)s",
+                    pricelist=order.pricelist_id.display_name,
+                    products="\n".join(invalid.product_id.mapped("display_name")),
+                )
+                if invalid
+                else False
+            )
+
+    def _pricelist_check_invalid_lines(self):
+        self.ensure_one()
+        return self.order_line.filtered(
+            lambda x: x.product_id and not x._pricelist_check_sale_behaviour()
+        )
 
     def _confirmation_error_message(self):
         res = super()._confirmation_error_message()
         if res:
             return res
 
-        invalid = self.order_line.filtered(
-            lambda x: x.product_id and not x._pricelist_check_sale_behaviour()
-        )
+        invalid = self._pricelist_check_invalid_lines()
         if invalid:
             return self.env._(
                 "The following lines are not available on the pricelist"
