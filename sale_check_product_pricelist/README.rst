@@ -25,3 +25,8 @@ On the pricelist form, **Sellable Products**:
 
 The check runs on confirmation via ``_confirmation_error_message``, so drafts and
 quotations can still be built up freely; the error names the offending products.
+
+While a quotation is in draft or sent, the same check drives a warning above the
+form that names the products that would block confirmation. It updates as lines
+are added, so a quotation is not shared with the customer before anyone notices
+it can never be confirmed.
