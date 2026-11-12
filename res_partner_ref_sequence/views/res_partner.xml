@@ -13,12 +13,13 @@
                 <label for="ref" string="Reference" />
                 <div class="o_row">
                     <field name="ref" string="Reference" nolabel="1" />
+                    <field name="ref_sequence_rule_matched" invisible="1" />
                     <button
                         name="action_generate_ref"
                         type="object"
                         string="Generate"
                         class="btn-link px-0"
-                        invisible="not is_company or ref"
+                        invisible="not is_company or ref or not ref_sequence_rule_matched"
                     />
                 </div>
             </xpath>

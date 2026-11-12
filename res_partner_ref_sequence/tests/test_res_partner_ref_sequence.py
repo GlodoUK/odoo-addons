@@ -119,8 +119,8 @@ class TestResPartnerRefSequence(TransactionCase):
     def test_no_matching_rule(self):
         self.default_rule.active = False
         partner = self._make_company("I")
-        with self.assertRaises(UserError):
-            partner.action_generate_ref()
+        partner.action_generate_ref()
+        self.assertFalse(partner.ref)
 
     def test_archived_partner_still_matches(self):
         partner = self._make_company("J", active=False)

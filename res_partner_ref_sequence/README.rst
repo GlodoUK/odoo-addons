@@ -14,8 +14,10 @@ the narrow rules first and keep a catch-all (an empty domain) last. The module
 ships one such catch-all, ``Default``, using the *Partner Reference* sequence.
 
 On the contact form, a **Generate** button sits next to *Reference* on the
-*Sales & Purchase* tab. It appears only for companies with no reference yet, and
-takes the next number from the first matching rule's sequence.
+*Sales & Purchase* tab. It appears only for companies with no reference yet that
+a rule matches, and takes the next number from the first matching rule's
+sequence. Called on several contacts at once (e.g. from an automation), contacts
+no rule matches are skipped and keep an empty reference.
 
 Why not the OCA modules?
 ========================
