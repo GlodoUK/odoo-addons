@@ -107,7 +107,7 @@ Generating migrations
 
     odoo shoehorn generate ./bootstrap add_a_thing          # .py (default)
     odoo shoehorn generate ./bootstrap res_partner.xml      # data file
-    odoo shoehorn generate ./bootstrap ir.model.access.csv  # data file
+    odoo shoehorn generate ./bootstrap ir.access.csv        # data file
 
 creates e.g. ``20260604164512_add_a_thing.py`` with the conventional stub.
 

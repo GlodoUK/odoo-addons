@@ -11,11 +11,7 @@ import zlib
 import psycopg2
 
 import odoo
-from odoo.tools.convert import (
-    convert_csv_import,
-    convert_sql_import,
-    convert_xml_import,
-)
+from odoo.tools.convert import convert_csv_import, convert_xml_import
 
 try:
     # Doodba images ship click-odoo; prefer its environment handling (user
@@ -111,10 +107,10 @@ def _apply_python(env, path, **context):
     with open(path, "rb") as f:
         code = f.read()
     scope = {"__name__": "shoehorn.migration", "__file__": path}
-    exec(compile(code, path, "exec"), scope)
+    exec(compile(code, path, "exec"), scope)  # noqa: S102
     up = scope.get("up")
     if not callable(up):
-        raise ValueError(f"Migration '{os.path.basename(path)}' must define up(env).")
+        raise TypeError(f"Migration '{os.path.basename(path)}' must define up(env).")
     # Context is passed as keyword arguments, filtered to what up() declares:
     # up(env), up(env, module=...), and up(env, **kwargs) all work.
     params = inspect.signature(up).parameters
@@ -133,7 +129,7 @@ def _apply_data(env, module, path, name, ext):
         convert_csv_import(env, module, f"{name}.csv", content, idref, "init", True)
     elif ext == "sql":
         with open(path, "rb") as f:
-            convert_sql_import(env, f)
+            env.cr.execute(f.read())  # pylint: disable=sql-injection
     else:
         # convert_xml_import accepts a path; file objects must have a .name
         convert_xml_import(env, module, path, idref, "init", True)

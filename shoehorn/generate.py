@@ -25,7 +25,7 @@ def generate(directory, name):
     if ext not in EXTENSIONS:
         raise ValueError(f"Migrations can't have a .{ext} extension.")
     base = re.sub(r"[\s-]+", "_", base.strip().lower())
-    version = datetime.datetime.now().strftime(TIMESTAMP_FORMAT)
+    version = datetime.datetime.now().astimezone().strftime(TIMESTAMP_FORMAT)
     filename = f"{version}_{base}.{ext}"
     if not FILENAME_RE.match(filename):
         raise ValueError(f"'{name}' does not make a valid migration name.")

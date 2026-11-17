@@ -23,11 +23,12 @@ class Shoehorn(Command):
         )
         subparsers = parser.add_subparsers(dest="command", required=True)
 
-        path_arg = dict(
-            metavar="PATH",
-            help="Directory of shoehorn files (YYYYMMDDHHMMSS_name.{py,xml,csv,sql})."
+        path_arg = {
+            "metavar": "PATH",
+            "help": "Directory of shoehorn files"
+            " (YYYYMMDDHHMMSS_name.{py,xml,csv,sql})."
             " The directory's basename is the migration namespace.",
-        )
+        }
 
         generate_parser = subparsers.add_parser(
             "generate",
