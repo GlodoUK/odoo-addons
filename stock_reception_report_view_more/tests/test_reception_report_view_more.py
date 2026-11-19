@@ -61,11 +61,13 @@ class TestReceptionReportViewMore(TransactionCase):
         return picking
 
     def _move_outs(self, data):
-        return {
-            line["move_out"]
-            for lines in data["sources_to_lines"].values()
-            for line in lines
-        }
+        return self.env["stock.move"].union(
+            *(
+                line["move_out"]
+                for lines in data["sources_to_lines"].values()
+                for line in lines
+            )
+        )
 
     def test_standard_report_stops_when_receipt_is_used_up(self):
         data = self.report._get_report_values(self.receipt.ids)
@@ -88,6 +90,34 @@ class TestReceptionReportViewMore(TransactionCase):
         self.assertEqual(extra[0]["move_out"], self.out_late.move_ids)
         self.assertEqual(extra[0]["quantity"], 5)
         self.assertEqual(extra[0]["move_ins"], self.receipt.move_ids.ids)
+
+    def test_partial_line_reports_full_quantity(self):
+        self.out_early.move_ids.product_uom_qty = 8
+        data = self.report.with_context(
+            reception_report_view_more=True
+        )._get_report_values(self.receipt.ids)
+        line = next(
+            line
+            for lines in data["sources_to_lines"].values()
+            for line in lines
+            if line["move_out"] == self.out_early.move_ids
+        )
+        self.assertEqual(line["quantity"], 5)
+        self.assertEqual(line["full_quantity"], 8)
+
+    def test_extra_line_reports_full_quantity(self):
+        self.out_late.move_ids.product_uom_qty = 8
+        data = self.report.with_context(
+            reception_report_view_more=True
+        )._get_report_values(self.receipt.ids)
+        extra = next(
+            line
+            for lines in data["sources_to_lines"].values()
+            for line in lines
+            if line.get("is_extra")
+        )
+        self.assertEqual(extra["quantity"], 5)
+        self.assertEqual(extra["full_quantity"], 8)
 
     def test_get_report_data_includes_extra_lines(self):
         data = self.report.get_report_data(self.receipt.ids, {})

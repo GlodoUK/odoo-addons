@@ -21,8 +21,29 @@ class ReportStockReport_Reception(models.AbstractModel):
         docs = values.get("docs")
         if not docs or not self.env.context.get("reception_report_view_more"):
             return values
+        self._add_full_quantities(values)
         self._add_view_more_lines(values)
         return values
+
+    def _add_full_quantities(self, values):
+        """Flag part-fulfilled lines with the full quantity the transfer needs.
+
+        The standard report only shows what the incoming stock can cover. The
+        UI uses ``full_quantity`` when "View more" is on, while ``quantity``
+        stays the assignable amount.
+        """
+        done = "done" in values["docs"].mapped("state")
+        for lines in values["sources_to_lines"].values():
+            for line in lines:
+                if line["is_assigned"] or not line["is_qty_assignable"]:
+                    continue
+                out = line["move_out"]
+                uom = out.product_id.uom_id
+                full = out.product_qty
+                if not done and out.state == "partially_available":
+                    full -= out.product_uom._compute_quantity(out.quantity, uom)
+                if uom.compare(full, line["quantity"]) > 0:
+                    line["full_quantity"] = full
 
     def _add_view_more_lines(self, values):
         docs = values["docs"]
@@ -93,6 +114,8 @@ class ReportStockReport_Reception(models.AbstractModel):
                 move_ins=product_to_ins[product],
             )
             line["is_extra"] = True
+            if uom.compare(qty_to_reserve, quantity) > 0:
+                line["full_quantity"] = qty_to_reserve
             sources_to_lines[source].append(line)
 
         sources_to_dates = values["sources_to_formatted_scheduled_date"]

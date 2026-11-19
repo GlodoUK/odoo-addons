@@ -50,7 +50,36 @@ patch(ReceptionReportMain.prototype, {
 
     get visibleSourcesToLines() {
         const result = {};
-        for (const [source, lines] of Object.entries(this.state.sourcesToLines)) {
+        // Moves whose line is part-fulfilled; their "expected" remainder lines
+        // are folded into the full quantity when viewing more.
+        const fullMoveIds = new Set();
+        if (this.viewMore.showAll) {
+            for (const lines of Object.values(this.state.sourcesToLines)) {
+                for (const line of lines) {
+                    if (line.full_quantity) {
+                        fullMoveIds.add(line.move_out_id);
+                    }
+                }
+            }
+        }
+        for (const [source, allLines] of Object.entries(this.state.sourcesToLines)) {
+            let lines = allLines;
+            if (this.viewMore.showAll) {
+                lines = allLines
+                    .filter(
+                        (line) =>
+                            line.is_qty_assignable || !fullMoveIds.has(line.move_out_id)
+                    )
+                    .map((line) =>
+                        line.full_quantity && !line.is_assigned
+                            ? {
+                                  ...line,
+                                  quantity: line.full_quantity,
+                                  assign_quantity: line.quantity,
+                              }
+                            : line
+                    );
+            }
             const visible = this.viewMore.showAll
                 ? lines
                 : lines.filter((line) => !line.is_extra);
