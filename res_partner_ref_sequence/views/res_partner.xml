@@ -19,7 +19,7 @@
                         type="object"
                         string="Generate"
                         class="btn-link px-0"
-                        invisible="not is_company or ref or not ref_sequence_rule_matched"
+                        invisible="ref or not ref_sequence_rule_matched"
                     />
                 </div>
             </xpath>
