@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<templates xml:space="preserve">
+
+    <t
+        t-name="stock_reception_report_view_more.ReceptionReportMain"
+        t-inherit="stock.ReceptionReportMain"
+        t-inherit-mode="extension"
+    >
+        <xpath expr="//ReceptionReportTable" position="attributes">
+            <attribute name="t-foreach">visibleSourcesToLines</attribute>
+            <attribute name="lines">visibleSourcesToLines[source]</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_report_reception')]" position="inside">
+            <div t-if="hasExtraLines" class="text-center my-3">
+                <button
+                    t-on-click="onClickViewMore"
+                    class="btn btn-link"
+                    name="view_more"
+                >
+                    <t t-if="viewMore.showAll">View Less</t>
+                    <t t-else="">View More</t>
+                </button>
+            </div>
+        </xpath>
+    </t>
+
+</templates>
