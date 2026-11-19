@@ -133,7 +133,7 @@ class ReportStockReport_Reception(models.AbstractModel):
                 )
             if uom.compare(qty_needed, available) > 0:
                 raise UserError(
-                    _(
+                    self.env._(
                         "Only %(available)s %(uom)s of %(product)s is still "
                         "unallocated on the incoming transfer, but %(needed)s "
                         "was requested. Unassign another transfer first.",

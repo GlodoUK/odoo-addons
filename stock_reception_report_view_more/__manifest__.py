@@ -3,7 +3,7 @@
     "summary": "Allocation report: View More lists every transfer waiting "
     "for the product, not just those the receipt covers",
     "author": "Glo Networks",
-    "website": "https://www.glo.systems/",
+    "website": "https://github.com/GlodoUK/odoo-addons",
     "category": "Inventory",
     "version": "19.0.1.0.0",
     "depends": ["stock"],
