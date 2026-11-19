@@ -111,6 +111,7 @@ addon | version | maintainers | summary
 [stock_picking_merge](stock_picking_merge/) | 19.0.1.0.0 |  | Adds the ability to merge stock.picking records
 [stock_picking_previous_transfer](stock_picking_previous_transfer/) | 19.0.1.0.0 |  | A Previous Transfer smart button on transfers, the mirror of core's Next Transfer
 [stock_picking_state_duration](stock_picking_state_duration/) | 19.0.1.0.0 |  | Show how long a transfer has been in its current state
+[stock_reception_report_view_more](stock_reception_report_view_more/) | 19.0.1.0.0 |  | Allocation report: View More lists every transfer waiting for the product, not just those the receipt covers
 [stock_reception_steps_one_point_five](stock_reception_steps_one_point_five/) | 19.0.1.1.0 |  | Receive into a landing area and store to Stock manually
 [stock_rule_action_noop](stock_rule_action_noop/) | 19.0.1.0.0 |  | A no-operation stock rule/route, useful for third party systems that carry out all procurement decisions
 [stock_scrap_location](stock_scrap_location/) | 19.0.1.0.0 |  | Stock Scrap Location
