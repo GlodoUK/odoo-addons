@@ -17,7 +17,7 @@ class SaleInstantPaymentController(PaymentPortal):
     )
     def moto_payment(self, order_id, **kwargs):
         order = request.env["sale.order"].browse(order_id)
-        if not order.exists() or order.state not in ("draft", "sent"):
+        if not order.exists():
             raise NotFound()
 
         partner = order.partner_invoice_id

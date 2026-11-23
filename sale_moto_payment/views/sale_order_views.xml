@@ -16,7 +16,7 @@
                     type="action"
                     class="btn-primary"
                     icon="fa-credit-card"
-                    invisible="state not in ('draft', 'sent')"
+                    invisible="state == 'cancel'"
                 />
             </xpath>
         </field>
