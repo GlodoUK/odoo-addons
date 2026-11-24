@@ -6,12 +6,14 @@ Per-customer control over how and when sale orders are invoiced, both automatica
 manually.
 
 Adds an invoice consolidation preference and an optional automatic invoicing schedule
-to each customer.
+to each customer. They are commercial fields: set on the customer's commercial entity
+(the company, or a partner with no parent) and propagated to all of its contacts, so
+they apply whichever of its addresses an order is invoiced to.
 
 Consolidation preference
 -------------------------
 
-A customer (``res.partner``) can be set to one of:
+A customer's commercial entity (``res.partner``) can be set to one of:
 
 * **Consolidated** - all of the customer's invoiceable orders are merged into a
   single invoice, whatever their delivery addresses. Orders are still split by
@@ -27,8 +29,11 @@ A customer (``res.partner``) can be set to one of:
 
 The preference overrides the ``grouped`` argument on
 ``sale.order._create_invoices``, so it applies whether invoices are raised from
-the *Create Invoice* wizard or automatically. Orders whose invoicing partner has
-no preference fall back to the caller's choice.
+the *Create Invoice* wizard or automatically. It is read from the commercial
+entity of each order's invoice address. Orders whose customer has no preference
+fall back to the caller's choice. Orders invoiced to different addresses of the
+same customer still get separate invoices, because the invoice address is part of
+Odoo's invoice grouping.
 
 Automatic invoicing
 -------------------
@@ -36,7 +41,8 @@ Automatic invoicing
 Each customer can be given an **Auto-Invoice Frequency** (hourly, daily, weekly,
 monthly, quarterly) and a **Next Auto-Invoice Run**. A scheduled action invoices
 the pending orders of any customer whose next run is due, then rolls the moment
-forward.
+forward. Orders are gathered per commercial entity, so a customer whose orders go
+to several invoice addresses is invoiced in one run, and its schedule advances once.
 
 * The next run advances by whole periods from the
   previous value, so the cadence stays anchored (a customer billed monthly on the
@@ -77,8 +83,8 @@ for queued invoices to go out; they wait in the queue until it is.
 Sale orders carry a read-only **Automatic Invoicing** mirror
 (``sale.order.sale_auto_invoice_enabled``), shown on the *Other Info* tab, so it
 is visible from the order whether the scheduled action will pick it up. It is
-computed from the **Auto-Invoice Frequency** of the order's invoice address, read
-in the order's company.
+computed from the **Auto-Invoice Frequency** of the commercial entity of the
+order's invoice address, read in the order's company.
 
 Automatic credit notes
 ----------------------
@@ -105,8 +111,7 @@ Set **Auto-Raise Credit Notes** in *Accounting > Configuration > Settings*,
 under *Consolidation*.
 
 Set the preference, frequency, next run and action on the *Invoicing* tab of the
-partner used as the order's invoice address. This may be a company or one of its
-child contacts - the settings are read from the invoice address itself and are
-not inherited from the commercial entity, so configure them on the partner you
-actually invoice. Leaving the frequency empty disables automatic invoicing for
-that partner.
+customer's commercial entity. Child contacts (invoice, delivery and other
+addresses) don't show them: like Odoo's other accounting settings, they are
+managed on the parent company and copied to its contacts. Leaving the frequency
+empty disables automatic invoicing for that customer.

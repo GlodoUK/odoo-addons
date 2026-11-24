@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <!--
-                Read-only mirror of the invoice address' Auto-Invoice Frequency,
+                Read-only mirror of the customer's Auto-Invoice Frequency,
                 so it is visible from the order whether the scheduled action
                 will invoice it.
             -->
