@@ -66,6 +66,15 @@ class ResPartner(models.Model):
         "rolls forward by the configured frequency. Stored and compared in UTC.",
     )
 
+    @api.model
+    def _commercial_fields(self):
+        return super()._commercial_fields() + [
+            "sale_invoice_consolidation",
+            "sale_auto_invoice_frequency",
+            "sale_auto_invoice_action",
+            "sale_auto_invoice_next_date",
+        ]
+
     def _sale_auto_invoice_advance(self):
         """
         Return this partner's next billing moment on a fixed grid.
@@ -151,13 +160,17 @@ class ResPartner(models.Model):
         Auto-invoice pending sale orders for customers that are due.
 
         Driven by the set of invoiceable orders rather than by all partners:
-        we only look at the (company, invoice partner) pairs that actually have
+        we only look at the (company, customer) pairs that actually have
         something to invoice, then skip those whose schedule is not yet due.
+        The customer is the commercial entity of the order's invoice address,
+        which holds the settings and the schedule; its orders are invoiced
+        together however many invoice addresses they use, so the schedule
+        advances once per run.
 
         Whether credit notes may be raised by the run is controlled per company
         by ``res.company.sale_auto_invoice_credit_notes``. What happens to the
         raised moves afterwards (left in draft, posted, or posted and sent) is
-        controlled per partner by ``sale_auto_invoice_action``.
+        controlled per customer by ``sale_auto_invoice_action``.
 
         Progress is reported through ``ir.cron._commit_progress`` so each pair
         is committed as it completes: a timed-out run resumes where it left off
@@ -171,7 +184,9 @@ class ResPartner(models.Model):
                 ("invoice_status", "=", "to invoice"),
             ]
         )
-        groups = orders.grouped(lambda o: (o.company_id, o.partner_invoice_id))
+        groups = orders.grouped(
+            lambda o: (o.company_id, o.partner_invoice_id.commercial_partner_id)
+        )
         if from_cron:
             self.env["ir.cron"]._commit_progress(remaining=len(groups))
         now = fields.Datetime.now()

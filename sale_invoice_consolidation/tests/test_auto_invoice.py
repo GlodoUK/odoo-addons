@@ -23,7 +23,7 @@ class TestSaleAutoInvoice(TransactionCase):
             }
         )
 
-    def _confirmed_order(self, qty=1):
+    def _confirmed_order(self, qty=1, **vals):
         order = self.env["sale.order"].create(
             {
                 "partner_id": self.partner.id,
@@ -37,10 +37,16 @@ class TestSaleAutoInvoice(TransactionCase):
                         },
                     )
                 ],
+                **vals,
             }
         )
         order.action_confirm()
         return order
+
+    def _invoice_contact(self, name="Auto Invoice Billing"):
+        return self.env["res.partner"].create(
+            {"name": name, "type": "invoice", "parent_id": self.partner.id}
+        )
 
     def _credit_pending_order(self):
         """
@@ -60,7 +66,9 @@ class TestSaleAutoInvoice(TransactionCase):
         self.env["res.partner"]._cron_auto_create_invoices()
 
     def _partner_moves(self):
-        return self.env["account.move"].search([("partner_id", "=", self.partner.id)])
+        return self.env["account.move"].search(
+            [("commercial_partner_id", "=", self.partner.id)]
+        )
 
     def _send_cron_triggers(self):
         return self.env["ir.cron.trigger"].search(
@@ -326,26 +334,108 @@ class TestSaleAutoInvoice(TransactionCase):
         self.partner.sale_auto_invoice_frequency = False
         self.assertFalse(order.sale_auto_invoice_enabled)
 
-    def test_order_mirrors_invoice_address_not_commercial_entity(self):
-        # Same contract as the cron: the setting is read from the invoice
-        # address itself, not inherited from the customer it belongs to.
-        invoice_contact = self.env["res.partner"].create(
-            {
-                "name": "Auto Invoice Billing",
-                "type": "invoice",
-                "parent_id": self.partner.id,
-            }
-        )
+    def test_order_mirrors_commercial_entity_not_invoice_address(self):
+        # Same contract as the cron: the setting is read from the customer the
+        # invoice address belongs to, not from the address itself.
+        invoice_contact = self._invoice_contact()
         order = self._confirmed_order()
         self.assertEqual(order.partner_invoice_id, invoice_contact)
         self.assertFalse(order.sale_auto_invoice_enabled)
 
-        invoice_contact.sale_auto_invoice_frequency = "weekly"
+        self.partner.sale_auto_invoice_frequency = "weekly"
         self.assertTrue(order.sale_auto_invoice_enabled)
 
+        # A value left on the contact itself is ignored.
         invoice_contact.sale_auto_invoice_frequency = False
-        self.partner.sale_auto_invoice_frequency = "weekly"
+        self.assertEqual(self.partner.sale_auto_invoice_frequency, "weekly")
+        self.assertTrue(order.sale_auto_invoice_enabled)
+
+        self.partner.sale_auto_invoice_frequency = False
+        invoice_contact.sale_auto_invoice_frequency = "weekly"
         self.assertFalse(order.sale_auto_invoice_enabled)
+
+    def test_settings_propagate_to_contacts(self):
+        settings = {
+            "sale_invoice_consolidation": "ungrouped",
+            "sale_auto_invoice_frequency": "monthly",
+            "sale_auto_invoice_action": "post",
+            "sale_auto_invoice_next_date": datetime(2026, 7, 1),
+        }
+        self.partner.write(settings)
+
+        # Contacts created afterwards take the customer's settings...
+        invoice_contact = self._invoice_contact()
+        self.assertRecordValues(invoice_contact, [settings])
+
+        # ...and follow later changes to them.
+        settings = {
+            "sale_invoice_consolidation": "grouped",
+            "sale_auto_invoice_frequency": "weekly",
+            "sale_auto_invoice_action": "post_send",
+            "sale_auto_invoice_next_date": datetime(2026, 8, 1),
+        }
+        self.partner.write(settings)
+        self.assertRecordValues(invoice_contact, [settings])
+
+    def test_consolidation_preference_read_from_commercial_entity(self):
+        self.partner.sale_invoice_consolidation = "ungrouped"
+        invoice_contact = self._invoice_contact()
+        # A contact value that disagrees, e.g. set before the preference was
+        # managed by the commercial entity: the customer's preference wins.
+        invoice_contact.sale_invoice_consolidation = "grouped"
+        orders = self._confirmed_order() | self._confirmed_order()
+        self.assertEqual(orders.partner_invoice_id, invoice_contact)
+
+        invoices = orders._create_invoices()
+
+        self.assertEqual(len(invoices), 2)
+        self.assertEqual(invoices.partner_id, invoice_contact)
+
+    @freeze_time("2026-06-03")
+    def test_cron_invoices_orders_billed_to_contact(self):
+        invoice_contact = self._invoice_contact()
+        self._due_monthly()
+        order = self._confirmed_order()
+        self.assertEqual(order.partner_invoice_id, invoice_contact)
+
+        self._run_cron()
+
+        moves = self._partner_moves()
+        self.assertEqual(len(moves), 1)
+        self.assertEqual(moves.partner_id, invoice_contact)
+        self.assertEqual(order.invoice_status, "invoiced")
+        # The schedule lives on the customer, and is mirrored on its contacts.
+        self.assertEqual(self.partner.sale_auto_invoice_next_date, datetime(2026, 7, 1))
+        self.assertEqual(
+            invoice_contact.sale_auto_invoice_next_date, datetime(2026, 7, 1)
+        )
+
+    @freeze_time("2026-06-03")
+    def test_cron_advances_once_for_several_invoice_addresses(self):
+        self.partner.sale_invoice_consolidation = "grouped"
+        self._due_monthly()
+        contacts = self._invoice_contact("Billing A") | self._invoice_contact(
+            "Billing B"
+        )
+        orders = self.env["sale.order"]
+        for contact in contacts:
+            orders |= self._confirmed_order(partner_invoice_id=contact.id)
+
+        self._run_cron()
+
+        # Every invoice address of the customer is invoiced in the same run,
+        # each on its own invoice...
+        self.assertEqual(orders.mapped("invoice_status"), ["invoiced", "invoiced"])
+        moves = self._partner_moves()
+        self.assertEqual(len(moves), 2)
+        self.assertEqual(moves.partner_id, contacts)
+        # ...and the schedule advances by one period, not one per address.
+        self.assertEqual(self.partner.sale_auto_invoice_next_date, datetime(2026, 7, 1))
+        log = self.partner.message_ids.filtered(
+            lambda m: "automatically raised" in (m.body or "")
+        )
+        self.assertEqual(len(log), 1)
+        self.assertIn("2 invoice(s) automatically raised for 2 pending", log.body)
 
     @freeze_time("2026-06-03")
     def test_cron_leaves_draft_without_action(self):

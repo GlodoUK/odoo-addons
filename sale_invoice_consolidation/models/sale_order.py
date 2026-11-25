@@ -9,17 +9,26 @@ class SaleOrder(models.Model):
         string="Automatic Invoicing",
         compute="_compute_sale_auto_invoice_enabled",
         help="Whether the scheduled action will invoice this order. Mirrors the "
-        "Auto-Invoice Frequency of the order's invoice address, read in this "
-        "order's company - a frequency is what enables automatic invoicing.",
+        "Auto-Invoice Frequency of the customer (the commercial entity of the "
+        "order's invoice address), read in this order's company - a frequency "
+        "is what enables automatic invoicing.",
     )
 
-    @api.depends("company_id", "partner_invoice_id.sale_auto_invoice_frequency")
+    def _sale_invoice_consolidation_partner(self):
+        """The partner holding this order's consolidation and auto-invoice
+        settings, in the order's company, as the cron reads them."""
+        self.ensure_one()
+        return self.partner_invoice_id.commercial_partner_id.with_company(
+            self.company_id
+        )
+
+    @api.depends(
+        "company_id",
+        "partner_invoice_id.commercial_partner_id.sale_auto_invoice_frequency",
+    )
     def _compute_sale_auto_invoice_enabled(self):
-        # Read from the invoice address in the order's company, matching what
-        # the cron does: the settings are not inherited from the commercial
-        # entity, and they are company_dependent.
         for order in self:
-            partner = order.partner_invoice_id.with_company(order.company_id)
+            partner = order._sale_invoice_consolidation_partner()
             order.sale_auto_invoice_enabled = bool(partner.sale_auto_invoice_frequency)
 
     def _get_invoice_grouping_keys(self):
@@ -58,7 +67,8 @@ class SaleOrder(models.Model):
                 return self.env["account.move"]
 
         def preference(order):
-            return order.partner_invoice_id.sale_invoice_consolidation
+            partner = order._sale_invoice_consolidation_partner()
+            return partner.sale_invoice_consolidation
 
         grouped_ids = self.filtered(lambda o: preference(o) == "grouped")
         grouped_delivery_ids = self.filtered(
@@ -89,7 +99,7 @@ class SaleOrder(models.Model):
                 grouped=True, final=final, date=date
             )
         if other_ids:
-            # Partners with no preference: fall back to the caller's choice.
+            # Customers with no preference: fall back to the caller's choice.
             others = super(SaleOrder, other_ids)._create_invoices(
                 grouped=grouped_param, final=final, date=date
             )
