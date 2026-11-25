@@ -93,7 +93,7 @@ addon | version | maintainers | summary
 [sale_delivery_auto](sale_delivery_auto/) | 19.0.1.1.0 |  | Assign the first available delivery carrier and keep the shipping cost up to date, without trampling manual edits
 [sale_delivery_required](sale_delivery_required/) | 19.0.1.0.0 |  | Sale Delivery Required
 [sale_force_delivered_quantity](sale_force_delivered_quantity/) | 19.0.1.0.0 |  | Count a quantity as delivered on a sale order line without moving it
-[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.4.0 |  | Invoicing policy
+[sale_invoice_consolidation](sale_invoice_consolidation/) | 19.0.1.5.0 |  | Invoicing policy
 [sale_moto_payment](sale_moto_payment/) | 19.0.1.0.0 |  | Phone-payment popup with inline payment form for confirmed sale orders
 [sale_mrp_kit_propagate_route](sale_mrp_kit_propagate_route/) | 19.0.1.0.0 |  | Ship a kit sold on a sale order from one place, by the kit's routes
 [sale_mrp_phantom_explode](sale_mrp_phantom_explode/) | 19.0.2.0.0 |  | Allow a phantom kit to explode on a sale order
